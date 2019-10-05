@@ -6,6 +6,8 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+// Testing Login
+import LoginScreen from '../components/Login/Login.js'
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -14,7 +16,7 @@ const config = Platform.select({
 
 const HomeStack = createStackNavigator(
   {
-    Home: HomeScreen,
+    Home: LoginScreen,
   },
   config
 );
