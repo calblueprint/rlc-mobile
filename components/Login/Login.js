@@ -27,6 +27,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#ffffff'
+    }, 
+    formContainer: {
+        height: '100%'
     },
     logoContainer: {
         alignItems: 'center',

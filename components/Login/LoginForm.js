@@ -5,29 +5,30 @@ export default class LoginForm extends Component {
     render() {
         return (
             <View behavior="padding" style={styles.container}>
+
                 <TextInput
-                inlineImageLeft="mail"
-                placeholder="Email" 
-                returnKeyType="next"
-                onSubmitEditing={() => this.passwordInput.focus()}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                style={styles.input}
-                autoCorrct={false}
+                    inlineImageLeft="mail"
+                    placeholder="Email" 
+                    returnKeyType="next"
+                    onSubmitEditing={() => this.passwordInput.focus()}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    style={styles.input}
+                    autoCorrct={false}
                 ></TextInput>
-                
+
                 <TextInput 
-                inlineImageLeft="lock"
-                placeholder="Password"
-                secureTextEntry
-                style={styles.input}
-                ref={(input) => this.passwordInput = input}
-                returnKeyType="go"
+                    inlineImageLeft="lock"
+                    placeholder="Password"
+                    secureTextEntry
+                    style={styles.input}
+                    ref={(input) => this.passwordInput = input}
+                    returnKeyType="go"
                 ></TextInput>
 
                 <View style={styles.actionsContainer}>                    
                     <View style={{width: 150, height: 50}}>
-                        <Switch/><Text style={styles.rememberText}>Remember Me</Text>
+                        <Text style={styles.rememberText}><Switch/>Remember Me</Text>
                     </View>
                     <View style={{width: 150, height: 50}}>
                         <TouchableOpacity style={styles.helpLink}>
@@ -38,11 +39,15 @@ export default class LoginForm extends Component {
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.buttonContainer}>
-                    <Text style={styles.buttonText}>Sign In</Text>
-                </TouchableOpacity>
+                <View style={styles.bottomSignIn}>
+                    <TouchableOpacity style={styles.buttonContainer}>
+                        <Text style={styles.buttonText}>Sign In</Text>
+                    </TouchableOpacity>
 
-                <Text> Don't have an account?<Text style={styles.helpLinkText}> Sign Up Here</Text></Text>
+                    <Text style={styles.signupText}> Don't have an account?<Text style={styles.helpLinkText}> Sign Up Here</Text></Text>
+                </View>
+
+                
             </View>
         );
     }
@@ -51,6 +56,10 @@ export default class LoginForm extends Component {
 const styles = StyleSheet.create({
     container: {
         padding: 20
+    },
+    bottomSignIn: {
+        position: 'relative',
+        bottom: 20
     },
     actionsContainer: {
         flex: 1,
@@ -68,6 +77,10 @@ const styles = StyleSheet.create({
         borderBottomColor: '#3b3b3b',
         color: '#000000',
     }, 
+    signupText: {
+        height: 20,
+        textAlign: 'center',
+    },
     buttonContainer: {
         backgroundColor: '#38A5DB',
         paddingVertical: 15,
@@ -87,10 +100,11 @@ const styles = StyleSheet.create({
         color: "#FFFFFF",
     },
     helpLink: {
-    paddingVertical: 15,
+        paddingVertical: 15,
     },
     helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
+        fontSize: 14,
+        color: '#2e78b7',
+        fontWeight: '600'
     },
 });
