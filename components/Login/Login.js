@@ -32,11 +32,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexGrow: 1,
         justifyContent: 'flex-start',
-        marginTop: 80
+        marginTop: 40,
+        maxHeight: 200
     },
     logo: {
-        width: 150,
-        height: 150
+        width: 100,
+        height: 100
     },
     title: {
         color: '#000000',
