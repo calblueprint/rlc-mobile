@@ -7,7 +7,7 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 // Testing Login
-import LoginScreen from '../components/Login/Login.js'
+import LoginScreen from '../screens/login/Login.js'
 
 const config = Platform.select({
   web: { headerMode: 'screen' },

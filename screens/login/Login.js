@@ -1,8 +1,8 @@
-import * as WebBrowser from 'expo-web-browser';
-import React, { Component } from 'react';
+import * as WebBrowser from '../../node_modules/expo-web-browser';
+import React, { Component } from '../../node_modules/react';
 import { StyleSheet, View, Image, Text, KeyboardAvoidingView } from 'react-native';
 
-import LoginForm from './LoginForm';
+import LoginForm from '../../components/LoginForm.js';
 
 export default class Login extends Component {
     render() {
