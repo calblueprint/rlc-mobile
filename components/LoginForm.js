@@ -8,7 +8,7 @@ export default class LoginForm extends Component {
 
                 <TextInput
                     inlineImageLeft="mail"
-                    placeholder="Email" 
+                    placeholder="Email"
                     returnKeyType="next"
                     onSubmitEditing={() => this.passwordInput.focus()}
                     keyboardType="email-address"
@@ -26,9 +26,9 @@ export default class LoginForm extends Component {
                     returnKeyType="go"
                 ></TextInput>
 
-                <View style={styles.actionsContainer}>                    
+                <View style={styles.actionsContainer}>
                     <View style={{width: 150, height: 50}}>
-                        <Text style={styles.rememberText}><Switch/>Remember Me</Text>
+                        <Text style={styles.rememberText}>Remember Me</Text>
                     </View>
                     <View style={{width: 150, height: 50}}>
                         <TouchableOpacity style={styles.helpLink}>
@@ -47,7 +47,7 @@ export default class LoginForm extends Component {
                     <Text style={styles.signupText}> Don't have an account?<Text style={styles.helpLinkText}> Sign Up Here</Text></Text>
                 </View>
 
-                
+
             </View>
         );
     }
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#3b3b3b',
         color: '#000000',
-    }, 
+    },
     signupText: {
         height: 20,
         textAlign: 'center',
