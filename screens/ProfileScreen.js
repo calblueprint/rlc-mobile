@@ -5,13 +5,14 @@ import BasicInfoForm from '../components/profile/BasicInfoForm';
 import ContactInfoForm from '../components/profile/ContactInfoForm';
 import AccountDetailsForm from '../components/profile/AccountDetailsForm';
 import EventPreferencesForm from '../components/profile/AccountDetailsForm';
-
+import ProfileForm from '../components/profile/ProfileForm';
 
 export default class ProfileScreen extends Component {
     render() {
         return (
             <ScrollView>
                  <ProfileHeader />
+                 <ProfileForm />
                  <BasicInfoForm />
                  <ContactInfoForm />
                  <AccountDetailsForm />
