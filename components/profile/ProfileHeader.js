@@ -11,6 +11,22 @@ export default class LoginForm extends Component {
 
                 <Text style={styles.title}>Melody Wei</Text>
                 <Text style={styles.subtext}>Member since September 2019</Text>
+
+                <View style={styles.badgeContainer}>
+                    <View style={styles.badge}>
+                        <Text>8</Text>
+                        <Text>Shifts Completed</Text>
+                    </View>
+                    <View style={styles.badge}>
+                        <Text>16</Text>
+                        <Text>Miles Completed</Text>
+                    </View>
+                    <View style={styles.badge}>
+                        <Text>34</Text>
+                        <Text>Pounds Rescued</Text>
+                    </View>
+                </View>
+
             </View>
         );
     }
@@ -28,6 +44,15 @@ const styles = StyleSheet.create({
         height: 125,
         borderRadius: 125/2
     }, 
+    badgeContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'flex-start' 
+    },
+    badge: {
+        width: '33%'
+    },
     title: {
         color: '#000000',
         marginTop: 10,

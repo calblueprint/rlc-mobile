@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Icon, TextInput, TouchableOpacity, Text, Switch } from 'react-native';
+import { Platform, StyleSheet, View, Icon, TextInput, TouchableOpacity, Text, Switch } from 'react-native';
 import { isTSTypeAliasDeclaration } from '@babel/types';
 
 export default class LoginForm extends Component {
@@ -143,7 +143,7 @@ export default class LoginForm extends Component {
                 placeholder="Password"
                 secureTextEntry
                 style={styles.input}
-                ref={(input) => this.preferredRegionInput = input}
+                ref={(input) => this.passwordInput = input}
                 returnKeyType="go"
                 ></TextInput>
 
@@ -178,6 +178,7 @@ export default class LoginForm extends Component {
                     placeholder="Chelsea, Flatiron, Union Square, +3 more"
                     returnKeyType="next"
                     onSubmitEditing={() => this.preferredTimeInput.focus()}
+                    ref={(input) => this.preferredLocationInput = input}
                     autoCapitalize="none"
                     style={styles.input}
                     autoCorrct={false}
@@ -188,17 +189,20 @@ export default class LoginForm extends Component {
                     </Text>
                     <TextInput
                     placeholder="Mondays (9am to 12pm)"
-                    returnKeyType="next"
-                    onSubmitEditing={() => this.passwordInput.focus()}
+                    returnKeyType="done"
+                    ref={(input) => this.preferredTimeInput = input}
+                    autoCapitalize="none"
                     autoCapitalize="none"
                     style={styles.input}
                     autoCorrct={false}
                     ></TextInput>
-
-                <TouchableOpacity style={styles.buttonContainer}>
-                    <Text style={styles.buttonText}>Save</Text>
-                </TouchableOpacity>
-
+                    
+                {/* <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.button}>
+                        <Text style={styles.buttonText}>Save</Text>
+                    </TouchableOpacity>
+                </View> */}
+       
             </View>
         );
     }
@@ -243,13 +247,21 @@ const styles = StyleSheet.create({
         opacity: 0.85,
         fontSize: 14
     },
-    buttonContainer: {
+    button: {
         backgroundColor: '#38A5DB',
         paddingVertical: 15,
         marginBottom: 20,
         borderRadius: 5,
-        position: "absolute",
-        bottom: 10,
+        position: 'absolute',
+        bottom: 0,
+        width: 250,
+    },
+    buttonContainer: {
+        alignItems: 'center',
+        marginTop: 20,
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     buttonText: {
         textAlign: 'center',
