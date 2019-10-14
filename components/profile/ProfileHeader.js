@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Icon, TextInput, TouchableOpacity, Text, Switch, Image } from 'react-native';
 
-export default class LoginForm extends Component {
+export default class ProfileHeader extends Component {
     render() {
         return (
             <View style={styles.profileContainer}>
@@ -14,16 +14,16 @@ export default class LoginForm extends Component {
 
                 <View style={styles.badgeContainer}>
                     <View style={styles.badge}>
-                        <Text>8</Text>
-                        <Text>Shifts Completed</Text>
+                        <Text style={styles.badgeHeading}>8</Text>
+                        <Text style={styles.badgeText}>Shifts Completed</Text>
                     </View>
                     <View style={styles.badge}>
-                        <Text>16</Text>
-                        <Text>Miles Completed</Text>
+                        <Text style={styles.badgeHeading}>16</Text>
+                        <Text style={styles.badgeText}>Miles Completed</Text>
                     </View>
                     <View style={styles.badge}>
-                        <Text>34</Text>
-                        <Text>Pounds Rescued</Text>
+                        <Text style={styles.badgeHeading}>34</Text>
+                        <Text style={styles.badgeText}>Pounds Rescued</Text>
                     </View>
                 </View>
 
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         justifyContent: 'flex-start',
         marginTop: 25,
-        maxHeight: 170 // change this to be dynamic
+        maxHeight: 200 // change this to be dynamic
     },
     profilePic: {
         width: 125,
@@ -45,13 +45,21 @@ const styles = StyleSheet.create({
         borderRadius: 125/2
     }, 
     badgeContainer: {
-        flex: 1,
+        flex: 2,
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignItems: 'flex-start' 
     },
     badge: {
         width: '33%'
+    },
+    badgeHeading: {
+        fontWeight: '600',
+        fontSize: 20
+    },
+    badgeText: {
+        fontSize: 12,
+        opacity: 0.9
     },
     title: {
         color: '#000000',
