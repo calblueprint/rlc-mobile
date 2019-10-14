@@ -7,7 +7,7 @@ import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
-import LoginScreen from '../screens/login/Login.js'
+import LoginScreen from '../screens/login/LoginScreen.js';
 // Testing Profile 
 import ProfileScreen from '../screens/profile/Profile.js';
 
