@@ -4,12 +4,12 @@ import { StyleSheet, View, Image, Text, KeyboardAvoidingView } from 'react-nativ
 
 import LoginForm from '../../components/LoginForm.js';
 
-export default class Login extends Component {
+export default class LoginScreen extends Component {
     render() {
         return (
-            <KeyboardAvoidingView behavior="padding" style={styles.container}> 
+            <KeyboardAvoidingView behavior="padding" style={styles.container}>
                 <View style={styles.logoContainer}>
-                    <Image 
+                    <Image
                     style={styles.logo}
                     source={require('../../assets/images/rlclogo.png')}/>
                     <Text style={styles.title}>Let's rescue some food 👍</Text>
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#ffffff'
-    }, 
+    },
     formContainer: {
         height: '100%'
     },
