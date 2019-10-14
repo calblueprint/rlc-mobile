@@ -196,12 +196,6 @@ export default class LoginForm extends Component {
                     style={styles.input}
                     autoCorrct={false}
                     ></TextInput>
-                    
-                {/* <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>Save</Text>
-                    </TouchableOpacity>
-                </View> */}
        
             </View>
         );
