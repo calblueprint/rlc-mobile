@@ -4,13 +4,15 @@ import { StyleSheet, View, Icon, TextInput, TouchableOpacity, Text, Switch, Imag
 export default class ProfileHeader extends Component {
     render() {
         return (
-            <View style={styles.profileContainer}>
-                <Image 
-                style={styles.profilePic}
-                source={require('../../assets/images/rlcprofilepic.png')} />
+            <View>
+                <View style={styles.profileContainer}>
+                    <Image 
+                    style={styles.profilePic}
+                    source={require('../../assets/images/rlcprofilepic.png')} />
 
-                <Text style={styles.title}>Melody Wei</Text>
-                <Text style={styles.subtext}>Member since September 2019</Text>
+                    <Text style={styles.title}>Melody Wei</Text>
+                    <Text style={styles.subtext}>Member since September 2019</Text>
+                </View>
 
                 <View style={styles.badgeContainer}>
                     <View style={styles.badge}>
@@ -27,6 +29,13 @@ export default class ProfileHeader extends Component {
                     </View>
                 </View>
 
+                <View style={{
+                    boderBottomColor: 'black',
+                    borderBottomWidth: StyleSheet.hairlineWidth,
+                    width: '100%'
+                }}>
+
+                </View>
             </View>
         );
     }
@@ -45,21 +54,25 @@ const styles = StyleSheet.create({
         borderRadius: 125/2
     }, 
     badgeContainer: {
-        flex: 2,
+        flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
+        marginTop: 20,
+        marginBottom: 25,
         alignItems: 'flex-start' 
     },
     badge: {
         width: '33%'
     },
     badgeHeading: {
+        textAlign: 'center',
         fontWeight: '600',
         fontSize: 20
     },
     badgeText: {
+        textAlign: 'center',
         fontSize: 12,
-        opacity: 0.9
+        color: '#9e9e9e'
     },
     title: {
         color: '#000000',
