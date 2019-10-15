@@ -6,8 +6,11 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
-// Testing Login
-import LoginScreen from '../screens/login/LoginScreen'
+
+import LoginScreen from '../screens/login/LoginScreen.js';
+// Testing Profile 
+import ProfileScreen from '../screens/profile/Profile.js';
+
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -16,7 +19,7 @@ const config = Platform.select({
 
 const HomeStack = createStackNavigator(
   {
-    Home: HomeScreen,
+    Home: HomeScreen, // Added for testing 
   },
   config
 );
@@ -93,10 +96,34 @@ SettingsStack.navigationOptions = {
 
 SettingsStack.path = '';
 
+const ProfileStack = createStackNavigator(
+  {
+    Profile: ProfileScreen,
+  },
+  config
+)
+
+ProfileStack.navigationOptions = {
+  tabBarLabel: 'Profile',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={
+        Platform.OS === 'ios'
+          ? `ios-information-circle${focused ? '' : '-outline'}`
+          : 'md-information-circle'
+      }
+    />
+  ),
+};
+
+ProfileStack.path = '';
+
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
   SettingsStack,
+  ProfileStack,
   LoginStack,
 });
 
