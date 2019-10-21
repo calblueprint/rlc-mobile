@@ -14,7 +14,7 @@ import {
 
 import { MonoText } from '../../components/StyledText';
 
-export default function HomeScreen() {
+export default function SignUp1Screen() {
   return (
     <View style={styles.container}>
       <ScrollView
@@ -54,7 +54,7 @@ export default function HomeScreen() {
   );
 }
 
-HomeScreen.navigationOptions = {
+SignUp1Screen.navigationOptions = {
   header: null,
 };
 
