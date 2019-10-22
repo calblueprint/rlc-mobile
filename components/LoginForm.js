@@ -1,9 +1,6 @@
-import actions from '../actions';
-
 import React, { Component } from 'react';
 import { StyleSheet, View, Icon, TextInput, TouchableOpacity, Text, Switch } from 'react-native';
-
-import { standardError } from '../lib/alerts';
+import { standardError, frontendError } from '../lib/alerts';
 import { postRequest } from '../lib/requests';
 import { APIRoutes } from '../config/routes';
 
@@ -11,11 +8,12 @@ export default class LoginForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          email: "volunter@example.com",
-          password: "password",
+          email: "",
+          password: "",
         }
     }
 
+    //does post request for creating a new session (user login)
     fetchUser = (params) => {
         return postRequest(
             APIRoutes.loginPath(),
@@ -23,17 +21,22 @@ export default class LoginForm extends Component {
                 console.log("Log in successful.")
             },
             (error) => {
-                standardError(error);
+                if (this.state.email == "" || this.state.password == "") {
+                    frontendError("There are empty fields.")
+                } else {
+                    frontendError("There was an error logging in.")
+                }
             },
             params
         );
     }
 
+    //sets up payload for fetchUser
     _onPressLogin = () => {
         const params = {
             user: {
-              email: "volunter@example.com",
-              password: "password",
+              email: this.state.email,
+              password: this.state.password,
             }
         }
         this.fetchUser(params);
