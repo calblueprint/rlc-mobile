@@ -5,6 +5,17 @@ import { StyleSheet, View, Image, Text, KeyboardAvoidingView } from 'react-nativ
 import LoginForm from '../../components/LoginForm.js';
 
 export default class LoginScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            inValidText: "",
+        }
+    }
+
+    setInvalidText = () => {
+        this.setState({ inValidText: "⚠️The username/password is invalid" });
+    }
+
     render() {
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -13,10 +24,10 @@ export default class LoginScreen extends Component {
                     style={styles.logo}
                     source={require('../../assets/images/rlclogo.png')}/>
                     <Text style={styles.title}>Let's rescue some food 👍</Text>
-                    <Text style={styles.subtext}>Please log in to continue</Text>
+                    <Text style={styles.subtext}>{this.state.inValidText}</Text>
                 </View>
                 <View style={styles.formContainer}>
-                    <LoginForm />
+                    <LoginForm setInvalidText={this.setInvalidText}/>
                 </View>
             </KeyboardAvoidingView>
         );
@@ -51,7 +62,7 @@ const styles = StyleSheet.create({
         fontSize: 22
     },
     subtext: {
-        color: '#000000',
+        color: '#ff0000',
         marginTop: 10,
         textAlign: 'center',
         fontWeight: 'normal',

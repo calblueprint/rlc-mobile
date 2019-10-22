@@ -24,7 +24,7 @@ export default class LoginForm extends Component {
                 if (this.state.email == "" || this.state.password == "") {
                     frontendError("There are empty fields.")
                 } else {
-                    frontendError("There was an error logging in.")
+                    this.props.setInvalidText()
                 }
             },
             params
