@@ -17,7 +17,7 @@ export default class LoginForm extends Component {
                     autoCorrct={false}
                 ></TextInput>
 
-                <TextInput 
+                <TextInput
                     inlineImageLeft="lock"
                     placeholder="Password"
                     secureTextEntry
@@ -25,6 +25,8 @@ export default class LoginForm extends Component {
                     ref={(input) => this.passwordInput = input}
                     returnKeyType="go"
                 ></TextInput>
+
+                efjioerwfji
 
                 <View style={styles.actionsContainer}>
                     <View style={{width: 150, height: 50}}>
