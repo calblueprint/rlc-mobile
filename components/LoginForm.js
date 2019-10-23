@@ -1,16 +1,56 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Icon, TextInput, TouchableOpacity, Text, Switch } from 'react-native';
+import { standardError, frontendError } from '../lib/alerts';
+import { postRequest } from '../lib/requests';
+import { APIRoutes } from '../config/routes';
 
 export default class LoginForm extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          email: "",
+          password: "",
+        }
+    }
+
+    //does post request for creating a new session (user login)
+    fetchUser = (params) => {
+        return postRequest(
+            APIRoutes.loginPath(),
+            (responseData) => {
+                console.log("Log in successful.")
+            },
+            (error) => {
+                if (this.state.email == "" || this.state.password == "") {
+                    frontendError("There are empty fields.")
+                } else {
+                    this.props.setInvalidText()
+                }
+            },
+            params
+        );
+    }
+
+    //sets up payload for fetchUser
+    _onPressLogin = () => {
+        const params = {
+            user: {
+              email: this.state.email,
+              password: this.state.password,
+            }
+        }
+        this.fetchUser(params);
+    }
+
     render() {
         return (
             <View behavior="padding" style={styles.container}>
-
                 <TextInput
                     inlineImageLeft="mail"
                     placeholder="Email"
                     returnKeyType="next"
                     onSubmitEditing={() => this.passwordInput.focus()}
+                    onChangeText={(text) => this.setState({email: text})}
                     keyboardType="email-address"
                     autoCapitalize="none"
                     style={styles.input}
@@ -22,6 +62,7 @@ export default class LoginForm extends Component {
                     placeholder="Password"
                     secureTextEntry
                     style={styles.input}
+                    onChangeText={(text) => this.setState({password: text})}
                     ref={(input) => this.passwordInput = input}
                     returnKeyType="go"
                 ></TextInput>
@@ -40,14 +81,12 @@ export default class LoginForm extends Component {
                 </View>
 
                 <View style={styles.bottomSignIn}>
-                    <TouchableOpacity style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.buttonContainer} onPress={this._onPressLogin}>
                         <Text style={styles.buttonText}>Sign In</Text>
                     </TouchableOpacity>
 
                     <Text style={styles.signupText}> Don't have an account?<Text style={styles.helpLinkText}> Sign Up Here</Text></Text>
                 </View>
-
-
             </View>
         );
     }
