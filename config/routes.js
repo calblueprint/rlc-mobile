@@ -9,4 +9,7 @@ export class APIRoutes {
     // Login
     static signupPath()                 { return `/sign_up` }
     static loginPath()                  { return APIRoutes.deviseRoute(`sign_in`) }
+
+    // Events
+    static getEventsPath(type)             { return APIRoutes.deviseRoute(`events/${type}`) }
 }

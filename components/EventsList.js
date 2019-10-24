@@ -3,6 +3,8 @@ import { View, StyleSheet, Dimensions, Text, TouchableOpacity } from 'react-nati
 import { TabView, SceneMap } from 'react-native-tab-view';
 import Animated from 'react-native-reanimated';
 import { Constants } from 'expo-constants';
+import { postRequest, getRequest } from '../lib/requests';
+import { APIRoutes } from '../config/routes';
 
 const FirstRoute = () => (
   <View style={[styles.scene, { backgroundColor: '#FFFFFF' }]}>
@@ -10,7 +12,7 @@ const FirstRoute = () => (
         <View style={styles.infoContainer}>
             <Text style={styles.subText}>Oh no! You have no upcoming shifts.</Text>
         </View>
-        
+
 
   </View>
 );
@@ -22,9 +24,9 @@ const SecondRoute = () => (
             <Text style={styles.subText}>Did you know?{"\n"}
             RLC has rescued over 1.7 million{"\n"}
             pounds of food! Sign up for an event{"\n"}
-            and be a part of the movement!</Text> 
+            and be a part of the movement!</Text>
         </View>
-        
+
 
   </View>
 );
@@ -76,7 +78,21 @@ export default class EventsList extends React.Component {
     second: SecondRoute,
   });
 
+  _fetchEvents = () => {
+    console.log("FETCH EVENTS")
+    return getRequest(
+        APIRoutes.getEventsPath('attended'),
+        (responseData) => {
+            console.log(responseData)
+        },
+        (error) => {
+          console.log(error)
+        },
+    );
+  }
+
   render() {
+    this._fetchEvents()
     return (
         <TabView
           navigationState={this.state}
