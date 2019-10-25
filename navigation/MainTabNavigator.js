@@ -3,9 +3,14 @@ import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/signup/SignUp4Screen';
+import HomeScreen from '../screens/signup/SignUp1Screen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+
+import LoginScreen from '../screens/login/LoginScreen.js';
+// Testing Profile 
+import ProfileScreen from '../screens/profile/Profile.js';
+
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -14,7 +19,7 @@ const config = Platform.select({
 
 const HomeStack = createStackNavigator(
   {
-    Home: HomeScreen,
+    Home: HomeScreen, // Added for testing 
   },
   config
 );
@@ -34,6 +39,30 @@ HomeStack.navigationOptions = {
 };
 
 HomeStack.path = '';
+
+const LoginStack = createStackNavigator(
+  {
+    Login: LoginScreen,
+  },
+  config
+);
+
+LoginStack.navigationOptions = {
+  tabBarLabel: 'Login',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={
+        Platform.OS === 'ios'
+          ? `ios-information-circle${focused ? '' : '-outline'}`
+          : 'md-information-circle'
+      }
+    />
+  ),
+};
+
+LoginStack.path = '';
+
 
 const LinksStack = createStackNavigator(
   {
@@ -67,10 +96,35 @@ SettingsStack.navigationOptions = {
 
 SettingsStack.path = '';
 
+const ProfileStack = createStackNavigator(
+  {
+    Profile: ProfileScreen,
+  },
+  config
+)
+
+ProfileStack.navigationOptions = {
+  tabBarLabel: 'Profile',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={
+        Platform.OS === 'ios'
+          ? `ios-information-circle${focused ? '' : '-outline'}`
+          : 'md-information-circle'
+      }
+    />
+  ),
+};
+
+ProfileStack.path = '';
+
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
   SettingsStack,
+  ProfileStack,
+  LoginStack,
 });
 
 tabNavigator.path = '';
