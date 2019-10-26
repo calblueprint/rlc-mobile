@@ -9,23 +9,30 @@ const FirstRoute = () => (
 
         <View style={styles.infoContainer}>
             <Text style={styles.subText}>Oh no! You have no upcoming shifts.</Text>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.button}>
+                  <Text style={styles.buttonText}>Sign Up for Shift</Text>
+              </TouchableOpacity>
+            </View>
         </View>
-        
-
   </View>
 );
 
 const SecondRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#FFFFFF' }]}>
 
-        <View style={styles.infoContainer}>
+  <View style={[styles.scene, { backgroundColor: '#FFFFFF' }]}>
+      <View style={styles.infoContainer}>
             <Text style={styles.subText}>Did you know?{"\n"}
             RLC has rescued over 1.7 million{"\n"}
             pounds of food! Sign up for an event{"\n"}
             and be a part of the movement!</Text> 
-        </View>
-        
 
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.button}>
+                    <Text style={styles.buttonText}>Sign Up for Shift</Text>
+                </TouchableOpacity>
+            </View>
+      </View>
   </View>
 );
 
@@ -51,12 +58,26 @@ export default class EventsList extends React.Component {
               Animated.interpolate(props.position, {
                 inputRange,
                 outputRange: inputRange.map(inputIndex =>
-                  inputIndex === i ? 255 : 0
+                  inputIndex === i ? 56 : 117
                 ),
               })
             ),
-            0,
-            0
+            Animated.round(
+              Animated.interpolate(props.position, {
+                inputRange,
+                outputRange: inputRange.map(inputIndex =>
+                  inputIndex === i ? 165 : 117
+                ),
+              })
+            ),
+            Animated.round(
+              Animated.interpolate(props.position, {
+                inputRange,
+                outputRange: inputRange.map(inputIndex =>
+                  inputIndex === i ? 219 : 117
+                ),
+              })
+            )
           );
 
           return (
@@ -89,6 +110,23 @@ export default class EventsList extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    button: {
+        backgroundColor: '#38A5DB',
+        paddingVertical: 15,
+        borderRadius: 5,
+        width: 250,
+    },
+    buttonContainer: {
+        alignItems: 'center',
+        marginTop: 20,
+        height: 50
+    },
+    buttonText: {
+        textAlign: 'center',
+        color: '#FFFFFF',
+        fontWeight: '600',
+        textTransform: "uppercase"
+    },
     scene: {
         flex: 1,
     },
@@ -105,10 +143,11 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     infoContainer: {
-        alignItems: 'center',
-        flexGrow: 1,
+        flex: 1,
         justifyContent: 'center',
-        margin: 'auto',
+        alignItems: 'center',
+        backgroundColor: '#FFFFFF'
+        // margin: 'auto',
     },
     container: {
         flex: 1,
