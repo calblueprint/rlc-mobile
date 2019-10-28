@@ -8,8 +8,8 @@ import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
 import LoginScreen from '../screens/login/LoginScreen.js';
-// Testing Profile 
 import ProfileScreen from '../screens/profile/Profile.js';
+import DashboardScreen from '../screens/dash/Dashboard.js';
 
 
 const config = Platform.select({
@@ -19,7 +19,7 @@ const config = Platform.select({
 
 const HomeStack = createStackNavigator(
   {
-    Home: HomeScreen, // Added for testing 
+    Home: DashboardScreen,  
   },
   config
 );
