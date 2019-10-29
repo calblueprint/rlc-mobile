@@ -2,85 +2,64 @@ import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
 
 import { Button, Platform, ScrollView, StyleSheet, View, Text, Image } from 'react-native';
-import { Card, ListItem, Icon } from 'react-native-elements'
+import { CheckBox, Card, ListItem, Icon } from 'react-native-elements'
 
 import { MonoText } from '../../components/StyledText';
 import StepsTimeline from '../../components/StepsTimeline';
 
-export default function SignUp2Screen() {
-  return (
-    <View style={styles.container}>
-      <StepsTimeline currentPosition={1}/>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}>
-        <View style={styles.welcomeContainer}>
-        </View>
+export default class SignUp2Screen extends React.Component {
+  constructor(props) {
+      super(props);
+      this.state = {
+          volunteer: false,
+          rescuer: false,
+      }
+  }
+  
+  onCheckboxClick = (cardType) => {
+    if (cardType == "volunteer") {
+      this.setState({volunteer: !this.state.volunteer})
+      this.setState({rescuer: false})
+    } else {
+      this.setState({rescuer: !this.state.rescuer})
+      this.setState({volunteer: false})
+    }
+  }
 
-        <View style={styles.getStartedContainer}>
-          <Text style={styles.getStartedText}>Hi! How would you like to help?</Text>
-          <Text style={marginBottom: 10}>The idea with React Native Elements is more about component structure than actual design.</Text>
-            <Card title='HELLO WORLD'>
-            </Card>
-          <Button title='NEXT'></Button>
+  render() {
+    return (
+      <View style={styles.container}>
+        <StepsTimeline currentPosition={1}/>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}>
+          <View style={styles.welcomeContainer}>
+          </View>
 
-        </View>
+          <View style={styles.getStartedContainer}>
+            <Text style={styles.getStartedText}>Hi! How would you like to help?</Text>
+              <Card title='Volunteer'>
+                <CheckBox title='Click Here' checked={this.state.volunteer} onPress={() => this.onCheckboxClick("volunteer")}/>
+                <Text>- Take less than an hour of your time to deliver excess food from food businesses like restaurants to homeless shelters.</Text>
+                <Text>- Help be the transportation solution and get food that would otherwise be wasted to feed the hungry!</Text>
+              </Card>
+              <Card title='Lead Rescuer'>
+                <CheckBox title='Click Here' checked={this.state.rescuer} onPress={() => this.onCheckboxClick("rescuer")}/>
+                <Text>- Lead volunteers on food rescue events by taking attendance and reporting the number of pounds of food rescued.</Text>
+                <Text>- Must pass training session.</Text>
+                <Text>- Must commit at least 1-2 hours a week for at least 3-4 months.</Text>
+                <Text>- Receive Letter of Participation as proof of volunteer work!</Text>
+                <Text></Text>
+                <Text>*RLC will contact you with next steps</Text>
+              </Card>
+            <Button title='NEXT'></Button>
 
-      </ScrollView>
+          </View>
 
-      <View style={styles.tabBarInfoContainer}>
-        <Text style={styles.tabBarInfoText}>
-          This is a tab bar. You can edit it in:
-        </Text>
-
-        <View
-          style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-          <MonoText style={styles.codeHighlightText}>
-            navigation/MainTabNavigator.js
-          </MonoText>
-        </View>
+        </ScrollView>
       </View>
-    </View>
-  );
-}
-
-SignUp2Screen.navigationOptions = {
-  header: null,
-};
-
-function DevelopmentModeNotice() {
-  if (__DEV__) {
-    const learnMoreButton = (
-      <Text onPress={handleLearnMorePress} style={styles.helpLinkText}>
-        Learn more
-      </Text>
-    );
-
-    return (
-      <Text style={styles.developmentModeText}>
-        Development mode is enabled: your app will be slower but you can use
-        useful development tools. {learnMoreButton}
-      </Text>
-    );
-  } else {
-    return (
-      <Text style={styles.developmentModeText}>
-        You are not in development mode: your app will run at full speed.
-      </Text>
     );
   }
-}
-
-function handleLearnMorePress() {
-  WebBrowser.openBrowserAsync(
-    'https://docs.expo.io/versions/latest/workflow/development-mode/'
-  );
-}
-
-function handleHelpPress() {
-  WebBrowser.openBrowserAsync(
-    'https://docs.expo.io/versions/latest/workflow/up-and-running/#cant-see-your-changes'
-  );
 }
 
 const styles = StyleSheet.create({
