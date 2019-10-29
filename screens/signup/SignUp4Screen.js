@@ -11,12 +11,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
+import StepsTimeline from '../../components/StepsTimeline';
 import { MonoText } from '../../components/StyledText';
 
 export default function SignUp4Screen() {
   return (
     <View style={styles.container}>
+      <StepsTimeline currentPosition={4}/>
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}>

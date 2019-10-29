@@ -1,21 +1,13 @@
 import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import {
-  Button,
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+
+import { Button, Platform, ScrollView, StyleSheet, View, Text, Image } from 'react-native';
+import { Card, ListItem, Icon } from 'react-native-elements'
 
 import { MonoText } from '../../components/StyledText';
 import StepsTimeline from '../../components/StepsTimeline';
 
-export default function SignUp1Screen() {
+export default function SignUp2Screen() {
   return (
     <View style={styles.container}>
       <StepsTimeline currentPosition={1}/>
@@ -26,13 +18,10 @@ export default function SignUp1Screen() {
         </View>
 
         <View style={styles.getStartedContainer}>
-          <Text style={styles.getStartedText}>We're excited to have you join the team! Tell us a little about yourself!</Text>
-          <Text>First Name</Text>
-          <TextInput placeholder={'Jane'}></TextInput>
-          <Text>Last Name</Text>
-          <TextInput placeholder={'Doe'}></TextInput>
-          <Text>Birthday</Text>
-          <TextInput placeholder={'January 1, 2000'}></TextInput>
+          <Text style={styles.getStartedText}>Hi! How would you like to help?</Text>
+          <Text style={marginBottom: 10}>The idea with React Native Elements is more about component structure than actual design.</Text>
+            <Card title='HELLO WORLD'>
+            </Card>
           <Button title='NEXT'></Button>
 
         </View>
@@ -55,7 +44,7 @@ export default function SignUp1Screen() {
   );
 }
 
-SignUp1Screen.navigationOptions = {
+SignUp2Screen.navigationOptions = {
   header: null,
 };
 
