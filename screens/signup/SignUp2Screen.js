@@ -29,7 +29,7 @@ export default class SignUp2Screen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <StepsTimeline currentPosition={1}/>
+        <StepsTimeline currentPosition={2}/>
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>
