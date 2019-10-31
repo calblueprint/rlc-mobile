@@ -1,35 +1,25 @@
 import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-
-import { Button, Platform, ScrollView, StyleSheet, View, Text, Image } from 'react-native';
-import { CheckBox, Card, ListItem, Icon } from 'react-native-elements'
-
-import { MonoText } from '../../components/StyledText';
+import {
+  Button,
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import StepsTimeline from '../../components/StepsTimeline';
+import { MonoText } from '../../components/StyledText';
 
-export default class SignUp2Screen extends React.Component {
-  constructor(props) {
-      super(props);
-      this.state = {
-          volunteer: false,
-          rescuer: false,
-      }
-  }
-  
-  onCheckboxClick = (cardType) => {
-    if (cardType == "volunteer") {
-      this.setState({volunteer: !this.state.volunteer})
-      this.setState({rescuer: false})
-    } else {
-      this.setState({rescuer: !this.state.rescuer})
-      this.setState({volunteer: false})
-    }
-  }
+export default class SignUp4Screen extends React.Component {
 
   render() {
     return (
       <View style={styles.container}>
-        <StepsTimeline currentPosition={2}/>
+        <StepsTimeline currentPosition={3}/>
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>
@@ -37,22 +27,21 @@ export default class SignUp2Screen extends React.Component {
           </View>
 
           <View style={styles.getStartedContainer}>
-            <Text style={styles.getStartedText}>Hi! How would you like to help?</Text>
-              <Card title='Volunteer'>
-                <CheckBox title='Click Here' checked={this.state.volunteer} onPress={() => this.onCheckboxClick("volunteer")}/>
-                <Text>- Take less than an hour of your time to deliver excess food from food businesses like restaurants to homeless shelters.</Text>
-                <Text>- Help be the transportation solution and get food that would otherwise be wasted to feed the hungry!</Text>
-              </Card>
-              <Card title='Lead Rescuer'>
-                <CheckBox title='Click Here' checked={this.state.rescuer} onPress={() => this.onCheckboxClick("rescuer")}/>
-                <Text>- Lead volunteers on food rescue events by taking attendance and reporting the number of pounds of food rescued.</Text>
-                <Text>- Must pass training session.</Text>
-                <Text>- Must commit at least 1-2 hours a week for at least 3-4 months.</Text>
-                <Text>- Receive Letter of Participation as proof of volunteer work!</Text>
-                <Text></Text>
-                <Text>*RLC will contact you with next steps</Text>
-              </Card>
-            <Button title='NEXT'></Button>
+
+            <Text style={styles.getStartedText}>Almost there! Let us know the best way to contact you.</Text>
+            <Text>Mobile Phone Number</Text>
+            <TextInput placeholder={'(123)-456-7890'}></TextInput>
+            <Text>Address (Line 1)</Text>
+            <TextInput placeholder={'123 45th St.'}></TextInput>
+            <Text>Address (Line 1)</Text>
+            <TextInput placeholder={'Apt #6A'}></TextInput>
+            <Text>City</Text>
+            <TextInput placeholder={'Seatle'}></TextInput>
+            <Text>State</Text>
+            <TextInput placeholder={'Washington'}></TextInput>
+            <Text>Zip Code</Text>
+            <TextInput placeholder={'12345'}></TextInput>
+            <Button title='NEXT' onPress={this.props.setScreenForward}></Button>
 
           </View>
 
