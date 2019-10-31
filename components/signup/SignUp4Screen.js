@@ -12,9 +12,33 @@ import {
   View,
 } from 'react-native';
 import StepsTimeline from '../../components/StepsTimeline';
-import { MonoText } from '../../components/StyledText';
+import { frontendError } from '../../lib/alerts';
 
 export default class SignUp4Screen extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      phone: "",
+      address1: "",
+      address2: "",
+      city: "",
+      state: "",
+      zipcode: "",
+    }
+  }
+
+  checkValidNext = () => {
+    if (this.state.phone == "" || this.state.address1 == "" || this.state.address2 == "" || this.state.zipcode == "" || this.state.city == "" || this.state.state == "") {
+      frontendError("Please fill out all fields.")
+    } else if (this.state.zipcode.match(/[a-z]/i)) {
+      frontendError("Invalid zipcode.")
+    } else if (this.state.phone.match(/[a-z]/i)) {
+      frontendError("Invalid phone number.")
+    } else {
+      this.props.setScreenForward()
+    }
+  }
 
   render() {
     return (
@@ -23,25 +47,21 @@ export default class SignUp4Screen extends React.Component {
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-          </View>
-
           <View style={styles.getStartedContainer}>
-
             <Text style={styles.getStartedText}>Almost there! Let us know the best way to contact you.</Text>
             <Text>Mobile Phone Number</Text>
-            <TextInput placeholder={'(123)-456-7890'}></TextInput>
+            <TextInput placeholder={'(123)-456-7890'} onChangeText={text => this.setState({phone: text})}></TextInput>
             <Text>Address (Line 1)</Text>
-            <TextInput placeholder={'123 45th St.'}></TextInput>
-            <Text>Address (Line 1)</Text>
-            <TextInput placeholder={'Apt #6A'}></TextInput>
+            <TextInput placeholder={'123 45th St.'} onChangeText={text => this.setState({address1: text})}></TextInput>
+            <Text>Address (Line 2)</Text>
+            <TextInput placeholder={'Apt #6A'} onChangeText={text => this.setState({address2: text})}></TextInput>
             <Text>City</Text>
-            <TextInput placeholder={'Seatle'}></TextInput>
+            <TextInput placeholder={'Seatle'} onChangeText={text => this.setState({city: text})}></TextInput>
             <Text>State</Text>
-            <TextInput placeholder={'Washington'}></TextInput>
+            <TextInput placeholder={'Washington'} onChangeText={text => this.setState({state: text})}></TextInput>
             <Text>Zip Code</Text>
-            <TextInput placeholder={'12345'}></TextInput>
-            <Button title='NEXT' onPress={this.props.setScreenForward}></Button>
+            <TextInput placeholder={'12345'} onChangeText={text => this.setState({zipcode: text})}></TextInput>
+            <Button title='NEXT' onPress={this.checkValidNext}></Button>
 
           </View>
 

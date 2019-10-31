@@ -12,10 +12,33 @@ import {
   View,
 } from 'react-native';
 
-import { MonoText } from '../../components/StyledText';
+import { frontendError } from '../../lib/alerts';
 import StepsTimeline from '../../components/StepsTimeline';
 
 export default class SignUp3Screen extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    }
+  }
+
+  checkValidNext = () => {
+    if (this.state.email == "" || this.state.password == "" || this.state.confirmPassword == "") {
+      frontendError("Please fill out all fields.")
+    } else if (this.state.password != this.state.confirmPassword) {
+      frontendError("Passwords must match.")
+    } else if (!this.state.password.match(/\d/) || !this.state.password.match(/[a-z]/i)) {
+      frontendError("Passwords must have a number and a letter.")
+    } else if (!this.state.email.match(/@/)) {
+      frontendError("Invalid Email.")
+    } else {
+      this.props.setScreenForward()
+    }
+  }
 
   render() {
     return (
@@ -30,12 +53,12 @@ export default class SignUp3Screen extends React.Component {
           <View style={styles.getStartedContainer}>
             <Text style={styles.getStartedText}>Great! Now let's create your account. Your email will be your username.</Text>
             <Text>Email</Text>
-            <TextInput placeholder={'email@email.com'}></TextInput>
+            <TextInput placeholder={'email@email.com'} onChangeText={text => this.setState({email: text})}></TextInput>
             <Text>Password</Text>
-            <TextInput secureTextEntry={true} placeholder={'Please include one letter and one number'}></TextInput>
+            <TextInput secureTextEntry={true} placeholder={'Please include one letter and one number'} onChangeText={text => this.setState({password: text})}></TextInput>
             <Text>Confirm Password</Text>
-            <TextInput secureTextEntry={true} placeholder={'Please re-enter your password'}></TextInput>
-            <Button title='NEXT' onPress={this.props.setScreenForward}></Button>
+            <TextInput secureTextEntry={true} placeholder={'Please re-enter your password'} onChangeText={text => this.setState({confirmPassword: text})}></TextInput>
+            <Button title='NEXT' onPress={this.checkValidNext}></Button>
 
           </View>
 

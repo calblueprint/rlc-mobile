@@ -12,12 +12,26 @@ import {
   View,
 } from 'react-native';
 
+import { frontendError } from '../../lib/alerts';
 import { MonoText } from '../../components/StyledText';
 import StepsTimeline from '../../components/StepsTimeline';
 
 export default class SignUp1Screen extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      firstName: "",
+      lastName: "",
+      birthday: "",
+    }
+  }
+
+  checkValidNext = () => {
+    if (this.state.firstName == "" || this.state.lastName == "" || this.state.birthday == "") {
+      frontendError("Please fill out all fields.")
+    } else {
+      this.props.setScreenForward()
+    }
   }
   
   render() {
@@ -27,35 +41,19 @@ export default class SignUp1Screen extends React.Component {
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-          </View>
 
           <View style={styles.getStartedContainer}>
             <Text style={styles.getStartedText}>We're excited to have you join the team! Tell us a little about yourself!</Text>
             <Text>First Name</Text>
-            <TextInput placeholder={'Jane'}></TextInput>
+            <TextInput placeholder={'Jane'} onChangeText={text => this.setState({firstName: text})}></TextInput>
             <Text>Last Name</Text>
-            <TextInput placeholder={'Doe'}></TextInput>
+            <TextInput placeholder={'Doe'} onChangeText={text => this.setState({lastName: text})}></TextInput>
             <Text>Birthday</Text>
-            <TextInput placeholder={'January 1, 2000'}></TextInput>
-            <Button title='NEXT' onPress={this.props.setScreenForward}></Button>
-
+            <TextInput placeholder={'January 1, 2000'} onChangeText={text => this.setState({birthday: text})}></TextInput>
+            <Button title='NEXT' onPress={this.checkValidNext}></Button>
           </View>
 
         </ScrollView>
-
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>
-            This is a tab bar. You can edit it in:
-          </Text>
-
-          <View
-            style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>
-              navigation/MainTabNavigator.js
-            </MonoText>
-          </View>
-        </View>
       </View>
     );
   }
