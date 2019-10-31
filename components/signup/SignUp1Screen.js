@@ -13,8 +13,8 @@ import {
 } from 'react-native';
 
 import { frontendError } from '../../lib/alerts';
-import { MonoText } from '../../components/StyledText';
 import StepsTimeline from '../../components/StepsTimeline';
+import DatePicker from 'react-native-datepicker'
 
 export default class SignUp1Screen extends React.Component {
   constructor(props) {
@@ -34,6 +34,19 @@ export default class SignUp1Screen extends React.Component {
     }
   }
   
+  componentDidMount = () => {
+    this.getToday()
+  }
+
+  getToday = () => {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    today = yyyy + '/' + mm + '/' + dd;
+    this.setState({ birthday: today });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -49,7 +62,7 @@ export default class SignUp1Screen extends React.Component {
             <Text>Last Name</Text>
             <TextInput placeholder={'Doe'} onChangeText={text => this.setState({lastName: text})}></TextInput>
             <Text>Birthday</Text>
-            <TextInput placeholder={'January 1, 2000'} onChangeText={text => this.setState({birthday: text})}></TextInput>
+            <DatePicker format="YYYY-MM-DD" date={this.state.birthday} onDateChange={(date) => {this.setState({birthday: date})}}/>
             <Button title='NEXT' onPress={this.checkValidNext}></Button>
           </View>
 
