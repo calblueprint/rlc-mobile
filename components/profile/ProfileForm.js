@@ -1,8 +1,45 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, View, Icon, TextInput, TouchableOpacity, Text, Switch } from 'react-native';
+import { Platform, StyleSheet, View, Icon, TextInput, Picker, TouchableOpacity, Text, Switch } from 'react-native';
+import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import { isTSTypeAliasDeclaration } from '@babel/types';
 
+const tempLocations = [{
+     name: "Chelsea"
+    }, {
+     name: "Flatiron"
+    }, {
+     name: "Union Square"
+    }
+]
+
+const tempTimes = [{
+     time: "Monday 9am"
+    }, {
+     time: "Monday 10am"
+    }, {
+     time: "Monday 11am"
+    }
+]
+
+
 export default class LoginForm extends Component {
+     constructor(props) {
+          super(props)
+          this.state = {
+               selectedLocations : [],
+               selectedTimes : []
+     
+          };     
+     }
+
+     onSelectedLocationsChange = (selectedLocations) => {
+          this.setState({ selectedLocations});
+     }
+     onSelectedTimesChange = (selectedTimes) => {
+          this.setState({ selectedTimes });
+     }
+
+
     render() {
         return (
             <View behavior="padding" style={styles.container}>
@@ -17,7 +54,7 @@ export default class LoginForm extends Component {
                     onSubmitEditing={() => this.lastNameInput.focus()}
                     keyboardType="default"
                     style={styles.input}
-                    autoCorrct={false}
+                    autoCorrect={false}
                 ></TextInput>
 
                 <Text style={styles.subHeading}>Last Name</ Text>
@@ -29,7 +66,7 @@ export default class LoginForm extends Component {
                     onSubmitEditing={() => this.occupationInput.focus()}
                     keyboardType="default"
                     style={styles.input}
-                    autoCorrct={false}
+                    autoCorrect={false}
                 ></TextInput>
 
                 <Text style={styles.subHeading}>Occupation</ Text>
@@ -40,7 +77,7 @@ export default class LoginForm extends Component {
                     ref={(input) => this.occupationInput = input}
                     keyboardType="default"
                     style={styles.input}
-                    autoCorrct={false}
+                    autoCorrect={false}
                 ></TextInput>
 
                 <Text style={styles.heading}>Contact Information 📱</Text>
@@ -55,7 +92,7 @@ export default class LoginForm extends Component {
                     onSubmitEditing={() => this.addressA.focus()}
                     keyboardType="phone-pad"
                     style={styles.input}
-                    autoCorrct={false}
+                    autoCorrect={false}
                 ></TextInput>
 
                 <Text style={styles.subHeading}>Address (Line 1)</ Text>
@@ -67,7 +104,7 @@ export default class LoginForm extends Component {
                     onSubmitEditing={() => this.addressB.focus()}
                     keyboardType="default"
                     style={styles.input}
-                    autoCorrct={false}
+                    autoCorrect={false}
                 ></TextInput>
 
                 <Text style={styles.subHeading}>Address (Line 2)</ Text>
@@ -79,7 +116,7 @@ export default class LoginForm extends Component {
                     onSubmitEditing={() => this.cityInput.focus()}
                     keyboardType="default"
                     style={styles.input}
-                    autoCorrct={false}
+                    autoCorrect={false}
                 ></TextInput>
 
                 <Text style={styles.subHeading}>City</ Text>
@@ -91,7 +128,7 @@ export default class LoginForm extends Component {
                     onSubmitEditing={() => this.stateInput.focus()}
                     keyboardType="default"
                     style={styles.input}
-                    autoCorrct={false}
+                    autoCorrect={false}
                 ></TextInput>
 
                 <Text style={styles.subHeading}>State</ Text>
@@ -103,7 +140,7 @@ export default class LoginForm extends Component {
                     onSubmitEditing={() => this.zipInput.focus()}
                     keyboardType="default"
                     style={styles.input}
-                    autoCorrct={false}
+                    autoCorrect={false}
                 ></TextInput>
 
                 <Text style={styles.subHeading}>Zip Code</ Text>
@@ -114,7 +151,7 @@ export default class LoginForm extends Component {
                     ref={(input) => this.zipInput = input}
                     keyboardType="number-pad"
                     style={styles.input}
-                    autoCorrct={false}
+                    autoCorrect={false}
                 ></TextInput>
                 
                {/* Account Details */}
@@ -132,7 +169,7 @@ export default class LoginForm extends Component {
                 keyboardType="email-address"
                 autoCapitalize="none"
                 style={styles.input}
-                autoCorrct={false}
+                autoCorrect={false}
                 ></TextInput>
 
                 <Text style={styles.subHeading}>
@@ -162,41 +199,44 @@ export default class LoginForm extends Component {
                     <Text style={styles.subHeading}>
                          Preferred Region
                     </Text>
-                    <TextInput
-                    placeholder="New York City, NY"
-                    returnKeyType="next"
-                    onSubmitEditing={() => this.preferredLocationInput.focus()}
-                    autoCapitalize="none"
-                    style={styles.input}
-                    autoCorrct={false}
-                    ></TextInput>
+                    <Picker
+                         selectedValue="New York City, NY"
+                         style={styles.input}
+                         returnKeyType="next"
+                         onSubmitEditing={() => this.preferredLocationInput.focus()}
+                         ref={(input) => this.preferredRegionInput = input}
+                         mode='dialog'
+                    >
+                         <Picker.Item label="Seattle, WA" value="seattle"/>
+                         <Picker.Item label="San Francisco, CA" value="sanfrancisco"/>
+                    </Picker>
 
                     <Text style={styles.subHeading}>
                          Preferred Locations (Optional)
                     </Text>
-                    <TextInput
-                    placeholder="Chelsea, Flatiron, Union Square, +3 more"
-                    returnKeyType="next"
-                    onSubmitEditing={() => this.preferredTimeInput.focus()}
-                    ref={(input) => this.preferredLocationInput = input}
-                    autoCapitalize="none"
-                    style={styles.input}
-                    autoCorrct={false}
-                    ></TextInput>
+                    <SectionedMultiSelect
+                         hideTags
+                         items={tempLocations}
+                         uniqueKey="name"
+                         ref={(input) => this.preferredRegionInput = input}
+                         onSubmitEditing={() => this.preferredTimeInput.focus()}
+                         searchInputStyle={styles.input}
+                         submitButtonText="Select"
+                         onSelectedItemsChange={this.onSelectedLocationsChange}
+                    />
 
                     <Text style={styles.subHeading}>
                          Preferred Times (Optional)
                     </Text>
-                    <TextInput
-                    placeholder="Mondays (9am to 12pm)"
-                    returnKeyType="done"
-                    ref={(input) => this.preferredTimeInput = input}
-                    autoCapitalize="none"
-                    autoCapitalize="none"
-                    style={styles.input}
-                    autoCorrct={false}
-                    ></TextInput>
-       
+                    <SectionedMultiSelect
+                         hideTags
+                         items={tempTimes}
+                         uniqueKey="time"
+                         ref={(input) => this.preferredTimeInput = input}
+                         searchInputStyle={styles.input}
+                         submitButtonText="Select"
+                         onSelectedItemsChange={this.onSelectedTimesChange}
+                    />       
             </View>
         );
     }

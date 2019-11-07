@@ -1,15 +1,27 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Icon, TextInput, TouchableOpacity, Text, Switch, Image } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
 
 export default class ProfileHeader extends Component {
+
+     imageHandleOnClick = () => {
+          alert("Test Alert")
+     }
+
     render() {
         return (
             <View>
                 <View style={styles.profileContainer}>
+                     <TouchableOpacity
+                     style={styles.profilePicButton}
+                     onPress = {() => this.imageHandleOnClick}
+                     number={0.8}
+                     >
+
                     <Image 
                     style={styles.profilePic}
                     source={require('../../assets/images/rlcprofilepic.png')} />
 
+                    </TouchableOpacity>
                     <Text style={styles.title}>Melody Wei</Text>
                     <Text style={styles.subtext}>Member since September 2019</Text>
                 </View>
@@ -47,6 +59,9 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         marginTop: 25,
         maxHeight: 200 // change this to be dynamic
+    },
+    profilePicButton: {
+        backgroundColor: '#dddddd'
     },
     profilePic: {
         width: 125,
