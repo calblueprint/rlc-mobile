@@ -26,6 +26,12 @@ export default class SignUp3Screen extends React.Component {
     }
   }
 
+  /*Checks conditions before transitioning to next screen:
+   * 1. all fields are filled out and not empty.
+   * 2. password and confirmPassword fields match.
+   * 3. passwords have at least one number and letter.
+   * 4. email contains an "@" character.
+   */
   checkValidNext = () => {
     if (this.state.email == "" || this.state.password == "" || this.state.confirmPassword == "") {
       frontendError("Please fill out all fields.")
@@ -47,9 +53,6 @@ export default class SignUp3Screen extends React.Component {
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-          </View>
-
           <View style={styles.getStartedContainer}>
             <Text style={styles.getStartedText}>Great! Now let's create your account. Your email will be your username.</Text>
             <Text>Email</Text>
@@ -59,9 +62,7 @@ export default class SignUp3Screen extends React.Component {
             <Text>Confirm Password</Text>
             <TextInput secureTextEntry={true} placeholder={'Please re-enter your password'} onChangeText={text => this.setState({confirmPassword: text})}></TextInput>
             <Button title='NEXT' onPress={this.checkValidNext}></Button>
-
           </View>
-
         </ScrollView>
       </View>
     );

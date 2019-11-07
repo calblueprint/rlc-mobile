@@ -15,6 +15,7 @@ export default class SignUp2Screen extends React.Component {
       }
   }
   
+  //Ensures that only one user options is selected and not both.
   onCheckboxClick = (cardType) => {
     if (cardType == "volunteer") {
       this.setState({volunteer: !this.state.volunteer})
@@ -25,6 +26,9 @@ export default class SignUp2Screen extends React.Component {
     }
   }
 
+  /*Checks conditions before transitioning to next screen:
+   * 1. either volunteer or rescuer is selected but not both.
+   */
   checkValidNext = () => {
     if (this.state.volunteer == false && this.state.rescuer == false) {
       frontendError("Please select an option.")
@@ -40,9 +44,6 @@ export default class SignUp2Screen extends React.Component {
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-          </View>
-
           <View style={styles.getStartedContainer}>
             <Text style={styles.getStartedText}>Hi! How would you like to help?</Text>
               <Card title='Volunteer'>
@@ -60,9 +61,7 @@ export default class SignUp2Screen extends React.Component {
                 <Text>*RLC will contact you with next steps</Text>
               </Card>
             <Button title='NEXT' onPress={this.checkValidNext}></Button>
-
           </View>
-
         </ScrollView>
       </View>
     );

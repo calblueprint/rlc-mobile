@@ -28,6 +28,11 @@ export default class SignUp4Screen extends React.Component {
     }
   }
 
+  /*Checks conditions before transitioning to next screen:
+   * 1. all fields are filled out and not empty.
+   * 2. zipcodes contain only numbers
+   * 3. phone numbers contain only numbers
+   */
   checkValidNext = () => {
     if (this.state.phone == "" || this.state.address1 == "" || this.state.address2 == "" || this.state.zipcode == "" || this.state.city == "" || this.state.state == "") {
       frontendError("Please fill out all fields.")
@@ -62,9 +67,7 @@ export default class SignUp4Screen extends React.Component {
             <Text>Zip Code</Text>
             <TextInput placeholder={'12345'} onChangeText={text => this.setState({zipcode: text})}></TextInput>
             <Button title='NEXT' onPress={this.checkValidNext}></Button>
-
           </View>
-
         </ScrollView>
       </View>
     );

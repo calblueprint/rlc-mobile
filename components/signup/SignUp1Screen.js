@@ -26,6 +26,9 @@ export default class SignUp1Screen extends React.Component {
     }
   }
 
+  /*Checks conditions before transitioning to next screen:
+   * 1. all fields are filled out and not empty.
+   */
   checkValidNext = () => {
     if (this.state.firstName == "" || this.state.lastName == "" || this.state.birthday == "") {
       frontendError("Please fill out all fields.")
@@ -34,14 +37,16 @@ export default class SignUp1Screen extends React.Component {
     }
   }
   
+  //Set state var birthday as today's date.
   componentDidMount = () => {
     this.getToday()
   }
 
+  //Sets state var birthday as today's date.
   getToday = () => {
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
     var yyyy = today.getFullYear();
     today = yyyy + '/' + mm + '/' + dd;
     this.setState({ birthday: today });
@@ -54,7 +59,6 @@ export default class SignUp1Screen extends React.Component {
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>
-
           <View style={styles.getStartedContainer}>
             <Text style={styles.getStartedText}>We're excited to have you join the team! Tell us a little about yourself!</Text>
             <Text>First Name</Text>
@@ -65,7 +69,6 @@ export default class SignUp1Screen extends React.Component {
             <DatePicker format="YYYY-MM-DD" date={this.state.birthday} onDateChange={(date) => {this.setState({birthday: date})}}/>
             <Button title='NEXT' onPress={this.checkValidNext}></Button>
           </View>
-
         </ScrollView>
       </View>
     );
