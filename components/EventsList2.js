@@ -7,12 +7,7 @@ const FirstRoute = () => (
   <View style={[styles.scene, { backgroundColor: '#FFFFFF' }]}>
 
         <View style={styles.infoContainer}>
-            <Text style={styles.subText}>Oh no! You have no upcoming shifts.</Text>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button}>
-                  <Text style={styles.buttonText}>Sign Up for Shift</Text>
-              </TouchableOpacity>
-            </View>
+            
         </View>
 
   </View>
@@ -22,16 +17,7 @@ const SecondRoute = () => (
 
   <View style={[styles.scene, { backgroundColor: '#FFFFFF' }]}>
       <View style={styles.infoContainer}>
-            <Text style={styles.subText}>Did you know?{"\n"}
-            RLC has rescued over 1.7 million{"\n"}
-            pounds of food! Sign up for an event{"\n"}
-            and be a part of the movement!</Text> 
-
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>Sign Up for Shift</Text>
-                </TouchableOpacity>
-            </View>
+            
       </View>
   </View>
 );

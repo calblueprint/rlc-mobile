@@ -10,6 +10,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 import LoginScreen from '../screens/login/LoginScreen.js';
 import ProfileScreen from '../screens/profile/Profile.js';
 import DashboardScreen from '../screens/dash/Dashboard.js';
+import DashboardScreen2 from '../screens/dash/Dashboard2.js';
 
 
 const config = Platform.select({
@@ -19,7 +20,7 @@ const config = Platform.select({
 
 const HomeStack = createStackNavigator(
   {
-    Home: DashboardScreen,  
+    Home: DashboardScreen2,  
   },
   config
 );
@@ -66,7 +67,7 @@ LoginStack.path = '';
 
 const LinksStack = createStackNavigator(
   {
-    Links: LinksScreen,
+    Links: DashboardScreen,
   },
   config
 );
