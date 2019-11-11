@@ -57,7 +57,7 @@ export default class LoginForm extends Component {
                     autoCorrct={false}
                 ></TextInput>
 
-                <TextInput 
+                <TextInput
                     inlineImageLeft="lock"
                     placeholder="Password"
                     secureTextEntry
@@ -97,8 +97,10 @@ const styles = StyleSheet.create({
         padding: 20
     },
     bottomSignIn: {
-        position: 'relative',
-        bottom: 20
+        position: 'absolute',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        justifyContent: 'center',
     },
     actionsContainer: {
         flex: 1,
