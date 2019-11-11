@@ -67,7 +67,6 @@ export default class LoginForm extends Component {
                     returnKeyType="go"
                 ></TextInput>
 
-                efjioerwfji
 
                 <View style={styles.actionsContainer}>
                     <View style={{width: 150, height: 50}}>
