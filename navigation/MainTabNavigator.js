@@ -10,7 +10,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 import LoginScreen from '../screens/login/LoginScreen.js';
 import ProfileScreen from '../screens/profile/Profile.js';
 import DashboardScreen from '../screens/dash/Dashboard.js';
-
+import ShiftScreen from '../screens/shift/ShiftScreen.js';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -119,12 +119,36 @@ ProfileStack.navigationOptions = {
 
 ProfileStack.path = '';
 
+const ShiftStack = createStackNavigator(
+     {
+       Shift: ShiftScreen,  
+     },
+     config
+   );
+   
+   ShiftStack.navigationOptions = {
+     tabBarLabel: 'Shift',
+     tabBarIcon: ({ focused }) => (
+       <TabBarIcon
+         focused={focused}
+         name={
+           Platform.OS === 'ios'
+             ? `ios-information-circle${focused ? '' : '-outline'}`
+             : 'md-information-circle'
+         }
+       />
+     ),
+   };
+   
+   ShiftStack.path = '';
+
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
   SettingsStack,
   ProfileStack,
   LoginStack,
+  ShiftStack,
 });
 
 tabNavigator.path = '';
