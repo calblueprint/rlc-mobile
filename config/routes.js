@@ -9,4 +9,7 @@ export class APIRoutes {
     // Login
     static signupPath()                 { return `/sign_up` }
     static loginPath()                  { return APIRoutes.deviseRoute(`sign_in`) }
+
+    // Reset Password
+    static UserPasswordPath()        { return APIRoutes.deviseRoute(`password`) }
 }
