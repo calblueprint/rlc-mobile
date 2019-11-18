@@ -3,7 +3,7 @@ import { StyleSheet, View, ScrollView, Text } from 'react-native';
 import { AuthSession } from 'expo';
 
 import EventsList from '../../components/dashboard/EventsList2.js';
-import Activity from '../../components/dashboard/ActivityCard';
+import ActivityCard from '../../components/dashboard/ActivityCard';
 
 export default class Dashboard extends Component {
     render() {
@@ -11,23 +11,40 @@ export default class Dashboard extends Component {
             <View style={styles.container}>
 
             <View style={styles.currentEvent}>
-                <View style={{ height: '80%', marginTop: 20}}> 
+                
                     <ScrollView 
                         style={styles.horizontalView}
                         horizontal={true}
                         showsHorizontalScrollIndicator={true}
+                        snapToAlignment={"center"}
                         >
+
+                        <View style={styles.slideStructure}>
+                            <Text style={styles.inProgress}>• In Progress</Text>
+                            <ActivityCard 
+                                location={"📍 Union Square"}
+                                name={"Union Square (US014)"}
+                                time={"8:15 to 9:15 PM"}
+                                weight={"10 to 45 lbs"}
+                                numpickups={"2"}
+                                spotsOpen={"1 of 2"}
+                            />
+                        </View>
+
+                        <View style={styles.slideStructure}>
+                            <Text style={styles.needsAttention}>• Needs Attention</Text>
+                            <ActivityCard 
+                                location={"📍 Union Square"}
+                                name={"Union Square (US014)"}
+                                time={"8:15 to 9:15 PM"}
+                                weight={"10 to 45 lbs"}
+                                numpickups={"2"}
+                                spotsOpen={"1 of 2"}
+                            />
+                        </View>
                         
-                        <Activity 
-                            location={"📍 Union Square"}
-                            name={"Union Square (US014)"}
-                            time={"8:15 to 9:15 PM"}
-                            weight={"10 to 45 lbs"}
-                            numpickups={"2"}
-                            spotsOpen={"1 of 2"}
-                        />
                     </ScrollView>
-                </View>
+                
             </View>    
 
             <EventsList />
@@ -47,7 +64,7 @@ const styles = StyleSheet.create({
     },
     currentEvent: {
         backgroundColor: '#EEEEEE',
-        height: '35%',
+        height: '30%',
     },
     subText: {
         color: '#000000',
@@ -65,8 +82,31 @@ const styles = StyleSheet.create({
     }, 
     horizontalView: {
         height: "100%",
-        backgroundColor: 'pink',
-        marginHorizontal: 20,
-        marginVertical: 20
+        marginVertical: 10
+    },
+    scrollWrapper: {
+        height: '90%', 
+    },
+    slideStructure: {
+        width: 400, 
+        height: 400
+    },
+    inProgress: {
+        color: "#7CB342",
+        fontStyle: 'italic',
+        fontWeight: "700",
+        textAlign: "center",
+        opacity: 0.9,
+        fontSize: 16,
+        marginBottom: 10
+    }, 
+    needsAttention: {
+        color: "#E64A19",
+        fontStyle: 'italic',
+        fontWeight: "700",
+        textAlign: "center",
+        opacity: 0.9,
+        fontSize: 16,
+        marginBottom: 10
     }
 });
