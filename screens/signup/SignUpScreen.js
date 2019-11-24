@@ -6,7 +6,8 @@ import SignUp1Screen from '../../components/signup/SignUp1Screen';
 import SignUp2Screen from '../../components/signup/SignUp2Screen';
 import SignUp3Screen from '../../components/signup/SignUp3Screen';
 import SignUp4Screen from '../../components/signup/SignUp4Screen';
-
+import SignUp5Screen from '../../components/signup/SignUp5Screen';
+import ConfirmationScreen from '../../components/signup/ConfirmationScreen'
 
 export default class SignUpScreen extends Component {
     constructor(props) {
@@ -38,10 +39,13 @@ export default class SignUpScreen extends Component {
                 this.setState({ screen: <SignUp3Screen setScreenForward={this.setScreenForward}/> });
                 break;
             case 3:
-                this.setState({ screen: <SignUp4Screen setScreenForward={this.setScreenForward}/> });   
+                this.setState({ screen: <SignUp4Screen setScreenForward={this.setScreenForward}/> });
                 break;
             case 4:
-                this.setState({ screen: <SignUp5Screen setScreenForward={this.setScreenForward}/> });   
+                this.setState({ screen: <SignUp5Screen setScreenForward={this.setScreenForward}/> });
+                break;
+            case 5:
+                this.setState({ screen: <ConfirmationScreen setScreenForward={this.setScreenForward}/> });
                 break;
         }
     }
