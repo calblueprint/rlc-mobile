@@ -2,66 +2,50 @@ import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
 import {
   Button,
-  Image,
   Platform,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
 } from 'react-native';
 
+import { postRequest } from '../../lib/requests';
+import { APIRoutes } from '../../config/routes';
 import { frontendError } from '../../lib/alerts';
-import StepsTimeline from '../../components/StepsTimeline';
 
-export default class SignUp3Screen extends React.Component {
-
+export default class resetPassword extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      password: "",
-      confirmPassword: "",
+      newPassword: "",
+      newPasswordConfirm: "",
     }
   }
 
-  /*Checks conditions before transitioning to next screen:
-   * 1. all fields are filled out and not empty.
-   * 2. password and confirmPassword fields match.
-   * 3. passwords have at least one number and letter.
-   * 4. email contains an "@" character.
-   */
   checkValidNext = () => {
-    if (this.state.email == "" || this.state.password == "" || this.state.confirmPassword == "") {
+    if (this.state.newPassword == "" || this.state.newPasswordConfirm == "") {
       frontendError("Please fill out all fields.")
-    } else if (this.state.password != this.state.confirmPassword) {
+    } else if (this.state.newPassword != this.state.newPasswordConfirm) {
       frontendError("Passwords must match.")
-    } else if (!this.state.password.match(/\d/) || !this.state.password.match(/[a-z]/i)) {
+    } else if (!this.state.newPassword.match(/\d/) || !this.state.newPassword.match(/[a-z]/i)) {
       frontendError("Passwords must have a number and a letter.")
-    } else if (!this.state.email.match(/@/)) {
-      frontendError("Invalid Email.")
     } else {
-      this.props.setScreenForward()
+      
     }
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <StepsTimeline currentPosition={2}/>
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>
           <View style={styles.getStartedContainer}>
-            <Text style={styles.getStartedText}>Great! Now let's create your account. Your email will be your username.</Text>
-            <Text>Email</Text>
-            <TextInput placeholder={'email@email.com'} onChangeText={text => this.setState({email: text})}></TextInput>
-            <Text>Password</Text>
-            <TextInput secureTextEntry={true} placeholder={'Please include one letter and one number'} onChangeText={text => this.setState({password: text})}></TextInput>
-            <Text>Confirm Password</Text>
-            <TextInput secureTextEntry={true} placeholder={'Please re-enter your password'} onChangeText={text => this.setState({confirmPassword: text})}></TextInput>
-            <Button title='NEXT' onPress={this.checkValidNext}></Button>
+            <TextInput placeholder={'New password'} secureTextEntry onChangeText={text => this.setState({newPassword: text})}></TextInput>
+            <TextInput placeholder={'Enter new password again'} secureTextEntry onChangeText={text => this.setState({newPasswordConfirm: text})}></TextInput>
+            <Button title='Reset Password' onPress={this.resetPassword}></Button>
+            <Button title='Go Back to Sign In' ></Button>
           </View>
         </ScrollView>
       </View>

@@ -2,66 +2,61 @@ import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
 import {
   Button,
-  Image,
   Platform,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
 } from 'react-native';
 
+import { postRequest } from '../../lib/requests';
+import { APIRoutes } from '../../config/routes';
 import { frontendError } from '../../lib/alerts';
-import StepsTimeline from '../../components/StepsTimeline';
 
-export default class SignUp3Screen extends React.Component {
-
+export default class forgetPasswordEmail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      password: "",
-      confirmPassword: "",
+      emailAddress: "",
     }
   }
 
-  /*Checks conditions before transitioning to next screen:
-   * 1. all fields are filled out and not empty.
-   * 2. password and confirmPassword fields match.
-   * 3. passwords have at least one number and letter.
-   * 4. email contains an "@" character.
-   */
-  checkValidNext = () => {
-    if (this.state.email == "" || this.state.password == "" || this.state.confirmPassword == "") {
-      frontendError("Please fill out all fields.")
-    } else if (this.state.password != this.state.confirmPassword) {
-      frontendError("Passwords must match.")
-    } else if (!this.state.password.match(/\d/) || !this.state.password.match(/[a-z]/i)) {
-      frontendError("Passwords must have a number and a letter.")
-    } else if (!this.state.email.match(/@/)) {
-      frontendError("Invalid Email.")
-    } else {
-      this.props.setScreenForward()
+  //Sends email to reset password.
+  sendEmail = () => {
+    const params = {
+        user: {
+          email: this.state.emailAddress
+        }
     }
+    return postRequest(
+        APIRoutes.loginPath(),
+        (responseData) => {
+            console.log("Log in successful.")
+        },
+        (error) => {
+            if (this.state.emailAddress == "") {
+                frontendError("Please fill out all fields.")
+            } else if (!this.state.emailAddress.match(/@/)) {
+                frontendError("Invalid Email.")
+            } else {
+                frontendError("There was an error.")
+            }
+        },
+        params
+    );
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <StepsTimeline currentPosition={2}/>
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>
           <View style={styles.getStartedContainer}>
-            <Text style={styles.getStartedText}>Great! Now let's create your account. Your email will be your username.</Text>
-            <Text>Email</Text>
-            <TextInput placeholder={'email@email.com'} onChangeText={text => this.setState({email: text})}></TextInput>
-            <Text>Password</Text>
-            <TextInput secureTextEntry={true} placeholder={'Please include one letter and one number'} onChangeText={text => this.setState({password: text})}></TextInput>
-            <Text>Confirm Password</Text>
-            <TextInput secureTextEntry={true} placeholder={'Please re-enter your password'} onChangeText={text => this.setState({confirmPassword: text})}></TextInput>
-            <Button title='NEXT' onPress={this.checkValidNext}></Button>
+            <Text style={styles.getStartedText}>Enter the email you created an account with and we'll send you a link to reset your password.</Text>
+            <TextInput placeholder={'Email Address'} onChangeText={text => this.setState({emailAddress: text})}></TextInput>
+            <Button title='Send me the link' onPress={this.sendEmail}></Button>
           </View>
         </ScrollView>
       </View>

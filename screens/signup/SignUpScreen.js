@@ -2,7 +2,7 @@ import * as WebBrowser from '../../node_modules/expo-web-browser';
 import React, { Component } from '../../node_modules/react';
 import { StyleSheet, View, Image, Text, KeyboardAvoidingView } from 'react-native';
 
-import SignUp1Screen from '../../components/signup/SignUp1Screen';
+import SignUp1Screen from '../../screens/termsAndConditions/termsAndConditions';
 import SignUp2Screen from '../../components/signup/SignUp2Screen';
 import SignUp3Screen from '../../components/signup/SignUp3Screen';
 import SignUp4Screen from '../../components/signup/SignUp4Screen';
@@ -18,15 +18,18 @@ export default class SignUpScreen extends Component {
         }
     }
 
+    //Set initial screen as Screen 1
     componentDidMount = () => {
         this.setState({ screen: <SignUp1Screen setScreenForward={this.setScreenForward}/> });
     }
 
+    //Moves screen forward after user presses next button
     setScreenForward = () => {
         this.setState({ currentScreenNum: this.state.currentScreenNum + 1 });
         this.renderCurrentScreen()
     }
 
+    //Renders the appropriate screen depending on currentScreenNum
     renderCurrentScreen = () => {
         switch (this.state.currentScreenNum) {
             case 0:
