@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet, Dimensions, Text, TouchableOpacity } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import Animated from 'react-native-reanimated';
+import LocalStorage from '../helpers/LocalStorage';
 import { Constants } from 'expo-constants';
 import { postRequest, getRequest } from '../lib/requests';
 import { APIRoutes } from '../config/routes';
@@ -39,13 +40,24 @@ const SecondRoute = () => (
 );
 
 export default class EventsList extends React.Component {
-  state = {
-    index: 0,
-    routes: [
-      { key: 'first', title: 'Upcoming' },
-      { key: 'second', title: 'Completed' },
-    ],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      index: 0,
+      user_id: 0,
+
+      routes: [
+        { key: 'first', title: 'Upcoming' },
+        { key: 'second', title: 'Completed' },
+      ],
+    }
+  }
+
+  componentDidUpdate = () => {
+    LocalStorage.getUser().then((user) => {
+      this.setState({ user_id: user.id });
+    });
+  }
 
   _handleIndexChange = index => this.setState({ index });
 
@@ -102,7 +114,7 @@ export default class EventsList extends React.Component {
   _fetchEvents = () => {
     console.log("FETCH EVENTS")
     return getRequest(
-        APIRoutes.getEventsPath('attended'),
+        APIRoutes.getEventsPath(this.state.user_id, 'attended'),
         (responseData) => {
             console.log(responseData)
         },
