@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Icon, TextInput, TouchableOpacity, Text, Switch } from 'react-native';
 import { standardError, frontendError } from '../lib/alerts';
+import LocalStorage from '../helpers/LocalStorage'
 import { postRequest } from '../lib/requests';
 import { APIRoutes } from '../config/routes';
 
@@ -19,6 +20,7 @@ export default class LoginForm extends Component {
             APIRoutes.loginPath(),
             (responseData) => {
                 console.log("Log in successful.")
+                LocalStorage.storeUser(responseData)
             },
             (error) => {
                 if (this.state.email == "" || this.state.password == "") {

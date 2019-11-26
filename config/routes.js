@@ -11,5 +11,5 @@ export class APIRoutes {
     static loginPath()                  { return APIRoutes.deviseRoute(`sign_in`) }
 
     // Events
-    static getEventsPath(type)             { return APIRoutes.deviseRoute(`events/${type}`) }
+    static getEventsPath(id, type)             { return APIRoutes.deviseRoute(`${id}/events/${type}`) }
 }
