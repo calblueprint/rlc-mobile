@@ -22,24 +22,24 @@ export default class Dashboard extends Component {
                         <View style={styles.slideStructure}>
                             <Text style={styles.inProgress}>• In Progress</Text>
                             <ActivityCard 
-                                location={"📍 Union Square"}
-                                name={"Union Square (US014)"}
-                                time={"8:15 to 9:15 PM"}
-                                weight={"10 to 45 lbs"}
-                                numpickups={"2"}
-                                spotsOpen={"1 of 2"}
+                                location={"📍 Washington Square Park"}
+                                name={"Washington Arch (TA114)"}
+                                time={"1:00 to 2:30 PM"}
+                                weight={"25 to 45 lbs"}
+                                numpickups={"3"}
+                                spotsOpen={"1 of 3"}
                             />
                         </View>
 
                         <View style={styles.slideStructure}>
                             <Text style={styles.needsAttention}>• Needs Attention</Text>
                             <ActivityCard 
-                                location={"📍 Union Square"}
-                                name={"Union Square (US014)"}
-                                time={"8:15 to 9:15 PM"}
-                                weight={"10 to 45 lbs"}
-                                numpickups={"2"}
-                                spotsOpen={"1 of 2"}
+                                location={"📍 Korea Town NYC"}
+                                name={"Kimbachi Tan (SA457)"}
+                                time={"5:00 to 6:30 PM"}
+                                weight={"25 to 45 lbs"}
+                                numpickups={"3"}
+                                spotsOpen={"1 of 3"}
                             />
                         </View>
                         

@@ -8,10 +8,6 @@ export default class Profile extends Component {
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
 
-                {/* <View style={styles.header}>
-                    <Text style={styles.headerText}>Profile</Text>
-                </View> */}
-
                 <ScrollView>
                     <ProfileHeader />
                     <ProfileForm />
