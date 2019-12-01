@@ -1,8 +1,6 @@
 import React from 'react';
-
-import { Button, Platform, ScrollView, StyleSheet, View, Text, Image } from 'react-native';
+import { Button, Platform, ScrollView, StyleSheet, View, Text } from 'react-native';
 import { CheckBox, Card } from 'react-native-elements'
-
 import { frontendError } from '../../lib/alerts';
 import StepsTimeline from '../../components/StepsTimeline';
 
@@ -12,9 +10,20 @@ export default class SignUp2Screen extends React.Component {
       this.state = {
           volunteer: false,
           rescuer: false,
+          user: {},
       }
   }
   
+  //Setup User Payload
+  setupParams = ()  => {
+    this.setState({ user: this.props.user });
+    if (this.state.volunteer == true) {
+      this.state.user.role = 0;
+    } else {
+      this.state.user.role = 1;
+    }
+  }
+
   //Ensures that only one user options is selected and not both.
   onCheckboxClick = (cardType) => {
     if (cardType == "volunteer") {
@@ -33,7 +42,8 @@ export default class SignUp2Screen extends React.Component {
     if (this.state.volunteer == false && this.state.rescuer == false) {
       frontendError("Please select an option.")
     } else {
-      this.props.setScreenForward()
+      this.setupParams()
+      this.props.setScreenForward(this.state.user)
     }
   }
 

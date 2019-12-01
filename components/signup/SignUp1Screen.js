@@ -1,17 +1,5 @@
-import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import {
-  Button,
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-
+import { Button, Platform, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { frontendError } from '../../lib/alerts';
 import StepsTimeline from '../../components/StepsTimeline';
 import DatePicker from 'react-native-datepicker'
@@ -23,7 +11,16 @@ export default class SignUp1Screen extends React.Component {
       firstName: "",
       lastName: "",
       birthday: "",
+      user: {},
     }
+  }
+
+  //Setup User Payload
+  setupParams = ()  => {
+    this.setState({ user: this.props.user });
+    this.state.user.firstname = this.state.firstName;
+    this.state.user.lastname = this.state.lastName;
+    this.state.user.birth_month = this.state.birth_month;
   }
 
   /*Checks conditions before transitioning to next screen:
@@ -33,7 +30,8 @@ export default class SignUp1Screen extends React.Component {
     if (this.state.firstName == "" || this.state.lastName == "" || this.state.birthday == "") {
       frontendError("Please fill out all fields.")
     } else {
-      this.props.setScreenForward()
+      this.setupParams()
+      this.props.setScreenForward(this.state.user)
     }
   }
   
@@ -50,6 +48,7 @@ export default class SignUp1Screen extends React.Component {
     var yyyy = today.getFullYear();
     today = yyyy + '/' + mm + '/' + dd;
     this.setState({ birthday: today });
+    this.setState({ birth_month: monthNames[mm-1]})
   }
 
   render() {
@@ -66,14 +65,21 @@ export default class SignUp1Screen extends React.Component {
             <Text>Last Name</Text>
             <TextInput placeholder={'Doe'} onChangeText={text => this.setState({lastName: text})}></TextInput>
             <Text>Birthday</Text>
-            <DatePicker format="YYYY-MM-DD" date={this.state.birthday} onDateChange={(date) => {this.setState({birthday: date})}}/>
+            <DatePicker format="YYYY-MM-DD" date={this.state.birthday} onDateChange={
+              (date) => {
+                this.setState({birthday: date})
+                this.setState({birth_month: monthNames[parseInt(date.substr(5, 2))-1]})
+              }
+            }/>
             <Button title='NEXT' onPress={this.checkValidNext}></Button>
           </View>
         </ScrollView>
       </View>
-    );
+    )
   }
 }
+
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 const styles = StyleSheet.create({
   container: {

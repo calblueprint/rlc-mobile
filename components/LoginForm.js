@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Icon, TextInput, TouchableOpacity, Text, Switch } from 'react-native';
-import { standardError, frontendError } from '../lib/alerts';
+import { StyleSheet, View, TextInput, TouchableOpacity, Text } from 'react-native';
+import { frontendError } from '../lib/alerts';
 import { postRequest } from '../lib/requests';
 import { APIRoutes } from '../config/routes';
 

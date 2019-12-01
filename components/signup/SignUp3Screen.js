@@ -1,17 +1,5 @@
-import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import {
-  Button,
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-
+import { Button, Platform, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { frontendError } from '../../lib/alerts';
 import StepsTimeline from '../../components/StepsTimeline';
 
@@ -23,7 +11,16 @@ export default class SignUp3Screen extends React.Component {
       email: "",
       password: "",
       confirmPassword: "",
+      user: {},
     }
+  }
+
+  //Setup User Payload
+  setupParams = ()  => {
+    this.setState({ user: this.props.user });
+    this.state.user.email = this.state.email;
+    this.state.user.password = this.state.password;
+    this.state.user.password_confirmation = this.state.confirmPassword;
   }
 
   /*Checks conditions before transitioning to next screen:
@@ -42,7 +39,8 @@ export default class SignUp3Screen extends React.Component {
     } else if (!this.state.email.match(/@/)) {
       frontendError("Invalid Email.")
     } else {
-      this.props.setScreenForward()
+      this.setupParams()
+      this.props.setScreenForward(this.state.user)
     }
   }
 
@@ -56,7 +54,7 @@ export default class SignUp3Screen extends React.Component {
           <View style={styles.getStartedContainer}>
             <Text style={styles.getStartedText}>Great! Now let's create your account. Your email will be your username.</Text>
             <Text>Email</Text>
-            <TextInput placeholder={'email@email.com'} onChangeText={text => this.setState({email: text})}></TextInput>
+            <TextInput placeholder={'email@email.com'} autoCapitalize={'none'} onChangeText={text => this.setState({email: text})}></TextInput>
             <Text>Password</Text>
             <TextInput secureTextEntry={true} placeholder={'Please include one letter and one number'} onChangeText={text => this.setState({password: text})}></TextInput>
             <Text>Confirm Password</Text>

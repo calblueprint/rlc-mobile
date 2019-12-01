@@ -1,16 +1,5 @@
-import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import {
-  Button,
-  Image,
-  Platform,
-  Picker,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 export default class ConfirmationScreen extends React.Component {
 

@@ -1,16 +1,5 @@
-import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import {
-  Button,
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Button, Platform, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import StepsTimeline from '../../components/StepsTimeline';
 import { frontendError } from '../../lib/alerts';
 
@@ -19,13 +8,22 @@ export default class SignUp4Screen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      phone: "",
+      telephone: "",
       address1: "",
       address2: "",
       city: "",
       state: "",
       zipcode: "",
+      user: {},
     }
+  }
+
+  //Setup User Payload
+  setupParams = ()  => {
+    this.setState({ user: this.props.user });
+    this.state.user.telephone = this.state.telephone;
+    this.state.user.address = this.state.address1 + ", " + this.state.address2 + ", " + this.state.city + ", " + this.state.state;
+    this.state.user.zip_code = this.state.zipcode;
   }
 
   /*Checks conditions before transitioning to next screen:
@@ -34,14 +32,15 @@ export default class SignUp4Screen extends React.Component {
    * 3. phone numbers contain only numbers
    */
   checkValidNext = () => {
-    if (this.state.phone == "" || this.state.address1 == "" || this.state.address2 == "" || this.state.zipcode == "" || this.state.city == "" || this.state.state == "") {
+    if (this.state.telephone == "" || this.state.address1 == "" || this.state.address2 == "" || this.state.zipcode == "" || this.state.city == "" || this.state.state == "") {
       frontendError("Please fill out all fields.")
     } else if (this.state.zipcode.match(/[a-z]/i)) {
       frontendError("Invalid zipcode.")
-    } else if (this.state.phone.match(/[a-z]/i)) {
-      frontendError("Invalid phone number.")
+    } else if (this.state.telephone.match(/[a-z]/i)) {
+      frontendError("Invalid telephone number.")
     } else {
-      this.props.setScreenForward()
+      this.setupParams()
+      this.props.setScreenForward(this.state.user)
     }
   }
 
@@ -55,7 +54,7 @@ export default class SignUp4Screen extends React.Component {
           <View style={styles.getStartedContainer}>
             <Text style={styles.getStartedText}>Almost there! Let us know the best way to contact you.</Text>
             <Text>Mobile Phone Number</Text>
-            <TextInput placeholder={'(123)-456-7890'} onChangeText={text => this.setState({phone: text})}></TextInput>
+            <TextInput placeholder={'(123)-456-7890'} onChangeText={text => this.setState({telephone: text})}></TextInput>
             <Text>Address (Line 1)</Text>
             <TextInput placeholder={'123 45th St.'} onChangeText={text => this.setState({address1: text})}></TextInput>
             <Text>Address (Line 2)</Text>

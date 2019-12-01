@@ -7,7 +7,7 @@ export class APIRoutes {
     static deviseRoute(route)           { return `/users/${route}` }
 
     // Login
-    static signupPath()                 { return `/sign_up` }
+    static signupPath()                 { return `/users` }
     static loginPath()                  { return APIRoutes.deviseRoute(`sign_in`) }
 
     // Reset Password

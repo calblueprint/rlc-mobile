@@ -1,16 +1,5 @@
-import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import {
-  Button,
-  Image,
-  Platform,
-  Picker,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { Button, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import StepsTimeline from '../../components/StepsTimeline';
 import { CheckBox } from 'react-native-elements'
@@ -98,38 +87,52 @@ export default class SignUp5Screen extends React.Component {
     super(props);
     this.state = {
       selectedRegion: [],
-      selectedLocations: [],
+      selectedLocation: [],
       selectedTimes: [],
       selectedWeights: [],
       agreementChecked: false,
-      checked: false,
+      eighteen: false,
     }
   }
 
+  //Setup User Payload
+  setupParams = ()  => {
+    this.setState({ user: this.props.user });
+    //TODO: ISSUE #9 - https://github.com/calblueprint/rlc-mobile/issues/9
+  }
+
+  /*Checks conditions before transitioning to next screen:
+   * 1. all fields are filled out and not empty.
+   * 2. agree to terms and conditions and RLC rescuer policy.
+   * 3. 18 years or older.
+   */
   checkValidNext = () => {
-    if (this.state.region == "" || this.locations == "" || this.state.times == "" || this.state.weights == "") {
+    if (this.state.selectedRegion == "" || this.selectedLocation == "" || this.state.selectedTimes == "" || this.state.selectedWeights == "") {
       frontendError("Please fill out all fields.")
     } else if (this.state.agreementChecked == false) {
       frontendError("Please agree to the Terms and Conditions and RLC Rescuer Policy.")
+    } else if (this.state.eighteen == true) {
+      frontendError("All volunteers must be at least 18 years old to lead a rescue.")
     } else {
-      this.props.setScreenForward()
+      this.setupParams()
+      this.props.setScreenForward(this.state.user)
     }
   }
 
   onSelectedRegionChange = (selectedRegion) => {
-      this.setState({selectedRegion});
+    this.setState({selectedRegion});
   }
 
-  onSelectedLocationsChange = (selectedLocations) => {
-      this.setState({selectedLocations});
+  onSelectedLocationChange = (selectedLocation) => {  
+    this.setState({selectedLocation});
   }
 
   onSelectedTimesChange = (selectedTimes) => {
-      this.setState({selectedTimes});
+    this.setState({selectedTimes});
   }
 
   onSelectedWeightsChange = (selectedWeights) => {
-      this.setState({selectedWeights});
+    this.setState({selectedWeights});
   }
 
   render() {
@@ -158,13 +161,14 @@ export default class SignUp5Screen extends React.Component {
             />
 
             <Text style={styles.subHeading}>
-                 Preferred Location(s)
+                 Preferred Location
             </Text>
             <SectionedMultiSelect
-                 selectedItems={this.state.selectedLocations}
+                 single
+                 selectedItems={this.state.selectedLocation}
                  items={locations}
                  uniqueKey="name"
-                 onSelectedItemsChange={this.onSelectedLocationsChange}
+                 onSelectedItemsChange={this.onSelectedLocationChange}
                  showChips={false}
                  searchPlaceholderText="Search locations..."
                  searchInputStyle={styles.input}
@@ -202,7 +206,7 @@ export default class SignUp5Screen extends React.Component {
             />
 
             <CheckBox title="By creating an account, you agree to the Terms and Conditions and RLC Rescuer Policy." checked={this.state.agreementChecked} onPress={() => this.setState({agreementChecked: !this.state.agreementChecked})}/>
-            <CheckBox title='If you are under 18, please check this box.' checked={this.state.checked} onPress={() => this.setState({checked: !this.state.checked})}/>
+            <CheckBox title='If you are under 18, please check this box.' checked={this.state.eighteen} onPress={() => this.setState({eighteen: !this.state.eighteen})}/>
             <Button title='COMPLETE' onPress={this.checkValidNext} />
           </View>
 
