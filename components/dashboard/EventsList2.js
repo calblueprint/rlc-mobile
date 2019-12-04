@@ -1,23 +1,41 @@
-import * as React from 'react';
-import { View, StyleSheet, Dimensions, Text, TouchableOpacity } from 'react-native';
+import React, { Component } from 'react';
+import { View, StyleSheet, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import Animated from 'react-native-reanimated';
-import LocalStorage from '../helpers/LocalStorage';
-import { Constants } from 'expo-constants';
-import { postRequest, getRequest } from '../lib/requests';
-import { APIRoutes } from '../config/routes';
+
+import ActivityCard from '../../components/dashboard/ActivityCard.js';
 
 const FirstRoute = () => (
   <View style={[styles.scene, { backgroundColor: '#FFFFFF' }]}>
 
-        <View style={styles.infoContainer}>
-            <Text style={styles.subText}>Oh no! You have no upcoming shifts.</Text>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button}>
-                  <Text style={styles.buttonText}>Sign Up for Shift</Text>
-              </TouchableOpacity>
-            </View>
-        </View>
+    <ScrollView style={{height: "100%"}}>
+      <Text style={styles.heading}>Sunday, June 19, 2019</Text>
+      <ActivityCard 
+        location={"📍 Union Square"}
+        name={"Union Square (US014)"}
+        time={"8:15 to 9:15 PM"}
+        weight={"10 to 45 lbs"}
+        numpickups={"2"}
+        spotsOpen={"1 of 2"}
+      />
+      <ActivityCard 
+        location={"📍 Greenwich Village"}
+        name={"Greenwich Village (GW007)"}
+        time={"4:15 to 6:15 PM"}
+        weight={"10 to 45 lbs"}
+        numpickups={"2"}
+        spotsOpen={"1 of 2"}
+      />
+      <Text style={styles.heading}>Monday, June 20, 2019</Text>
+      <ActivityCard 
+        location={"📍 Williamsburg"}
+        name={"South Side Mission (WB001)"}
+        time={"10:30 to 11:30 AM"}
+        weight={"10 to 45 lbs"}
+        numpickups={"1"}
+        spotsOpen={"2 of 4"}
+      />
+    </ScrollView>
 
   </View>
 );
@@ -25,40 +43,31 @@ const FirstRoute = () => (
 const SecondRoute = () => (
 
   <View style={[styles.scene, { backgroundColor: '#FFFFFF' }]}>
-      <View style={styles.infoContainer}>
-            <Text style={styles.subText}>Did you know?{"\n"}
-            RLC has rescued over 1.7 million{"\n"}
-            pounds of food! Sign up for an event{"\n"}
-            and be a part of the movement!</Text>
 
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>Sign Up for Shift</Text>
-                </TouchableOpacity>
-            </View>
-      </View>
+      <ScrollView style={{height: "100%"}}>
+      <Text style={styles.heading}>Sunday, June 19, 2019</Text>
+      <ActivityCard 
+        location={"📍 Home"}
+        name={"Union Square (US014)"}
+        time={"8:15 to 9:15 AM"}
+        weight={"10 to 45 lbs"}
+        numpickups={"2"}
+        spotsOpen={"1 of 2"}
+      />
+    </ScrollView>
+
   </View>
+
 );
 
-export default class EventsList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      index: 0,
-      user_id: 0,
-
-      routes: [
-        { key: 'first', title: 'Upcoming' },
-        { key: 'second', title: 'Completed' },
-      ],
-    }
-  }
-
-  componentDidUpdate = () => {
-    LocalStorage.getUser().then((user) => {
-      this.setState({ user_id: user.id });
-    });
-  }
+export default class EventsList2 extends Component {
+  state = {
+    index: 0,
+    routes: [
+      { key: 'first', title: 'Upcoming' },
+      { key: 'second', title: 'Completed' },
+    ],
+  };
 
   _handleIndexChange = index => this.setState({ index });
 
@@ -113,21 +122,7 @@ export default class EventsList extends React.Component {
     second: SecondRoute,
   });
 
-  _fetchEvents = () => {
-    console.log("FETCH EVENTS")
-    return getRequest(
-        APIRoutes.getEventsPath(this.state.user_id, 'attended'),
-        (responseData) => {
-            console.log(responseData)
-        },
-        (error) => {
-          console.log(error)
-        },
-    );
-  }
-
   render() {
-    this._fetchEvents()
     return (
         <TabView
           navigationState={this.state}
@@ -191,4 +186,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 10,
     },
+    heading: {
+      color: '#000000',
+      marginTop: 10,
+      marginBottom: 10,
+      marginLeft: "8%",
+      textAlign: 'left',
+      fontWeight: '600',
+      opacity: 0.7,
+      fontSize: 16
+  }
 });
