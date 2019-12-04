@@ -1,6 +1,6 @@
 import * as WebBrowser from '../../node_modules/expo-web-browser';
 import React, { Component } from '../../node_modules/react';
-import { StyleSheet, View, Image, Text, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, Image, ScrollView, Text, KeyboardAvoidingView } from 'react-native';
 
 import LoginForm from '../../components/LoginForm.js';
 
@@ -19,16 +19,18 @@ export default class LoginScreen extends Component {
     render() {
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
-                <View style={styles.logoContainer}>
-                    <Image
-                    style={styles.logo}
-                    source={require('../../assets/images/rlclogo.png')}/>
-                    <Text style={styles.title}>Let's rescue some food 👍</Text>
-                    <Text style={styles.subtext}>{this.state.inValidText}</Text>
-                </View>
-                <View style={styles.formContainer}>
-                    <LoginForm setInvalidText={this.setInvalidText}/>
-                </View>
+                <ScrollView>
+                    <View style={styles.logoContainer}>
+                        <Image
+                        style={styles.logo}
+                        source={require('../../assets/images/rlclogo.png')}/>
+                        <Text style={styles.title}>Let's rescue some food 👍</Text>
+                        <Text style={styles.subtext}>{this.state.inValidText}</Text>
+                    </View>
+                    <View style={styles.formContainer}>
+                        <LoginForm setInvalidText={this.setInvalidText}/>
+                    </View>
+                </ScrollView>
             </KeyboardAvoidingView>
         );
     }
