@@ -2,72 +2,30 @@ import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import Animated from 'react-native-reanimated';
-
+import LocalStorage from '../../helpers/LocalStorage';
+import { getRequest } from '../../lib/requests';
+import { APIRoutes } from '../../config/routes';
 import ActivityCard from '../../components/dashboard/ActivityCard.js';
 
-const FirstRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#FFFFFF' }]}>
-
-    <ScrollView style={{height: "100%"}}>
-      <Text style={styles.heading}>Sunday, June 19, 2019</Text>
-      <ActivityCard 
-        location={"📍 Union Square"}
-        name={"Union Square (US014)"}
-        time={"8:15 to 9:15 PM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"2"}
-        spotsOpen={"1 of 2"}
-      />
-      <ActivityCard 
-        location={"📍 Greenwich Village"}
-        name={"Greenwich Village (GW007)"}
-        time={"4:15 to 6:15 PM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"2"}
-        spotsOpen={"1 of 2"}
-      />
-      <Text style={styles.heading}>Monday, June 20, 2019</Text>
-      <ActivityCard 
-        location={"📍 Williamsburg"}
-        name={"South Side Mission (WB001)"}
-        time={"10:30 to 11:30 AM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"1"}
-        spotsOpen={"2 of 4"}
-      />
-    </ScrollView>
-
-  </View>
-);
-
-const SecondRoute = () => (
-
-  <View style={[styles.scene, { backgroundColor: '#FFFFFF' }]}>
-
-      <ScrollView style={{height: "100%"}}>
-      <Text style={styles.heading}>Sunday, June 19, 2019</Text>
-      <ActivityCard 
-        location={"📍 Home"}
-        name={"Union Square (US014)"}
-        time={"8:15 to 9:15 AM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"2"}
-        spotsOpen={"1 of 2"}
-      />
-    </ScrollView>
-
-  </View>
-
-);
-
 export default class EventsList2 extends Component {
-  state = {
-    index: 0,
-    routes: [
-      { key: 'first', title: 'Upcoming' },
-      { key: 'second', title: 'Completed' },
-    ],
-  };
+  constructor(props) {
+    super(props);
+      this.state = {
+        index: 0,
+        user_id: 0,
+        events: [],
+        routes: [
+          { key: 'first', title: 'Upcoming' },
+          { key: 'second', title: 'Completed' },
+        ],
+      };
+  }  
+
+  componentDidUpdate = () => {
+    LocalStorage.getUser().then((user) => {
+      this.setState({ user_id: user.id });
+    });
+  }
 
   _handleIndexChange = index => this.setState({ index });
 
@@ -117,9 +75,86 @@ export default class EventsList2 extends Component {
     );
   };
 
+  firstRoute = () => {
+    return (
+      <View style={[styles.scene, { backgroundColor: '#FFFFFF' }]}>
+        <ScrollView style={{height: "100%"}}>
+          {this.renderEvent()}
+        </ScrollView>
+      </View>
+    );
+  }
+  
+  secondRoute = () => {
+    return (
+      <View style={[styles.scene, { backgroundColor: '#FFFFFF' }]}>
+          <ScrollView style={{height: "100%"}}>
+          <Text style={styles.heading}>Sunday, June 19, 2019</Text>
+          <ActivityCard 
+            location={"📍 Home"}
+            name={"Union Square (US014)"}
+            time={"8:15 to 9:15 AM"}
+            weight={"10 to 45 lbs"}
+            numpickups={"2"}
+            spotsOpen={"1 of 2"}
+          />
+        </ScrollView>
+      </View>
+    );
+  }
+  
+  _fetchEvents = () => {
+    console.log("FETCH EVENTS")
+    return getRequest(
+        APIRoutes.getEventsPath(this.state.user_id, 'attended'),
+        (responseData) => {
+            // console.log(responseData);
+            this.setState({events: responseData});
+        },
+        (error) => {
+          console.log(error);
+        },
+    );
+  }
+
+  renderEvent = () => {
+    this._fetchEvents()
+    events = this.state.events;
+    var date = events[0]["date"]["starting_date_with_full_weekday_name"];
+    var i;
+    for (i = 0; i< events.length; i++) {
+      current_date = events[i]["starting_date_with_full_weekday_name"]
+      if (current_date != date) {
+        date = current_date
+        return ([
+          <Text style={styles.heading}>{events[i]["starting_date_with_full_weekday_name"]}</Text>,
+          <ActivityCard 
+            location={events[i]["address"]}
+            name={events[i]["title"]}
+            time={events[i]["starting_hour"]}
+            weight={events[i]["title"]}
+            numpickups={events[i]["title"]}
+            spotsOpen={events[i]["title"]}
+          />
+        ])
+      } else {
+        return (
+          <ActivityCard 
+            location={events[i]["address"]}
+            name={events[i]["title"]}
+            time={events[i]["starting_hour"]}
+            weight={events[i]["title"]}
+            numpickups={events[i]["title"]}
+            spotsOpen={events[i]["title"]}
+          />
+        )
+      }
+    }
+  }
+
   _renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
+    first: this.firstRoute(),
+    second: this.secondRoute(),
   });
 
   render() {

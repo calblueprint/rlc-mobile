@@ -2,10 +2,10 @@ import React, { Component } from '../../node_modules/react';
 import { StyleSheet, View, ScrollView, Text } from 'react-native';
 import { AuthSession } from 'expo';
 
-import EventsList from '../../components/dashboard/EventsList2.js';
+import EventsList2 from '../../components/dashboard/EventsList2.js';
 import ActivityCard from '../../components/dashboard/ActivityCard';
 
-export default class Dashboard extends Component {
+export default class Dashboard2 extends Component {
     render() {
         return (
             <View style={styles.container}>
@@ -21,14 +21,6 @@ export default class Dashboard extends Component {
 
                         <View style={styles.slideStructure}>
                             <Text style={styles.inProgress}>• In Progress</Text>
-                            <ActivityCard 
-                                location={"📍 Washington Square Park"}
-                                name={"Washington Arch (TA114)"}
-                                time={"1:00 to 2:30 PM"}
-                                weight={"25 to 45 lbs"}
-                                numpickups={"3"}
-                                spotsOpen={"1 of 3"}
-                            />
                         </View>
 
                         <View style={styles.slideStructure}>
@@ -47,14 +39,14 @@ export default class Dashboard extends Component {
                 
             </View>    
 
-            <EventsList />
+            <EventsList2 />
 
             </View>
         );
     }
 }
 
-Dashboard.navigationOptions = {
+Dashboard2.navigationOptions = {
     title: 'Home',
   };
 

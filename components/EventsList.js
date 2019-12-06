@@ -46,12 +46,16 @@ export default class EventsList extends React.Component {
     this.state = {
       index: 0,
       user_id: 0,
-
+      events: [],
       routes: [
         { key: 'first', title: 'Upcoming' },
         { key: 'second', title: 'Completed' },
       ],
     }
+  }
+
+  componentDidMount = () => {
+    this._fetchEvents()
   }
 
   componentDidUpdate = () => {
@@ -64,7 +68,6 @@ export default class EventsList extends React.Component {
 
   _renderTabBar = props => {
     const inputRange = props.navigationState.routes.map((x, i) => i);
-
     return (
       <View style={styles.tabBar}>
         {props.navigationState.routes.map((route, i) => {
@@ -114,20 +117,20 @@ export default class EventsList extends React.Component {
   });
 
   _fetchEvents = () => {
-    console.log("FETCH EVENTS")
+    // console.log("FETCH EVENTS")
     return getRequest(
         APIRoutes.getEventsPath(this.state.user_id, 'attended'),
         (responseData) => {
-            console.log(responseData)
+            // console.log(responseData);
+            this.setState({events: responseData});
         },
         (error) => {
-          console.log(error)
+          // console.log(error)
         },
     );
   }
 
   render() {
-    this._fetchEvents()
     return (
         <TabView
           navigationState={this.state}
