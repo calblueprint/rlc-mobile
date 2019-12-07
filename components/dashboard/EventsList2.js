@@ -59,9 +59,17 @@ export default class EventsList2 extends React.Component {
             <Text style={styles.heading}>starting_date_with_full_weekday_name</Text>
             {
               this.props.events.map((event, index) => {
-                console.log(event.title)
+                console.log(event)
+                console.log('asdfasdf')
                   return (
-                    [<Text style={styles.heading}>{event.title}}</Text>, <Text style={styles.heading}>{event.title}}</Text>]
+                    <ActivityCard 
+                      location={event.address}
+                      name={event.title}
+                      time={event.starting_hour}
+                      weight={"10 to 45 lbs"}
+                      numpickups={"2"}
+                      spotsOpen={"1 of 2"}
+                    />
                     // this.renderEvent()
                   )
               })
