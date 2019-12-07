@@ -35,34 +35,38 @@ export default class Dashboard2 extends Component {
     }
     
     render() {
-        return (
-            <View style={styles.container}>
-                <View style={styles.currentEvent}>
-                    <ScrollView 
-                        style={styles.horizontalView}
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={true}
-                        snapToAlignment={"center"}
-                    >
-                        <View style={styles.slideStructure}>
-                            <Text style={styles.inProgress}>• In Progress</Text>
-                        </View>
-                        <View style={styles.slideStructure}>
-                            <Text style={styles.needsAttention}>• Needs Attention</Text>
-                            <ActivityCard 
-                                location={"📍 Korea Town NYC"}
-                                name={"Kimbachi Tan (SA457)"}
-                                time={"5:00 to 6:30 PM"}
-                                weight={"25 to 45 lbs"}
-                                numpickups={"3"}
-                                spotsOpen={"1 of 3"}
-                            />
-                        </View>
-                    </ScrollView>
+        if (this.state.events.length == 0) {
+            return null
+        } else {
+            return (
+                <View style={styles.container}>
+                    <View style={styles.currentEvent}>
+                        <ScrollView 
+                            style={styles.horizontalView}
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={true}
+                            snapToAlignment={"center"}
+                        >
+                            <View style={styles.slideStructure}>
+                                <Text style={styles.inProgress}>• In Progress</Text>
+                            </View>
+                            <View style={styles.slideStructure}>
+                                <Text style={styles.needsAttention}>• Needs Attention</Text>
+                                <ActivityCard 
+                                    location={"📍 Korea Town NYC"}
+                                    name={"Kimbachi Tan (SA457)"}
+                                    time={"5:00 to 6:30 PM"}
+                                    weight={"25 to 45 lbs"}
+                                    numpickups={"3"}
+                                    spotsOpen={"1 of 3"}
+                                />
+                            </View>
+                        </ScrollView>
+                    </View>
+                    <EventsList2 events={this.state.events}/>
                 </View>
-                <EventsList2 events={this.state.events}/>
-            </View>
-        );
+            );
+        }
     }
 }
 

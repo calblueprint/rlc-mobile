@@ -25,43 +25,47 @@ export default class EventsList2 extends React.Component {
   }
 
   renderEvent = () => {
+    const {events} = this.props
+    {return(<ActivityCard 
+      location={"📍 Home"}
+      name={"Union Square (US014)"}
+      time={"8:15 to 9:15 AM"}
+      weight={"10 to 45 lbs"}
+      numpickups={"2"}
+      spotsOpen={"1 of 2"}
+    />)}
     // if (this.props.events.length == 0) {
     //   return
     // } else {
    
-      console.log(this.props.events);
+      // console.log(this.props.events);
       // console.log("bruhhhh")
-      const {events} = this.props
-      console.log(events)
-      console.log("new log")
-      const retEvents = events.map(event => {
-        return (<View style={[styles.scene, { backgroundColor: '#FFFFFF' }]}>
-          <View style={[styles.scene, { backgroundColor: '#FFFFFF' }]}>
-            <ScrollView style={{height: "100%"}}>
-                <ActivityCard 
-                  location={event["title"]}
-                  name={event["title"]}
-                  time={event["title"]}
-                  weight={event["title"]}
-                  numpickups={event["title"]}
-                  spotsOpen={event["title"]}
-                />
-                
-            </ScrollView>
-          </View>
-        </View>
-      )
-    })
-    return retEvents
+    //   const {events} = this.props
+    //   // console.log(events[0])
+    //   // console.log("new log")
+    //   return events.map((event, index) => {
+    //     return (
+    //       <Text key={index}>{event['title']}</Text>
+    //     )
+    // })
   }
 
   FirstRoute = () => {
+    console.log("FIRST ROUTE")
     return (
       <View style={[styles.scene, { backgroundColor: '#FFFFFF' }]}>
         <View style={[styles.scene, { backgroundColor: '#FFFFFF' }]}>
           <ScrollView style={{height: "100%"}}>
             <Text style={styles.heading}>starting_date_with_full_weekday_name</Text>
-            {this.renderEvent()}
+            {
+              this.props.events.map((event, index) => {
+                console.log(event.title)
+                  return (
+                    [<Text style={styles.heading}>{event.title}}</Text>, <Text style={styles.heading}>{event.title}}</Text>]
+                    // this.renderEvent()
+                  )
+              })
+            }
           </ScrollView>
         </View>
       </View>
