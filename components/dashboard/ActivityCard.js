@@ -5,6 +5,7 @@ export default class ActivityCard extends React.Component {
   constructor(props) {
       super(props)
   }
+  
   render() {
     return (
       <TouchableOpacity style={styles.card}>
