@@ -1,5 +1,17 @@
 import * as React from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Text, TextInput, FlatList, Switch, Image, TouchableOpacity } from 'react-native';
+import MapView from 'react-native-maps';
+// import MapViewDirections from 'react-native-map-directions';
+import GOOGLE_MAPS_APIKEY from '../../config/keys';
+
+import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Text, TextInput, FlatList, Switch, Image, TouchableOpacity, Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
+
+const ASPECT_RATIO = width / height;
+const LATITUDE = 37.78825;
+const LONGITUDE = -122.4324;
+const LATITUDE_DELTA = 0.0422;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 function participantCard(data) {
      const participant = data.item;
@@ -33,7 +45,12 @@ function instructionDetail(data) {
                     <Text style={{ fontSize: 17 }}>{step.step}. </Text>
                     <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>{step.description}</Text>
                </View>
-               {step.photo_needed && <View style={styles.upload_box}></View>}
+               {step.photo_needed &&     <View style={styles.uploadContainer}>
+                                             <TouchableOpacity style={styles.uploadButton}>
+                                                  <Text style={styles.uploadText}>Upload</Text>
+                                             </TouchableOpacity>
+                                        </View>
+               }
           </View>
      )
 }
@@ -104,7 +121,15 @@ export default class ShiftScreen extends React.Component {
                          description: "Request a receipt from Bowery MIssion and take a photo of the receipt*",
                          photo_needed: true
                     },
-               ]
+               ],
+               region: {
+                    latitude: LATITUDE,
+                    longitude: LONGITUDE,
+                    latitudeDelta: LATITUDE_DELTA,
+                    longitudeDelta: LONGITUDE_DELTA,
+               },
+               origin : {latitude: 37.7566046, longitude: -122.4189414},
+               destination : {latitude: 37.7621519, longitude: -122.4129547}
           }
      }
 
@@ -136,10 +161,15 @@ export default class ShiftScreen extends React.Component {
                               </Text>
 
                               <View style={styles.map_box}>
-
-                              </View>
-
-                              <View style={styles.guide_box}>
+                              <MapView
+                                   style={styles.map}
+                                   scrollEnabled={false}
+                                   zoomEnabled={false}
+                                   pitchEnabled={false}
+                                   rotateEnabled={false}
+                                   initialRegion={this.state.region}
+                              >
+                              </MapView>                                       
 
                               </View>
 
@@ -208,9 +238,13 @@ const styles = StyleSheet.create({
           paddingTop: 20,
      },
      map_box: {
-          height: 200,
+          height: 250,
+          width: "100%",
           marginVertical: 15,
-          borderWidth: 2
+     },
+     map: {
+          width: "100%",
+          height: "100%",
      },
      guide_box: {
           height: 200,
@@ -309,5 +343,25 @@ const styles = StyleSheet.create({
           color: '#FFFFFF',
           fontWeight: '600',
           textTransform: "uppercase"
+      },
+      uploadButton: {
+          backgroundColor: '#38A5DB',
+          paddingVertical: 15,
+          marginBottom: 20,
+          borderRadius: 5,
+          width: 175,
+      },
+      uploadContainer: {
+          alignItems: 'center',
+          flex: 1,
+          alignItems: 'center',
+          height: 50
+      },
+      uploadText: {
+          textAlign: 'center',
+          color: '#FFFFFF',
+          fontWeight: '600',
+          textTransform: "uppercase"
       }
+
 })

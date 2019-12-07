@@ -1,30 +1,30 @@
 Arguments: 
-  /usr/local/Cellar/node/12.10.0/bin/node /usr/local/Cellar/yarn/1.19.0/libexec/bin/yarn.js add expo-contants
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add ract-native-maps-directions
 
 PATH: 
-  /Users/micahtyong/.rvm/gems/ruby-2.6.3/bin:/Users/micahtyong/.rvm/gems/ruby-2.6.3@global/bin:/Users/micahtyong/.rvm/rubies/ruby-2.6.3/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/anaconda3/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/Users/micahtyong/.rvm/gems/ruby-2.6.3/bin:/Users/micahtyong/.rvm/gems/ruby-2.6.3@global/bin:/Users/micahtyong/.rvm/rubies/ruby-2.6.3/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/anaconda3/bin:/Users/micahtyong/.rvm/bin
+  C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\tools\ruby26\bin;C:\Python37\Scripts\;C:\Python37\;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\Java\jdk-10.0.2\bin;C:\Program Files\Git\cmd;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Airtame;C:\ProgramData\chocolatey\bin;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Android\android-sdk;C:\Program Files\Java\jdk1.8.0_191\bin;C:\Android\android-sdk\tools;C:\Android\android-sdk\platform-tools;C:\Android\android-sdk\tools\bin;C:\Users\jelha\Documents\CodeologyProjects;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Microsoft VS Code\bin;C:\Program Files (x86)\Yarn\bin\;C:\Program Files\postgresql\10\bin;C:\PostgreSQL\pg11\bin;postgres;C:\Program Files\PostgreSQL\11\bin;C:\Program Files\nodejs\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\HashiCorp\Vagrant\bin;C:\Windows\Uru\uru_rt.exe;C:\RailsInstaller\Ruby2.3.3\bin;C:\Users\jelha\.rbenv-win\bin;C:\Users\jelha\.rbenv-win\shims;_SZ    C:\RailsInstaller\Ruby2.3.3\bin;C:\Users\jelha\AppData\Local\Microsoft\WindowsApps;C:\Users\jelha\AppData\Local\GitHubDesktop\bin;C:\Users\jelha\AppData\Local\Programs\MiKTeX 2.9\miktex\bin\x64\;C:\Users\jelha\AppData\Local\atom\bin;C:\Users\jelha\Documents\CodeologyProjects;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Users\jelha\AppData\Local\Yarn\bin;C:\Users\jelha\Anaconda3\Library\bin\Graphviz;C:\Program Files\PostgreSQL\11\bin;C:\google-cloud-sdk\bin;C:\Users\jelha\AppData\Roaming\npm;%USERPROFILE%\AppData\Local\Microsoft\WindowsApps;C:\Windows\Uru\uru_rt.exe;;C:\Users\jelha\AppData\Local\hyper\app-3.0.2\resources\bin
 
 Yarn version: 
-  1.19.0
+  1.13.0
 
 Node version: 
-  12.10.0
+  10.16.0
 
 Platform: 
-  darwin x64
+  win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/expo-contants: Not found
-      at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.19.0/libexec/lib/cli.js:66918:18)
-      at Request.self.callback (/usr/local/Cellar/yarn/1.19.0/libexec/lib/cli.js:140539:22)
-      at Request.emit (events.js:209:13)
-      at Request.<anonymous> (/usr/local/Cellar/yarn/1.19.0/libexec/lib/cli.js:141511:10)
-      at Request.emit (events.js:209:13)
-      at IncomingMessage.<anonymous> (/usr/local/Cellar/yarn/1.19.0/libexec/lib/cli.js:141433:12)
-      at Object.onceWrapper (events.js:298:28)
-      at IncomingMessage.emit (events.js:214:15)
-      at endReadableNT (_stream_readable.js:1178:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
+  Error: https://registry.yarnpkg.com/ract-native-maps-directions: Not found
+      at Request.params.callback [as _callback] (C:\Program Files (x86)\Yarn\lib\cli.js:65364:18)
+      at Request.self.callback (C:\Program Files (x86)\Yarn\lib\cli.js:129397:22)
+      at Request.emit (events.js:198:13)
+      at Request.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:130369:10)
+      at Request.emit (events.js:198:13)
+      at IncomingMessage.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:130291:12)
+      at Object.onceWrapper (events.js:286:20)
+      at IncomingMessage.emit (events.js:203:15)
+      at endReadableNT (_stream_readable.js:1129:12)
+      at process._tickCallback (internal/process/next_tick.js:63:19)
 
 npm manifest: 
   {
@@ -46,13 +46,14 @@ npm manifest:
       "@react-navigation/web": "^1.0.0-alpha.9",
       "expo": "^35.0.0",
       "expo-asset": "^7.0.0",
-      "expo-constants": "^7.0.0",
+      "expo-constants": "~7.0.0",
       "expo-font": "^7.0.0",
       "expo-web-browser": "^7.0.0",
       "react": "16.8.3",
       "react-dom": "16.8.3",
       "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
       "react-native-gesture-handler": "~1.3.0",
+      "react-native-maps": "~0.25.0",
       "react-native-reanimated": "~1.2.0",
       "react-native-tab-view": "^2.10.0",
       "react-native-web": "^0.11.7",
@@ -2613,7 +2614,7 @@ Lockfile:
       path-browserify "^1.0.0"
       url-parse "^1.4.4"
   
-  expo-constants@^7.0.0, expo-constants@~7.0.0:
+  expo-constants@~7.0.0:
     version "7.0.0"
     resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-7.0.0.tgz#668c3ec0100e219522ffd9515ec47fadfccd443d"
     integrity sha512-oLINuMtGcAwfHGInSVhq6xGojp3atUpSIp7KImo9rqXhWwD5FNmqA5Jflo4J0ODPq590kN5ieiYCCqwls2/u0w==
@@ -5693,6 +5694,11 @@ Lockfile:
       hoist-non-react-statics "^2.3.1"
       invariant "^2.2.2"
       prop-types "^15.5.10"
+  
+  react-native-maps@~0.25.0:
+    version "0.25.0"
+    resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.25.0.tgz#81bc51eb50e33811a9e1c345cc48869413ead67d"
+    integrity sha512-PFJuW1pt+HnnnN0m0OGk29RSvICFVkK/DScX6cUk0SuCSN2DAHx0y6y57lZyYXcYqU4J4usNpfxgp/ccjASDiw==
   
   react-native-platform-touchable@^1.1.1:
     version "1.1.1"
