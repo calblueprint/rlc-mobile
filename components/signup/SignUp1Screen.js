@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Platform, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { frontendError } from '../../lib/alerts';
 import StepsTimeline from '../../components/StepsTimeline';
 import DatePicker from 'react-native-datepicker'
@@ -53,27 +53,30 @@ export default class SignUp1Screen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View behavior='padding' style={styles.container}>
         <StepsTimeline currentPosition={0}/>
         <ScrollView
-          style={styles.container}
           contentContainerStyle={styles.contentContainer}>
-          <View style={styles.getStartedContainer}>
-            <Text style={styles.getStartedText}>We're excited to have you join the team! Tell us a little about yourself!</Text>
-            <Text>First Name</Text>
-            <TextInput placeholder={'Jane'} onChangeText={text => this.setState({firstName: text})}></TextInput>
-            <Text>Last Name</Text>
-            <TextInput placeholder={'Doe'} onChangeText={text => this.setState({lastName: text})}></TextInput>
-            <Text>Birthday</Text>
-            <DatePicker format="YYYY-MM-DD" date={this.state.birthday} onDateChange={
-              (date) => {
-                this.setState({birthday: date})
-                this.setState({birth_month: monthNames[parseInt(date.substr(5, 2))-1]})
-              }
-            }/>
-            <Button title='NEXT' onPress={this.checkValidNext}></Button>
-          </View>
+            <Text style={styles.heading}>We're excited to have you join the team! Tell us a little about yourself!</Text>
+            <View style={styles.inputContainer}>
+              <Text style={styles.subHeading}>First Name</Text>
+              <TextInput style={styles.input} placeholder={'Jane'} onChangeText={text => this.setState({firstName: text})}></TextInput>
+              <Text style={styles.subHeading}>Last Name</Text>
+              <TextInput style={styles.input} placeholder={'Doe'} onChangeText={text => this.setState({lastName: text})}></TextInput>
+              <Text style={styles.subHeading}>Birthday</Text>
+              <DatePicker format="YYYY-MM-DD" date={this.state.birthday} onDateChange={
+                (date) => {
+                  this.setState({birthday: date})
+                  this.setState({birth_month: monthNames[parseInt(date.substr(5, 2))-1]})
+               }
+              } confirmBtnText={'Confirm'} cancelBtnText={'Cancel'}/>
+            </View>
         </ScrollView>
+        <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.button} onPress={this.checkValidNext}>
+                  <Text style={styles.buttonText}>NEXT</Text>
+              </TouchableOpacity>
+        </View>
       </View>
     )
   }
@@ -84,88 +87,57 @@ const monthNames = ["January", "February", "March", "April", "May", "June", "Jul
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    paddingTop: 25
   },
-  developmentModeText: {
+  button: {
+    backgroundColor: '#38A5DB',
+    paddingVertical: 15,
     marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
+    borderRadius: 5,
+    position: 'absolute',
+    bottom: 0,
+    width: 320
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    marginTop: 50,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    height: 50
+  },
+  buttonText: {
     textAlign: 'center',
+    color: '#FFFFFF',
+    fontWeight: '600',
+    textTransform: "uppercase"  
+  },
+  input: {
+    height: 40,
+    marginBottom: 20,
+    paddingHorizontal: 0,
+    borderBottomWidth: 1,
+    borderBottomColor: '#3b3b3b',
+    color: '#000000',
+  },
+  inputContainer: {
+    paddingTop: 25,
+  },
+  subHeading: {
+    color: '#000000',
+    marginTop: 10,
+    textAlign: 'left',
+    fontWeight: '600',
+    opacity: 0.9,
+    fontSize: 14
   },
   contentContainer: {
+    padding: 25,
     paddingTop: 30,
   },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
+  heading: {
     fontSize: 17,
     color: 'rgba(96,100,109, 1)',
     lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
   },
 });

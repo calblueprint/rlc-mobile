@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import StepsTimeline from '../../components/StepsTimeline';
 import { CheckBox } from 'react-native-elements'
@@ -81,23 +81,32 @@ const foodWeights = [{
     }
 ]
 
+const colors = {
+  primary: "#38A5DB",
+}
+
 export default class SignUp5Screen extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      selectedRegion: [],
-      selectedLocation: [],
-      selectedTimes: [],
-      selectedWeights: [],
+      preferredRegion: [],
+      preferredLocation: [],
+      preferredTimes: [],
+      preferredWeights: [],
       agreementChecked: false,
       eighteen: false,
+      user: {},
     }
   }
 
   //Setup User Payload
   setupParams = ()  => {
     this.setState({ user: this.props.user });
+    this.state.user.preferredRegion = this.state.preferredRegion;
+    this.state.user.preferredLocation = this.state.preferredLocation;
+    this.state.user.preferredTimes = this.state.preferredTimes;
+    this.state.user.preferredWeights = this.state.preferredWeights;
     //TODO: ISSUE #9 - https://github.com/calblueprint/rlc-mobile/issues/9
   }
 
@@ -107,7 +116,7 @@ export default class SignUp5Screen extends React.Component {
    * 3. 18 years or older.
    */
   checkValidNext = () => {
-    if (this.state.selectedRegion == "" || this.selectedLocation == "" || this.state.selectedTimes == "" || this.state.selectedWeights == "") {
+    if (this.state.preferredRegion == "" || this.preferredLocation == "" || this.state.preferredTimes == "" || this.state.preferredWeights == "") {
       frontendError("Please fill out all fields.")
     } else if (this.state.agreementChecked == false) {
       frontendError("Please agree to the Terms and Conditions and RLC Rescuer Policy.")
@@ -119,20 +128,20 @@ export default class SignUp5Screen extends React.Component {
     }
   }
 
-  onSelectedRegionChange = (selectedRegion) => {
-    this.setState({selectedRegion});
+  onPreferredRegionChange = (preferredRegion) => {
+    this.setState({preferredRegion});
   }
 
-  onSelectedLocationChange = (selectedLocation) => {  
-    this.setState({selectedLocation});
+  onPreferredLocationChange = (preferredLocation) => {
+    this.setState({preferredLocation});
   }
 
-  onSelectedTimesChange = (selectedTimes) => {
-    this.setState({selectedTimes});
+  onPreferredTimesChange = (preferredTimes) => {
+    this.setState({preferredTimes});
   }
 
-  onSelectedWeightsChange = (selectedWeights) => {
-    this.setState({selectedWeights});
+  onPreferredWeightsChange = (preferredWeights) => {
+    this.setState({preferredWeights});
   }
 
   render() {
@@ -140,78 +149,82 @@ export default class SignUp5Screen extends React.Component {
       <View style={styles.container}>
         <StepsTimeline currentPosition={4}/>
         <ScrollView
-          style={styles.container}
           contentContainerStyle={styles.contentContainer}>
-
-          <View style={styles.getStartedContainer}>
-            <Text style={styles.getStartedText}>Last step! Tell us your preferences so we can find you the best events.</Text>
-            <Text style={styles.subHeading}>
-                 Preferred Region*
-            </Text>
-            <SectionedMultiSelect
-                 single
-                 selectedItems={this.state.selectedRegion}
-                 items={regions}
-                 uniqueKey="name"
-                 onSelectedItemsChange={this.onSelectedRegionChange}
-                 searchPlaceholderText="Search for a region"
-                 searchInputStyle={styles.input}
-                 submitButtonText="Select"
-                 confirmText="SAVE"
-            />
-
-            <Text style={styles.subHeading}>
-                 Preferred Location
-            </Text>
-            <SectionedMultiSelect
-                 single
-                 selectedItems={this.state.selectedLocation}
-                 items={locations}
-                 uniqueKey="name"
-                 onSelectedItemsChange={this.onSelectedLocationChange}
-                 showChips={false}
-                 searchPlaceholderText="Search locations..."
-                 searchInputStyle={styles.input}
-                 submitButtonText="Select"
-                 confirmText="SAVE"
-            />
-
-            <Text style={styles.subHeading}>
-              Preferred Time(s)
-            </Text>
-            <SectionedMultiSelect
-                  selectedItems={this.state.selectedTimes}
-                  items={daysandtimes}
-                  uniqueKey="id"
-                  expandDropDowns={true}
-                  onSelectedItemsChange={this.onSelectedTimesChange}
-                  subKey="times"
-                  showChips={false}
+            <Text style={styles.heading}>Last step! Tell us your preferences so we can find you the best events.</Text>
+            <View style={styles.inputContainer}>
+              <Text style={styles.subHeading}>
+                  Preferred Region*
+              </Text>
+              <SectionedMultiSelect
+                  single
+                  colors={colors}
+                  selectedItems={this.state.preferredRegion}
+                  items={regions}
+                  uniqueKey="name"
+                  onSelectedItemsChange={this.onPreferredRegionChange}
+                  searchPlaceholderText="Search for a region"
                   searchInputStyle={styles.input}
                   submitButtonText="Select"
                   confirmText="SAVE"
-            />
+              />
 
-            <Text style={styles.subHeading}>
-                 Preferred Food Weight to Carry
-            </Text>
-            <SectionedMultiSelect
-                 selectedItems={this.state.selectedWeights}
-                 items={foodWeights}
-                 uniqueKey="name"
-                 onSelectedItemsChange={this.onSelectedWeightsChange}
-                 showChips={false}
-                 submitButtonText="Select"
-                 confirmText="SAVE"
-            />
+              <Text style={styles.subHeading}>
+                  Preferred Location
+              </Text>
+              <SectionedMultiSelect
+                  single
+                  colors={colors}
+                  selectedItems={this.state.preferredLocation}
+                  items={locations}
+                  uniqueKey="name"
+                  onSelectedItemsChange={this.onPreferredLocationChange}
+                  showChips={false}
+                  searchPlaceholderText="Search locations..."
+                  searchInputStyle={styles.input}
+                  submitButtonText="Select"
+                  confirmText="SAVE"
+              />
 
-            <CheckBox title="By creating an account, you agree to the Terms and Conditions and RLC Rescuer Policy." checked={this.state.agreementChecked} onPress={() => this.setState({agreementChecked: !this.state.agreementChecked})}/>
-            <CheckBox title='If you are under 18, please check this box.' checked={this.state.eighteen} onPress={() => this.setState({eighteen: !this.state.eighteen})}/>
-            <Button title='COMPLETE' onPress={this.checkValidNext} />
-          </View>
+              <Text style={styles.subHeading}>
+                Preferred Time(s)
+              </Text>
+              <SectionedMultiSelect
+                    colors={colors}
+                    selectedItems={this.state.preferredTimes}
+                    items={daysandtimes}
+                    uniqueKey="id"
+                    expandDropDowns={true}
+                    onSelectedItemsChange={this.onPreferredTimesChange}
+                    subKey="times"
+                    showChips={false}
+                    searchInputStyle={styles.input}
+                    submitButtonText="Select"
+                    confirmText="SAVE"
+              />
 
+              <Text style={styles.subHeading}>
+                  Preferred Food Weight to Carry
+              </Text>
+              <SectionedMultiSelect
+                  selectedItems={this.state.preferredWeights}
+                  colors={colors}
+                  items={foodWeights}
+                  uniqueKey="name"
+                  onSelectedItemsChange={this.onPreferredWeightsChange}
+                  showChips={false}
+                  submitButtonText="Select"
+                  confirmText="SAVE"
+              />
 
+              <CheckBox title="By creating an account, you agree to the Terms and Conditions and RLC Rescuer Policy." checked={this.state.agreementChecked} onPress={() => this.setState({agreementChecked: !this.state.agreementChecked})}/>
+              <CheckBox title='If you are under 18, please check this box.' checked={this.state.eighteen} onPress={() => this.setState({eighteen: !this.state.eighteen})}/>
+            </View>
         </ScrollView>
+        <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.button} onPress={this.checkValidNext}>
+                  <Text style={styles.buttonText}>COMPLETE</Text>
+              </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -220,105 +233,50 @@ export default class SignUp5Screen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    paddingTop: 25,
   },
-  developmentModeText: {
+  button: {
+    backgroundColor: '#38A5DB',
+    paddingVertical: 15,
     marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
+    borderRadius: 5,
+    position: 'absolute',
+    bottom: 0,
+    width: 320
+  }, 
+  buttonContainer: {
+    alignItems: 'center',
+    marginTop: 50,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    height: 50
+  },
+  buttonText: {
     textAlign: 'center',
+    color: '#FFFFFF',
+    fontWeight: '600',
+    textTransform: "uppercase"
+  },
+  inputContainer: {
+    paddingTop: 25,
   },
   contentContainer: {
+    padding: 25,
     paddingTop: 30,
   },
-  welcomeContainer: {
-    alignItems: 'center',
+  subHeading: {
+    color: '#000000',
     marginTop: 10,
-    marginBottom: 20,
+    textAlign: 'left',
+    fontWeight: '600',
+    opacity: 0.9,
+    fontSize: 14
   },
   heading: {
-        color: '#000000',
-        marginTop: 10,
-        marginBottom: 10,
-        textAlign: 'left',
-        fontWeight: '600',
-        opacity: 0.9,
-        fontSize: 20
-    },
-    subHeading: {
-        color: '#000000',
-        marginTop: 10,
-        textAlign: 'left',
-        fontWeight: '600',
-        opacity: 0.9,
-        fontSize: 14
-    },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    marginHorizontal: 10,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
     fontSize: 17,
     color: 'rgba(96,100,109, 1)',
     lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
   },
   input: {
     height: 40,

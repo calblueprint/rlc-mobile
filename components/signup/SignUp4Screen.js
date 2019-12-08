@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Platform, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import StepsTimeline from '../../components/StepsTimeline';
 import { frontendError } from '../../lib/alerts';
 
@@ -46,29 +46,66 @@ export default class SignUp4Screen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container}>
         <StepsTimeline currentPosition={3}/>
         <ScrollView
-          style={styles.container}
           contentContainerStyle={styles.contentContainer}>
-          <View style={styles.getStartedContainer}>
-            <Text style={styles.getStartedText}>Almost there! Let us know the best way to contact you.</Text>
-            <Text>Mobile Phone Number</Text>
-            <TextInput placeholder={'(123)-456-7890'} onChangeText={text => this.setState({telephone: text})}></TextInput>
-            <Text>Address (Line 1)</Text>
-            <TextInput placeholder={'123 45th St.'} onChangeText={text => this.setState({address1: text})}></TextInput>
-            <Text>Address (Line 2)</Text>
-            <TextInput placeholder={'Apt #6A'} onChangeText={text => this.setState({address2: text})}></TextInput>
-            <Text>City</Text>
-            <TextInput placeholder={'Seatle'} onChangeText={text => this.setState({city: text})}></TextInput>
-            <Text>State</Text>
-            <TextInput placeholder={'Washington'} onChangeText={text => this.setState({state: text})}></TextInput>
-            <Text>Zip Code</Text>
-            <TextInput placeholder={'12345'} onChangeText={text => this.setState({zipcode: text})}></TextInput>
-            <Button title='NEXT' onPress={this.checkValidNext}></Button>
-          </View>
+            <Text style={styles.heading}>Almost there! Let us know the best way to contact you.</Text>
+            <View style={styles.inputContainer}>
+              <Text style={styles.subHeading}>Mobile Phone Number</Text>
+              <TextInput 
+                style={styles.input} 
+                keyboardType="phone-pad"
+                placeholder={'(123)-456-7890'} 
+                onChangeText={text => this.setState({telephone: text})}
+                returnKeyType={"next"}
+                onSubmitEditing={() => this.address1Input.focus()}></TextInput>
+              <Text style={styles.subHeading}>Address (Line 1)</Text>
+              <TextInput 
+                style={styles.input}
+                placeholder={'123 45th St.'} 
+                onChangeText={text => this.setState({address1: text})}
+                returnKeyType={"next"}
+                onSubmitEditing={() => this.address2Input.focus()}
+                ref={(input) => {this.address1Input = input;}}></TextInput>
+              <Text style={styles.subHeading}>Address (Line 2)</Text>
+              <TextInput 
+                style={styles.input} 
+                placeholder={'Apt #6A'} 
+                onChangeText={text => this.setState({address2: text})}
+                returnKeyType={"next"}
+                onSubmitEditing={() => this.cityInput.focus()}
+                ref={(input) => {this.address2Input = input;}}></TextInput>
+              <Text style={styles.subHeading}>City</Text>
+              <TextInput 
+                style={styles.input} 
+                placeholder={'Seattle'} 
+                onChangeText={text => this.setState({city: text})}
+                returnKeyType={"next"}
+                onSubmitEditing={() => this.stateInput.focus()}
+                ref={(input) => {this.cityInput = input;}}></TextInput>
+              <Text style={styles.subHeading}>State</Text>
+              <TextInput 
+                style={styles.input} 
+                placeholder={'Washington'} 
+                onChangeText={text => this.setState({state: text})}
+                returnKeyType={"next"}
+                onSubmitEditing={() => this.zipCodeInput.focus()}
+                ref={(input) => {this.stateInput = input;}}></TextInput>
+              <Text style={styles.subHeading}>Zip Code</Text>
+              <TextInput 
+                style={styles.input} 
+                placeholder={'12345'} 
+                onChangeText={text => this.setState({zipcode: text})}
+                ref={(input) => {this.zipCodeInput = input;}}></TextInput>
+            </View>
         </ScrollView>
-      </View>
+        <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.button} onPress={this.checkValidNext}>
+                  <Text style={styles.buttonText}>NEXT</Text>
+              </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -76,88 +113,57 @@ export default class SignUp4Screen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    paddingTop: 25,
   },
-  developmentModeText: {
+  button: {
+    backgroundColor: '#38A5DB',
+    paddingVertical: 15,
     marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
+    borderRadius: 5,
+    position: 'absolute',
+    bottom: 0,
+    width: 320
+  }, 
+  buttonContainer: {
+    alignItems: 'center',
+    marginTop: 50,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    height: 50
+  },
+  buttonText: {
     textAlign: 'center',
+    color: '#FFFFFF',
+    fontWeight: '600',
+    textTransform: "uppercase"
+  },
+  input: {
+    height: 40,
+    marginBottom: 20,
+    paddingHorizontal: 0,
+    borderBottomWidth: 1,
+    borderBottomColor: '#3b3b3b',
+    color: '#000000',
+  },
+  inputContainer: {
+    paddingTop: 25,
+  },
+  subHeading: {
+    color: '#000000',
+    marginTop: 10,
+    textAlign: 'left',
+    fontWeight: '600',
+    opacity: 0.9,
+    fontSize: 14
   },
   contentContainer: {
+    padding: 25,
     paddingTop: 30,
   },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
+  heading: {
     fontSize: 17,
     color: 'rgba(96,100,109, 1)',
     lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
   },
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Platform, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { frontendError } from '../../lib/alerts';
 import StepsTimeline from '../../components/StepsTimeline';
 
@@ -49,19 +49,22 @@ export default class SignUp3Screen extends React.Component {
       <View style={styles.container}>
         <StepsTimeline currentPosition={2}/>
         <ScrollView
-          style={styles.container}
           contentContainerStyle={styles.contentContainer}>
-          <View style={styles.getStartedContainer}>
-            <Text style={styles.getStartedText}>Great! Now let's create your account. Your email will be your username.</Text>
-            <Text>Email</Text>
-            <TextInput placeholder={'email@email.com'} autoCapitalize={'none'} onChangeText={text => this.setState({email: text})}></TextInput>
-            <Text>Password</Text>
-            <TextInput secureTextEntry={true} placeholder={'Please include one letter and one number'} onChangeText={text => this.setState({password: text})}></TextInput>
-            <Text>Confirm Password</Text>
-            <TextInput secureTextEntry={true} placeholder={'Please re-enter your password'} onChangeText={text => this.setState({confirmPassword: text})}></TextInput>
-            <Button title='NEXT' onPress={this.checkValidNext}></Button>
-          </View>
+            <Text style={styles.heading}>Great! Now let's create your account. Your email will be your username.</Text>
+            <View style={styles.inputContainer}>
+              <Text style={styles.subHeading}>Email</Text>
+              <TextInput style={styles.input} placeholder={'email@email.com'} autoCapitalize={'none'} onChangeText={text => this.setState({email: text})}></TextInput>
+              <Text style={styles.subHeading}>Password</Text>
+              <TextInput style={styles.input} secureTextEntry={true} placeholder={'Please include one letter and one number'} onChangeText={text => this.setState({password: text})}></TextInput>
+              <Text style={styles.subHeading}>Confirm Password</Text>
+              <TextInput style={styles.input} secureTextEntry={true} placeholder={'Please re-enter your password'} onChangeText={text => this.setState({confirmPassword: text})}></TextInput>
+            </View>
         </ScrollView>
+        <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.button} onPress={this.checkValidNext}>
+                  <Text style={styles.buttonText}>NEXT</Text>
+              </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -70,88 +73,57 @@ export default class SignUp3Screen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    paddingTop: 25,
   },
-  developmentModeText: {
+  button: {
+    backgroundColor: '#38A5DB',
+    paddingVertical: 15,
     marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
+    borderRadius: 5,
+    position: 'absolute',
+    bottom: 0,
+    width: 320
+  }, 
+  buttonContainer: {
+    alignItems: 'center',
+    marginTop: 50,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    height: 50
+  },
+  buttonText: {
     textAlign: 'center',
+    color: '#FFFFFF',
+    fontWeight: '600',
+    textTransform: "uppercase"
+  },
+  input: {
+    height: 40,
+    marginBottom: 20,
+    paddingHorizontal: 0,
+    borderBottomWidth: 1,
+    borderBottomColor: '#3b3b3b',
+    color: '#000000',
+  },
+  inputContainer: {
+    paddingTop: 25,
+  },
+  subHeading: {
+    color: '#000000',
+    marginTop: 10,
+    textAlign: 'left',
+    fontWeight: '600',
+    opacity: 0.9,
+    fontSize: 14
   },
   contentContainer: {
+    padding: 25,
     paddingTop: 30,
   },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
+  heading: {
     fontSize: 17,
     color: 'rgba(96,100,109, 1)',
     lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
   },
 });

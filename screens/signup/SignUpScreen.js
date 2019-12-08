@@ -37,7 +37,7 @@ export default class SignUpScreen extends Component {
         return postRequest(
             APIRoutes.signupPath(),
             (responseData) => {
-                console.log("User registraion successful.")
+                console.log("User registration successful.")
                 console.log(responseData)
             },
             (error) => {
@@ -96,6 +96,10 @@ export default class SignUpScreen extends Component {
             </View>
         );
     }
+}
+
+SignUpScreen.navigationOptions = {
+    title: "Sign Up"
 }
 
 const styles = StyleSheet.create({
