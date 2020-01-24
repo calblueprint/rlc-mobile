@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 
 export default class ActivityCard extends React.Component {
   constructor(props) {
-      super(props)
+    super(props);
   }
   render() {
     return (
@@ -13,9 +13,7 @@ export default class ActivityCard extends React.Component {
         <Text style={styles.name}>{this.props.name}</Text>
 
         <Text style={styles.time}>{this.props.time}</Text>
-        <View
-          style={styles.details}
-        >
+        <View style={styles.details}>
           <View>
             <Text style={styles.smallGreyText}>Weight</Text>
             <Text style={styles.smallBlackText}>{this.props.weight}</Text>
@@ -90,12 +88,12 @@ const styles = StyleSheet.create({
     opacity: 1,
     fontSize: 12,
     marginBottom: 5
-  }, 
+  },
   smallBlackText: {
     color: "#000000",
     textAlign: "left",
     fontWeight: "500",
     opacity: 1,
-    fontSize: 12,
+    fontSize: 12
   }
 });
