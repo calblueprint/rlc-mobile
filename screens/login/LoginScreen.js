@@ -22,6 +22,11 @@ export default class LoginScreen extends Component {
     this.setState({ inValidText: "⚠️ The username/password is invalid" });
   };
 
+  navigateToHome = () => {
+    const { navigate } = this.props.navigation;
+    navigate("Dash");
+  };
+
   render() {
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -35,7 +40,10 @@ export default class LoginScreen extends Component {
             <Text style={styles.subtext}>{this.state.inValidText}</Text>
           </View>
           <View style={styles.formContainer}>
-            <LoginForm setInvalidText={this.setInvalidText} />
+            <LoginForm
+              setInvalidText={this.setInvalidText}
+              navigateHandler={this.navigateToHome}
+            />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

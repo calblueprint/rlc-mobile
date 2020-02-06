@@ -1,13 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   StyleSheet,
   View,
-  Icon,
   TextInput,
   TouchableOpacity,
   Text
 } from "react-native";
-import { standardError, frontendError } from "../lib/alerts";
+import { frontendError } from "../lib/alerts";
 import { postRequest } from "../lib/requests";
 import { APIRoutes } from "../config/routes";
 
@@ -20,12 +19,14 @@ export default class LoginForm extends React.Component {
     };
   }
 
-  // Does post request for creating a new session (user login)
+  // User Login
   fetchUser = params => {
     return postRequest(
       APIRoutes.loginPath(),
       responseData => {
         console.log("Log in successful.");
+        // Navigate to Home screen
+        this.props.navigateHandler();
       },
       error => {
         if (this.state.email == "" || this.state.password == "") {
@@ -38,7 +39,7 @@ export default class LoginForm extends React.Component {
     );
   };
 
-  // Sets up payload for fetchUser
+  // Login Handler
   _onPressLogin = () => {
     const params = {
       user: {
@@ -46,11 +47,8 @@ export default class LoginForm extends React.Component {
         password: this.state.password
       }
     };
-    this.fetchUser(params);
-
-    // Navigate to Home screen
-    const { navigate } = this.props.navigation;
-    navigate("Home");
+    // this.fetchUser(params);
+    this.props.navigateHandler();
   };
 
   render() {
@@ -78,17 +76,6 @@ export default class LoginForm extends React.Component {
           returnKeyType="go"
         ></TextInput>
 
-        <View style={styles.actionsContainer}>
-          <View style={{ width: 150, height: 50 }}>
-            <Text style={styles.rememberText}>Remember Me</Text>
-          </View>
-          <View style={{ width: 150, height: 50 }}>
-            <TouchableOpacity style={styles.helpLink}>
-              <Text style={styles.helpLinkText}>Reset password</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
         <View style={styles.bottomSignIn}>
           <TouchableOpacity
             style={styles.buttonContainer}
@@ -114,7 +101,8 @@ const styles = StyleSheet.create({
   },
   bottomSignIn: {
     position: "relative",
-    bottom: 20
+    bottom: 20,
+    marginTop: "10%"
   },
   actionsContainer: {
     flex: 1,

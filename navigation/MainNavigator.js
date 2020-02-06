@@ -10,7 +10,6 @@ import {
 
 // Screens
 import LoginScreen from "../screens/login/LoginScreen.js";
-import HomeScreen from "../screens/HomeScreen";
 import LinksScreen from "../screens/LinksScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import ProfileScreen from "../screens/profile/Profile.js";
@@ -18,13 +17,10 @@ import DashboardScreen from "../screens/dash/Dashboard.js";
 import DashboardScreen2 from "../screens/dash/Dashboard2.js";
 import ShiftScreen from "../screens/shift/ShiftScreen.js";
 
-// Icons
-import TabBarIcon from "../components/TabBarIcon";
-
 const MainNavigator = createStackNavigator(
   {
     Login: { screen: LoginScreen },
-    Home: { screen: HomeScreen }
+    Dash: { screen: DashboardScreen2 }
   },
   {
     headerMode: "none",
@@ -40,9 +36,3 @@ const MainNavigator = createStackNavigator(
 const App = createAppContainer(MainNavigator);
 
 export default App;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  }
-});
