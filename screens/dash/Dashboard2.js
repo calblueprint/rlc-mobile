@@ -1,60 +1,76 @@
 import React, { Component } from '../../node_modules/react';
 import { StyleSheet, View, ScrollView, Text } from 'react-native';
 import { AuthSession } from 'expo';
-
-import EventsList from '../../components/dashboard/EventsList2.js';
+import LocalStorage from '../../helpers/LocalStorage';
+import { getRequest } from '../../lib/requests';
+import { APIRoutes } from '../../config/routes';
+import EventsList2 from '../../components/dashboard/EventsList2.js';
 import ActivityCard from '../../components/dashboard/ActivityCard';
 
-export default class Dashboard extends Component {
-    render() {
-        return (
-            <View style={styles.container}>
+export default class Dashboard2 extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          user_id: 0,
+          events: [],
+        }
+    }
 
-            <View style={styles.currentEvent}>
-                
-                    <ScrollView 
-                        style={styles.horizontalView}
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={true}
-                        snapToAlignment={"center"}
-                        >
+    componentWillMount = () => {
+        LocalStorage.getUser().then((user) => {
+            this._fetchEvents(user["id"])
+        })
+    }
 
-                        <View style={styles.slideStructure}>
-                            <Text style={styles.inProgress}>• In Progress</Text>
-                            <ActivityCard 
-                                location={"📍 Washington Square Park"}
-                                name={"Washington Arch (TA114)"}
-                                time={"1:00 to 2:30 PM"}
-                                weight={"25 to 45 lbs"}
-                                numpickups={"3"}
-                                spotsOpen={"1 of 3"}
-                            />
-                        </View>
-
-                        <View style={styles.slideStructure}>
-                            <Text style={styles.needsAttention}>• Needs Attention</Text>
-                            <ActivityCard 
-                                location={"📍 Korea Town NYC"}
-                                name={"Kimbachi Tan (SA457)"}
-                                time={"5:00 to 6:30 PM"}
-                                weight={"25 to 45 lbs"}
-                                numpickups={"3"}
-                                spotsOpen={"1 of 3"}
-                            />
-                        </View>
-                        
-                    </ScrollView>
-                
-            </View>    
-
-            <EventsList />
-
-            </View>
+    _fetchEvents = (user_id) => {
+        response = getRequest(
+            APIRoutes.getEventsPath(user_id, 'attended'),
+            (responseData) => {
+                this.setState({events: responseData});
+            },
+            (error) => {
+              console.log(error)
+            },
         );
+    }
+    
+    render() {
+        if (this.state.events.length == 0) {
+            return null
+        } else {
+            return (
+                <View style={styles.container}>
+                    <View style={styles.currentEvent}>
+                        <ScrollView 
+                            style={styles.horizontalView}
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={true}
+                            snapToAlignment={"center"}
+                        >
+                            <View style={styles.slideStructure}>
+                                <Text style={styles.inProgress}>• In Progress</Text>
+                            </View>
+                            <View style={styles.slideStructure}>
+                                <Text style={styles.needsAttention}>• Needs Attention</Text>
+                                <ActivityCard 
+                                    location={"📍 Korea Town NYC"}
+                                    name={"Kimbachi Tan (SA457)"}
+                                    time={"5:00 to 6:30 PM"}
+                                    weight={"25 to 45 lbs"}
+                                    numpickups={"3"}
+                                    spotsOpen={"1 of 3"}
+                                />
+                            </View>
+                        </ScrollView>
+                    </View>
+                    <EventsList2 events={this.state.events}/>
+                </View>
+            );
+        }
     }
 }
 
-Dashboard.navigationOptions = {
+Dashboard2.navigationOptions = {
     title: 'Home',
   };
 

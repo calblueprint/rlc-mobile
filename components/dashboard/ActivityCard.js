@@ -5,10 +5,11 @@ export default class ActivityCard extends React.Component {
   constructor(props) {
     super(props);
   }
+  
   render() {
     return (
       <TouchableOpacity style={styles.card}>
-        <Text style={styles.location}>{this.props.location}</Text>
+        <Text style={styles.location}>📍 {this.props.location}</Text>
 
         <Text style={styles.name}>{this.props.name}</Text>
 

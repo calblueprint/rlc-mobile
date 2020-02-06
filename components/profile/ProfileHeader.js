@@ -8,7 +8,7 @@ export default class ProfileHeader extends Component {
                 <View style={styles.profileContainer}>
                     <Image 
                     style={styles.profilePic}
-                    source={require('../../assets/images/rlcprofilepic.png')} />
+                    source={require('../../assets/images/rlclogo.png')} />
 
                     <Text style={styles.title}>Melody Wei</Text>
                     <Text style={styles.subtext}>Member since September 2019</Text>

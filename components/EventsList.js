@@ -2,6 +2,10 @@ import * as React from 'react';
 import { View, StyleSheet, Dimensions, Text, TouchableOpacity } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import Animated from 'react-native-reanimated';
+import LocalStorage from '../helpers/LocalStorage';
+import { Constants } from 'expo-constants';
+import { postRequest, getRequest } from '../lib/requests';
+import { APIRoutes } from '../config/routes';
 
 const FirstRoute = () => (
   <View style={[styles.scene, { backgroundColor: '#FFFFFF' }]}>
@@ -25,7 +29,7 @@ const SecondRoute = () => (
             <Text style={styles.subText}>Did you know?{"\n"}
             RLC has rescued over 1.7 million{"\n"}
             pounds of food! Sign up for an event{"\n"}
-            and be a part of the movement!</Text> 
+            and be a part of the movement!</Text>
 
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.button}>
@@ -37,19 +41,33 @@ const SecondRoute = () => (
 );
 
 export default class EventsList extends React.Component {
-  state = {
-    index: 0,
-    routes: [
-      { key: 'first', title: 'Upcoming' },
-      { key: 'second', title: 'Completed' },
-    ],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      index: 0,
+      user_id: 0,
+      events: [],
+      routes: [
+        { key: 'first', title: 'Upcoming' },
+        { key: 'second', title: 'Completed' },
+      ],
+    }
+  }
+
+  componentDidMount = () => {
+    this._fetchEvents()
+  }
+
+  componentDidUpdate = () => {
+    LocalStorage.getUser().then((user) => {
+      this.setState({ user_id: user.id });
+    });
+  }
 
   _handleIndexChange = index => this.setState({ index });
 
   _renderTabBar = props => {
     const inputRange = props.navigationState.routes.map((x, i) => i);
-
     return (
       <View style={styles.tabBar}>
         {props.navigationState.routes.map((route, i) => {
@@ -97,6 +115,20 @@ export default class EventsList extends React.Component {
     first: FirstRoute,
     second: SecondRoute,
   });
+
+  _fetchEvents = () => {
+    // console.log("FETCH EVENTS")
+    return getRequest(
+        APIRoutes.getEventsPath(this.state.user_id, 'attended'),
+        (responseData) => {
+            // console.log(responseData);
+            this.setState({events: responseData});
+        },
+        (error) => {
+          // console.log(error)
+        },
+    );
+  }
 
   render() {
     return (
