@@ -5,10 +5,19 @@ export default class ActivityCard extends React.Component {
   constructor(props) {
     super(props);
   }
-  
+
+  // onPressShiftHandler = () => {
+  //   this.props.onPressHandler();
+  // };
+
   render() {
     return (
-      <TouchableOpacity style={styles.card}>
+      <TouchableOpacity
+        style={styles.card}
+        onPress={() => {
+          this.props.onPressHandler();
+        }}
+      >
         <Text style={styles.location}>📍 {this.props.location}</Text>
 
         <Text style={styles.name}>{this.props.name}</Text>

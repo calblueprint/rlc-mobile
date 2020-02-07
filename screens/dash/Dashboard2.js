@@ -1,203 +1,119 @@
-import React, { Component } from "react";
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  Text,
-  TouchableOpacity
-} from "react-native";
+import React, { Component } from "../../node_modules/react";
+import { StyleSheet, View, ScrollView, FlatList, Text } from "react-native";
 
-// Animation Libraries
-import { TabView, SceneMap } from "react-native-tab-view";
-import Animated from "react-native-reanimated";
+import EventsList from "../../components/dashboard/EventsList2.js";
+import ActivityCard from "../../components/dashboard/ActivityCard";
 
-// Components
-import ActivityCard from "../../components/dashboard/ActivityCard.js";
+export default class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+  }
 
-const FirstRoute = () => (
-  <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
-    <ScrollView style={{ height: "100%" }}>
-      <Text style={styles.heading}>Sunday, June 19, 2019</Text>
-      <ActivityCard
-        location={"📍 Union Square"}
-        name={"Union Square (US014)"}
-        time={"8:15 to 9:15 PM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"2"}
-        spotsOpen={"1 of 2"}
-      />
-      <ActivityCard
-        location={"📍 Greenwich Village"}
-        name={"Greenwich Village (GW007)"}
-        time={"4:15 to 6:15 PM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"2"}
-        spotsOpen={"1 of 2"}
-      />
-      <Text style={styles.heading}>Monday, June 20, 2019</Text>
-      <ActivityCard
-        location={"📍 Williamsburg"}
-        name={"South Side Mission (WB001)"}
-        time={"10:30 to 11:30 AM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"1"}
-        spotsOpen={"2 of 4"}
-      />
-    </ScrollView>
-  </View>
-);
-
-const SecondRoute = () => (
-  <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
-    <ScrollView style={{ height: "100%" }}>
-      <Text style={styles.heading}>Sunday, June 19, 2019</Text>
-      <ActivityCard
-        location={"📍 Home"}
-        name={"Union Square (US014)"}
-        time={"8:15 to 9:15 AM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"2"}
-        spotsOpen={"1 of 2"}
-      />
-    </ScrollView>
-  </View>
-);
-
-export default class EventsList2 extends Component {
-  state = {
-    index: 0,
-    routes: [
-      { key: "first", title: "Upcoming" },
-      { key: "second", title: "Completed" }
-    ]
+  navigateToShift = () => {
+    const { navigate } = this.props.navigation;
+    navigate("Shift");
   };
-
-  _handleIndexChange = index => this.setState({ index });
-
-  _renderTabBar = props => {
-    const inputRange = props.navigationState.routes.map((x, i) => i);
-
-    return (
-      <View style={styles.tabBar}>
-        {props.navigationState.routes.map((route, i) => {
-          const color = Animated.color(
-            Animated.round(
-              Animated.interpolate(props.position, {
-                inputRange,
-                outputRange: inputRange.map(inputIndex =>
-                  inputIndex === i ? 56 : 117
-                )
-              })
-            ),
-            Animated.round(
-              Animated.interpolate(props.position, {
-                inputRange,
-                outputRange: inputRange.map(inputIndex =>
-                  inputIndex === i ? 165 : 117
-                )
-              })
-            ),
-            Animated.round(
-              Animated.interpolate(props.position, {
-                inputRange,
-                outputRange: inputRange.map(inputIndex =>
-                  inputIndex === i ? 219 : 117
-                )
-              })
-            )
-          );
-
-          return (
-            <TouchableOpacity
-              key={i}
-              style={styles.tabItem}
-              onPress={() => this.setState({ index: i })}
-            >
-              <Animated.Text style={{ color }}>{route.title}</Animated.Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    );
-  };
-
-  _renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute
-  });
 
   render() {
     return (
-      <TabView
-        navigationState={this.state}
-        renderScene={this._renderScene}
-        renderTabBar={this._renderTabBar}
-        onIndexChange={this._handleIndexChange}
-      />
+      <View style={styles.container}>
+        <View style={styles.currentEvent}>
+          <ScrollView
+            style={styles.horizontalView}
+            horizontal={true}
+            showsHorizontalScrollIndicator={true}
+            snapToAlignment={"center"}
+            showsVerticalScrollIndicator={false}
+            pagingEnabled={true}
+            directionalLockEnabled={true}
+            automaticallyAdjustContentInsets={false}
+          >
+            <View style={styles.slideStructure}>
+              <Text style={styles.inProgress}>• In Progress</Text>
+              <ActivityCard
+                location={"📍 Washington Square Park"}
+                name={"Washington Arch (TA114)"}
+                time={"1:00 to 2:30 PM"}
+                weight={"25 to 45 lbs"}
+                numpickups={"3"}
+                spotsOpen={"1 of 3"}
+                onPressHandler={this.navigateToShift}
+              />
+            </View>
+
+            <View style={styles.slideStructure}>
+              <Text style={styles.needsAttention}>• Needs Attention</Text>
+              <ActivityCard
+                location={"📍 Korea Town NYC"}
+                name={"Kimbachi Tan (SA457)"}
+                time={"5:00 to 6:30 PM"}
+                weight={"25 to 45 lbs"}
+                numpickups={"3"}
+                spotsOpen={"1 of 3"}
+              />
+            </View>
+          </ScrollView>
+        </View>
+
+        <EventsList />
+      </View>
     );
   }
 }
 
+Dashboard.navigationOptions = {
+  title: "Home"
+};
+
 const styles = StyleSheet.create({
-  button: {
-    backgroundColor: "#38A5DB",
-    paddingVertical: 15,
-    borderRadius: 5,
-    width: 250
-  },
-  buttonContainer: {
-    alignItems: "center",
-    marginTop: 20,
-    height: 50
-  },
-  buttonText: {
-    textAlign: "center",
-    color: "#FFFFFF",
-    fontWeight: "600",
-    textTransform: "uppercase"
-  },
-  scene: {
-    flex: 1
-  },
-  subText: {
-    color: "#757575",
-    fontStyle: "italic",
-
-    textAlign: "center",
-    justifyContent: "center",
-    fontWeight: "normal",
-    marginTop: "0%",
-
-    opacity: 0.85,
-    fontSize: 16
-  },
-  infoContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#FFFFFF",
-    margin: "auto"
-  },
   container: {
     flex: 1
   },
-  tabBar: {
-    flexDirection: "row",
-    paddingTop: 10
+  currentEvent: {
+    backgroundColor: "#EEEEEE",
+    height: "30%"
   },
-  tabItem: {
-    flex: 1,
-    alignItems: "center",
-    padding: 10
-  },
-  heading: {
+  subText: {
     color: "#000000",
-    marginTop: 10,
-    marginBottom: 10,
-    marginLeft: "8%",
-    textAlign: "left",
-    fontWeight: "600",
-    opacity: 0.7,
+    fontStyle: "italic",
+    justifyContent: "center",
+    textAlign: "center",
+    fontWeight: "normal",
+    marginTop: "27.5%",
+    opacity: 0.85,
     fontSize: 16
+  },
+  eventsList: {
+    flex: 1,
+    height: "100%"
+  },
+  horizontalView: {
+    height: "100%",
+    marginTop: "10%"
+  },
+  scrollWrapper: {
+    height: "90%"
+  },
+  slideStructure: {
+    width: 400,
+    height: 400
+  },
+  inProgress: {
+    color: "#7CB342",
+    fontStyle: "italic",
+    fontWeight: "700",
+    textAlign: "center",
+    opacity: 0.9,
+    fontSize: 16,
+    marginBottom: 10
+  },
+  needsAttention: {
+    color: "#E64A19",
+    fontStyle: "italic",
+    fontWeight: "700",
+    textAlign: "center",
+    opacity: 0.9,
+    fontSize: 16,
+    marginBottom: 10
   }
 });

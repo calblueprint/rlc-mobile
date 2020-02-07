@@ -20,11 +20,12 @@ import ShiftScreen from "../screens/shift/ShiftScreen.js";
 const MainNavigator = createStackNavigator(
   {
     Login: { screen: LoginScreen },
-    Dash: { screen: DashboardScreen2 }
+    Dash: { screen: DashboardScreen2 },
+    Shift: { screen: ShiftScreen }
   },
   {
     headerMode: "none",
-    initialRouteName: "Login",
+    initialRouteName: "Dash",
     defaultNavigationOptions: {
       ...TransitionPresets.FadeFromBottomAndroid,
       cardOverlayEnabled: true,
