@@ -10,8 +10,6 @@ import {
 
 // Screens
 import LoginScreen from "../screens/login/LoginScreen.js";
-import LinksScreen from "../screens/LinksScreen";
-import SettingsScreen from "../screens/SettingsScreen";
 import ProfileScreen from "../screens/profile/Profile.js";
 import DashboardScreen from "../screens/dash/Dashboard.js";
 import DashboardScreen2 from "../screens/dash/Dashboard2.js";
@@ -25,7 +23,7 @@ const MainNavigator = createStackNavigator(
   },
   {
     headerMode: "none",
-    initialRouteName: "Dash",
+    initialRouteName: "Login",
     defaultNavigationOptions: {
       ...TransitionPresets.FadeFromBottomAndroid,
       cardOverlayEnabled: true,
