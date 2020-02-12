@@ -1,17 +1,22 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-// Default template for creating new screens and components in React Native.
+// Constants
+import Styles from "../constants/Styles";
 
 class LogoScreen extends React.Component {
-  static navigationOptions = {
-    title: "Default"
-  };
   render() {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
+        <View style={Styles.logoContainer}>
+          <Image
+            style={Styles.logo}
+            source={require("../../assets/images/rlclogo.png")}
+          />
+          <Text style={Styles.title}>Let's rescue some food 👍</Text>
+          <Text style={Styles.subtext}>{this.state.inValidText}</Text>
+        </View>
       </View>
     );
   }

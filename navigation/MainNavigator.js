@@ -9,6 +9,7 @@ import {
 } from "react-navigation-stack";
 
 // Screens
+import LogoScreen from "../screens/LogoScreen.js";
 import LoginScreen from "../screens/login/LoginScreen.js";
 import ProfileScreen from "../screens/profile/Profile.js";
 import DashboardScreen from "../screens/dash/Dashboard.js";
@@ -17,6 +18,7 @@ import ShiftScreen from "../screens/shift/ShiftScreen.js";
 
 const MainNavigator = createStackNavigator(
   {
+    Logo: { screen: LogoScreen },
     Login: { screen: LoginScreen },
     Dash: { screen: DashboardScreen2 },
     Shift: { screen: ShiftScreen }
