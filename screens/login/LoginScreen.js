@@ -31,6 +31,11 @@ export default class LoginScreen extends Component {
     navigate("Dash");
   };
 
+  navigateToSignup = () => {
+    const { navigate } = this.props.navigation;
+    navigate("Signup");
+  };
+
   render() {
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -47,6 +52,7 @@ export default class LoginScreen extends Component {
             <LoginForm
               setInvalidText={this.setInvalidText}
               navigateHandler={this.navigateToHome}
+              navigateToSignup={this.navigateToSignup}
             />
           </View>
         </ScrollView>
@@ -58,7 +64,7 @@ export default class LoginScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#ffffff"
+    backgroundColor: "white"
   },
   formContainer: {
     height: "100%"

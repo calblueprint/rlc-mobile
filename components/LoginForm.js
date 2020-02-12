@@ -51,6 +51,11 @@ export default class LoginForm extends React.Component {
     this.props.navigateHandler();
   };
 
+  // Handler to Navigate to Signup
+  _onPressSignup = () => {
+    this.props.navigateToSignup();
+  };
+
   render() {
     return (
       <View behavior="padding" style={styles.container}>
@@ -84,11 +89,13 @@ export default class LoginForm extends React.Component {
             <Text style={styles.buttonText}>Sign In</Text>
           </TouchableOpacity>
 
-          <Text style={styles.signupText}>
-            {" "}
-            Don't have an account?
-            <Text style={styles.helpLinkText}> Sign Up Here</Text>
-          </Text>
+          <TouchableOpacity onPress={this._onPressSignup}>
+            <Text style={styles.signupText}>
+              {" "}
+              Don't have an account?
+              <Text style={styles.helpLinkText}> Sign Up Here</Text>
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     );

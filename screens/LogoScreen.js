@@ -1,21 +1,27 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 
 // Constants
 import Styles from "../constants/Styles";
+import Sizes from "../constants/Sizes";
 
 class LogoScreen extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
+
+    setTimeout(toMain, 1400);
+
+    function toMain() {
+      navigate("Login");
+    }
+
     return (
-      <View style={styles.container}>
-        <View style={Styles.logoContainer}>
+      <View style={{ ...Styles.container, ...styles.container }}>
+        <View style={styles.logoContainer}>
           <Image
-            style={Styles.logo}
-            source={require("../../assets/images/rlclogo.png")}
+            style={styles.logo}
+            source={require("../assets/images/rlclogo2.png")}
           />
-          <Text style={Styles.title}>Let's rescue some food 👍</Text>
-          <Text style={Styles.subtext}>{this.state.inValidText}</Text>
         </View>
       </View>
     );
@@ -24,10 +30,15 @@ class LogoScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
     justifyContent: "center"
+  },
+  logoContainer: {
+    alignItems: "center",
+    marginBottom: "40%"
+  },
+  logo: {
+    width: "40%",
+    height: Sizes.width * 0.4
   }
 });
 

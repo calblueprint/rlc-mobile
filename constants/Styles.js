@@ -11,8 +11,7 @@ export default StyleSheet.create({
   // Containers
   container: {
     flex: 1,
-    backgroundColor: "white",
-    alignItems: "center"
+    backgroundColor: "white"
   },
   // Logo
   logoContainer: {
