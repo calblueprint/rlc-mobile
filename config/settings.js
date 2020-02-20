@@ -1,14 +1,13 @@
-import { Platform } from 'react-native'
+import { Platform } from "react-native";
 
 /**
  * Determines URL based on whether in production or dev environment
  */
- // TODO (Kelsey): test whether if check actually works
-if (process.env.NODE_ENV === 'production') {
-  console.log('production');
-//   URL = 'https://dream-rails-herokoconnect.herokuapp.com';
+// TODO (Kelsey): test whether if check actually works
+if (process.env.NODE_ENV === "production") {
+  console.log("production");
 } else {
-  console.log('staging');
+  console.log("staging");
   URL = Platform.select({
     ios: "http://localhost:3000",
     // For Android Emulator
@@ -18,7 +17,7 @@ if (process.env.NODE_ENV === 'production') {
 
 export const settings = {
   env: process.env.NODE_ENV,
-  URL,
+  URL
 };
 
 export default settings;
