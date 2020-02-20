@@ -11,7 +11,8 @@ import {
 // Screens
 import LogoScreen from "../screens/LogoScreen.js";
 import LoginScreen from "../screens/login/LoginScreen.js";
-import SignupScreen from "../screens/DefaultScreen.js";
+import SignupScreen from "../screens/signup/SignUpScreen.js";
+import ConfirmationScreen from "../components/signup/ConfirmationScreen.js";
 import ProfileScreen from "../screens/profile/Profile.js";
 import DashboardScreen from "../screens/dash/Dashboard.js";
 import DashboardScreen2 from "../screens/dash/Dashboard2.js";
@@ -22,12 +23,13 @@ const MainNavigator = createStackNavigator(
     Logo: { screen: LogoScreen },
     Login: { screen: LoginScreen },
     Signup: { screen: SignupScreen },
+    Confirm: { screen: ConfirmationScreen },
     Dash: { screen: DashboardScreen2 },
     Shift: { screen: ShiftScreen }
   },
   {
     headerMode: "none",
-    initialRouteName: "Logo",
+    initialRouteName: "Confirm",
     defaultNavigationOptions: {
       ...TransitionPresets.FadeFromBottomAndroid,
       cardOverlayEnabled: true,
