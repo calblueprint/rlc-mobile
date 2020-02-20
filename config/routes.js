@@ -10,12 +10,17 @@ export class APIRoutes {
     return `/users/${route}`;
   }
 
-  // Login
+  // Signup and Login
   static signupPath() {
-    return `/sign_up`;
+    return `/users`;
   }
   static loginPath() {
     return APIRoutes.deviseRoute(`sign_in`);
+  }
+
+  // Reset Password
+  static UserPasswordPath() {
+    return APIRoutes.deviseRoute(`password`);
   }
 
   // Events
