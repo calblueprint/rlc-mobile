@@ -38,7 +38,7 @@ export default class LoginScreen extends Component {
 
   render() {
     return (
-      <KeyboardAvoidingView behavior="padding" style={styles.container}>
+      <KeyboardAvoidingView behavior="padding" style={Styles.container}>
         <ScrollView>
           <View style={Styles.logoContainer}>
             <Image
@@ -62,10 +62,6 @@ export default class LoginScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white"
-  },
   formContainer: {
     height: "100%"
   }

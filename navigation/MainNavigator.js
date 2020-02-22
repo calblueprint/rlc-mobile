@@ -29,7 +29,7 @@ const MainNavigator = createStackNavigator(
   },
   {
     headerMode: "none",
-    initialRouteName: "Confirm",
+    initialRouteName: "Login",
     defaultNavigationOptions: {
       ...TransitionPresets.FadeFromBottomAndroid,
       cardOverlayEnabled: true,
