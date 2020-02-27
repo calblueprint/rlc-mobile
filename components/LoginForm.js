@@ -47,7 +47,7 @@ export default class LoginForm extends React.Component {
         password: this.state.password
       }
     };
-    // this.fetchUser(params);
+    this.fetchUser(params).then(result => console.log(result));
     this.props.navigateHandler();
   };
 
