@@ -4,9 +4,6 @@ import { StyleSheet, Text, View } from "react-native";
 // Default template for creating new screens and components in React Native.
 
 class DefaultScreen extends React.Component {
-  static navigationOptions = {
-    title: "Default"
-  };
   render() {
     const { navigate } = this.props.navigation;
     return (

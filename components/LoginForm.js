@@ -24,7 +24,7 @@ export default class LoginForm extends React.Component {
     return postRequest(
       APIRoutes.loginPath(),
       responseData => {
-        console.log("Log in successful.");
+        console.log("Log in successful.", responseData);
         // Navigate to Home screen
         this.props.navigateHandler();
       },
@@ -34,6 +34,7 @@ export default class LoginForm extends React.Component {
         } else {
           this.props.setInvalidText();
         }
+        console.log(error);
       },
       params
     );
@@ -47,8 +48,8 @@ export default class LoginForm extends React.Component {
         password: this.state.password
       }
     };
-    // this.fetchUser(params);
-    this.props.navigateHandler();
+    this.fetchUser(params);
+    // this.props.navigateHandler();
   };
 
   // Handler to Navigate to Signup
