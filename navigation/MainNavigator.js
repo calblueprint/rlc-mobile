@@ -11,11 +11,12 @@ import {
 // Screens
 import LogoScreen from "../screens/LogoScreen.js";
 import LoginScreen from "../screens/login/LoginScreen.js";
-import SignupScreen from "../screens/DefaultScreen.js";
+import SignupScreen from "../screens/signup/SignUpScreen.js";
 import ProfileScreen from "../screens/profile/Profile.js";
 import DashboardScreen from "../screens/dash/Dashboard.js";
 import DashboardScreen2 from "../screens/dash/Dashboard2.js";
 import ShiftScreen from "../screens/shift/ShiftScreen.js";
+import OnboardingScreen from "../screens/OnboardingScreen.js";
 
 const MainNavigator = createStackNavigator(
   {
@@ -23,11 +24,12 @@ const MainNavigator = createStackNavigator(
     Login: { screen: LoginScreen },
     Signup: { screen: SignupScreen },
     Dash: { screen: DashboardScreen2 },
-    Shift: { screen: ShiftScreen }
+    Shift: { screen: ShiftScreen },
+    Onboarding: { screen: OnboardingScreen }
   },
   {
     headerMode: "none",
-    initialRouteName: "Logo",
+    initialRouteName: "Shift",
     defaultNavigationOptions: {
       ...TransitionPresets.FadeFromBottomAndroid,
       cardOverlayEnabled: true,

@@ -42,5 +42,20 @@ export default StyleSheet.create({
     fontWeight: "normal",
     opacity: 0.85,
     fontSize: normalize(16)
+  },
+
+  buttonText: {
+    textAlign: "center",
+    color: "#fff",
+    fontWeight: "600"
+  },
+
+  button: {
+    backgroundColor: "#38A5DB",
+    paddingVertical: 15,
+    marginBottom: 20,
+    width: "95%",
+    borderRadius: 5
+
   }
 });

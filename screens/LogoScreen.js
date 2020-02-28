@@ -12,7 +12,7 @@ class LogoScreen extends React.Component {
     setTimeout(toMain, 1400);
 
     function toMain() {
-      navigate("Login");
+      navigate("Onboarding");
     }
 
     return (

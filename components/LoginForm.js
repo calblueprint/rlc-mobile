@@ -9,6 +9,7 @@ import {
 import { frontendError } from "../lib/alerts";
 import { postRequest } from "../lib/requests";
 import { APIRoutes } from "../config/routes";
+import Styles from "../constants/Styles.js";
 
 export default class LoginForm extends React.Component {
   constructor(props) {
@@ -83,10 +84,10 @@ export default class LoginForm extends React.Component {
 
         <View style={styles.bottomSignIn}>
           <TouchableOpacity
-            style={styles.buttonContainer}
+            style={Styles.button}
             onPress={this._onPressLogin}
           >
-            <Text style={styles.buttonText}>Sign In</Text>
+            <Text style={Styles.buttonText}>Sign In</Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={this._onPressSignup}>
@@ -130,17 +131,6 @@ const styles = StyleSheet.create({
   signupText: {
     height: 20,
     textAlign: "center"
-  },
-  buttonContainer: {
-    backgroundColor: "#38A5DB",
-    paddingVertical: 15,
-    marginBottom: 20,
-    borderRadius: 5
-  },
-  buttonText: {
-    textAlign: "center",
-    color: "#FFFFFF",
-    fontWeight: "600"
   },
   rememberText: {
     textAlign: "left",
