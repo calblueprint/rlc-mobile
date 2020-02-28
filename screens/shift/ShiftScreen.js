@@ -1,28 +1,29 @@
 import * as React from 'react';
 import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Text, TextInput, FlatList, Switch, Image, TouchableOpacity } from 'react-native';
+import Header from "../../components/shift/Header"
 
 function participantCard(data) {
      const participant = data.item;
-          return (
-               <View styles={styles.participant_card}>
+     return (
+          <View styles={styles.participant_card}>
 
-                    <View style={styles.participant_badge}>
-                         {participant.role == "Volunteer" && <Switch style={styles.volunteer_switch} value={participant.verified} />}
-                         <Image
-                              style={styles.profilePic}
-                              source={require("../../assets/images/rlcprofilepic.png")} />
-                         <View style={styles.participant_detail}>
-                              <Text styles={styles.participant_name}>
-                                   {participant.name}
-                              </Text>
-                              <Text styles={styles.particpant_role}>
-                                   {participant.role}
-                              </Text>
-                         </View>
+               <View style={styles.participant_badge}>
+                    {participant.role == "Volunteer" && <Switch style={styles.volunteer_switch} value={participant.verified} />}
+                    <Image
+                         style={styles.profilePic}
+                         source={require("../../assets/images/rlcprofilepic.png")} />
+                    <View style={styles.participant_detail}>
+                         <Text styles={styles.participant_name}>
+                              {participant.name}
+                         </Text>
+                         <Text styles={styles.particpant_role}>
+                              {participant.role}
+                         </Text>
                     </View>
-
                </View>
-          )
+
+          </View>
+     )
 }
 
 function instructionDetail(data) {
@@ -37,6 +38,8 @@ function instructionDetail(data) {
           </View>
      )
 }
+
+
 
 export default class ShiftScreen extends React.Component {
      constructor(props) {
@@ -108,11 +111,23 @@ export default class ShiftScreen extends React.Component {
           }
      }
 
+     navigateToDash = () => {
+          const { navigate } = this.props.navigation;
+          navigate("Dash");
+     };
+
      render() {
           return (
                <KeyboardAvoidingView behavior="position">
                     <ScrollView>
+                         <Header
+                              centerTitle="In Progress"
+                              onPressBack={this.navigateToDash}
+                              actionTitle="Withdraw"
+                              onPressHandler={this.navigateToDash}
+                         />
                          <View style={styles.container}>
+
                               <Text style={styles.status}>
                                    happening now
                               </Text>
@@ -151,14 +166,14 @@ export default class ShiftScreen extends React.Component {
                               <Text style={{ fontSize: 20, color: "#4B5D68", marginTop: 15, marginBottom: 10, fontWeight: '500' }}>
                                    Shift Tasks
                               </Text>
-                              <Text style={{ fontSize: 17}}>
+                              <Text style={{ fontSize: 17 }}>
                                    *Please take a cab only under extenuating circumstances (weight of food is heavy, harsh weather conditions, etc). Please keep the receipt so that we can reimburse you.
                               </Text>
                               <FlatList
                                    data={this.state.shiftInstructions}
                                    renderItem={instructionDetail}
                               />
-                         
+
                               <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
                                    <Text style={{ fontSize: 16 }}>9.</Text>
                                    <Text style={{ fontSize: 16, flex: 1, paddingLeft: 5 }}>Enter pounds of food saved:*</Text>
@@ -185,7 +200,7 @@ export default class ShiftScreen extends React.Component {
                                    </TouchableOpacity>
                               </View>
                          </View>
-                         
+
 
                     </ScrollView>
 
@@ -296,18 +311,18 @@ const styles = StyleSheet.create({
           marginBottom: 20,
           borderRadius: 5,
           width: 250,
-      },
-      buttonContainer: {
+     },
+     buttonContainer: {
           alignItems: 'center',
           marginTop: 20,
           flex: 1,
           alignItems: 'center',
           height: 50
-      },
-      buttonText: {
+     },
+     buttonText: {
           textAlign: 'center',
           color: '#FFFFFF',
           fontWeight: '600',
           textTransform: "uppercase"
-      }
+     }
 })
