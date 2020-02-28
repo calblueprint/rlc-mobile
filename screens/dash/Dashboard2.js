@@ -1,9 +1,10 @@
 import React, { Component } from "../../node_modules/react";
-import { StyleSheet, View, ScrollView, FlatList, Text } from "react-native";
+import { AsyncStorage, StyleSheet, View, ScrollView, FlatList, Text } from "react-native";
 
 // Components
 import EventsList from "../../components/dashboard/EventsList2.js";
 import ActivityCard from "../../components/dashboard/ActivityCard";
+import ProfileForm from "../../components/profile/ProfileForm.js";
 
 // Utils
 import { normalize } from "../../utils/Normalize.js";
@@ -11,6 +12,26 @@ import { normalize } from "../../utils/Normalize.js";
 export default class Dashboard extends Component {
   constructor(props) {
     super(props);
+  }
+
+  async componentDidMount() {
+    const user = this.props.navigation.state.params.userInfo;
+    console.log(user.firstname);
+    await AsyncStorage.setItem('user',
+      JSON.stringify({'userId': user.id,
+      'firstName': user.firstname,
+      'lastName': user.lastname,
+      'occupation': user.occupation,
+      'phoneNumber': user.telephone,
+      'address': user.address,
+      'city': "",
+      'state': "",
+      'zipCode': user.zip_code,
+      'email': user.email,
+      'preferredRegion': user.preferred_region_id,
+      'preferredLocation': user.preferred_location_id,
+      'preferredTimes': ""
+    }));
   }
 
   navigateToShift = () => {
@@ -40,7 +61,7 @@ export default class Dashboard extends Component {
             />
           </View>
         </View>
-
+        <ProfileForm />
         <EventsList />
       </View>
     );

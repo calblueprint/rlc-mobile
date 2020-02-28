@@ -26,9 +26,9 @@ export default class LoginScreen extends Component {
     this.setState({ inValidText: "⚠️ The username/password is invalid" });
   };
 
-  navigateToHome = () => {
+  navigateToHome = (responseData) => {
     const { navigate } = this.props.navigation;
-    navigate("Dash");
+    navigate("Dash", {userInfo: responseData});
   };
 
   navigateToSignup = () => {

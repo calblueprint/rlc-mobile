@@ -26,7 +26,7 @@ export default class LoginForm extends React.Component {
       responseData => {
         console.log("Log in successful.", responseData);
         // Navigate to Home screen
-        this.props.navigateHandler();
+        this.props.navigateHandler(responseData);
       },
       error => {
         if (this.state.email == "" || this.state.password == "") {
