@@ -4,7 +4,8 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  Text
+  Text,
+  AsyncStorage
 } from "react-native";
 import { frontendError } from "../lib/alerts";
 import { postRequest } from "../lib/requests";
@@ -25,8 +26,7 @@ export default class LoginForm extends React.Component {
       APIRoutes.loginPath(),
       responseData => {
         console.log("Log in successful.", responseData);
-        // Navigate to Home screen
-        this.props.navigateHandler();
+        this._asyncSignIn(responseData);
       },
       error => {
         if (this.state.email == "" || this.state.password == "") {
@@ -40,6 +40,12 @@ export default class LoginForm extends React.Component {
     );
   };
 
+  // Store in AsyncStorage
+  _asyncSignIn = async user => {
+    await AsyncStorage.setItem("user", JSON.stringify(user));
+    this.props.navigateHandler();
+  };
+
   // Login Handler
   _onPressLogin = () => {
     const params = {
@@ -49,7 +55,6 @@ export default class LoginForm extends React.Component {
       }
     };
     this.fetchUser(params);
-    // this.props.navigateHandler();
   };
 
   // Handler to Navigate to Signup

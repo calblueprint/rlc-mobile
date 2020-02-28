@@ -3,7 +3,6 @@ import { Platform } from "react-native";
 /**
  * Determines URL based on whether in production or dev environment
  */
-// TODO (Kelsey): test whether if check actually works
 if (process.env.NODE_ENV === "production") {
   console.log("production");
 } else {

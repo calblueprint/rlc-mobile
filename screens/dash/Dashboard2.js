@@ -1,5 +1,12 @@
 import React, { Component } from "../../node_modules/react";
-import { StyleSheet, View, ScrollView, FlatList, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  FlatList,
+  Text,
+  AsyncStorage
+} from "react-native";
 
 // Components
 import EventsList from "../../components/dashboard/EventsList2.js";
@@ -7,10 +14,22 @@ import ActivityCard from "../../components/dashboard/ActivityCard";
 
 // Utils
 import { normalize } from "../../utils/Normalize.js";
+import LocalStorage from "../../helpers/LocalStorage";
 
 export default class Dashboard extends Component {
   constructor(props) {
     super(props);
+    this.setState({
+      user: null
+    });
+  }
+
+  async componentDidMount() {
+    let user = await LocalStorage.getUser();
+    this.setState({
+      user: user
+    });
+    console.log("Micah is printing user info", this.state.user);
   }
 
   navigateToShift = () => {
