@@ -64,12 +64,38 @@ const SecondRoute = () => (
 );
 
 export default class EventsList2 extends Component {
-  state = {
-    index: 0,
-    routes: [
-      { key: "first", title: "Upcoming" },
-      { key: "second", title: "Completed" }
-    ]
+  constructor(props) {
+    super(props);
+    this.state = {
+      index: 0,
+      user_id: 0,
+      events: [],
+      routes: [
+        { key: "first", title: "Upcoming" },
+        { key: "second", title: "Completed" }
+      ]
+    };
+  }
+
+  // Added: AsyncStorage helper
+  async componentDidMount() {
+    let user = await LocalStorage.getUser();
+    this.setState({ user_id: user.id });
+    this._fetchEvents();
+  }
+
+  // Fetch function; not sure if this works yet
+  _fetchEvents = () => {
+    return getRequest(
+      APIRoutes.getEventsPath(this.state.user_id, "attended"),
+      responseData => {
+        console.log("event info", responseData);
+        this.setState({ events: responseData });
+      },
+      error => {
+        // console.log(error)
+      }
+    );
   };
 
   _handleIndexChange = index => this.setState({ index });

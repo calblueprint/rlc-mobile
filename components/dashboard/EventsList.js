@@ -58,15 +58,11 @@ export default class EventsList extends React.Component {
     };
   }
 
-  componentDidMount = () => {
+  async componentDidMount() {
+    let user = await LocalStorage.getUser();
+    this.setState({ user_id: user.id });
     this._fetchEvents();
-  };
-
-  componentDidUpdate = () => {
-    LocalStorage.getUser().then(user => {
-      this.setState({ user_id: user.id });
-    });
-  };
+  }
 
   _handleIndexChange = index => this.setState({ index });
 
@@ -122,11 +118,10 @@ export default class EventsList extends React.Component {
   });
 
   _fetchEvents = () => {
-    // console.log("FETCH EVENTS")
     return getRequest(
       APIRoutes.getEventsPath(this.state.user_id, "attended"),
       responseData => {
-        // console.log(responseData);
+        console.log("event info", responseData);
         this.setState({ events: responseData });
       },
       error => {
