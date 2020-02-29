@@ -3,7 +3,7 @@ import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Text, TextInput, Fl
 import Styles from "../../constants/Styles";
 import { normalize } from "../../utils/Normalize";
 
-class Header extends React.Component {
+class ParticipantCard1 extends React.Component {
     constructor(props) {
         super(props)
     }

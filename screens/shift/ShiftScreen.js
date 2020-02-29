@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Text, TextInput, FlatList, Switch, Image, TouchableOpacity } from 'react-native';
 import Header from "../../components/shift/Header"
 import { CheckBox } from 'react-native-elements'
-
+import LocTimeline from '../../components/shift/LocTimeline'
 
 
 function instructionDetail(data) {
@@ -162,9 +162,7 @@ export default class ShiftScreen extends React.Component {
 
                                    </View>
 
-                                   <View style={styles.guide_box}>
-
-                                   </View>
+                                   <LocTimeline />
 
                                    <FlatList style={styles.list}
                                         data={this.state.participantData}
