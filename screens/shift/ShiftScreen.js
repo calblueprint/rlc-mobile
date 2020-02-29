@@ -1,30 +1,9 @@
 import * as React from 'react';
 import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Text, TextInput, FlatList, Switch, Image, TouchableOpacity } from 'react-native';
 import Header from "../../components/shift/Header"
+import { CheckBox } from 'react-native-elements'
 
-function participantCard(data) {
-     const participant = data.item;
-     return (
-          <View styles={styles.participant_card}>
 
-               <View style={styles.participant_badge}>
-                    {participant.role == "Volunteer" && <Switch style={styles.volunteer_switch} value={participant.verified} />}
-                    <Image
-                         style={styles.profilePic}
-                         source={require("../../assets/images/rlcprofilepic.png")} />
-                    <View style={styles.participant_detail}>
-                         <Text styles={styles.participant_name}>
-                              {participant.name}
-                         </Text>
-                         <Text styles={styles.particpant_role}>
-                              {participant.role}
-                         </Text>
-                    </View>
-               </View>
-
-          </View>
-     )
-}
 
 function instructionDetail(data) {
      const step = data.item;
@@ -104,11 +83,39 @@ export default class ShiftScreen extends React.Component {
                     },
                     {
                          step: 8,
-                         description: "Request a receipt from Bowery MIssion and take a photo of the receipt*",
+                         description: "Request a receipt from Bowery Mission and take a photo of the receipt*",
                          photo_needed: true
                     },
                ]
           }
+     }
+
+     participantCard = (data) => {
+          const participant = data.item;
+          return (
+               <View styles={styles.participant_card}>
+
+                    <View style={styles.participant_badge}>
+
+                         {participant.role == "Volunteer" && <CheckBox
+                              checked={participant.verified}
+                              onPress={() => this.setState(prevState => { participant.verified != prevState.participant.verified })}
+                         />}
+                         <Image
+                              style={styles.profilePic}
+                              source={require("../../assets/images/rlcprofilepic.png")} />
+                         <View style={styles.participant_detail}>
+                              <Text styles={styles.participant_name}>
+                                   {participant.name}
+                              </Text>
+                              <Text styles={styles.particpant_role}>
+                                   {participant.role}
+                              </Text>
+                         </View>
+                    </View>
+
+               </View>
+          )
      }
 
      navigateToDash = () => {
@@ -160,7 +167,7 @@ export default class ShiftScreen extends React.Component {
 
                               <FlatList
                                    data={this.state.participantData}
-                                   renderItem={participantCard}
+                                   renderItem={this.participantCard}
                               />
 
                               <Text style={{ fontSize: 20, color: "#4B5D68", marginTop: 15, marginBottom: 10, fontWeight: '500' }}>
@@ -196,7 +203,7 @@ export default class ShiftScreen extends React.Component {
 
                               <View style={styles.buttonContainer}>
                                    <TouchableOpacity style={styles.button}>
-                                        <Text style={styles.buttonText}>Continue</Text>
+                                        <Text style={styles.buttonText}>Complete</Text>
                                    </TouchableOpacity>
                               </View>
                          </View>

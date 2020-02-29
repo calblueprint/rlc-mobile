@@ -15,7 +15,9 @@ class Header extends React.Component {
                     onPress={() => {
                         this.props.onPressBack();
                     }}
-                ><Icon name="arrow_back" color="#38A5DB" /></TouchableOpacity>
+                ><Image
+                        source={require("../../assets/images/back_arrow.png")}
+                    /></TouchableOpacity>
                 <Text style={{ ...Styles.title, ...styles.title }}>{this.props.centerTitle}</Text>
                 <TouchableOpacity
                     onPress={() => {
