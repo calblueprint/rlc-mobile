@@ -41,12 +41,6 @@ export default class LoginForm extends React.Component {
     );
   };
 
-  // Store in AsyncStorage
-  _asyncSignIn = async user => {
-    await AsyncStorage.setItem("user", JSON.stringify(user));
-    this.props.navigateHandler();
-  };
-
   // Login Handler
   _onPressLogin = () => {
     const params = {

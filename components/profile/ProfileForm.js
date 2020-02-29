@@ -20,15 +20,12 @@ export default class LoginForm extends Component {
             'preferredRegion': "",
             'preferredLocation': "",
             'preferredTimes': null
-      }
+        }
     }
 
     async componentDidMount(props) {
         const user = JSON.parse(await LocalStorage.getUser());
-        console.log(user);
         this.setState(user);
-        console.log("hi");
-        console.log(this.state);
     }
 
     render() {

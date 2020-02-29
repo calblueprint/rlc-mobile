@@ -76,14 +76,8 @@ export default class EventsList2 extends Component {
     };
   }
 
-  // Added: AsyncStorage helper
-  // async componentDidMount() {
-  //   let user = await LocalStorage.getUser();
-  //   this.setState({ user_id: user.id });
-  //   this._fetchEvents();
-  // }
-
   // Fetch function; not sure if this works yet
+  // TODO: @Johnathan / @Suhas, get fetch events to work 
   _fetchEvents = () => {
     return getRequest(
       APIRoutes.getEventsPath(this.state.user_id, "attended"),

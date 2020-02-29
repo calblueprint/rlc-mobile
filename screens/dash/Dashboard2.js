@@ -22,14 +22,6 @@ export default class Dashboard extends Component {
     super(props);
   }
 
-  // async componentDidMount() {
-  //   let user = await LocalStorage.getUser();
-  //   this.setState({
-  //     user: user
-  //   });
-  //   console.log("Micah is printing user info", this.state.user);
-  // }
-
   async componentDidMount() {
     const user = this.props.navigation.state.params.userInfo;
     const userJSON = JSON.stringify({'userId': user.id,
@@ -47,22 +39,6 @@ export default class Dashboard extends Component {
       'preferredTimes': ""
     })
     await LocalStorage.storeUser(userJSON)
-  //   console.log(user.firstname);
-  //   await AsyncStorage.setItem('user',
-  //     JSON.stringify({'userId': user.id,
-  //     'firstName': user.firstname,
-  //     'lastName': user.lastname,
-  //     'occupation': user.occupation,
-  //     'phoneNumber': user.telephone,
-  //     'address': user.address,
-  //     'city': "",
-  //     'state': "",
-  //     'zipCode': user.zip_code,
-  //     'email': user.email,
-  //     'preferredRegion': user.preferred_region_id,
-  //     'preferredLocation': user.preferred_location_id,
-  //     'preferredTimes': ""
-  //   }));
   }
 
   navigateToShift = () => {
@@ -92,7 +68,6 @@ export default class Dashboard extends Component {
             />
           </View>
         </View>
-        <ProfileForm />
         <EventsList />
       </View>
     );
