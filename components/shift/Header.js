@@ -11,15 +11,17 @@ class Header extends React.Component {
     render() {
         return (
             < View style={styles.container} >
-                <TouchableOpacity
+                <TouchableOpacity style={styles.sides}
                     onPress={() => {
                         this.props.onPressBack();
                     }}
-                ><Image
+                >
+                    <Image style={{ height: 15, width: 15, resizeMode: 'contain' }}
                         source={require("../../assets/images/back_arrow.png")}
-                    /></TouchableOpacity>
-                <Text style={{ ...Styles.title, ...styles.title }}>{this.props.centerTitle}</Text>
-                <TouchableOpacity
+                    />
+                </TouchableOpacity>
+                <Text style={{ ...styles.center, ...styles.title }}>{this.props.centerTitle}</Text>
+                <TouchableOpacity style={styles.sides}
                     onPress={() => {
                         this.props.onPressHandler();
                     }}
@@ -38,7 +40,6 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         flexDirection: 'row',
-        alignContent: 'center',
         alignItems: 'flex-end',
         justifyContent: 'center',
         padding: 15,
@@ -46,7 +47,18 @@ const styles = StyleSheet.create({
         borderBottomColor: "#ccc",
         paddingTop: 50
     },
+    sides: {
+        width: '30%',
+        textAlign: 'center'
+    },
+    center: {
+        width: '40%',
+        textAlign: 'center'
+    },
     title: {
+        color: "#4A4A4A",
+        fontWeight: "600",
+        fontSize: 20,
         marginTop: "0%",
         marginBottom: "0%",
     },
@@ -55,6 +67,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
         fontWeight: "bold",
         opacity: 0.9,
-        fontSize: normalize(16)
+        fontSize: normalize(15)
     },
 })

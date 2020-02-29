@@ -126,93 +126,90 @@ export default class ShiftScreen extends React.Component {
      render() {
           return (
                <KeyboardAvoidingView behavior="position">
-                    <ScrollView>
+                    <View>
                          <Header
                               centerTitle="In Progress"
                               onPressBack={this.navigateToDash}
                               actionTitle="Withdraw"
                               onPressHandler={this.navigateToDash}
                          />
-                         <View style={styles.container}>
+                         <ScrollView>
+                              <View style={styles.container}>
 
-                              <Text style={styles.status}>
-                                   happening now
+                                   <Text style={styles.status}>
+                                        happening now
                               </Text>
-                              <Text style={styles.title}>
-                                   Union Square (US014)
+                                   <Text style={styles.title}>
+                                        Union Square (US014)
                               </Text>
-                              <Text style={styles.overview}>
-                                   📍  Union Square
+                                   <Text style={styles.overview}>
+                                        📍  Union Square
                               </Text>
-                              <Text style={styles.overview}>
-                                   ⏰  Mondays, 8.15pm to 9:00pm
+                                   <Text style={styles.overview}>
+                                        ⏰  Mondays, 8.15pm to 9:00pm
                               </Text>
-                              <Text style={styles.overview}>
-                                   ⚖️  10lbs to 45 lbs
+                                   <Text style={styles.overview}>
+                                        ⚖️  10lbs to 45 lbs
                               </Text>
-                              <Text style={styles.overview}>
-                                   👥  1 of 2 spots open
+                                   <Text style={styles.overview}>
+                                        👥  1 of 2 spots open
                               </Text>
-                              <Text style={styles.overview}>
-                                   💪  Multi-pickup
+                                   <Text style={styles.overview}>
+                                        💪  Multi-pickup
                               </Text>
 
-                              <View style={styles.map_box}>
+                                   <View style={styles.map_box}>
 
-                              </View>
+                                   </View>
 
-                              <View style={styles.guide_box}>
+                                   <View style={styles.guide_box}>
 
-                              </View>
+                                   </View>
 
-                              <FlatList
-                                   data={this.state.participantData}
-                                   renderItem={this.participantCard}
-                              />
-
-                              <Text style={{ fontSize: 20, color: "#4B5D68", marginTop: 15, marginBottom: 10, fontWeight: '500' }}>
-                                   Shift Tasks
-                              </Text>
-                              <Text style={{ fontSize: 17 }}>
-                                   *Please take a cab only under extenuating circumstances (weight of food is heavy, harsh weather conditions, etc). Please keep the receipt so that we can reimburse you.
-                              </Text>
-                              <FlatList
-                                   data={this.state.shiftInstructions}
-                                   renderItem={instructionDetail}
-                              />
-
-                              <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
-                                   <Text style={{ fontSize: 16 }}>9.</Text>
-                                   <Text style={{ fontSize: 16, flex: 1, paddingLeft: 5 }}>Enter pounds of food saved:*</Text>
-                              </View>
-
-                              <View style={styles.input_box}>
-                                   <TextInput
-                                        style={styles.weight_input}
-                                        returnKeyType="next"
-                                        onSubmitEditing={() => this.submit.focus()}
-                                        keyboardType="number-pad"
-                                        style={styles.input}
+                                   <FlatList style={styles.list}
+                                        data={this.state.participantData}
+                                        renderItem={this.participantCard}
                                    />
+
+                                   <Text style={styles.title}>
+                                        Shift Tasks
+                              </Text>
+                                   <Text style={{ fontSize: 17, paddingTop: 10, paddingBottom: 10 }}>
+                                        *Please take a cab only under extenuating circumstances (weight of food is heavy, harsh weather conditions, etc). Please keep the receipt so that we can reimburse you.
+                              </Text>
+                                   <FlatList
+                                        data={this.state.shiftInstructions}
+                                        renderItem={instructionDetail}
+                                   />
+
+                                   <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
+                                        <Text style={{ fontSize: 16 }}>9.</Text>
+                                        <Text style={{ fontSize: 16, flex: 1, paddingLeft: 5 }}>Enter pounds of food saved:*</Text>
+                                   </View>
+
+                                   <View style={styles.input_box}>
+                                        <TextInput
+                                             style={styles.weight_input}
+                                             returnKeyType="next"
+                                             onSubmitEditing={() => this.submit.focus()}
+                                             keyboardType="number-pad"
+                                             style={styles.input}
+                                        />
+                                   </View>
+                                   <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
+                                        <Text style={{ fontSize: 17 }}>10.</Text>
+                                        <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>Tap "Complete" to confirm the completion of the event. The last three steps must be completed.</Text>
+                                   </View>
+
+                                   <View style={styles.buttonContainer}>
+                                        <TouchableOpacity style={styles.button}>
+                                             <Text style={styles.buttonText}>Complete</Text>
+                                        </TouchableOpacity>
+                                   </View>
                               </View>
 
-                              <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
-                                   <Text style={{ fontSize: 17 }}>10.</Text>
-                                   <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>Tap "Complete" to confirm the completion of the event. The last three steps must be completed.</Text>
-                              </View>
-
-                              <View style={styles.buttonContainer}>
-                                   <TouchableOpacity style={styles.button}>
-                                        <Text style={styles.buttonText}>Complete</Text>
-                                   </TouchableOpacity>
-                              </View>
-                         </View>
-
-
-                    </ScrollView>
-
-
-
+                         </ScrollView>
+                    </View>
                </KeyboardAvoidingView>
           )
      }
@@ -253,14 +250,22 @@ const styles = StyleSheet.create({
      },
      title: {
           color: "#4A4A4A",
-          fontWeight: "500",
+          fontWeight: "600",
           fontSize: 20,
           paddingVertical: 5
      },
      overview: {
-          fontSize: 17,
+          fontSize: 16,
           lineHeight: 25,
           letterSpacing: .5,
+          paddingTop: 5,
+     },
+     list: {
+          padding: 10,
+          paddingBottom: 20,
+     },
+     instructions: {
+          padding: 10,
      },
      participant_card: {
           flex: 1,
@@ -281,10 +286,6 @@ const styles = StyleSheet.create({
           paddingBottom: 10,
           marginTop: 10
      },
-     volunteer_switch: {
-          width: 50,
-          alignSelf: 'center'
-     },
      participant_detail: {
           flexDirection: 'column',
           marginHorizontal: 20
@@ -303,10 +304,11 @@ const styles = StyleSheet.create({
           borderRadius: 50 / 2
      },
      input_box: {
+          height: 50,
           borderWidth: 2,
           paddingLeft: 8,
-          borderRadius: 10,
-          color: "#CCCCCC",
+          borderRadius: 5,
+          borderColor: "#ccc",
           marginBottom: 10
      },
      weight_input: {
@@ -314,22 +316,24 @@ const styles = StyleSheet.create({
      },
      button: {
           backgroundColor: '#38A5DB',
+          justifyContent: 'center',
           paddingVertical: 15,
           marginBottom: 20,
           borderRadius: 5,
-          width: 250,
+          width: '100%',
+          height: 50
      },
      buttonContainer: {
           alignItems: 'center',
           marginTop: 20,
+          justifyContent: 'center',
           flex: 1,
-          alignItems: 'center',
-          height: 50
      },
      buttonText: {
           textAlign: 'center',
           color: '#FFFFFF',
           fontWeight: '600',
+          fontSize: 16,
           textTransform: "uppercase"
      }
 })
