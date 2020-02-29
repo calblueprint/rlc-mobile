@@ -5,7 +5,6 @@ function participantCard(data) {
      const participant = data.item;
           return (
                <View styles={styles.participant_card}>
-
                     <View style={styles.participant_badge}>
                          {participant.role == "Volunteer" && <Switch style={styles.volunteer_switch} value={participant.verified} />}
                          <Image

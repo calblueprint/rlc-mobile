@@ -4,9 +4,19 @@ import { StyleSheet, View, ScrollView, FlatList, Text } from "react-native";
 import EventsList from "../../components/dashboard/EventsList2.js";
 import ActivityCard from "../../components/dashboard/ActivityCard";
 
+//Styling functions
+import { normalize } from "../../utils/Normalize.js";
+
 export default class Dashboard extends Component {
   constructor(props) {
     super(props);
+    const upcomingData = {}
+    const completedData = {}
+    const inProgressData = {}
+  }
+
+  fetchFromAsyncStorage() {
+    // this.upcomingData/completedData/inProgressData = (...)
   }
 
   navigateToShift = () => {
@@ -55,7 +65,7 @@ export default class Dashboard extends Component {
           </ScrollView>
         </View>
 
-        <EventsList />
+        <EventsList upcomingShifts={this.upcomingData} completedShifts={this.completedData}/>
       </View>
     );
   }
@@ -81,7 +91,7 @@ const styles = StyleSheet.create({
     fontWeight: "normal",
     marginTop: "27.5%",
     opacity: 0.85,
-    fontSize: 16
+    fontSize: normalize(16)
   },
   eventsList: {
     flex: 1,
@@ -104,7 +114,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textAlign: "center",
     opacity: 0.9,
-    fontSize: 16,
+    fontSize: normalize(16),
     marginBottom: 10
   },
   needsAttention: {
@@ -113,7 +123,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textAlign: "center",
     opacity: 0.9,
-    fontSize: 16,
+    fontSize: normalize(16),
     marginBottom: 10
   }
 });

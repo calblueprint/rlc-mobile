@@ -1,16 +1,14 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 
-export default class ActivityCard extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+function ActivityCard(data) {
 
   // onPressShiftHandler = () => {
   //   this.props.onPressHandler();
   // };
 
-  render() {
+  const shiftData = data.item;
+
     return (
       <TouchableOpacity
         style={styles.card}
@@ -18,29 +16,28 @@ export default class ActivityCard extends React.Component {
           this.props.onPressHandler();
         }}
       >
-        <Text style={styles.location}>📍 {this.props.location}</Text>
+        <Text style={styles.location}>📍 {shiftData.location}</Text>
 
-        <Text style={styles.name}>{this.props.name}</Text>
+        <Text style={styles.name}>{shiftData.name}</Text>
 
-        <Text style={styles.time}>{this.props.time}</Text>
+        <Text style={styles.time}>{shiftData.time}</Text>
         <View style={styles.details}>
           <View>
             <Text style={styles.smallGreyText}>Weight</Text>
-            <Text style={styles.smallBlackText}>{this.props.weight}</Text>
+            <Text style={styles.smallBlackText}>{shiftData.weight}</Text>
           </View>
           <View>
             <Text style={styles.smallGreyText}># of Pickups</Text>
-            <Text style={styles.smallBlackText}>{this.props.numpickups}</Text>
+            <Text style={styles.smallBlackText}>{shiftData.numpickups}</Text>
           </View>
           <View>
             <Text style={styles.smallGreyText}>Spots Open</Text>
-            <Text style={styles.smallBlackText}>{this.props.spotsOpen}</Text>
+            <Text style={styles.smallBlackText}>{shiftData.spotsOpen}</Text>
           </View>
         </View>
       </TouchableOpacity>
     );
   }
-}
 
 const styles = StyleSheet.create({
   card: {
@@ -107,3 +104,5 @@ const styles = StyleSheet.create({
     fontSize: 12
   }
 });
+
+export default ActivityCard;

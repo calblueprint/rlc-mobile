@@ -4,7 +4,8 @@ import {
   StyleSheet,
   ScrollView,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  FlatList
 } from "react-native";
 
 // Animation Libraries
@@ -18,30 +19,9 @@ const FirstRoute = () => (
   <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
     <ScrollView style={{ height: "100%" }}>
       <Text style={styles.heading}>Sunday, June 19, 2019</Text>
-      <ActivityCard
-        location={"📍 Union Square"}
-        name={"Union Square (US014)"}
-        time={"8:15 to 9:15 PM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"2"}
-        spotsOpen={"1 of 2"}
-      />
-      <ActivityCard
-        location={"📍 Greenwich Village"}
-        name={"Greenwich Village (GW007)"}
-        time={"4:15 to 6:15 PM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"2"}
-        spotsOpen={"1 of 2"}
-      />
-      <Text style={styles.heading}>Monday, June 20, 2019</Text>
-      <ActivityCard
-        location={"📍 Williamsburg"}
-        name={"South Side Mission (WB001)"}
-        time={"10:30 to 11:30 AM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"1"}
-        spotsOpen={"2 of 4"}
+      <FlatList 
+        data={this.state.upcomingShifts}
+        renderItem={ActivityCard}
       />
     </ScrollView>
   </View>
@@ -51,13 +31,9 @@ const SecondRoute = () => (
   <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
     <ScrollView style={{ height: "100%" }}>
       <Text style={styles.heading}>Sunday, June 19, 2019</Text>
-      <ActivityCard
-        location={"📍 Home"}
-        name={"Union Square (US014)"}
-        time={"8:15 to 9:15 AM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"2"}
-        spotsOpen={"1 of 2"}
+      <FlatList 
+        data={this.state.completedShifts}
+        renderItem={ActivityCard}
       />
     </ScrollView>
   </View>
