@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, View, Icon, TextInput, TouchableOpacity, Text, Switch, AsyncStorage } from 'react-native';
 import { isTSTypeAliasDeclaration } from '@babel/types';
+import LocalStorage from '../../helpers/LocalStorage';
 
 export default class LoginForm extends Component {
     constructor(props) {
@@ -23,7 +24,7 @@ export default class LoginForm extends Component {
     }
 
     async componentDidMount(props) {
-        const user = JSON.parse(await AsyncStorage.getItem('user'));
+        const user = JSON.parse(await LocalStorage.getUser());
         console.log(user);
         this.setState(user);
         console.log("hi");

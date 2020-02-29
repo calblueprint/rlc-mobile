@@ -20,24 +20,19 @@ import LocalStorage from "../../helpers/LocalStorage";
 export default class Dashboard extends Component {
   constructor(props) {
     super(props);
-    this.setState({
-      user: null
-    });
   }
 
-  async componentDidMount() {
-    let user = await LocalStorage.getUser();
-    this.setState({
-      user: user
-    });
-    console.log("Micah is printing user info", this.state.user);
-  }
+  // async componentDidMount() {
+  //   let user = await LocalStorage.getUser();
+  //   this.setState({
+  //     user: user
+  //   });
+  //   console.log("Micah is printing user info", this.state.user);
+  // }
 
   async componentDidMount() {
     const user = this.props.navigation.state.params.userInfo;
-    console.log(user.firstname);
-    await AsyncStorage.setItem('user',
-      JSON.stringify({'userId': user.id,
+    const userJSON = JSON.stringify({'userId': user.id,
       'firstName': user.firstname,
       'lastName': user.lastname,
       'occupation': user.occupation,
@@ -50,7 +45,24 @@ export default class Dashboard extends Component {
       'preferredRegion': user.preferred_region_id,
       'preferredLocation': user.preferred_location_id,
       'preferredTimes': ""
-    }));
+    })
+    await LocalStorage.storeUser(userJSON)
+  //   console.log(user.firstname);
+  //   await AsyncStorage.setItem('user',
+  //     JSON.stringify({'userId': user.id,
+  //     'firstName': user.firstname,
+  //     'lastName': user.lastname,
+  //     'occupation': user.occupation,
+  //     'phoneNumber': user.telephone,
+  //     'address': user.address,
+  //     'city': "",
+  //     'state': "",
+  //     'zipCode': user.zip_code,
+  //     'email': user.email,
+  //     'preferredRegion': user.preferred_region_id,
+  //     'preferredLocation': user.preferred_location_id,
+  //     'preferredTimes': ""
+  //   }));
   }
 
   navigateToShift = () => {
