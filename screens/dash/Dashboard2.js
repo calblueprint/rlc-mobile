@@ -4,15 +4,47 @@ import { StyleSheet, View, ScrollView, FlatList, Text } from "react-native";
 import EventsList from "../../components/dashboard/EventsList2.js";
 import ActivityCard from "../../components/dashboard/ActivityCard";
 
+import Sizes from "../../constants/Sizes.js";
+
 //Styling functions
 import { normalize } from "../../utils/Normalize.js";
+
+const fakeData = [{
+  location: "Washington Square Park",
+  status: "",
+  name: "Washington Arch (TA114)",
+  time: "1:00 to 2:30 PM",
+  weight: "25 to 45 lbs",
+  numpickups: "3",
+  spotsOpen: "1 of 3",
+},
+{
+  location: "Washington Square Park",
+  status: "",
+  name: "Washington Arch (TA114)",
+  time: "1:00 to 2:30 PM",
+  weight: "25 to 45 lbs",
+  numpickups: "3",
+  spotsOpen: "1 of 3",
+},
+{
+  location: "Washington Square Park",
+  status: "",
+  name: "Washington Arch (TA114)",
+  time: "1:00 to 2:30 PM",
+  weight: "25 to 45 lbs",
+  numpickups: "3",
+  spotsOpen: "1 of 3",
+}]
 
 export default class Dashboard extends Component {
   constructor(props) {
     super(props);
-    const upcomingData = {}
-    const completedData = {}
-    const inProgressData = {}
+    state: {
+      upcomingData: fakeData;
+      completedData: fakeData;
+      inProgressData: fakeData
+    }
   }
 
   fetchFromAsyncStorage() {
@@ -65,7 +97,7 @@ export default class Dashboard extends Component {
           </ScrollView>
         </View>
 
-        <EventsList upcomingShifts={this.upcomingData} completedShifts={this.completedData}/>
+        {/* <EventsList upcomingShifts={this.state.upcomingData} completedShifts={this.state.completedData}/> */}
       </View>
     );
   }
@@ -77,7 +109,8 @@ Dashboard.navigationOptions = {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    width: Sizes.width
   },
   currentEvent: {
     backgroundColor: "#EEEEEE",

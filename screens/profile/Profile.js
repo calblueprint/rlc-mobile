@@ -3,6 +3,8 @@ import { StyleSheet, View, Image, Text, ScrollView, TouchableOpacity, KeyboardAv
 import ProfileHeader from '../../components/profile/ProfileHeader.js';
 import ProfileForm from '../../components/profile/ProfileForm.js';
 
+import Sizes from "../../constants/Sizes.js";
+
 export default class Profile extends Component {
     render() {
         return (
@@ -31,7 +33,8 @@ Profile.navigationOptions = {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        width: Sizes.width
     },
     header: {
         alignItems: 'center',

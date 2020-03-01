@@ -15,24 +15,24 @@ import Animated from "react-native-reanimated";
 // Components
 import ActivityCard from "../../components/dashboard/ActivityCard.js";
 
-const FirstRoute = () => (
+const FirstRoute = (props) => (
   <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
     <ScrollView style={{ height: "100%" }}>
       <Text style={styles.heading}>Sunday, June 19, 2019</Text>
       <FlatList 
-        data={this.state.upcomingShifts}
+        data={this.props.shiftData}
         renderItem={ActivityCard}
       />
     </ScrollView>
   </View>
 );
 
-const SecondRoute = () => (
+const SecondRoute = (props) => (
   <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
     <ScrollView style={{ height: "100%" }}>
       <Text style={styles.heading}>Sunday, June 19, 2019</Text>
       <FlatList 
-        data={this.state.completedShifts}
+        data={this.props.shiftData}
         renderItem={ActivityCard}
       />
     </ScrollView>
@@ -46,8 +46,7 @@ export default class EventsList2 extends Component {
       { key: "first", title: "Upcoming" },
       { key: "second", title: "Completed" }
     ]
-  };
-
+  }
   _handleIndexChange = index => this.setState({ index });
 
   _renderTabBar = props => {
@@ -101,6 +100,18 @@ export default class EventsList2 extends Component {
     first: FirstRoute,
     second: SecondRoute
   });
+
+
+  _renderScene = ({ route }) => {
+    switch (route.key) {
+      case 'first':
+        return <FirstRoute shiftData={this.props.upcomingShifts} />;
+      case 'second':
+        return <SecondRoute shiftData={this.props.completedShifts}/>;
+      default:
+        return null;
+    }
+  };
 
   render() {
     return (

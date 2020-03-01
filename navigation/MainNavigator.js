@@ -1,34 +1,28 @@
-import React from "react";
-import { Platform } from "react-native";
-
 // Navigation
-import { createAppContainer, createBottomTabNavigator } from "react-navigation";
+import { createAppContainer, createStackNavigator } from "react-navigation";
 import {
   TransitionPresets
 } from "react-navigation-stack";
 
 // Screens
-//import LogoScreen from "../screens/LogoScreen.js";
-//import LoginScreen from "../screens/login/LoginScreen.js";
-//import SignupScreen from "../screens/DefaultScreen.js";
-import DashboardScreen2 from "../screens/dash/Dashboard2.js";
-//import ShiftScreen from "../screens/shift/ShiftScreen.js";
-import ProfileScreen from "../screens/profile/Profile.js";
-import SearchScreen from "../screens/search/Search.js";
-import TabBar from "../components/TabBar.js";
-import TabBarIcon from "../components/TabBarIcon.js";
+import LogoScreen from "../screens/LogoScreen.js";
+import LoginScreen from "../screens/login/LoginScreen.js";
+import SignupScreen from "../screens/DefaultScreen.js";
+import ShiftScreen from "../screens/shift/ShiftScreen.js";
+import MainScreen from "../screens/MainScreen.js";
 
 
 const routeConfiguration = {
-  Profile: {screen: ProfileScreen, name:"Profile", tabBarIcon: ({ focused }) => (<TabBarIcon focused={focused} name={"person"}/>)},
-  Dashboard: {screen: DashboardScreen2, name:"Dashboard", tabBarIcon: ({ focused }) => (<TabBarIcon focused={focused} name={"home"}/>)},
-  Search: {screen: SearchScreen, name:"Search", tabBarIcon: ({ focused }) => (<TabBarIcon focused={focused} name={"search"}/>)}
+  Logo: {screen: LogoScreen, name:"Logo"},
+  Login: {screen: LoginScreen, name:"Login"},
+  Signup: {screen: SignupScreen, name:"Signup"},
+  Shift: {screen: ShiftScreen, name:"Shift"},
+  Main: {screen: MainScreen, name:"Main"}
 }
 
-const tabConfiguration = {
-  tabBar: props => <TabBar {...props}/>, 
-  headerMode: Platform.OS === "ios"? 'float':'screen',
-  initialRouteName:"Dashboard",
+const stackConfiguration = {
+  headerMode: 'none',
+  initialRouteName:"Main",
   backBehavior: "history",
   defaultNavigationOptions: {
     ...TransitionPresets.FadeFromBottomAndroid,
@@ -37,7 +31,7 @@ const tabConfiguration = {
   }
 }
 
-const MainNavigator = createBottomTabNavigator(routeConfiguration, tabConfiguration);
+const MainNavigator = createStackNavigator(routeConfiguration, stackConfiguration);
 
 const App = createAppContainer(MainNavigator);
 

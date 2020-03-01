@@ -7,7 +7,17 @@ function ActivityCard(data) {
   //   this.props.onPressHandler();
   // };
 
-  const shiftData = data.item;
+  // const shiftData = data.item;
+
+  //To be replaced with real data
+  const shiftData = {
+    location : "Washington Square Park",
+    name : "Washington Arch (TA114)",
+    time: "1:00 to 2:30 PM",
+    weight: "25 to 45 lbs",
+    numpickups : "3",
+    spotsOpen : "1 of 3"
+  }
 
     return (
       <TouchableOpacity
