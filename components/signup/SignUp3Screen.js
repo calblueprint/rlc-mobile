@@ -110,6 +110,7 @@ export default class SignUp3Screen extends React.Component {
     } else {
       this.setupParams()
       this.props.setScreenForward(this.state.user)
+      this.props.createUserForStorage()
     }
   }
 
