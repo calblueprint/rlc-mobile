@@ -12,7 +12,6 @@ export default class ConfirmationScreen extends React.Component {
   // Handler to Navigate to Login
   _onPressLogin = () => {
     this.props.navigation.navigate("Login");
-    // this.props.navigateToLogin();
   };
 
   render() {

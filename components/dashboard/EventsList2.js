@@ -13,6 +13,9 @@ import Animated from "react-native-reanimated";
 
 // Components
 import ActivityCard from "../../components/dashboard/ActivityCard.js";
+import APIRoutes from '../../config/routes.js'
+import getRequest from '../../lib/requests.js'
+import LocalStorage from "../../helpers/LocalStorage.js";
 
 const FirstRoute = () => (
   <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
@@ -68,6 +71,7 @@ export default class EventsList2 extends Component {
     super(props);
     this.state = {
       index: 0,
+      user_id: '',
       events: [],
       routes: [
         { key: "first", title: "Upcoming" },
@@ -76,17 +80,28 @@ export default class EventsList2 extends Component {
     };
   }
 
+  async componentDidMount() {
+    try {
+      let user = await LocalStorage.getUser();
+      this.setState({ user_id: user.id });
+    } catch(err) {
+      console.error(err)
+      this.props.navigation.navigate("Login")
+    }
+    // this._fetchEvents();
+  }
+
   // Fetch function; not sure if this works yet
   // TODO: @Johnathan / @Suhas, get fetch events to work 
   _fetchEvents = () => {
     return getRequest(
       APIRoutes.getEventsPath(this.state.user_id, "attended"),
-      responseData => {
-        console.log("event info", responseData);
-        this.setState((prevState) =>  ({...prevState, events: responseData }));
+      (responseData) => {
+        this.setState({ events: responseData });
       },
-      error => {
-        // console.log(error)
+      (error) => {
+        alert(error)
+        console.log(error)
       }
     );
   };

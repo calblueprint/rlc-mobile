@@ -25,8 +25,6 @@ export default class LoginForm extends React.Component {
     return postRequest(
       APIRoutes.loginPath(),
       responseData => {
-        console.log("Log in successful.", responseData);
-        // Navigate to Home screen
         this.props.navigateHandler(responseData);
       },
       error => {

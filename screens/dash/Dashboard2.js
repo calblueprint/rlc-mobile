@@ -24,7 +24,7 @@ export default class Dashboard extends Component {
 
   async componentDidMount() {
     const user = this.props.navigation.state.params.userInfo;
-    const userJSON = JSON.stringify({'userId': user.id,
+    const userJSON = {'userId': user.id,
       'firstName': user.firstname,
       'lastName': user.lastname,
       'occupation': user.occupation,
@@ -37,7 +37,7 @@ export default class Dashboard extends Component {
       'preferredRegion': user.preferred_region_id,
       'preferredLocation': user.preferred_location_id,
       'preferredTimes': ""
-    })
+    }
     await LocalStorage.storeUser(userJSON)
   }
 

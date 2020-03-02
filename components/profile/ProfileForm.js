@@ -23,9 +23,14 @@ export default class LoginForm extends Component {
         }
     }
 
-    async componentDidMount(props) {
-        const user = JSON.parse(await LocalStorage.getUser());
-        this.setState(user);
+    async componentDidMount() {
+        try {
+            let user = await LocalStorage.getUser();
+            this.setState(user);
+        } catch(err) {
+            console.error(err)
+            this.props.navigation.navigate("Login")
+        }
     }
 
     render() {

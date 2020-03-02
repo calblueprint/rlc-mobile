@@ -59,8 +59,13 @@ export default class EventsList extends React.Component {
   }
 
   async componentDidMount() {
-    let user = await LocalStorage.getUser();
-    this.setState({ user_id: user.id });
+    try {
+      let user = await LocalStorage.getUser();
+      this.setState({ user_id: user.id });
+    } catch(err) {
+      console.error(err)
+      this.props.navigation.navigate("Login")
+    }
     this._fetchEvents();
   }
 

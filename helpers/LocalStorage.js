@@ -1,5 +1,4 @@
 import { AsyncStorage } from 'react-native';
-import StorageKeys from '../lib/storageKeys';
 
 class LocalStorage {
 
@@ -21,8 +20,9 @@ class LocalStorage {
   }
 
   static clearUser() {
-    AsyncStorage.removeItem(StorageKeys.user);
+    AsyncStorage.removeItem('user');
   }
+  
 }
 
 export default LocalStorage;

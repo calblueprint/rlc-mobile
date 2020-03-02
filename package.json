@@ -16,6 +16,7 @@
     "@expo/vector-icons": "^10.0.3",
     "@react-native-community/masked-view": "^0.1.6",
     "@react-navigation/web": "^1.0.0-alpha.9",
+    "dotenv": "^8.2.0",
     "expo": "^35.0.0",
     "expo-asset": "^7.0.0",
     "expo-constants": "~7.0.0",

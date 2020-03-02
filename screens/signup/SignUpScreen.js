@@ -37,7 +37,7 @@ export default class SignUpScreen extends Component {
   // Navigate to login screen; Passed into Confirmation screen
   navigateToLogin = () => {
     const { navigate } = this.props.navigation;
-    navigate("Losin");
+    navigate("Login");
   };
 
   //does post request for user registration
@@ -75,72 +75,97 @@ export default class SignUpScreen extends Component {
 
   //Renders the appropriate screen depending on currentScreenNum
   renderCurrentScreen = () => {
+    // switch (this.state.currentScreenNum) {
+    //   case 0:
+          
+    //       <SignUp1Screen
+    //         user={this.state.user}
+    //         setScreenForward={this.setScreenForward}
+    //       />
+    //     break;
+    //   case 1:
+          
+    //       <SignUp2Screen
+    //         user={this.state.user}
+    //         setScreenForward={this.setScreenForward}
+    //       />
+    //     break;
+    //   case 2:
+          
+    //       <SignUp3Screen
+    //         user={this.state.user}
+    //         setScreenForward={this.setScreenForward}
+    //       />
+    //     break;
+    //   case 3:
+          
+    //       <SignUp4Screen
+    //         user={this.state.user}
+    //         setScreenForward={this.setScreenForward}
+    //       />
+    //     break;
+    //   case 4:
+          
+    //       <SignUp5Screen
+    //         user={this.state.user}
+    //         setScreenForward={this.setScreenForward}
+    //       />
+    //     break;
+    //   case 5:
+          
+    //       <ConfirmationScreen
+    //         setScreenForward={this.setScreenForward}
+    //         navigateToLogin={this.navigateToLogin}
+    //       />
+    //     break;
+    // }
+  };
+
+  render() {
     switch (this.state.currentScreenNum) {
       case 0:
-        this.setState({
-          screen: (
+          return <View style={styles.formContainer}>
             <SignUp1Screen
               user={this.state.user}
               setScreenForward={this.setScreenForward}
             />
-          )
-        });
-        break;
+          </View>
       case 1:
-        this.setState({
-          screen: (
+          return <View style={styles.formContainer}>
             <SignUp2Screen
               user={this.state.user}
               setScreenForward={this.setScreenForward}
             />
-          )
-        });
-        break;
+          </View>
       case 2:
-        this.setState({
-          screen: (
+          return <View style={styles.formContainer}>
             <SignUp3Screen
               user={this.state.user}
               setScreenForward={this.setScreenForward}
             />
-          )
-        });
-        break;
+          </View>
       case 3:
-        this.setState({
-          screen: (
+          return <View style={styles.formContainer}>
             <SignUp4Screen
               user={this.state.user}
               setScreenForward={this.setScreenForward}
             />
-          )
-        });
-        break;
+          </View>
       case 4:
-        this.setState({
-          screen: (
+          return <View style={styles.formContainer}>
             <SignUp5Screen
               user={this.state.user}
               setScreenForward={this.setScreenForward}
             />
-          )
-        });
-        break;
+          </View>
       case 5:
-        this.setState({
-          screen: (
+          return <View style={styles.formContainer}>
             <ConfirmationScreen
               setScreenForward={this.setScreenForward}
               navigateToLogin={this.navigateToLogin}
             />
-          )
-        });
-        break;
+          </View>
     }
-  };
-
-  render() {
-    return <View style={styles.formContainer}>{this.state.screen}</View>;
   }
 }
 
