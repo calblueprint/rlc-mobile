@@ -9,20 +9,22 @@ import Timeline from 'react-native-timeline-listview'
 export default class ParticipantCard1 extends React.Component {
     constructor(props) {
         super(props)
-        this.data = [
-            { time: '', title: 'Latin Beet (Meet here) ', description: '18 East 16th Street, New York, NY 10003 \n' },
-            { time: '', title: 'Digg Inn', description: '364 Bleecker St., New York, NY 10002 \n' },
-            { time: '', title: 'Bowery Mission', description: '227 Bower, New York, NY 10002 \n' }
-        ]
+        // this.data = [
+        //     { title: 'Latin Beet (Meet here) ', description: '18 East 16th Street, New York, NY 10003 \n' },
+        //     { title: 'Digg Inn', description: '364 Bleecker St., New York, NY 10002 \n', dotColor: '#fff' },
+        //     { title: 'Bowery Mission', description: '227 Bower, New York, NY 10002 \n' }
+        // ]
     }
 
     render() {
         return (
             <Timeline
                 style={styles.list}
-                data={this.data}
+                data={this.props.markers}
                 circleSize={15}
                 circleColor='#79B830'
+                innerCircle={'dot'}
+                dotColor='#79B830'
                 lineColor='#79B830'
                 titleStyle={{
                     color: "#4A4A4A",
@@ -32,6 +34,7 @@ export default class ParticipantCard1 extends React.Component {
                 descriptionStyle={{
                     color: "#4A4A4A",
                     fontSize: 15,
+                    selectable: true
                 }}
                 showTime={false}
                 detailContainerStyle={{ marginTop: -12 }}

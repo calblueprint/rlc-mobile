@@ -3,7 +3,7 @@ import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Text, TextInput, Fl
 import Header from "../../components/shift/Header"
 import { CheckBox } from 'react-native-elements'
 import LocTimeline from '../../components/shift/LocTimeline'
-
+import MapView, { Marker } from 'react-native-maps';
 
 function instructionDetail(data) {
      const step = data.item;
@@ -86,6 +86,21 @@ export default class ShiftScreen extends React.Component {
                          description: "Request a receipt from Bowery Mission and take a photo of the receipt*",
                          photo_needed: true
                     },
+               ],
+               // region: {
+
+               // },
+               markers: [
+                    {
+                         latlng: '1', title: 'Latin Beet (Meet here) ', description: '18 East 16th Street, New York, NY 10003 \n'
+                    },
+                    {
+                         latlng: '2', title: 'Digg Inn', description: '364 Bleecker St., New York, NY 10002 \n', dotColor: '#fff'
+                    },
+                    {
+                         latlng: '3', title: 'Bowery Mission', description: '227 Bower, New York, NY 10002 \n'
+                    }
+
                ]
           }
      }
@@ -158,11 +173,30 @@ export default class ShiftScreen extends React.Component {
                                         💪  Multi-pickup
                               </Text>
 
-                                   <View style={styles.map_box}>
-
+                                   <View style={styles.mapcontainer}>
+                                        <MapView style={styles.map}
+                                             initialRegion={{
+                                                  latitude: 37.78825,
+                                                  longitude: -122.4324,
+                                                  latitudeDelta: 0.0922,
+                                                  longitudeDelta: 0.0421,
+                                             }}
+                                        />
+                                        {/* <MapView style={styles.map}
+                                             region={this.state.region}
+                                             onRegionChange={this.onRegionChange}
+                                        >
+                                             {this.state.markers.map(marker => (
+                                                  <Marker
+                                                       coordinate={marker.latlng}
+                                                       title={marker.title}
+                                                       description={marker.description}
+                                                  />
+                                             ))}
+                                        </MapView> */}
                                    </View>
 
-                                   <LocTimeline />
+                                   <LocTimeline markers={this.state.markers} />
 
                                    <FlatList style={styles.list}
                                         data={this.state.participantData}
@@ -223,11 +257,6 @@ const styles = StyleSheet.create({
           flex: 1,
           padding: 40,
           paddingTop: 20,
-     },
-     map_box: {
-          height: 200,
-          marginVertical: 15,
-          borderWidth: 2
      },
      guide_box: {
           height: 200,
@@ -290,7 +319,7 @@ const styles = StyleSheet.create({
      },
      participant_name: {
           fontSize: 17,
-          fontWeight: "600",
+          fontWeight: "700",
      },
      particpant_role: {
           fontSize: 15,
@@ -333,5 +362,16 @@ const styles = StyleSheet.create({
           fontWeight: '600',
           fontSize: 16,
           textTransform: "uppercase"
-     }
+     },
+     mapcontainer: {
+          //...StyleSheet.absoluteFillObject,
+          height: 200,
+          width: '100%',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          marginVertical: 30,
+     },
+     map: {
+          ...StyleSheet.absoluteFillObject,
+     },
 })

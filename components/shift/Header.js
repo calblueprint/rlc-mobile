@@ -16,9 +16,10 @@ class Header extends React.Component {
                         this.props.onPressBack();
                     }}
                 >
-                    <Image style={{ height: 15, width: 15, resizeMode: 'contain' }}
+                    <Icon name='left' type='antdesign' style={{ height: 15, width: 15, color: "#38A5DB", alignSelf: "left" }} />
+                    {/* <Image style={{ height: 15, width: 15, resizeMode: 'contain' }}
                         source={require("../../assets/images/back_arrow.png")}
-                    />
+                    /> */}
                 </TouchableOpacity>
                 <Text style={{ ...styles.center, ...styles.title }}>{this.props.centerTitle}</Text>
                 <TouchableOpacity style={styles.sides}
