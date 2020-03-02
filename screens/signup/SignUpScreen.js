@@ -1,5 +1,5 @@
 import React, { Component } from '../../node_modules/react';
-import { StyleSheet, View } from 'react-native';
+import { AsyncStorage, StyleSheet, View } from 'react-native';
 import SignUp1Screen from '../../components/signup/SignUp1Screen';
 import SignUp2Screen from '../../components/signup/SignUp2Screen';
 import SignUp3Screen from '../../components/signup/SignUp3Screen';
@@ -27,7 +27,7 @@ export default class SignUpScreen extends Component {
 
     //Set initial screen as Screen 1
     componentDidMount = () => {
-        this.setState({ screen: <SignUp1Screen setScreenForward={this.setScreenForward}/> });
+        this.setState({ screen: <SignUp1Screen setScreenForward={this.setScreenForward} setScreenBackward={this.setScreenBackward}/> });
     }
 
     //does post request for user registration
@@ -55,27 +55,33 @@ export default class SignUpScreen extends Component {
 
     //Moves screen forward after user presses next button
     setScreenForward = (params) => {
-        this.setState({ currentScreenNum: this.state.currentScreenNum + 1 });
+        this.setState({ currentScreenNum: this.state.currentScreenNum + 1 }, () => {this.renderCurrentScreen()});
         this.updateUser(params)
-        if (this.state.currentScreenNum == 3) {
+        if (this.state.currentScreenNum == 4) {
             this.registerUser()
         }
+        this.renderCurrentScreen()
+    }
+
+    setScreenBackward = (params) => {
+        this.setState({ currentScreenNum: this.state.currentScreenNum - 1 }, () => {this.renderCurrentScreen()});
+        this.updateUser(params)
         this.renderCurrentScreen()
     }
 
     //Renders the appropriate screen depending on currentScreenNum
     renderCurrentScreen = () => {
         switch (this.state.currentScreenNum) {
-            case 0:
-                this.setState({ screen: <SignUp1Screen user={this.state.user} setScreenForward={this.setScreenForward}/> });
-                break;
             case 1:
-                this.setState({ screen: <SignUp2Screen user={this.state.user} setScreenForward={this.setScreenForward}/> });
+                this.setState({ screen: <SignUp1Screen user={this.state.user} setScreenForward={this.setScreenForward} setScreenBackward={this.setScreenBackward}/> });
                 break;
             case 2:
-                this.setState({ screen: <SignUp3Screen user={this.state.user} setScreenForward={this.setScreenForward}/> });
+                this.setState({ screen: <SignUp2Screen user={this.state.user} setScreenForward={this.setScreenForward} setScreenBackward={this.setScreenBackward}/> });
                 break;
             case 3:
+                this.setState({ screen: <SignUp3Screen user={this.state.user} setScreenForward={this.setScreenForward} setScreenBackward={this.setScreenBackward}/> });
+                break;
+            case 4:
                 this.setState({ screen: <ConfirmationScreen setScreenForward={this.setScreenForward}/> });
                 break;
         }

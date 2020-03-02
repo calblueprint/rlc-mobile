@@ -125,10 +125,18 @@ export default class SignUp3Screen extends React.Component {
     this.setState({preferredTimes});
   }
 
+  gotoPrevStep = () => {
+    this.props.setScreenBackward(this.state.user)
+  }
 
   render() {
     return (
       <SafeAreaView style={styles.container}>
+        <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.button} onPress={this.gotoPrevStep}>
+                  <Text style={styles.buttonText}>PREVIOUS</Text>
+              </TouchableOpacity>
+        </View>
         <StepsTimeline currentPosition={2}/>
         <ScrollView
           contentContainerStyle={styles.contentContainer}>

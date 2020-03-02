@@ -39,6 +39,10 @@ export default class SignUp1Screen extends React.Component {
     }
   }
   
+  gotoPrevStep = () => {
+    this.props.setScreenBackward(this.state.user)
+  }
+
   //Set state var birthday as today's date.
   componentDidMount = () => {
     this.getToday()
@@ -58,6 +62,11 @@ export default class SignUp1Screen extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
+        <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.button} onPress={this.gotoPrevStep}>
+                  <Text style={styles.buttonText}>PREVIOUS</Text>
+              </TouchableOpacity>
+        </View>
         <StepsTimeline currentPosition={0}/>
         <ScrollView
           contentContainerStyle={styles.contentContainer}>
