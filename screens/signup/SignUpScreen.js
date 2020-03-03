@@ -73,54 +73,6 @@ export default class SignUpScreen extends Component {
     this.renderCurrentScreen();
   };
 
-  //Renders the appropriate screen depending on currentScreenNum
-  renderCurrentScreen = () => {
-    // switch (this.state.currentScreenNum) {
-    //   case 0:
-          
-    //       <SignUp1Screen
-    //         user={this.state.user}
-    //         setScreenForward={this.setScreenForward}
-    //       />
-    //     break;
-    //   case 1:
-          
-    //       <SignUp2Screen
-    //         user={this.state.user}
-    //         setScreenForward={this.setScreenForward}
-    //       />
-    //     break;
-    //   case 2:
-          
-    //       <SignUp3Screen
-    //         user={this.state.user}
-    //         setScreenForward={this.setScreenForward}
-    //       />
-    //     break;
-    //   case 3:
-          
-    //       <SignUp4Screen
-    //         user={this.state.user}
-    //         setScreenForward={this.setScreenForward}
-    //       />
-    //     break;
-    //   case 4:
-          
-    //       <SignUp5Screen
-    //         user={this.state.user}
-    //         setScreenForward={this.setScreenForward}
-    //       />
-    //     break;
-    //   case 5:
-          
-    //       <ConfirmationScreen
-    //         setScreenForward={this.setScreenForward}
-    //         navigateToLogin={this.navigateToLogin}
-    //       />
-    //     break;
-    // }
-  };
-
   render() {
     switch (this.state.currentScreenNum) {
       case 0:
