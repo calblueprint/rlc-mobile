@@ -9,16 +9,25 @@ class NavigationFooter extends React.Component {
   }
 
   render() {
+
+    // const profileString
+    const profile = <Image source={require("../assets/images/person-outline.png")} style={{ width: 22, height: 20 }}/>;
+    const profileFocused =  <Image source={require("../assets/images/person-focused.png")} style={{ width: 22, height: 20 }}/>;
+    const dashboard = <Image source={require("../assets/images/home-outline.png")} style={{ width: 22, height: 20 }}/>;
+    const dashboardFocused =  <Image source={require("../assets/images/home-focused.png")} style={{ width: 22, height: 20 }}/>;
+    const search   = <Image source={require("../assets/images/search-outline.png")} style={{ width: 22, height: 20 }}/>;
+    const searchFocused =  <Image source={require("../assets/images/search-focused.png")} style={{ width: 22, height: 20 }}/>;
+
     return (
       <View style={{...styles.tabContainer,  ...{flexDirection: 'row'}}}>
         <TouchableOpacity onPress={this.props.navigationHandler}>
-          <Image source={{ uri : `../assets/images/person-${this.props.index == 0? "focused":"outline"}.png` }} style={{ width: 22, height: 20 }}/>
+          {this.props.index == 0? profile: profileFocused}
         </TouchableOpacity>
         <TouchableOpacity onPress={this.props.navigationHandler}>
-          <Image source={{ uri : `../assets/images/home-${this.props.index == 1? "focused":"outline"}.png` }} style={{ width: 22, height: 20 }}/>
+          {this.props.index == 1? dashboard: dashboardFocused}
         </TouchableOpacity>
         <TouchableOpacity onPress={this.props.navigationHandler}>
-          <Image source={{ uri : `../assets/images/search-${this.props.index == 2? "focused":"outline"}.png` }} style={{ width: 22, height: 20 }}/>
+          {this.props.index == 2? search: searchFocused}
         </TouchableOpacity>
       </View>
     )
@@ -33,7 +42,8 @@ const styles = StyleSheet.create({
     paddingBottom: "0.065%",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    height: "100%",
   }
 })
 

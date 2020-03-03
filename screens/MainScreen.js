@@ -45,7 +45,7 @@ export default class MainScreen extends React.Component {
             <ScrollView
                 ref="MainScrollView"
                 style={styles.screenNavigatorScroll}
-                contentContainerStyle={{ width: Sizes.width * 3 }}
+                contentContainerStyle={{ height: Sizes.height * 0.92, width: Sizes.width * 3 }}
                 horizontal={true}
                 pagingEnabled={true}
                 showsHorizontalScrollIndicator={false}
@@ -67,22 +67,19 @@ export default class MainScreen extends React.Component {
                     onNavSelect={this._onSelectNavigationMenu}
                 />
             </ScrollView>
-            <NavigationFooter navigationHandler={this._onSelectNavigationMenu}/>
+            <View style={{height: Sizes.height * 0.08}}>
+                <NavigationFooter index = {this.state.currentScreenIndex} navigationHandler={this._onSelectNavigationMenu}/>
+            </View>
             </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    drawerStyles: {
-      shadowColor: "#000000",
-      shadowOpacity: 0.8,
-      shadowRadius: 3
+    screenNavigatorScroll: {
     },
-  
-    screenNavigatorScroll: {},
     MainScreen: {
       flex: 1,
-      width: Sizes.width,
+      width: Sizes.width
     }
   });
