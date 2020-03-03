@@ -142,13 +142,16 @@ export default class ShiftScreen extends React.Component {
           return (
                <KeyboardAvoidingView behavior="position">
                     <View>
-                         <Header
-                              centerTitle="In Progress"
-                              onPressBack={this.navigateToDash}
-                              actionTitle="Withdraw"
-                              onPressHandler={this.navigateToDash}
-                         />
-                         <ScrollView>
+                         <View style={{ height: '10%' }}>
+                              <Header
+                                   centerTitle="In Progress"
+                                   onPressBack={this.navigateToDash}
+                                   actionTitle="Withdraw"
+                                   onPressHandler={this.navigateToDash}
+                              />
+                         </View>
+
+                         <ScrollView style={{ height: '90%' }}>
                               <View style={styles.container}>
 
                                    <Text style={styles.status}>
