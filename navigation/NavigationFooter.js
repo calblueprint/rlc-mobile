@@ -1,8 +1,7 @@
 import React from "react";
-import { Platform, StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { normalize } from "../utils/Normalize.js";
+import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
 
-import FooterIcon from "../navigation/FooterIcons.js";
+import Sizes from "../constants/Sizes.js";
 
 class NavigationFooter extends React.Component {
   constructor(props) {
@@ -13,13 +12,13 @@ class NavigationFooter extends React.Component {
     return (
       <View style={{...styles.tabContainer,  ...{flexDirection: 'row'}}}>
         <TouchableOpacity onPress={this.props.navigationHandler}>
-          <FooterIcon name="person" focused={this.props.index==0? true:false}/>
+          <Image source={{ uri : `../assets/images/person-${this.props.index == 0? "focused":"outline"}.png` }} style={{ width: 22, height: 20 }}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={this.props.navigationHandler}>
-          <FooterIcon name="home" focused={this.props.index==0? true:false}/>
+          <Image source={{ uri : `../assets/images/home-${this.props.index == 1? "focused":"outline"}.png` }} style={{ width: 22, height: 20 }}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={this.props.navigationHandler}>
-          <FooterIcon name="search" focused={this.props.index==0? true:false}/>
+          <Image source={{ uri : `../assets/images/search-${this.props.index == 2? "focused":"outline"}.png` }} style={{ width: 22, height: 20 }}/>
         </TouchableOpacity>
       </View>
     )
@@ -28,7 +27,13 @@ class NavigationFooter extends React.Component {
 
 const styles = StyleSheet.create({
   tabContainer : {
-    backgroundColor : "#57A4D6"
+    backgroundColor : "#57A4D6",
+    width: Sizes.width,
+    paddingHorizontal: 30,
+    paddingBottom: "0.065%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between"
   }
 })
 

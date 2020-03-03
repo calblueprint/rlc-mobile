@@ -110,7 +110,7 @@ Dashboard.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: Sizes.width
+    width: Sizes.width,
   },
   currentEvent: {
     backgroundColor: "#EEEEEE",
