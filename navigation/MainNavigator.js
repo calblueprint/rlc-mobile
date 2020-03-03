@@ -11,7 +11,7 @@ import {
 // Screens
 import LogoScreen from "../screens/LogoScreen.js";
 import LoginScreen from "../screens/login/LoginScreen.js";
-import SignupScreen from "../screens/DefaultScreen.js";
+import SignupScreen from "../screens/signup/SignUpScreen.js";
 import ProfileScreen from "../screens/profile/Profile.js";
 import DashboardScreen from "../screens/dash/Dashboard.js";
 import DashboardScreen2 from "../screens/dash/Dashboard2.js";
