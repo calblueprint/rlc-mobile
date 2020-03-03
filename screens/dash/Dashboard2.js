@@ -4,6 +4,8 @@ import { StyleSheet, View, ScrollView, FlatList, Text } from "react-native";
 import EventsList from "../../components/dashboard/EventsList2.js";
 import ActivityCard from "../../components/dashboard/ActivityCard";
 
+import Sizes from "../../constants/Sizes.js";
+
 export default class Dashboard extends Component {
   constructor(props) {
     super(props);
