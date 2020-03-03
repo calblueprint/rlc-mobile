@@ -3,6 +3,14 @@ import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'rea
 
 export default class ConfirmationScreen extends React.Component {
 
+  constructor(props) {
+    super(props);
+  }
+
+  _navigateToHome = () => {
+    this.props.navigateToHome();
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -18,7 +26,7 @@ export default class ConfirmationScreen extends React.Component {
 
         </ScrollView>
         <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={this.checkValidNext}>
+              <TouchableOpacity style={styles.button} onPress={this._navigateToHome}>
                   <Text style={styles.buttonText}>GO BACK TO WELCOME SCREEN</Text>
               </TouchableOpacity>
         </View>

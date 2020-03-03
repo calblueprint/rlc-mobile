@@ -46,6 +46,18 @@ export default class SignUp1Screen extends React.Component {
   //Set state var birthday as today's date.
   componentDidMount = () => {
     this.getToday()
+    if (this.props.previousUserInfo.firstname != null) {
+      this.setState({ firstName: this.props.previousUserInfo.firstname })
+    }
+    if (this.props.previousUserInfo.lastname != null) {
+      this.setState({ lastName: this.props.previousUserInfo.lastname })
+    }
+    if (this.props.previousUserInfo.birthday != null) {
+      this.setState({ birthday: this.props.previousUserInfo.birthday })
+    }
+    if (this.props.previousUserInfo.telephone != null) {
+      this.setState({ telephone: this.props.previousUserInfo.telephone })
+    }
   }
 
   //Sets state var birthday as today's date.
@@ -62,11 +74,6 @@ export default class SignUp1Screen extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={this.gotoPrevStep}>
-                  <Text style={styles.buttonText}>PREVIOUS</Text>
-              </TouchableOpacity>
-        </View>
         <StepsTimeline currentPosition={0}/>
         <ScrollView
           contentContainerStyle={styles.contentContainer}>
@@ -79,6 +86,7 @@ export default class SignUp1Screen extends React.Component {
                 onChangeText={text => this.setState({firstName: text})}
                 returnKeyType={"next"}
                 onSubmitEditing={() => this.lastNameInput.focus()}
+                value={this.state.firstName}
               ></TextInput>
               <Text style={styles.subHeading}>Last Name</Text>
               <TextInput
@@ -87,6 +95,7 @@ export default class SignUp1Screen extends React.Component {
                 onChangeText={text => this.setState({lastName: text})}
                 returnKeyType={"next"}
                 ref={(input) => {this.lastNameInput = input;}}
+                value={this.state.lastName}
               ></TextInput>
               <Text style={styles.subHeading}>Birthday</Text>
               <DatePicker format="YYYY-MM-DD" date={this.state.birthday} style={styles.datePicker} onDateChange={
@@ -94,14 +103,15 @@ export default class SignUp1Screen extends React.Component {
                   this.setState({birthday: date})
                   this.setState({birth_month: monthNames[parseInt(date.substr(5, 2))-1]})
                }
-              } confirmBtnText={'Confirm'} cancelBtnText={'Cancel'}/>
+              } confirmBtnText={'Confirm'} cancelBtnText={'Cancel'} value={this.state.birthday}/>
               <Text style={styles.subHeading}>Mobile Phone Number</Text>
               <TextInput 
                 style={styles.input} 
                 keyboardType="phone-pad"
                 placeholder={'(123)-456-7890'} 
                 onChangeText={text => this.setState({telephone: text})}
-                returnKeyType={"next"}></TextInput>
+                returnKeyType={"next"}
+                value={this.state.telephone}></TextInput>
             </View>
         </ScrollView>
         <View style={styles.buttonContainer}>

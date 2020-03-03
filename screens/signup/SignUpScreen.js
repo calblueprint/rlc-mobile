@@ -17,17 +17,22 @@ export default class SignUpScreen extends Component {
         }
     }
 
+    navigateToHome = () => {
+        const { navigate } = this.props.navigation;
+        navigate("Logo");
+    };
+
     updateUser = (params) => {
         for (var k in params) {
             if (params.hasOwnProperty(k)) {
-               this.state.user[k] = params[k];
+                this.state.user[k] = params[k];
             }
         }
     }
 
     //Set initial screen as Screen 1
     componentDidMount = () => {
-        this.setState({ screen: <SignUp1Screen setScreenForward={this.setScreenForward} setScreenBackward={this.setScreenBackward}/> });
+        this.setState({ screen: <SignUp1Screen user={this.state.user} setScreenForward={this.setScreenForward} setScreenBackward={this.setScreenBackward} previousUserInfo={this.state.user} /> });
     }
 
     //does post request for user registration
@@ -55,9 +60,10 @@ export default class SignUpScreen extends Component {
 
     createUserForStorage = () => {
         const user = {
-            'userId': this.state.user.id,
-            'firstName': this.state.user.firstName,
-            'lastName': this.state.user.lastName,
+            // TODO: Create a new userId on RLC website
+            'userId': 5,
+            'firstName': this.state.user.firstname,
+            'lastName': this.state.user.lastname,
             'occupation': '',
             'phoneNumber': this.state.user.telephone,
             'address': '',
@@ -79,9 +85,8 @@ export default class SignUpScreen extends Component {
 
     //Moves screen forward after user presses next button
     setScreenForward = (params) => {
-        this.setState({ currentScreenNum: this.state.currentScreenNum + 1 }, () => {this.renderCurrentScreen()});
+        this.setState({ currentScreenNum: this.state.currentScreenNum + 1 }, () => { this.renderCurrentScreen() });
         this.updateUser(params)
-        console.log(this.state.currentScreenNum)
         if (this.state.currentScreenNum == 4) {
             this.registerUser()
         }
@@ -90,7 +95,7 @@ export default class SignUpScreen extends Component {
 
     //Moves to previous screen in sign up after user presses previous button
     setScreenBackward = (params) => {
-        this.setState({ currentScreenNum: this.state.currentScreenNum - 1 }, () => {this.renderCurrentScreen()});
+        this.setState({ currentScreenNum: this.state.currentScreenNum - 1 }, () => { this.renderCurrentScreen() });
         this.updateUser(params)
         this.renderCurrentScreen()
     }
@@ -99,16 +104,16 @@ export default class SignUpScreen extends Component {
     renderCurrentScreen = () => {
         switch (this.state.currentScreenNum) {
             case 1:
-                this.setState({ screen: <SignUp1Screen user={this.state.user} setScreenForward={this.setScreenForward} setScreenBackward={this.setScreenBackward}/> });
+                this.setState({ screen: <SignUp1Screen user={this.state.user} setScreenForward={this.setScreenForward} setScreenBackward={this.setScreenBackward} previousUserInfo={this.state.user} /> });
                 break;
             case 2:
-                this.setState({ screen: <SignUp2Screen user={this.state.user} setScreenForward={this.setScreenForward} setScreenBackward={this.setScreenBackward}/> });
+                this.setState({ screen: <SignUp2Screen user={this.state.user} setScreenForward={this.setScreenForward} setScreenBackward={this.setScreenBackward} previousUserInfo={this.state.user} /> });
                 break;
             case 3:
-                this.setState({ screen: <SignUp3Screen user={this.state.user} setScreenForward={this.setScreenForward} setScreenBackward={this.setScreenBackward} createUserForStorage={this.createUserForStorage}/> });
+                this.setState({ screen: <SignUp3Screen user={this.state.user} setScreenForward={this.setScreenForward} setScreenBackward={this.setScreenBackward} previousUserInfo={this.state.user} createUserForStorage={this.createUserForStorage} /> });
                 break;
             case 4:
-                this.setState({ screen: <ConfirmationScreen setScreenForward={this.setScreenForward}/> });
+                this.setState({ screen: <ConfirmationScreen setScreenForward={this.setScreenForward} navigateToHome={this.navigateToHome} /> });
                 break;
         }
     }

@@ -23,6 +23,18 @@ export default class SignUp2Screen extends React.Component {
     this.state.user.password_confirmation = this.state.confirmPassword;
   }
 
+  componentDidMount = () => {
+    if (this.props.previousUserInfo.email != null) {
+      this.setState({ email: this.props.previousUserInfo.email })
+    }
+    if (this.props.previousUserInfo.password != null) {
+      this.setState({ password: this.props.previousUserInfo.password })
+    }
+    if (this.props.previousUserInfo.confirmPassword != null) {
+      this.setState({ birthday: this.props.previousUserInfo.confirmPassword })
+    }
+  }
+
   /*Checks conditions before transitioning to next screen:
    * 1. all fields are filled out and not empty.
    * 2. password and confirmPassword fields match.
@@ -59,7 +71,7 @@ export default class SignUp2Screen extends React.Component {
         <StepsTimeline currentPosition={1}/>
         <ScrollView
           contentContainerStyle={styles.contentContainer}>
-            <Text style={styles.heading}>Hi [name]! Let's continue setting up your account. Your email will be your username!</Text>
+            <Text style={styles.heading}>Hi {this.props.previousUserInfo.firstname}! Let's continue setting up your account. Your email will be your username!</Text>
             <View style={styles.inputContainer}>
               <Text style={styles.subHeading}>Email (this will also be your username)</Text>
               <TextInput 
@@ -70,6 +82,7 @@ export default class SignUp2Screen extends React.Component {
                 keyboardType={"email-address"}
                 onChangeText={text => this.setState({email: text})}
                 onSubmitEditing={() => this.passwordInput.focus()}
+                value={this.state.email}
               ></TextInput>
               <Text style={styles.subHeading}>Password</Text>
               <TextInput 
@@ -80,6 +93,7 @@ export default class SignUp2Screen extends React.Component {
                 onChangeText={text => this.setState({password: text})}
                 onSubmitEditing={() => this.confirmPasswordInput.focus()}
                 ref={(input) => {this.passwordInput = input;}}
+                value={this.state.password}
               ></TextInput>
               <Text style={styles.subHeading}>Confirm Password</Text>
               <TextInput
@@ -89,6 +103,7 @@ export default class SignUp2Screen extends React.Component {
                 returnKeyType={"next"}
                 onChangeText={text => this.setState({confirmPassword: text})}
                 ref={(input) => {this.confirmPasswordInput = input;}}
+                value={this.state.confirmPassword}
               ></TextInput>
             </View>
         </ScrollView>
