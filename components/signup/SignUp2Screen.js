@@ -1,74 +1,110 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, Text, TouchableOpacity} from 'react-native';
-import { CheckBox, Card } from 'react-native-elements'
+import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { frontendError } from '../../lib/alerts';
-import StepsTimeline from '../../components/StepsTimeline';
+import StepsTimeline from '../../components/StepsTimeline'; 
 
 export default class SignUp2Screen extends React.Component {
+
   constructor(props) {
-      super(props);
-      this.state = {
-          volunteer: false,
-          rescuer: false,
-          user: {},
-      }
-  }
-  
-  //Setup User Payload
-  setupParams = ()  => {
-    this.setState({ user: this.props.user });
-    if (this.state.volunteer == true) {
-      this.state.user.role = 0;
-    } else {
-      this.state.user.role = 1;
+    super(props);
+    this.state = {
+      email: "",
+      password: "",
+      confirmPassword: "",
+      user: {},
     }
   }
 
-  //Ensures that only one user options is selected and not both.
-  onCheckboxClick = (cardType) => {
-    if (cardType == "volunteer") {
-      this.setState({volunteer: !this.state.volunteer})
-      this.setState({rescuer: false})
-    } else {
-      this.setState({rescuer: !this.state.rescuer})
-      this.setState({volunteer: false})
+  //Setup User Payload
+  setupParams = ()  => {
+    this.setState({ user: this.props.user });
+    this.state.user.email = this.state.email;
+    this.state.user.password = this.state.password;
+    this.state.user.password_confirmation = this.state.confirmPassword;
+  }
+
+  componentDidMount = () => {
+    if (this.props.previousUserInfo.email != null) {
+      this.setState({ email: this.props.previousUserInfo.email })
+    }
+    if (this.props.previousUserInfo.password != null) {
+      this.setState({ password: this.props.previousUserInfo.password })
+    }
+    if (this.props.previousUserInfo.confirmPassword != null) {
+      this.setState({ birthday: this.props.previousUserInfo.confirmPassword })
     }
   }
 
   /*Checks conditions before transitioning to next screen:
-   * 1. either volunteer or rescuer is selected but not both.
+   * 1. all fields are filled out and not empty.
+   * 2. password and confirmPassword fields match.
+   * 3. passwords have at least one number and letter.
+   * 4. email contains an "@" character.
    */
   checkValidNext = () => {
-    if (this.state.volunteer == false && this.state.rescuer == false) {
-      frontendError("Please select an option.")
+    if (this.state.email == "" || this.state.password == "" || this.state.confirmPassword == "") {
+      frontendError("Please fill out all fields.")
+    } else if (this.state.password != this.state.confirmPassword) {
+      frontendError("Passwords must match.")
+    } else if (!this.state.password.match(/\d/) || !this.state.password.match(/[a-z]/i)) {
+      frontendError("Passwords must have a number and a letter.")
+    } else if (!this.state.email.match(/@/)) {
+      frontendError("Invalid Email.")
     } else {
       this.setupParams()
       this.props.setScreenForward(this.state.user)
     }
   }
 
+  gotoPrevStep = () => {
+    this.props.setScreenBackward(this.state.user)
+  }
+
   render() {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.button} onPress={this.gotoPrevStep}>
+                  <Text style={styles.buttonText}>PREVIOUS</Text>
+              </TouchableOpacity>
+        </View>
         <StepsTimeline currentPosition={1}/>
         <ScrollView
           contentContainerStyle={styles.contentContainer}>
-            <Text style={styles.heading}>Hi! How would you like to help?</Text>
+            <Text style={styles.heading}>Hi {this.props.previousUserInfo.firstname}! Let's continue setting up your account. Your email will be your username!</Text>
             <View style={styles.inputContainer}>
-              <Card title='Volunteer'>
-                  <CheckBox title='Click Here' checked={this.state.volunteer} onPress={() => this.onCheckboxClick("volunteer")}/>
-                  <Text>- Take less than an hour of your time to deliver excess food from food businesses like restaurants to homeless shelters.</Text>
-                  <Text>- Help be the transportation solution and get food that would otherwise be wasted to feed the hungry!</Text>
-                </Card>
-                <Card title='Lead Rescuer'>
-                  <CheckBox title='Click Here' checked={this.state.rescuer} onPress={() => this.onCheckboxClick("rescuer")}/>
-                  <Text>- Lead volunteers on food rescue events by taking attendance and reporting the number of pounds of food rescued.</Text>
-                  <Text>- Must pass training session.</Text>
-                  <Text>- Must commit at least 1-2 hours a week for at least 3-4 months.</Text>
-                  <Text>- Receive Letter of Participation as proof of volunteer work!</Text>
-                  <Text></Text>
-                  <Text>*RLC will contact you with next steps</Text>
-                </Card>
+              <Text style={styles.subHeading}>Email (this will also be your username)</Text>
+              <TextInput 
+                style={styles.input} 
+                placeholder={'email@email.com'} 
+                autoCapitalize={'none'} 
+                returnKeyType={"next"}
+                keyboardType={"email-address"}
+                onChangeText={text => this.setState({email: text})}
+                onSubmitEditing={() => this.passwordInput.focus()}
+                value={this.state.email}
+              ></TextInput>
+              <Text style={styles.subHeading}>Password</Text>
+              <TextInput 
+                style={styles.input} 
+                secureTextEntry={true}
+                placeholder={'Please include one letter and one number'}
+                returnKeyType={"next"}
+                onChangeText={text => this.setState({password: text})}
+                onSubmitEditing={() => this.confirmPasswordInput.focus()}
+                ref={(input) => {this.passwordInput = input;}}
+                value={this.state.password}
+              ></TextInput>
+              <Text style={styles.subHeading}>Confirm Password</Text>
+              <TextInput
+                style={styles.input} 
+                secureTextEntry={true} 
+                placeholder={'Please re-enter your password'}
+                returnKeyType={"next"}
+                onChangeText={text => this.setState({confirmPassword: text})}
+                ref={(input) => {this.confirmPasswordInput = input;}}
+                value={this.state.confirmPassword}
+              ></TextInput>
             </View>
         </ScrollView>
         <View style={styles.buttonContainer}>
@@ -76,7 +112,7 @@ export default class SignUp2Screen extends React.Component {
                   <Text style={styles.buttonText}>NEXT</Text>
               </TouchableOpacity>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }
@@ -84,7 +120,7 @@ export default class SignUp2Screen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 25
+    paddingTop: 25,
   },
   button: {
     backgroundColor: '#38A5DB',
@@ -94,7 +130,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: 320
-  },
+  }, 
   buttonContainer: {
     alignItems: 'center',
     marginTop: 50,
@@ -107,25 +143,33 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#FFFFFF',
     fontWeight: '600',
-    textTransform: "uppercase"  
+    textTransform: "uppercase"
   },
   input: {
     height: 40,
     marginBottom: 20,
     paddingHorizontal: 0,
     borderBottomWidth: 1,
-    borderBottomColor: '#3b3b3b',
-    color: '#000000',
+    borderBottomColor: '#333333',
+    color: '#333333',
   },
   inputContainer: {
     paddingTop: 25,
+  },
+  subHeading: {
+    color: '#333333',
+    marginTop: 10,
+    textAlign: 'left',
+    fontWeight: '600',
+    opacity: 0.9,
+    fontSize: 14
   },
   contentContainer: {
     padding: 25,
     paddingTop: 30,
   },
   heading: {
-    fontSize: 17,
+    fontSize: 20,
     color: 'rgba(96,100,109, 1)',
     lineHeight: 24,
   },

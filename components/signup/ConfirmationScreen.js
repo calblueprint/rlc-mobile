@@ -14,6 +14,14 @@ export default class ConfirmationScreen extends React.Component {
     this.props.navigation.navigate("Login");
   };
 
+  constructor(props) {
+    super(props);
+  }
+
+  _navigateToHome = () => {
+    this.props.navigateToHome();
+  };
+
   render() {
     return (
       <View style={styles.container}>
