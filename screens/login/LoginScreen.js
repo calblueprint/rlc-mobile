@@ -26,9 +26,9 @@ export default class LoginScreen extends Component {
     this.setState({ inValidText: "⚠️ The username/password is invalid" });
   };
 
-  navigateToHome = () => {
+  navigateToHome = (responseData) => {
     const { navigate } = this.props.navigation;
-    navigate("Dash");
+    navigate("Dash", {userInfo: responseData});
   };
 
   navigateToSignup = () => {
@@ -38,7 +38,7 @@ export default class LoginScreen extends Component {
 
   render() {
     return (
-      <KeyboardAvoidingView behavior="padding" style={styles.container}>
+      <KeyboardAvoidingView behavior="padding" style={Styles.container}>
         <ScrollView>
           <View style={Styles.logoContainer}>
             <Image
@@ -62,10 +62,6 @@ export default class LoginScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white"
-  },
   formContainer: {
     height: "100%"
   }
