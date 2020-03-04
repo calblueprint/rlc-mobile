@@ -9,17 +9,12 @@ import {
 } from "react-native";
 
 export default class ConfirmationScreen extends React.Component {
-  // Handler to Navigate to Login
-  _onPressLogin = () => {
-    this.props.navigation.navigate("Login");
-  };
-
   constructor(props) {
     super(props);
   }
 
-  _navigateToHome = () => {
-    this.props.navigateToHome();
+  _navigateToLogin = () => {
+    this.props.navigateToLogin();
   };
 
   render() {
@@ -39,7 +34,7 @@ export default class ConfirmationScreen extends React.Component {
           </View>
         </ScrollView>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={this._onPressLogin}>
+          <TouchableOpacity style={styles.button} onPress={this._navigateToLogin}>
             <Text style={styles.buttonText}>Sign In</Text>
           </TouchableOpacity>
         </View>
