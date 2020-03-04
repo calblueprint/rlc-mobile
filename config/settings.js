@@ -1,12 +1,11 @@
 import { Platform } from "react-native";
-import { BASE_URL } from 'react-native-dotenv'
-
+import { BASE_URL } from "react-native-dotenv";
 
 /**
  * Determines URL based on whether in production or dev environment
  */
 if (process.env.NODE_ENV === "production") {
-  // TODO @Johnathan, work on developing 
+  // TODO @Johnathan, work on developing
   // the env variables for production.
   console.log("production");
 } else {
