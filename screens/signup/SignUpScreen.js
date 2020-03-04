@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { Component } from "../../node_modules/react";
 import { StyleSheet, View } from "react-native";
 import SignUp1Screen from "../../components/signup/SignUp1Screen";
@@ -8,6 +9,16 @@ import SignUp5Screen from "../../components/signup/SignUp5Screen";
 import ConfirmationScreen from "../../components/signup/ConfirmationScreen";
 import { postRequest } from "../../lib/requests";
 import { APIRoutes } from "../../config/routes";
+=======
+import React, { Component } from '../../node_modules/react';
+import { AsyncStorage, StyleSheet, View } from 'react-native';
+import SignUp1Screen from '../../components/signup/SignUp1Screen';
+import SignUp2Screen from '../../components/signup/SignUp2Screen';
+import SignUp3Screen from '../../components/signup/SignUp3Screen';
+import ConfirmationScreen from '../../components/signup/ConfirmationScreen'
+import { postRequest } from '../../lib/requests';
+import { APIRoutes } from '../../config/routes';
+>>>>>>> fe8db2d1d692865f1396243255ffcdcc200e707f
 
 export default class SignUpScreen extends Component {
   constructor(props) {
@@ -19,20 +30,41 @@ export default class SignUpScreen extends Component {
     };
   }
 
+<<<<<<< HEAD
   updateUser = params => {
     for (var k in params) {
       if (params.hasOwnProperty(k)) {
         this.state.user[k] = params[k];
       }
+=======
+    navigateToHome = () => {
+        const { navigate } = this.props.navigation;
+        navigate("Logo");
+    };
+
+    updateUser = (params) => {
+        for (var k in params) {
+            if (params.hasOwnProperty(k)) {
+                this.state.user[k] = params[k];
+            }
+        }
+>>>>>>> fe8db2d1d692865f1396243255ffcdcc200e707f
     }
   };
 
+<<<<<<< HEAD
   //Set initial screen as Screen 1
   componentDidMount = () => {
     this.setState({
       screen: <SignUp1Screen setScreenForward={this.setScreenForward} />
     });
   };
+=======
+    //Set initial screen as Screen 1
+    componentDidMount = () => {
+        this.setState({ screen: <SignUp1Screen user={this.state.user} setScreenForward={this.setScreenForward} setScreenBackward={this.setScreenBackward} previousUserInfo={this.state.user} /> });
+    }
+>>>>>>> fe8db2d1d692865f1396243255ffcdcc200e707f
 
   // Navigate to login screen; Passed into Confirmation screen
   navigateToLogin = () => {
@@ -55,6 +87,7 @@ export default class SignUpScreen extends Component {
     );
   };
 
+<<<<<<< HEAD
   //sets up payload for user registration
   registerUser = () => {
     const params = {
@@ -69,6 +102,66 @@ export default class SignUpScreen extends Component {
     this.updateUser(params);
     if (this.state.currentScreenNum == 5) {
       this.registerUser();
+=======
+    createUserForStorage = () => {
+        const user = {
+            // TODO: Create a new userId on RLC website
+            'userId': 5,
+            'firstName': this.state.user.firstname,
+            'lastName': this.state.user.lastname,
+            'occupation': '',
+            'phoneNumber': this.state.user.telephone,
+            'address': '',
+            'city': '',
+            'state': '',
+            'zipCode': '',
+            'email': this.state.user.email,
+            'preferredRegion': this.state.user.preferredRegion,
+            'preferredLocation': this.state.user.preferredLocation,
+            'preferredTimes': this.state.user.preferredTimes
+        }
+        this._asyncSignIn(user)
+    }
+
+    _asyncSignIn = async (user) => {
+        await AsyncStorage.setItem("user", JSON.stringify(user));
+        this.props.navigation.navigate("Dashboard")
+    }
+
+    //Moves screen forward after user presses next button
+    setScreenForward = (params) => {
+        this.setState({ currentScreenNum: this.state.currentScreenNum + 1 }, () => { this.renderCurrentScreen() });
+        this.updateUser(params)
+        if (this.state.currentScreenNum == 4) {
+            this.registerUser()
+        }
+        this.renderCurrentScreen()
+    }
+
+    //Moves to previous screen in sign up after user presses previous button
+    setScreenBackward = (params) => {
+        this.setState({ currentScreenNum: this.state.currentScreenNum - 1 }, () => { this.renderCurrentScreen() });
+        this.updateUser(params)
+        this.renderCurrentScreen()
+    }
+
+    //Renders the appropriate screen depending on currentScreenNum
+    renderCurrentScreen = () => {
+        switch (this.state.currentScreenNum) {
+            case 1:
+                this.setState({ screen: <SignUp1Screen user={this.state.user} setScreenForward={this.setScreenForward} setScreenBackward={this.setScreenBackward} previousUserInfo={this.state.user} /> });
+                break;
+            case 2:
+                this.setState({ screen: <SignUp2Screen user={this.state.user} setScreenForward={this.setScreenForward} setScreenBackward={this.setScreenBackward} previousUserInfo={this.state.user} /> });
+                break;
+            case 3:
+                this.setState({ screen: <SignUp3Screen user={this.state.user} setScreenForward={this.setScreenForward} setScreenBackward={this.setScreenBackward} previousUserInfo={this.state.user} createUserForStorage={this.createUserForStorage} /> });
+                break;
+            case 4:
+                this.setState({ screen: <ConfirmationScreen setScreenForward={this.setScreenForward} navigateToHome={this.navigateToHome} /> });
+                break;
+        }
+>>>>>>> fe8db2d1d692865f1396243255ffcdcc200e707f
     }
     this.renderCurrentScreen();
   };
