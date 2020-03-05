@@ -1,8 +1,38 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, View, Icon, TextInput, TouchableOpacity, Text, Switch } from 'react-native';
+import { Platform, StyleSheet, View, Icon, TextInput, TouchableOpacity, Text, Switch, AsyncStorage } from 'react-native';
 import { isTSTypeAliasDeclaration } from '@babel/types';
+import LocalStorage from '../../helpers/LocalStorage';
 
 export default class LoginForm extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            'userId': "",
+            'firstName': "",
+            'lastName': "",
+            'occupation': "",
+            'phoneNumber': "",
+            'address': "",
+            'city': null,
+            'state': null,
+            'zipCode': "",
+            'email': "",
+            'preferredRegion': "",
+            'preferredLocation': "",
+            'preferredTimes': null
+        }
+    }
+
+    async componentDidMount() {
+        try {
+            let user = await LocalStorage.getItem('user');
+            this.setState(user);
+        } catch(err) {
+            console.error(err)
+            this.props.navigation.navigate("Login")
+        }
+    }
+
     render() {
         return (
             <View behavior="padding" style={styles.container}>
@@ -12,7 +42,7 @@ export default class LoginForm extends Component {
                 <Text style={styles.subHeading}>First Name</ Text>
                 <TextInput 
                     style={styles.input}
-                    placeholder="Melody" 
+                    placeholder={this.state.firstName}
                     returnKeyType="next"
                     onSubmitEditing={() => this.lastNameInput.focus()}
                     keyboardType="default"
@@ -23,7 +53,7 @@ export default class LoginForm extends Component {
                 <Text style={styles.subHeading}>Last Name</ Text>
                 <TextInput 
                     style={styles.input}
-                    placeholder="Wei" 
+                    placeholder={this.state.lastName}
                     returnKeyType="next"
                     ref={(input) => this.lastNameInput = input}
                     onSubmitEditing={() => this.occupationInput.focus()}
@@ -35,7 +65,7 @@ export default class LoginForm extends Component {
                 <Text style={styles.subHeading}>Occupation</ Text>
                 <TextInput 
                     style={styles.input}
-                    placeholder="Project Leader" 
+                    placeholder={this.state.occupation}
                     returnKeyType="done"
                     ref={(input) => this.occupationInput = input}
                     keyboardType="default"
@@ -50,7 +80,7 @@ export default class LoginForm extends Component {
                 <Text style={styles.subHeading}>Phone Number</ Text>
                 <TextInput 
                     style={styles.input}
-                    placeholder="(818)-618-2966" 
+                    placeholder={this.state.phoneNumber} 
                     returnKeyType="next"
                     onSubmitEditing={() => this.addressA.focus()}
                     keyboardType="phone-pad"
@@ -61,7 +91,7 @@ export default class LoginForm extends Component {
                 <Text style={styles.subHeading}>Address (Line 1)</ Text>
                 <TextInput 
                     style={styles.input}
-                    placeholder="2650 Haste Street" 
+                    placeholder={this.state.address}
                     returnKeyType="next"
                     ref={(input) => this.addressA = input}
                     onSubmitEditing={() => this.addressB.focus()}
@@ -73,7 +103,7 @@ export default class LoginForm extends Component {
                 <Text style={styles.subHeading}>Address (Line 2)</ Text>
                 <TextInput 
                     style={styles.input}
-                    placeholder="Wada #209A" 
+                    placeholder="" 
                     returnKeyType="next"
                     ref={(input) => this.addressB = input}
                     onSubmitEditing={() => this.cityInput.focus()}
@@ -85,7 +115,7 @@ export default class LoginForm extends Component {
                 <Text style={styles.subHeading}>City</ Text>
                 <TextInput 
                     style={styles.input}
-                    placeholder="Berkeley" 
+                    placeholder={this.state.city}
                     returnKeyType="next"
                     ref={(input) => this.cityInput = input}
                     onSubmitEditing={() => this.stateInput.focus()}
@@ -97,7 +127,7 @@ export default class LoginForm extends Component {
                 <Text style={styles.subHeading}>State</ Text>
                 <TextInput 
                     style={styles.input}
-                    placeholder="CA" 
+                    placeholder={this.state.state}
                     returnKeyType="next"
                     ref={(input) => this.stateInput = input}
                     onSubmitEditing={() => this.zipInput.focus()}
@@ -109,7 +139,7 @@ export default class LoginForm extends Component {
                 <Text style={styles.subHeading}>Zip Code</ Text>
                 <TextInput 
                     style={styles.input}
-                    placeholder="94720" 
+                    placeholder={this.state.zipCode}
                     returnKeyType="done"
                     ref={(input) => this.zipInput = input}
                     keyboardType="number-pad"
@@ -126,7 +156,7 @@ export default class LoginForm extends Component {
                     Email
                 </Text>
                 <TextInput
-                placeholder="email@domain.com"
+                placeholder={this.state.email}
                 returnKeyType="next"
                 onSubmitEditing={() => this.passwordInput.focus()}
                 keyboardType="email-address"
@@ -163,7 +193,7 @@ export default class LoginForm extends Component {
                          Preferred Region
                     </Text>
                     <TextInput
-                    placeholder="New York City, NY"
+                    placeholder={this.state.preferred_region_id}
                     returnKeyType="next"
                     onSubmitEditing={() => this.preferredLocationInput.focus()}
                     autoCapitalize="none"
@@ -175,7 +205,7 @@ export default class LoginForm extends Component {
                          Preferred Locations (Optional)
                     </Text>
                     <TextInput
-                    placeholder="Chelsea, Flatiron, Union Square, +3 more"
+                    placeholder={this.state.preferred_location_id}
                     returnKeyType="next"
                     onSubmitEditing={() => this.preferredTimeInput.focus()}
                     ref={(input) => this.preferredLocationInput = input}
@@ -188,7 +218,7 @@ export default class LoginForm extends Component {
                          Preferred Times (Optional)
                     </Text>
                     <TextInput
-                    placeholder="Mondays (9am to 12pm)"
+                    placeholder={this.state.preferredTimes}
                     returnKeyType="done"
                     ref={(input) => this.preferredTimeInput = input}
                     autoCapitalize="none"

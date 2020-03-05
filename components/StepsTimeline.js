@@ -18,6 +18,7 @@ export default class StepsTimeline extends Component {
       <StepIndicator
           customStyles={customStyles}
           currentPosition={this.props.currentPosition}
+          stepCount={3}
       />
     )
   }

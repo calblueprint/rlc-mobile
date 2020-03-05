@@ -1,8 +1,21 @@
 import React, { Component } from "../../node_modules/react";
-import { StyleSheet, View, ScrollView, FlatList, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  FlatList,
+  Text,
+  AsyncStorage
+} from "react-native";
 
+// Components
 import EventsList from "../../components/dashboard/EventsList2.js";
 import ActivityCard from "../../components/dashboard/ActivityCard";
+import ProfileForm from "../../components/profile/ProfileForm.js";
+
+// Utils
+import { normalize } from "../../utils/Normalize.js";
+import LocalStorage from "../../helpers/LocalStorage";
 
 import Sizes from "../../constants/Sizes.js";
 
@@ -16,47 +29,28 @@ export default class Dashboard extends Component {
     navigate("Shift");
   };
 
+  navigateToProfile = () => {
+    const { navigate } = this.props.navigation;
+    navigate("Profile");
+  };
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.currentEvent}>
-          <ScrollView
-            style={styles.horizontalView}
-            horizontal={true}
-            showsHorizontalScrollIndicator={true}
-            snapToAlignment={"center"}
-            showsVerticalScrollIndicator={false}
-            pagingEnabled={true}
-            directionalLockEnabled={true}
-            automaticallyAdjustContentInsets={false}
-          >
-            <View style={styles.slideStructure}>
-              <Text style={styles.inProgress}>• In Progress</Text>
-              <ActivityCard
-                location={"📍 Washington Square Park"}
-                name={"Washington Arch (TA114)"}
-                time={"1:00 to 2:30 PM"}
-                weight={"25 to 45 lbs"}
-                numpickups={"3"}
-                spotsOpen={"1 of 3"}
-                onPressHandler={this.navigateToShift}
-              />
-            </View>
-
-            <View style={styles.slideStructure}>
-              <Text style={styles.needsAttention}>• Needs Attention</Text>
-              <ActivityCard
-                location={"📍 Korea Town NYC"}
-                name={"Kimbachi Tan (SA457)"}
-                time={"5:00 to 6:30 PM"}
-                weight={"25 to 45 lbs"}
-                numpickups={"3"}
-                spotsOpen={"1 of 3"}
-              />
-            </View>
-          </ScrollView>
+          <View style={styles.slideStructure}>
+            <Text style={styles.inProgress}>• In Progress</Text>
+            <ActivityCard
+              location={"📍 Washington Square Park"}
+              name={"Washington Arch (TA114)"}
+              time={"1:00 to 2:30 PM"}
+              weight={"25 to 45 lbs"}
+              numpickups={"3"}
+              spotsOpen={"1 of 3"}
+              onPressHandler={this.navigateToShift}
+            />
+          </View>
         </View>
-
         <EventsList />
       </View>
     );
@@ -84,7 +78,7 @@ const styles = StyleSheet.create({
     fontWeight: "normal",
     marginTop: "27.5%",
     opacity: 0.85,
-    fontSize: 16
+    fontSize: normalize(16)
   },
   eventsList: {
     flex: 1,
@@ -98,8 +92,9 @@ const styles = StyleSheet.create({
     height: "90%"
   },
   slideStructure: {
-    width: 400,
-    height: 400
+    height: "100%",
+    marginTop: "13%",
+    width: "100%"
   },
   inProgress: {
     color: "#7CB342",
@@ -107,7 +102,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textAlign: "center",
     opacity: 0.9,
-    fontSize: 16,
+    fontSize: normalize(16),
     marginBottom: 10
   },
   needsAttention: {
@@ -116,7 +111,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textAlign: "center",
     opacity: 0.9,
-    fontSize: 16,
+    fontSize: normalize(16),
     marginBottom: 10
   }
 });

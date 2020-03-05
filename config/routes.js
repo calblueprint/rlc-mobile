@@ -6,6 +6,7 @@ export class APIRoutes {
   static createRoute(route) {
     return `/api/${route}`;
   }
+
   static deviseRoute(route) {
     return `/users/${route}`;
   }

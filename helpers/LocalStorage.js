@@ -1,17 +1,16 @@
 import { AsyncStorage } from 'react-native';
-import StorageKeys from '../lib/storageKeys';
 
 class LocalStorage {
 
-  static storeUser(user_json) {
-    AsyncStorage.setItem(StorageKeys.user, JSON.stringify(user_json));
+  static storeItem(item_name, item_json) {
+    AsyncStorage.setItem(item_name, JSON.stringify(item_json));
   }
 
-  static async getUser() {
+  static async getItem(item_name) {
     try {
-      var user_json = await AsyncStorage.getItem(StorageKeys.user);
-      if (user_json !== null) {
-        return Promise.resolve(JSON.parse(user_json));
+      var item_json = await AsyncStorage.getItem(item_name);
+      if (item_json !== null) {
+        return Promise.resolve(JSON.parse(item_json));
       } else {
         return Promise.reject(new Error("No stored user"));
       }
@@ -20,9 +19,10 @@ class LocalStorage {
     }
   }
 
-  static clearUser() {
-    AsyncStorage.removeItem(StorageKeys.user);
+  static clearItem(item_name) {
+    AsyncStorage.removeItem(item_name);
   }
+  
 }
 
 export default LocalStorage;

@@ -4,11 +4,12 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  Text
+  Text,
 } from "react-native";
 import { frontendError } from "../lib/alerts";
 import { postRequest } from "../lib/requests";
 import { APIRoutes } from "../config/routes";
+import LocalStorage from "../helpers/LocalStorage";
 
 export default class LoginForm extends React.Component {
   constructor(props) {
@@ -23,9 +24,22 @@ export default class LoginForm extends React.Component {
   fetchUser = params => {
     return postRequest(
       APIRoutes.loginPath(),
-      responseData => {
-        console.log("Log in successful.");
-        // Navigate to Home screen
+      user => {
+        const userJSON = {'userId': user.id,
+          'firstName': user.firstname,
+          'lastName': user.lastname,
+          'occupation': user.occupation,
+          'phoneNumber': user.telephone,
+          'address': user.address,
+          'city': "",
+          'state': "",
+          'zipCode': user.zip_code,
+          'email': user.email,
+          'preferredRegion': user.preferred_region_id,
+          'preferredLocation': user.preferred_location_id,
+          'preferredTimes': ""
+        }
+        LocalStorage.storeItem('user',userJSON)
         this.props.navigateHandler();
       },
       error => {
@@ -34,6 +48,7 @@ export default class LoginForm extends React.Component {
         } else {
           this.props.setInvalidText();
         }
+        console.log(error);
       },
       params
     );
@@ -47,8 +62,7 @@ export default class LoginForm extends React.Component {
         password: this.state.password
       }
     };
-    // this.fetchUser(params);
-    this.props.navigateHandler();
+    this.fetchUser(params);
   };
 
   // Handler to Navigate to Signup
