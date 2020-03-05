@@ -1,8 +1,6 @@
 // Navigation
 import { createAppContainer, createStackNavigator } from "react-navigation";
-import {
-  TransitionPresets
-} from "react-navigation-stack";
+import { TransitionPresets } from "react-navigation-stack";
 
 // Screens
 import LogoScreen from "../screens/LogoScreen.js";
@@ -12,28 +10,30 @@ import ConfirmationScreen from "../components/signup/ConfirmationScreen.js";
 import ShiftScreen from "../screens/shift/ShiftScreen.js";
 import MainScreen from "../screens/MainScreen.js";
 
-
 const routeConfiguration = {
-  Logo: {screen: LogoScreen, name:"Logo"},
-  Login: {screen: LoginScreen, name:"Login"},
-  Signup: {screen: SignupScreen, name:"Signup"},
-  Shift: {screen: ShiftScreen, name:"Shift"},
-  Main: {screen: MainScreen, name:"Main"},
-  Confirmation : {screen: ConfirmationScreen, name: "Confirmation"}
-}
+  Logo: { screen: LogoScreen, name: "Logo" },
+  Login: { screen: LoginScreen, name: "Login" },
+  Signup: { screen: SignupScreen, name: "Signup" },
+  Shift: { screen: ShiftScreen, name: "Shift" },
+  Main: { screen: MainScreen, name: "Main" },
+  Confirmation: { screen: ConfirmationScreen, name: "Confirmation" }
+};
 
 const stackConfiguration = {
-  headerMode: 'none',
-  initialRouteName:"Main",
+  headerMode: "none",
+  initialRouteName: "Logo",
   backBehavior: "history",
   defaultNavigationOptions: {
     ...TransitionPresets.FadeFromBottomAndroid,
     cardOverlayEnabled: true,
-    gestureEnabled: true,
+    gestureEnabled: true
   }
-}
+};
 
-const MainNavigator = createStackNavigator(routeConfiguration, stackConfiguration);
+const MainNavigator = createStackNavigator(
+  routeConfiguration,
+  stackConfiguration
+);
 
 const App = createAppContainer(MainNavigator);
 
