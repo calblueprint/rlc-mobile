@@ -26,6 +26,7 @@ export default class MainScreen extends React.Component {
     if (this.state.currentPage !== currentPage) {
         this.setState({ currentPage });
     }
+    console.log(this.state.currentScreenIndex);
     }
 
     // Navigate between screens by pressing one of the screens at the bottom tabbar.
@@ -35,6 +36,10 @@ export default class MainScreen extends React.Component {
         y: 0,
         animated: true
     });
+    this.setState({
+        currentScreenIndex: index
+    })
+    console.log(this.state.currentScreenIndex)
     }
 
     //async logoutHandler() To be implemented.
