@@ -5,11 +5,11 @@ import {
   TextInput,
   TouchableOpacity,
   Text,
-  AsyncStorage
 } from "react-native";
 import { frontendError } from "../lib/alerts";
 import { postRequest } from "../lib/requests";
 import { APIRoutes } from "../config/routes";
+import LocalStorage from "../helpers/LocalStorage";
 
 export default class LoginForm extends React.Component {
   constructor(props) {
@@ -24,8 +24,24 @@ export default class LoginForm extends React.Component {
   fetchUser = params => {
     return postRequest(
       APIRoutes.loginPath(),
-      responseData => {
-        this.props.navigateHandler(responseData);
+      user => {
+        console.log(user);
+        const userJSON = {'userId': user.id,
+          'firstName': user.firstname,
+          'lastName': user.lastname,
+          'occupation': user.occupation,
+          'phoneNumber': user.telephone,
+          'address': user.address,
+          'city': "",
+          'state': "",
+          'zipCode': user.zip_code,
+          'email': user.email,
+          'preferredRegion': user.preferred_region_id,
+          'preferredLocation': user.preferred_location_id,
+          'preferredTimes': ""
+        }
+        LocalStorage.storeUser(userJSON)
+        this.props.navigateHandler();
       },
       error => {
         if (this.state.email == "" || this.state.password == "") {

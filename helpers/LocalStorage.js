@@ -6,6 +6,10 @@ class LocalStorage {
     AsyncStorage.setItem('user', JSON.stringify(user_json));
   }
 
+  static storeEvents(events_json) {
+    AsyncStorage.setItem('events', JSON.stringify(events_json));
+  }
+
   static async getUser() {
     try {
       var user_json = await AsyncStorage.getItem('user');
