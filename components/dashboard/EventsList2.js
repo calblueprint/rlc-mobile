@@ -82,7 +82,7 @@ export default class EventsList2 extends Component {
 
   async componentDidMount() {
     try {
-      let user = await LocalStorage.getUser();
+      let user = await LocalStorage.getItem('user');
       this.setState(prevState=>{
         return {...prevState, user_id: user.userId }
       }, () => this._fetchEvents());
@@ -98,7 +98,7 @@ export default class EventsList2 extends Component {
     return getRequest(
       APIRoutes.getEventsPath(this.state.user_id, "attended"),
       (eventData) => {
-        LocalStorage.storeEvents(eventData);
+        LocalStorage.storeItem('events',eventData);
         this.setState((prevState)=>{
           return {...prevState,events: eventData }
         });

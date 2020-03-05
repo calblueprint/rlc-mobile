@@ -60,7 +60,7 @@ export default class EventsList extends React.Component {
 
   async componentDidMount() {
     try {
-      let user = await LocalStorage.getUser();
+      let user = await LocalStorage.getItem('user');
       this.setState({ user_id: user.id });
     } catch(err) {
       console.error(err)
