@@ -34,7 +34,10 @@
     "react-native-maps": "^0.26.1",
     "react-native-reanimated": "~1.2.0",
     "react-native-safe-area-context": "^0.6.2",
+<<<<<<< HEAD
+=======
     "react-native-screens": "^2.2.0",
+>>>>>>> 7ba561bfe0b06a2b9c995f16dd9748bd368263ff
     "react-native-sectioned-multi-select": "^0.7.2",
     "react-native-step-indicator": "0.0.11",
     "react-native-tab-view": "^2.10.0",

@@ -26,9 +26,9 @@ export default class LoginScreen extends Component {
     this.setState({ inValidText: "⚠️ The username/password is invalid" });
   };
 
-  navigateToHome = () => {
+  navigateToMain = () => {
     const { navigate } = this.props.navigation;
-    navigate("Dash");
+    navigate("Main");
   };
 
   navigateToSignup = () => {
@@ -51,7 +51,7 @@ export default class LoginScreen extends Component {
           <View style={styles.formContainer}>
             <LoginForm
               setInvalidText={this.setInvalidText}
-              navigateHandler={this.navigateToHome}
+              navigateHandler={this.navigateToMain}
               navigateToSignup={this.navigateToSignup}
             />
           </View>

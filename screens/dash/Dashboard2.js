@@ -17,6 +17,8 @@ import ProfileForm from "../../components/profile/ProfileForm.js";
 import { normalize } from "../../utils/Normalize.js";
 import LocalStorage from "../../helpers/LocalStorage";
 
+import Sizes from "../../constants/Sizes.js";
+
 export default class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -61,7 +63,8 @@ Dashboard.navigationOptions = {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    width: Sizes.width
   },
   currentEvent: {
     backgroundColor: "#EEEEEE",
