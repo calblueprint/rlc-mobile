@@ -84,7 +84,6 @@ export default class EventsList2 extends Component {
     try {
       let user = await LocalStorage.getUser();
       this.setState(prevState=>{
-        console.log(user);
         return {...prevState, user_id: user.userId }
       }, () => this._fetchEvents());
     } catch(err) {
@@ -96,7 +95,6 @@ export default class EventsList2 extends Component {
   // Fetch function; not sure if this works yet
   // TODO: @Johnathan / @Suhas, get fetch events to work 
   _fetchEvents = () => {
-    console.log(APIRoutes.getEventsPath(this.state.user_id, "attended"));
     return getRequest(
       APIRoutes.getEventsPath(this.state.user_id, "attended"),
       (eventData) => {

@@ -25,7 +25,6 @@ export default class LoginForm extends React.Component {
     return postRequest(
       APIRoutes.loginPath(),
       user => {
-        console.log(user);
         const userJSON = {'userId': user.id,
           'firstName': user.firstname,
           'lastName': user.lastname,
