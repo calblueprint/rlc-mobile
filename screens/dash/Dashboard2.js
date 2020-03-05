@@ -22,25 +22,6 @@ export default class Dashboard extends Component {
     super(props);
   }
 
-  async componentDidMount() {
-    const user = this.props.navigation.state.params.userInfo;
-    const userJSON = {'userId': user.id,
-      'firstName': user.firstname,
-      'lastName': user.lastname,
-      'occupation': user.occupation,
-      'phoneNumber': user.telephone,
-      'address': user.address,
-      'city': "",
-      'state': "",
-      'zipCode': user.zip_code,
-      'email': user.email,
-      'preferredRegion': user.preferred_region_id,
-      'preferredLocation': user.preferred_location_id,
-      'preferredTimes': ""
-    }
-    await LocalStorage.storeUser(userJSON)
-  }
-
   navigateToShift = () => {
     const { navigate } = this.props.navigation;
     navigate("Shift");
