@@ -17,28 +17,11 @@ import ProfileForm from "../../components/profile/ProfileForm.js";
 import { normalize } from "../../utils/Normalize.js";
 import LocalStorage from "../../helpers/LocalStorage";
 
+import Sizes from "../../constants/Sizes.js";
+
 export default class Dashboard extends Component {
   constructor(props) {
     super(props);
-  }
-
-  async componentDidMount() {
-    const user = this.props.navigation.state.params.userInfo;
-    const userJSON = {'userId': user.id,
-      'firstName': user.firstname,
-      'lastName': user.lastname,
-      'occupation': user.occupation,
-      'phoneNumber': user.telephone,
-      'address': user.address,
-      'city': "",
-      'state': "",
-      'zipCode': user.zip_code,
-      'email': user.email,
-      'preferredRegion': user.preferred_region_id,
-      'preferredLocation': user.preferred_location_id,
-      'preferredTimes': ""
-    }
-    await LocalStorage.storeUser(userJSON)
   }
 
   navigateToShift = () => {
@@ -80,7 +63,8 @@ Dashboard.navigationOptions = {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    width: Sizes.width
   },
   currentEvent: {
     backgroundColor: "#EEEEEE",
