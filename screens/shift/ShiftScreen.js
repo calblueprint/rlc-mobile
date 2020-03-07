@@ -9,6 +9,17 @@ import { RNCamera } from 'react-native-camera';
 //import { Camera } from 'react-native-camera';
 import Sizes from "../../constants/Sizes";
 
+const options = [
+     {
+          key: 'one',
+          text: 'Withdraw from this event only',
+     },
+     {
+          key: 'all',
+          text: 'Withdraw from this and all future events',
+     }
+];
+
 export default class ShiftScreen extends React.Component {
      constructor(props) {
           super(props)
