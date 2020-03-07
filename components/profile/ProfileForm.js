@@ -25,7 +25,7 @@ export default class LoginForm extends Component {
 
     async componentDidMount() {
         try {
-            let user = await LocalStorage.getUser();
+            let user = await LocalStorage.getItem('user');
             this.setState(user);
         } catch(err) {
             console.error(err)
