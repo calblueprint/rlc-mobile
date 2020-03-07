@@ -2,6 +2,9 @@ import React, { Component } from "../../node_modules/react";
 import { StyleSheet, View, Image, ScrollView, Text, KeyboardAvoidingView, TouchableOpacity } from "react-native";
 import Header from "../../components/shift/Header"
 import Sizes from "../../constants/Sizes";
+import NavigationFooter from "../../navigation/NavigationFooter";
+import RadioButtons from "../../components/shift/RadioButtons";
+
 
 export default class LoginScreen extends React.Component {
     constructor(props) {
@@ -32,18 +35,21 @@ export default class LoginScreen extends React.Component {
                         onPressHandler={this.navigateToMain}
                     />
                 </View>
-                <ScrollView style={{ height: '90%' }}>
+                <View style={{ height: '90%' }}>
                     <View style={styles.container}>
                         <Text style={styles.overview}>
                             You are about to withdraw your spot from a recurring event.
                                 </Text>
+                        <RadioButtons />
+
+                        <View style={styles.buttonContainer}>
+                            <TouchableOpacity style={styles.button}>
+                                <Text style={styles.buttonText}>Complete</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.button}>
-                            <Text style={styles.buttonText}>Complete</Text>
-                        </TouchableOpacity>
-                    </View>
-                </ScrollView>
+                </View>
+
             </KeyboardAvoidingView>
         );
     }
@@ -52,28 +58,29 @@ export default class LoginScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         height: "100%",
+        width: Sizes.width,
         flex: 1,
         padding: 40,
         paddingTop: 20,
     },
     overview: {
+        fontWeight: "600",
         fontSize: 16,
         lineHeight: 25,
-        letterSpacing: .5,
-        paddingTop: 5,
+        paddingVertical: 5,
     },
     button: {
         backgroundColor: '#38A5DB',
         justifyContent: 'center',
-        paddingVertical: 15,
+        margin: 15,
         marginBottom: 20,
         borderRadius: 5,
         width: '100%',
+        paddingLeft: 5,
         height: 50
     },
     buttonContainer: {
         alignItems: 'center',
-        marginTop: 20,
         justifyContent: 'center',
         flex: 1,
     },
