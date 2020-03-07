@@ -7,7 +7,7 @@ class NavigationFooter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentScreenIndex : props.index
+      currentIndex : props.index
     }
   }
 
@@ -24,13 +24,13 @@ class NavigationFooter extends React.Component {
     return (
       <View style={{...styles.tabContainer,  ...{flexDirection: 'row'}}}>
         <TouchableOpacity onPress={this.props.navigationHandler.bind(this, 0)}>
-          {this.state.currentScreenIndex == 0? profile: profileFocused}
+          {this.state.currentIndex == 0? profile: profileFocused}
         </TouchableOpacity>
         <TouchableOpacity onPress={this.props.navigationHandler.bind(this, 1)}>
-          {this.state.currentScreenIndex == 1? dashboard: dashboardFocused}
+          {this.state.currentIndex == 1? dashboard: dashboardFocused}
         </TouchableOpacity>
         <TouchableOpacity onPress={this.props.navigationHandler.bind(this, 2)}>
-          {this.state.currentScreenIndex == 2? search: searchFocused}
+          {this.state.currentIndex == 2? search: searchFocused}
         </TouchableOpacity>
       </View>
     )

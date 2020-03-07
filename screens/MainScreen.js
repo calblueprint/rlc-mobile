@@ -19,14 +19,13 @@ export default class MainScreen extends React.Component {
     
     // Used for horizontal swiping to navigate between the screens.
     _onNavigationScrollEnd(event) {
-    let currentPage = Math.round(
+    let scrollToIndex = Math.round(
         event.nativeEvent.contentOffset.x /
         event.nativeEvent.layoutMeasurement.width
     );
-    if (this.state.currentPage !== currentPage) {
-        this.setState({ currentPage });
+    if (this.state.currentScreenIndex !== scrollToIndex) {
+        this.setState({ currentScreenIndex : scrollToIndex });
     }
-    console.log(this.state.currentScreenIndex);
     }
 
     // Navigate between screens by pressing one of the screens at the bottom tabbar.
@@ -36,10 +35,6 @@ export default class MainScreen extends React.Component {
         y: 0,
         animated: true
     });
-    this.setState({
-        currentScreenIndex: index
-    })
-    console.log(this.state.currentScreenIndex)
     }
 
     //async logoutHandler() To be implemented.
