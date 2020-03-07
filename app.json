@@ -24,7 +24,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Your message to user when the camera is accessed for the first time",
+        "NSPhotoLibraryAddUsageDescription": "Your message to user when the photo library is accessed for the first time",
+        "NSPhotoLibraryUsageDescription": "Your message to user when the photo library is accessed for the first time"
+      }
     }
   }
 }

@@ -4,21 +4,10 @@ import Header from "../../components/shift/Header"
 import { CheckBox } from 'react-native-elements'
 import LocTimeline from '../../components/shift/LocTimeline'
 import MapView, { Marker } from 'react-native-maps';
-
-function instructionDetail(data) {
-     const step = data.item;
-     return (
-          <View>
-               <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
-                    <Text style={{ fontSize: 17 }}>{step.step}. </Text>
-                    <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>{step.description}</Text>
-               </View>
-               {step.photo_needed && <View style={styles.upload_box}></View>}
-          </View>
-     )
-}
-
-
+import NavigationFooter from "../../navigation/NavigationFooter";
+import { RNCamera } from 'react-native-camera';
+//import { Camera } from 'react-native-camera';
+import Sizes from "../../constants/Sizes";
 
 export default class ShiftScreen extends React.Component {
      constructor(props) {
@@ -133,9 +122,47 @@ export default class ShiftScreen extends React.Component {
           )
      }
 
-     navigateToDash = () => {
+     instructionDetail = (data) => {
+          const step = data.item;
+          return (
+               <View>
+                    <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
+                         <Text style={{ fontSize: 17 }}>{step.step}. </Text>
+                         <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>{step.description}</Text>
+                    </View>
+                    {step.photo_needed &&
+                         <RNCamera ref={cam => { this.camera = cam }} style={styles.preview} type={RNCamera.Constants.Type.back}
+                              flashMode={RNCamera.Constants.FlashMode.on}>
+                              <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
+                                   <TouchableOpacity onPress={this.takePicture.bind(this)} style={styles.capture}>
+                                        <Text style={{ fontSize: 14 }}> SNAP </Text>
+                                   </TouchableOpacity>
+                              </View>
+                         </RNCamera>}
+               </View>
+          )
+     }
+
+
+     navigateToMain = () => {
           const { navigate } = this.props.navigation;
-          navigate("Dash");
+          navigate("Main");
+     };
+
+     navigateToWithdraw = () => {
+          const { navigate } = this.props.navigation;
+          navigate("Withdraw");
+     };
+
+     // takePicture() {
+     //      this.camera.capture().then((data) => console.log(data)).catch(err => console.error(err));
+     // }
+
+     takePicture = async () => {
+          if (this.camera) {
+               const data = await this.camera.takePictureAsync();
+               console.warn('takePictureResponse ', data);
+          }
      };
 
      render() {
@@ -145,9 +172,10 @@ export default class ShiftScreen extends React.Component {
                          <View style={{ height: '10%' }}>
                               <Header
                                    centerTitle="In Progress"
-                                   onPressBack={this.navigateToDash}
+                                   onPressBack={this.navigateToMain}
+                                   rightSide={true}
                                    actionTitle="Withdraw"
-                                   onPressHandler={this.navigateToDash}
+                                   onPressHandler={this.navigateToWithdraw}
                               />
                          </View>
 
@@ -214,7 +242,7 @@ export default class ShiftScreen extends React.Component {
                               </Text>
                                    <FlatList
                                         data={this.state.shiftInstructions}
-                                        renderItem={instructionDetail}
+                                        renderItem={this.instructionDetail}
                                    />
 
                                    <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
@@ -244,6 +272,9 @@ export default class ShiftScreen extends React.Component {
                               </View>
 
                          </ScrollView>
+                         {/* <View style={{ height: Sizes.height * 0.08 }}>
+                              <NavigationFooter index={this.state.currentScreenIndex} navigationHandler={this._onSelectNavigationMenu} />
+                         </View> */}
                     </View>
                </KeyboardAvoidingView>
           )
@@ -376,5 +407,17 @@ const styles = StyleSheet.create({
      },
      map: {
           ...StyleSheet.absoluteFillObject,
+     }, preview: {
+          flex: 1,
+          justifyContent: 'flex-end',
+          alignItems: 'center',
      },
+     capture: {
+          flex: 0,
+          backgroundColor: '#fff',
+          borderRadius: 5,
+          padding: 10,
+          alignSelf: 'center',
+          margin: 40
+     }
 })
