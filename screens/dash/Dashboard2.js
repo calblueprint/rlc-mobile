@@ -22,6 +22,17 @@ import Sizes from "../../constants/Sizes.js";
 export default class Dashboard extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      user: {},
+      currentEvent: {}
+    }
+  }
+
+  async componentDidMount() {
+    let user = await LocalStorage.getItem('user');
+    let events = await LocalStorage.getItem('events');
+    console.log(events)
+    console.log(user)
   }
 
   navigateToShift = () => {

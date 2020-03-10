@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   Text,
+  AsyncStorage,
 } from "react-native";
 import { frontendError } from "../lib/alerts";
 import { postRequest } from "../lib/requests";
@@ -39,7 +40,7 @@ export default class LoginForm extends React.Component {
           'preferredLocation': user.preferred_location_id,
           'preferredTimes': ""
         }
-        LocalStorage.storeItem('user',userJSON)
+        AsyncStorage.setItem('user', userJSON);
         this.props.navigateHandler();
       },
       error => {
