@@ -4,6 +4,10 @@ import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 export default class ActivityCard extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { 
+      event : this.props.event,
+      requestLoaded: this.props.requestLoaded
+    }
   }
 
   // onPressShiftHandler = () => {
@@ -11,34 +15,43 @@ export default class ActivityCard extends React.Component {
   // };
 
   render() {
-    return (
-      <TouchableOpacity
-        style={styles.card}
-        onPress={() => {
-          this.props.onPressHandler();
-        }}
-      >
-        <Text style={styles.location}>📍 {this.props.location}</Text>
-
-        <Text style={styles.name}>{this.props.name}</Text>
-
-        <Text style={styles.time}>{this.props.time}</Text>
-        <View style={styles.details}>
-          <View>
-            <Text style={styles.smallGreyText}>Weight</Text>
-            <Text style={styles.smallBlackText}>{this.props.weight}</Text>
+    if (this.state.requestLoaded) {
+      return ( //Return loaded card
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => {
+            this.props.onPressHandler();
+          }}
+        >
+          <Text style={styles.location}>📍 {this.props.location}</Text>
+  
+          <Text style={styles.name}>{this.props.name}</Text>
+  
+          <Text style={styles.time}>{this.props.time}</Text>
+          <View style={styles.details}>
+            <View>
+              <Text style={styles.smallGreyText}>Weight</Text>
+              <Text style={styles.smallBlackText}>{this.props.weight}</Text>
+            </View>
+            <View>
+              <Text style={styles.smallGreyText}># of Pickups</Text>
+              <Text style={styles.smallBlackText}>{this.props.numpickups}</Text>
+            </View>
+            <View>
+              <Text style={styles.smallGreyText}>Spots Open</Text>
+              <Text style={styles.smallBlackText}>{this.props.spotsOpen}</Text>
+            </View>
           </View>
-          <View>
-            <Text style={styles.smallGreyText}># of Pickups</Text>
-            <Text style={styles.smallBlackText}>{this.props.numpickups}</Text>
-          </View>
-          <View>
-            <Text style={styles.smallGreyText}>Spots Open</Text>
-            <Text style={styles.smallBlackText}>{this.props.spotsOpen}</Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
+        </TouchableOpacity>
+      );
+    } else {
+      return ( //Return loading card
+        <TouchableOpacity
+          style={styles.card}
+        ></TouchableOpacity>
+      )
+    }
+    
   }
 }
 

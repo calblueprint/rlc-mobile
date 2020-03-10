@@ -24,16 +24,21 @@ export default class Dashboard extends Component {
     super(props);
     this.state = {
       user: {},
-      currentEvent: {}
+      currentEvent: {},
+      requestLoaded: false
     }
   }
 
   async componentDidMount() {
     let user = await LocalStorage.getItem('user');
-    let events = await LocalStorage.getItem('events');
-    console.log(events)
+    // let events = await LocalStorage.getItem('events'); Fetch the current event only
+    // this.setState({requestLoaded: true})
+    // console.log(events)
+
     console.log(user)
   }
+
+  // _fetchCurrentEvent () {}
 
   navigateToShift = () => {
     const { navigate } = this.props.navigation;
@@ -51,14 +56,10 @@ export default class Dashboard extends Component {
         <View style={styles.currentEvent}>
           <View style={styles.slideStructure}>
             <Text style={styles.inProgress}>• In Progress</Text>
-            <ActivityCard
-              location={"📍 Washington Square Park"}
-              name={"Washington Arch (TA114)"}
-              time={"1:00 to 2:30 PM"}
-              weight={"25 to 45 lbs"}
-              numpickups={"3"}
-              spotsOpen={"1 of 3"}
+            <ActivityCard 
+              event = {this.state.currentEvent}
               onPressHandler={this.navigateToShift}
+              requestLoaded = {this.state.requestLoaded}
             />
           </View>
         </View>

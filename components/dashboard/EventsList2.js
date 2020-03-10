@@ -17,52 +17,36 @@ import {APIRoutes} from '../../config/routes.js'
 import {getRequest} from '../../lib/requests.js'
 import LocalStorage from "../../helpers/LocalStorage.js";
 
+//Upcoming Events
 const FirstRoute = () => (
   <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
     <ScrollView style={{ height: "100%" }}>
       <Text style={styles.heading}>Sunday, June 19, 2019</Text>
-      <ActivityCard
-        location={"📍 Union Square"}
-        name={"Union Square (US014)"}
-        time={"8:15 to 9:15 PM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"2"}
-        spotsOpen={"1 of 2"}
-      />
-      <ActivityCard
-        location={"📍 Greenwich Village"}
-        name={"Greenwich Village (GW007)"}
-        time={"4:15 to 6:15 PM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"2"}
-        spotsOpen={"1 of 2"}
-      />
+      {this.props.events.map((event) => {
+        <ActivityCard
+          event = {this.state}
+          onPressHandler = {this.props.onPressHandler}
+          requestLoaded = {this.props.requestLoaded}
+        />
+      })}
       <Text style={styles.heading}>Monday, June 20, 2019</Text>
-      <ActivityCard
-        location={"📍 Williamsburg"}
-        name={"South Side Mission (WB001)"}
-        time={"10:30 to 11:30 AM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"1"}
-        spotsOpen={"2 of 4"}
-      />
     </ScrollView>
   </View>
 );
 
+//Completed Events
 const SecondRoute = () => (
   <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
     <ScrollView style={{ height: "100%" }}>
       <Text style={styles.heading}>Sunday, June 19, 2019</Text>
-      <ActivityCard
-        location={"📍 Home"}
-        name={"Union Square (US014)"}
-        time={"8:15 to 9:15 AM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"2"}
-        spotsOpen={"1 of 2"}
-      />
-    </ScrollView>
+      {this.props.events.map((event) => {
+        <ActivityCard
+          event = {this.state}
+          onPressHandler = {this.props.onPressHandler}
+          requestLoaded = {this.props.requestLoaded}
+        />
+      })}    
+      </ScrollView>
   </View>
 );
 
@@ -83,13 +67,12 @@ export default class EventsList2 extends Component {
   async componentDidMount() {
     try {
       let user = await LocalStorage.getItem('user');
-      this.setState(prevState=>{
-        return {...prevState, user_id: user.userId }
-      }, () => this._fetchEvents());
+      this.setState({ user_id: user.id });
     } catch(err) {
       console.error(err)
       this.props.navigation.navigate("Login")
     }
+    this._fetchEvents();
   }
 
   // Fetch function; not sure if this works yet
@@ -100,7 +83,7 @@ export default class EventsList2 extends Component {
       (eventData) => {
         LocalStorage.storeItem('events',eventData);
         this.setState((prevState)=>{
-          return {...prevState,events: eventData }
+          return {...prevState, events: eventData }
         });
       },
       (error) => {
