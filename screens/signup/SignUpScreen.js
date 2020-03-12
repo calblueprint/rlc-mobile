@@ -4,7 +4,7 @@ import SignUp1Screen from '../../components/signup/SignUp1Screen';
 import SignUp2Screen from '../../components/signup/SignUp2Screen';
 import SignUp3Screen from '../../components/signup/SignUp3Screen';
 import ConfirmationScreen from '../../components/signup/ConfirmationScreen'
-import { putRequest } from '../../lib/requests';
+import { postRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 
 export default class SignUpScreen extends Component {
@@ -38,21 +38,22 @@ export default class SignUpScreen extends Component {
 
   //does request for user registration
   userPutRequest = params => {
-    return putRequest(
+    return postRequest(
       APIRoutes.signupPath(),
       responseData => {
-        console.log("User registration successful.");
+        console.log("Successfully signed up User");
         console.log(responseData);
       },
       error => {
-        console.log("Error");
+        console.log(error);
+        console.log("Error posting User");
       },
       params
     );
   }
 
   createUserForStorage = () => {
-    const user = {
+    const user = {'user':{
       // TODO: Create a new userId on RLC website
       'userId': 5,
       'firstName': this.state.user.firstname,
@@ -64,11 +65,16 @@ export default class SignUpScreen extends Component {
       'state': '',
       'zipCode': '',
       'email': this.state.user.email,
+      'password': this.state.user.password,
       'preferredRegion': this.state.user.preferredRegion,
       'preferredLocation': this.state.user.preferredLocation,
-      'preferredTimes': this.state.user.preferredTimes
-    }
-    this._asyncSignIn(user)
+      'preferredTimes': this.state.user.preferredTimes,
+      'birth_month': this.state.user.birth_month,
+      'birth_year': this.state.user.birth_year
+    }};
+    console.log("User put in storage");
+    console.log(user);
+    this._asyncSignIn(user);
     this.userPutRequest(user);
   }
 

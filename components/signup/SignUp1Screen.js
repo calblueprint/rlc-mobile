@@ -22,6 +22,7 @@ export default class SignUp1Screen extends React.Component {
     this.state.user.firstname = this.state.firstName;
     this.state.user.lastname = this.state.lastName;
     this.state.user.birth_month = this.state.birth_month;
+    this.state.user.birth_year = this.state.birth_year;
     this.state.user.telephone = this.state.telephone;
   }
 
@@ -102,7 +103,8 @@ export default class SignUp1Screen extends React.Component {
                 (date) => {
                   this.setState({birthday: date})
                   this.setState({birth_month: monthNames[parseInt(date.substr(5, 2))-1]})
-               }
+                  this.setState({birth_year: parseInt(date.substr(0, 4))});
+                }
               } confirmBtnText={'Confirm'} cancelBtnText={'Cancel'} value={this.state.birthday}/>
               <Text style={styles.subHeading}>Mobile Phone Number</Text>
               <TextInput 

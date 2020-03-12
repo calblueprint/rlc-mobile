@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === "production") {
 } else {
   console.log("staging");
   URL = Platform.select({
-    ios: BASE_URL,
+    ios: "http://suhas.dev.calblueprint.org:3000",//BASE_URL,
     android: "http://10.0.2.2:3000"
   });
 }
