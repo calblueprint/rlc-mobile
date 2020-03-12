@@ -21,7 +21,7 @@ const routeConfiguration = {
 
 const stackConfiguration = {
   headerMode: "none",
-  initialRouteName: "Logo",
+  initialRouteName: "Main",
   backBehavior: "history",
   defaultNavigationOptions: {
     ...TransitionPresets.FadeFromBottomAndroid,
