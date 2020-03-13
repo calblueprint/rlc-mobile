@@ -4,6 +4,7 @@ import Header from "../../components/shift/Header"
 import { CheckBox } from 'react-native-elements'
 import LocTimeline from '../../components/shift/LocTimeline'
 import MapView, { Marker } from 'react-native-maps';
+import CameraScreen from './CameraScreen';
 
 function instructionDetail(data) {
      const step = data.item;
@@ -138,6 +139,11 @@ export default class ShiftScreen extends React.Component {
           navigate("Dash");
      };
 
+     navigateToCamera = () => {
+          const { navigate } = this.props.navigation;
+          navigate("Camera");
+     };
+
      render() {
           return (
                <KeyboardAvoidingView behavior="position">
@@ -231,6 +237,13 @@ export default class ShiftScreen extends React.Component {
                                              style={styles.input}
                                         />
                                    </View>
+
+                                   <View style={styles.buttonContainer}>
+                                        <TouchableOpacity style={styles.button} onPress={this.navigateToCamera}>
+                                             <Text style={styles.buttonText}>CAMERA</Text>
+                                        </TouchableOpacity>
+                                   </View>
+
                                    <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
                                         <Text style={{ fontSize: 17 }}>10.</Text>
                                         <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>Tap "Complete" to confirm the completion of the event. The last three steps must be completed.</Text>

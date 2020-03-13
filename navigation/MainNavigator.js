@@ -8,6 +8,7 @@ import LoginScreen from "../screens/login/LoginScreen.js";
 import SignupScreen from "../screens/signup/SignUpScreen.js";
 import ConfirmationScreen from "../components/signup/ConfirmationScreen.js";
 import ShiftScreen from "../screens/shift/ShiftScreen.js";
+import CameraScreen from "../screens/shift/CameraScreen.js";
 import MainScreen from "../screens/MainScreen.js";
 
 const routeConfiguration = {
@@ -15,6 +16,7 @@ const routeConfiguration = {
   Login: { screen: LoginScreen, name: "Login" },
   Signup: { screen: SignupScreen, name: "Signup" },
   Shift: { screen: ShiftScreen, name: "Shift" },
+  Camera: { screen: CameraScreen, name: "Camera" },
   Main: { screen: MainScreen, name: "Main" },
   Confirmation: { screen: ConfirmationScreen, name: "Confirmation" }
 };
