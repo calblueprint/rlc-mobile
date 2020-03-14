@@ -45,7 +45,7 @@ export default class WithdrawScreen extends React.Component {
                     </View>
                     <View style={{ flex: 4 }}></View>
                     <View style={styles.buttonContainer} >
-                        <TouchableOpacity style={styles.button}>
+                        <TouchableOpacity style={styles.button} onPress={this.navigateToMain}>
                             <Text style={styles.buttonText}>Complete</Text>
                         </TouchableOpacity>
                     </View>
