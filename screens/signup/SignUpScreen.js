@@ -4,7 +4,7 @@ import SignUp1Screen from '../../components/signup/SignUp1Screen';
 import SignUp2Screen from '../../components/signup/SignUp2Screen';
 import SignUp3Screen from '../../components/signup/SignUp3Screen';
 import ConfirmationScreen from '../../components/signup/ConfirmationScreen'
-import { postRequest } from '../../lib/requests';
+import { putRequest } from '../../lib/requests';
 import { APIRoutes } from '../../config/routes';
 
 export default class SignUpScreen extends Component {
@@ -36,9 +36,9 @@ export default class SignUpScreen extends Component {
     navigate("Login");
   }
 
-  //does post request for user registration
-  userPostRequest = params => {
-    return postRequest(
+  //does request for user registration
+  userPutRequest = params => {
+    return putRequest(
       APIRoutes.signupPath(),
       responseData => {
         console.log("User registration successful.");
@@ -69,6 +69,7 @@ export default class SignUpScreen extends Component {
       'preferredTimes': this.state.user.preferredTimes
     }
     this._asyncSignIn(user)
+    this.userPutRequest(user);
   }
 
   _asyncSignIn = async (user) => {
@@ -80,9 +81,6 @@ export default class SignUpScreen extends Component {
   setScreenForward = (params) => {
     this.setState({ currentScreenNum: this.state.currentScreenNum + 1 }, () => { this.render() });
     this.updateUser(params)
-    if (this.state.currentScreenNum == 4) {
-      this.registerUser()
-    }
   }
 
   //Moves to previous screen in sign up after user presses previous button

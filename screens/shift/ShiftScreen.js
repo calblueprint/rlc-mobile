@@ -133,9 +133,14 @@ export default class ShiftScreen extends React.Component {
           )
      }
 
-     navigateToDash = () => {
+     navigateToMain = () => {
           const { navigate } = this.props.navigation;
-          navigate("Dash");
+          navigate("Main");
+     };
+
+     navigateToWithdraw = () => {
+          const { navigate } = this.props.navigation;
+          navigate("Withdraw");
      };
 
      render() {
@@ -145,9 +150,10 @@ export default class ShiftScreen extends React.Component {
                          <View style={{ height: '10%' }}>
                               <Header
                                    centerTitle="In Progress"
-                                   onPressBack={this.navigateToDash}
+                                   onPressBack={this.navigateToMain}
+                                   rightSide={true}
                                    actionTitle="Withdraw"
-                                   onPressHandler={this.navigateToDash}
+                                   onPressHandler={this.navigateToWithdraw}
                               />
                          </View>
 
