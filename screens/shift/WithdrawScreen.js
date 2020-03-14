@@ -25,8 +25,8 @@ export default class WithdrawScreen extends React.Component {
 
     render() {
         return (
-            <KeyboardAvoidingView behavior="position">
-                <View style={{ height: '10%' }}>
+            <View style={{ flex: 1, flexDirection: "column" }}>
+                <View style={{ flex: 1 }}>
                     <Header
                         centerTitle="Withdraw Your Spot"
                         onPressBack={this.navigateToShift}
@@ -35,22 +35,24 @@ export default class WithdrawScreen extends React.Component {
                         onPressHandler={this.navigateToMain}
                     />
                 </View>
-                <View style={{ height: '90%' }}>
-                    <View style={styles.container}>
-                        <Text style={styles.overview}>
-                            You are about to withdraw your spot from a recurring event.
-                                </Text>
-                        <RadioButtons />
 
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity style={styles.button}>
-                                <Text style={styles.buttonText}>Complete</Text>
-                            </TouchableOpacity>
-                        </View>
+                <View style={styles.container}>
+                    <Text style={styles.overview}>
+                        You are about to withdraw your spot from a recurring event.
+                                </Text>
+                    <View style={{ flex: 1 }}>
+                        <RadioButtons />
+                    </View>
+                    <View style={{ flex: 4 }}></View>
+                    <View style={styles.buttonContainer} >
+                        <TouchableOpacity style={styles.button}>
+                            <Text style={styles.buttonText}>Complete</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
 
-            </KeyboardAvoidingView>
+            </View>
+
         );
     }
 }
@@ -59,7 +61,7 @@ const styles = StyleSheet.create({
     container: {
         height: "100%",
         width: Sizes.width,
-        flex: 1,
+        flex: 8,
         padding: 40,
         paddingTop: 20,
     },
