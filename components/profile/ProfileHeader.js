@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { AsyncStorage, StyleSheet, View, Icon, TextInput, TouchableOpacity, Text, Switch, Image } from 'react-native';
-import LocalStorage from '../../helpers/LocalStorage';
+import { StyleSheet, View, Icon, Text, Image } from 'react-native';
 
 export default class ProfileHeader extends Component {
     constructor(props) {
@@ -15,7 +14,7 @@ export default class ProfileHeader extends Component {
                         style={styles.profilePic}
                         source={require('../../assets/images/rlclogo.png')} />
 
-                    <Text style={styles.title}>{this.props.previousUserInfo.firstName + " " + this.props.previousUserInfo.lastName}</Text>
+                    <Text style={styles.title}>{this.props.getUserAttribute('firstName') + " " + this.props.getUserAttribute('lastName')}</Text>
                     <Text style={styles.subtext}>Member since September 2019</Text>
                 </View>
 
