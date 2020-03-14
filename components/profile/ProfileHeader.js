@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Icon, TextInput, TouchableOpacity, Text, Switch, Image } from 'react-native';
+import { StyleSheet, View, Icon, Text, Image } from 'react-native';
 
 export default class ProfileHeader extends Component {
+    constructor(props) {
+        super(props)
+    }
+
     render() {
         return (
             <View>
                 <View style={styles.profileContainer}>
-                    <Image 
-                    style={styles.profilePic}
-                    source={require('../../assets/images/rlclogo.png')} />
+                    <Image
+                        style={styles.profilePic}
+                        source={require('../../assets/images/rlclogo.png')} />
 
-                    <Text style={styles.title}>Melody Wei</Text>
+                    <Text style={styles.title}>{this.props.getUserAttribute('firstName') + " " + this.props.getUserAttribute('lastName')}</Text>
                     <Text style={styles.subtext}>Member since September 2019</Text>
                 </View>
 
@@ -21,7 +25,7 @@ export default class ProfileHeader extends Component {
                     </View>
                     <View style={styles.badge}>
                         <Text style={styles.badgeHeading}>16</Text>
-                        <Text style={styles.badgeText}>Miles Completed</Text>
+                        <Text style={styles.badgeText}>Missions Completed</Text>
                     </View>
                     <View style={styles.badge}>
                         <Text style={styles.badgeHeading}>34</Text>
@@ -51,15 +55,15 @@ const styles = StyleSheet.create({
     profilePic: {
         width: 125,
         height: 125,
-        borderRadius: 125/2
-    }, 
+        borderRadius: 125 / 2
+    },
     badgeContainer: {
         flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
         marginTop: 20,
         marginBottom: 25,
-        alignItems: 'flex-start' 
+        alignItems: 'flex-start'
     },
     badge: {
         width: '33%'
