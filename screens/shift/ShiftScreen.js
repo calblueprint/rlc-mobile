@@ -9,6 +9,8 @@ export default class ShiftScreen extends React.Component {
      constructor(props) {
           super(props)
           this.state = {
+               deliverPhoto: "",
+               receiptPhoto: "",
                participantData: [
                     {
                          name: "Alice Russel (You)",
@@ -64,11 +66,13 @@ export default class ShiftScreen extends React.Component {
                     {
                          step: 7,
                          description: "Take a photo of the food once it is delivered to Bowery Mission*",
+                         photo_uri: deliverPhoto,
                          photo_needed: true
                     },
                     {
                          step: 8,
                          description: "Request a receipt from Bowery Mission and take a photo of the receipt*",
+                         photo_uri: deliverPhoto,
                          photo_needed: true
                     },
                ],

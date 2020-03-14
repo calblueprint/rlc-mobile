@@ -7,6 +7,15 @@ export default function CameraScreen() {
     const [hasPermission, setHasPermission] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
 
+    takePicture = async () => {
+        if (this.camera) {
+            this.camera.takePictureAsync({ base64: true, quality: 0, exif: true }).then(photo => {
+                this.camera.pausePreview();
+                const base64 = `data:image/jpeg;base64,${photo.base64}`;
+            });
+        }
+    };
+
     useEffect(() => {
         (async () => {
             const { status } = await Permissions.askAsync(Permissions.CAMERA);
@@ -37,7 +46,7 @@ export default function CameraScreen() {
                     <Text style={styles.text}> Back </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={styles.button}>
+                    style={styles.button} onPress={this.takePicture}>
                     <Text style={styles.text}> Take Photo </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
