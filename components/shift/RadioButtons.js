@@ -1,3 +1,5 @@
+//based on @source: https://dev.to/saadbashar/create-your-own-radio-button-component-in-react-native-easily-59il
+
 import React from "react";
 import {
     View,
@@ -36,7 +38,7 @@ export default class RadioButtons extends React.Component {
     }
     render() {
         return (
-            <View>
+            <View style={{ flex: 1 }}>
                 {
                     options.map(item => (
                         <View key={item.key} style={styles.buttonContainer}>
@@ -69,12 +71,11 @@ const styles = StyleSheet.create({
         flex: 1,
         flexWrap: 'wrap',
         fontSize: 16,
-        lineHeight: 25,
         paddingTop: 5,
     },
     circle: {
-        height: 25,
-        width: 25,
+        height: Sizes.width * 0.06,
+        width: Sizes.width * 0.06,
         borderRadius: 20,
         borderWidth: 2,
         borderColor: '#38A5DB',
@@ -83,8 +84,8 @@ const styles = StyleSheet.create({
         marginRight: 10
     },
     checkedCircle: {
-        width: 15,
-        height: 15,
+        width: Sizes.width * 0.04,
+        height: Sizes.width * 0.04,
         borderRadius: 10,
         backgroundColor: '#38A5DB',
     },

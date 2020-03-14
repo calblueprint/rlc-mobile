@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Image, ScrollView, Text, KeyboardAvoidingView, TouchableOpacity } from "react-native";
 import Header from "../../components/shift/Header"
-import Sizes from "../../constants/Sizes";
 import NavigationFooter from "../../navigation/NavigationFooter";
 import RadioButtons from "../../components/shift/RadioButtons";
 
@@ -50,7 +49,6 @@ export default class WithdrawScreen extends React.Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-
             </View>
 
         );
@@ -60,26 +58,24 @@ export default class WithdrawScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         height: "100%",
-        width: Sizes.width,
+        width: "100%",
         flex: 8,
         padding: 40,
-        paddingTop: 20,
     },
     overview: {
         fontWeight: "600",
         fontSize: 16,
-        lineHeight: 25,
+        flex: .5,
         paddingVertical: 5,
     },
     button: {
         backgroundColor: '#38A5DB',
         justifyContent: 'center',
         margin: 15,
-        marginBottom: 20,
         borderRadius: 5,
         width: '100%',
         paddingLeft: 5,
-        height: 50
+        height: "50%"
     },
     buttonContainer: {
         alignItems: 'center',
