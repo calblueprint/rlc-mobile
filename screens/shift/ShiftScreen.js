@@ -4,22 +4,6 @@ import Header from "../../components/shift/Header"
 import { CheckBox } from 'react-native-elements'
 import LocTimeline from '../../components/shift/LocTimeline'
 import MapView, { Marker } from 'react-native-maps';
-import CameraScreen from './CameraScreen';
-
-function instructionDetail(data) {
-     const step = data.item;
-     return (
-          <View>
-               <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
-                    <Text style={{ fontSize: 17 }}>{step.step}. </Text>
-                    <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>{step.description}</Text>
-               </View>
-               {step.photo_needed && <View style={styles.upload_box}></View>}
-          </View>
-     )
-}
-
-
 
 export default class ShiftScreen extends React.Component {
      constructor(props) {
@@ -134,6 +118,27 @@ export default class ShiftScreen extends React.Component {
           )
      }
 
+
+     instructionDetail = (data) => {
+          const step = data.item;
+          return (
+               <View>
+                    <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
+                         <Text style={{ fontSize: 17 }}>{step.step}. </Text>
+                         <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>{step.description}</Text>
+                    </View>
+                    {step.photo_needed &&
+                         <View style={styles.buttonContainer}>
+                              <TouchableOpacity style={styles.button} onPress={this.navigateToCamera}>
+                                   <Text style={styles.buttonText}>TAKE PICTURE</Text>
+                              </TouchableOpacity>
+                         </View>
+                    }
+               </View>
+          )
+     }
+
+
      navigateToDash = () => {
           const { navigate } = this.props.navigation;
           navigate("Dash");
@@ -220,7 +225,7 @@ export default class ShiftScreen extends React.Component {
                               </Text>
                                    <FlatList
                                         data={this.state.shiftInstructions}
-                                        renderItem={instructionDetail}
+                                        renderItem={this.instructionDetail}
                                    />
 
                                    <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
@@ -236,12 +241,6 @@ export default class ShiftScreen extends React.Component {
                                              keyboardType="number-pad"
                                              style={styles.input}
                                         />
-                                   </View>
-
-                                   <View style={styles.buttonContainer}>
-                                        <TouchableOpacity style={styles.button} onPress={this.navigateToCamera}>
-                                             <Text style={styles.buttonText}>CAMERA</Text>
-                                        </TouchableOpacity>
                                    </View>
 
                                    <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>

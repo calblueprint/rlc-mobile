@@ -34,6 +34,22 @@ export default function CameraScreen() {
                             flex: 0.1,
                             alignSelf: 'flex-end',
                             alignItems: 'center',
+                        }}>
+                        <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}> Back </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={{
+                            flex: 0.1,
+                            alignSelf: 'flex-end',
+                            alignItems: 'center',
+                        }}>
+                        <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}> Take Photo </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={{
+                            flex: 0.1,
+                            alignSelf: 'flex-end',
+                            alignItems: 'center',
                         }}
                         onPress={() => {
                             setType(
