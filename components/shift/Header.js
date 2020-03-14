@@ -42,7 +42,7 @@ class Header extends React.Component {
         <Text style={{ ...styles.center, ...styles.title }}>
           {this.props.centerTitle}
         </Text>
-        <TouchableOpacity
+        {this.props.rightSide ? <TouchableOpacity
           style={styles.sides}
           onPress={() => {
             this.props.onPressHandler();
@@ -51,7 +51,7 @@ class Header extends React.Component {
           <Text style={{ ...Styles.title, ...styles.subtitle }}>
             {this.props.actionTitle}
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> : <View style={styles.sides}></View>}
       </View>
     );
   }
@@ -71,11 +71,11 @@ const styles = StyleSheet.create({
     paddingTop: 50
   },
   sides: {
-    width: "30%",
+    width: "25%",
     textAlign: "center"
   },
   center: {
-    width: "40%",
+    width: "50%",
     textAlign: "center"
   },
   title: {
