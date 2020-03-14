@@ -76,8 +76,8 @@ const styles = StyleSheet.create({
     circle: {
         height: Sizes.width * 0.06,
         width: Sizes.width * 0.06,
-        borderRadius: 20,
-        borderWidth: 2,
+        borderRadius: Sizes.width * 0.06,
+        borderWidth: Sizes.width * 0.005,
         borderColor: '#38A5DB',
         alignItems: 'center',
         justifyContent: 'center',
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     checkedCircle: {
         width: Sizes.width * 0.04,
         height: Sizes.width * 0.04,
-        borderRadius: 10,
+        borderRadius: Sizes.width * 0.04,
         backgroundColor: '#38A5DB',
     },
 })
