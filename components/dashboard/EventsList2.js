@@ -8,7 +8,7 @@ import {
 } from "react-native";
 
 // Animation Libraries
-import { TabView, SceneMap } from "react-native-tab-view";
+import { TabView } from "react-native-tab-view";
 import Animated from "react-native-reanimated";
 
 // Components

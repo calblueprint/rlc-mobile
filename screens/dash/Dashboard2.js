@@ -2,16 +2,12 @@ import React, { Component } from "../../node_modules/react";
 import {
   StyleSheet,
   View,
-  ScrollView,
-  FlatList,
   Text,
-  AsyncStorage
 } from "react-native";
 
 // Components
 import EventsList from "../../components/dashboard/EventsList2.js";
 import ActivityCard from "../../components/dashboard/ActivityCard";
-import ProfileForm from "../../components/profile/ProfileForm.js";
 
 // Utils
 import { normalize } from "../../utils/Normalize.js";
@@ -114,7 +110,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     opacity: 0.9,
     fontSize: normalize(16),
-    marginBottom: 10
+    marginBottom: "2.6%"
   },
   needsAttention: {
     color: "#E64A19",
@@ -123,6 +119,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     opacity: 0.9,
     fontSize: normalize(16),
-    marginBottom: 10
+    marginBottom: "2.6%"
   }
 });

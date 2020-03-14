@@ -43,7 +43,7 @@ export default class ActivityCard extends React.Component {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
-    borderRadius: "1.3%",
+    borderRadius: 5,
     marginBottom: "2.6%",
     marginLeft: "8%",
     width: "84%",
