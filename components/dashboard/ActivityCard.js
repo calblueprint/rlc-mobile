@@ -6,54 +6,38 @@ export default class ActivityCard extends React.Component {
     super(props);
     this.state = { 
       event : this.props.event,
-      requestLoaded: this.props.requestLoaded
     }
   }
 
-  // onPressShiftHandler = () => {
-  //   this.props.onPressHandler();
-  // };
-
   render() {
-    if (this.state.requestLoaded) {
       return ( //Return loaded card
         <TouchableOpacity
           style={styles.card}
-          onPress={() => {
-            this.props.onPressHandler();
-          }}
+          // onPress={() => this.props.onPressHandler.bind(this, this.state.event.eventId)}
         >
-          <Text style={styles.location}>📍 {this.props.location}</Text>
+          <Text style={styles.location}>📍 {this.state.event.address}</Text>
   
-          <Text style={styles.name}>{this.props.name}</Text>
+          <Text style={styles.name}>{this.state.event.title}</Text>
   
-          <Text style={styles.time}>{this.props.time}</Text>
+          <Text style={styles.time}>{this.state.event.starting_hour}</Text>
           <View style={styles.details}>
             <View>
               <Text style={styles.smallGreyText}>Weight</Text>
-              <Text style={styles.smallBlackText}>{this.props.weight}</Text>
+              <Text style={styles.smallBlackText}>{/*{this.props.weight}*/} FILLER </Text>
             </View>
             <View>
               <Text style={styles.smallGreyText}># of Pickups</Text>
-              <Text style={styles.smallBlackText}>{this.props.numpickups}</Text>
+              <Text style={styles.smallBlackText}>{/*{this.props.numpickups}*/} FILLER </Text>
             </View>
             <View>
               <Text style={styles.smallGreyText}>Spots Open</Text>
-              <Text style={styles.smallBlackText}>{this.props.spotsOpen}</Text>
+      <Text style={styles.smallBlackText}>{/*{this.props.spotsOpen} */} FILLER </Text>
             </View>
           </View>
         </TouchableOpacity>
       );
-    } else {
-      return ( //Return loading card
-        <TouchableOpacity
-          style={styles.card}
-        ></TouchableOpacity>
-      )
     }
-    
   }
-}
 
 const styles = StyleSheet.create({
   card: {

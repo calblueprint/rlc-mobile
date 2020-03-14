@@ -59,7 +59,6 @@ export default class Dashboard extends Component {
             <ActivityCard 
               event = {this.state.currentEvent}
               onPressHandler={this.navigateToShift}
-              requestLoaded = {this.state.requestLoaded}
             />
           </View>
         </View>
