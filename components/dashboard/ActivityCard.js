@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import { normalize } from "../../utils/Normalize";
 
 export default class ActivityCard extends React.Component {
   constructor(props) {
@@ -42,8 +43,8 @@ export default class ActivityCard extends React.Component {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
-    borderRadius: 5,
-    marginBottom: 10,
+    borderRadius: "1.3%",
+    marginBottom: "2.6%",
     marginLeft: "8%",
     width: "84%",
     shadowColor: "#000",
@@ -56,51 +57,51 @@ const styles = StyleSheet.create({
   },
   location: {
     color: "#9E9E9E",
-    marginTop: 20,
-    marginLeft: 14,
+    marginTop: "5.3%",
+    marginLeft: "3.7%",
     textAlign: "left",
     fontWeight: "500",
     opacity: 1,
-    fontSize: 14
+    fontSize: normalize(14)
   },
   name: {
     color: "#4d95d2",
     margin: 7,
-    marginLeft: 14,
+    marginLeft: "3.7%",
     textAlign: "left",
     fontWeight: "700",
     opacity: 0.9,
-    fontSize: 20
+    fontSize: normalize(20)
   },
   time: {
     color: "#9E9E9E",
-    marginLeft: 14,
+    marginLeft: "3.7%",
     textAlign: "left",
     fontWeight: "500",
     opacity: 1,
-    fontSize: 14
+    fontSize: normalize(14)
   },
   details: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    margin: 14,
-    marginTop: 16,
-    marginBottom: 18
+    margin: "3.7%",
+    marginTop: "4.3%",
+    marginBottom: "4.8%"
   },
   smallGreyText: {
     color: "#9E9E9E",
     textAlign: "left",
     fontWeight: "500",
     opacity: 1,
-    fontSize: 12,
-    marginBottom: 5
+    fontSize: normalize(12),
+    marginBottom: "2.6%"
   },
   smallBlackText: {
     color: "#000000",
     textAlign: "left",
     fontWeight: "500",
     opacity: 1,
-    fontSize: 12
+    fontSize: normalize(12)
   }
 });

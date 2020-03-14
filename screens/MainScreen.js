@@ -54,7 +54,7 @@ export default class MainScreen extends React.Component {
                 y: 0
                 }}
             >
-                <ProfileScreen
+                <ProfileScreen // temp testing
                     navigation={this.props.navigation}
                     onNavSelect={this._onSelectNavigationMenu}
                 />

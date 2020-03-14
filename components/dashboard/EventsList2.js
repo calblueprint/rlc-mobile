@@ -250,20 +250,21 @@ export default class EventsList2 extends Component {
 const styles = StyleSheet.create({
   button: {
     backgroundColor: "#38A5DB",
-    paddingVertical: 15,
+    paddingVertical: "4%",
     borderRadius: 5,
-    width: 250
+    maxWidth: 250
   },
   buttonContainer: {
     alignItems: "center",
-    marginTop: 20,
-    height: 50
+    marginTop: "5.3%",
+    height: "13.3%"
   },
   buttonText: {
     textAlign: "center",
     color: "#FFFFFF",
     fontWeight: "600",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
+    paddingHorizontal: "13.3%"
   },
   scene: {
     flex: 1
@@ -292,17 +293,17 @@ const styles = StyleSheet.create({
   },
   tabBar: {
     flexDirection: "row",
-    paddingTop: 10
+    paddingTop: "2.6%"
   },
   tabItem: {
     flex: 1,
     alignItems: "center",
-    padding: 10
+    padding: "2.6%"
   },
   heading: {
     color: "#000000",
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: "2.6%",
+    marginBottom: "2.6%",
     marginLeft: "8%",
     textAlign: "left",
     fontWeight: "600",
