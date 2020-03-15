@@ -1,5 +1,5 @@
 import React, { Component } from '../../node_modules/react';
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { AsyncStorage, StyleSheet, View, Text, ScrollView, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import ProfileHeader from '../../components/profile/ProfileHeader.js';
 import ProfileForm from '../../components/profile/ProfileForm.js';
 import LocalStorage from '../../helpers/LocalStorage';
