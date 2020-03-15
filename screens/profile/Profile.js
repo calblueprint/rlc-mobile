@@ -57,6 +57,12 @@ export default class Profile extends Component {
         await LocalStorage.storeItem('user', JSON.stringify(this.state.user));
     }
 
+    logoutUser = () => {
+        const { navigate } = this.props.navigation;
+        AsyncStorage.clear();
+        navigate("Logo");
+    }
+
     render() {
         if (!this.props.user) {
             return (
@@ -69,11 +75,17 @@ export default class Profile extends Component {
 
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity
-                            style={(this.state.disabled) ? { ...styles.disabledButton, ...styles.disabledButtonText } : { ...styles.button, ...styles.buttonText }}
+                            style={(this.state.disabled) ? { ...styles.disabledButton, ...styles.disabledButtonText } : { ...styles.button, ...styles.buttonText, ...styles.enabledButton }}
                             disabled={this.state.disabled}
                             onPress={this.saveUserInfo}
                         >
                             <Text style={styles.buttonText}>Save</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={{ ...styles.button, ...styles.buttonText }}
+                            onPress={this.logoutUser}
+                        >
+                            <Text style={styles.buttonText}>Log Out</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -106,19 +118,18 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#38A5DB',
         paddingVertical: 15,
-        marginBottom: 20,
+        marginBottom: 10,
         borderRadius: 5,
         position: 'absolute',
         bottom: 0,
-        width: 250,
+        right: 40,
+        width: 135,
     },
     buttonContainer: {
         alignItems: 'center',
-        marginTop: 20,
         flex: 1,
-        alignItems: 'center',
         justifyContent: 'flex-end',
-        height: 50
+        height: 50,
     },
     buttonText: {
         textAlign: 'center',
@@ -130,16 +141,20 @@ const styles = StyleSheet.create({
         opacity: 0.4,
         backgroundColor: '#CCCCCC',
         paddingVertical: 15,
-        marginBottom: 20,
+        marginBottom: 10,
         borderRadius: 5,
         position: 'absolute',
         bottom: 0,
-        width: 250,
+        left: 40,
+        width: 135,
     },
     disabledButtonText: {
         textAlign: 'center',
         color: '#666666',
         fontWeight: '600',
         textTransform: "uppercase"
+    },
+    enabledButton: {
+        left: 40
     }
 });
