@@ -31,10 +31,10 @@ class Header extends React.Component {
           <Icon
             name="left"
             type="antdesign"
+            color="#38A5DB"
             style={{
               height: 15,
               width: 15,
-              color: "#38A5DB",
               alignSelf: "left"
             }}
           />

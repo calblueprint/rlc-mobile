@@ -24,7 +24,7 @@ export default class timeOp extends React.Component {
         return (
             <View style={styles.selContainer}>
                 <Text style={{ ...styles.selObj, fontSize: normalize(14) }}>{this.props.text}</Text>
-                <CheckBox checked={false} style={styles.selObj} />
+                <CheckBox checked={false} style={{ ...styles.selObj, paddingHorizontal: "0%" }} />
             </View>
         );
     }
@@ -36,7 +36,9 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         width: "100%",
-        paddingHorizontal: "5%",
+        paddingHorizontal: "3%",
+        borderBottomWidth: 2,
+        borderBottomColor: "#EEEEEE"
     },
     selObj: {
         flex: 1,

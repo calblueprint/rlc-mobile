@@ -19,6 +19,7 @@ import { getRequest } from '../../lib/requests.js'
 import LocalStorage from "../../helpers/LocalStorage.js";
 
 import TimeTab from "./timeTab.js";
+import LocTab from "./locTab.js";
 
 
 import { normalize } from "../../utils/Normalize";
@@ -32,18 +33,8 @@ const FirstRoute = () => (
 
 //location
 const SecondRoute = () => (
-  <View>
-
-    <View>
-
-    </View>
-    <View>
-
-    </View>
-    <View>
-
-    </View>
-
+  <View style={{ flex: 1 }}>
+    <LocTab />
   </View>
 );
 
