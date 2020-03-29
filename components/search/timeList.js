@@ -17,34 +17,6 @@ import Sizes from "../../constants/Sizes.js";
 
 import TimeOp from "./timeOp";
 
-const times = [
-    {
-        key: 'all',
-        text: "Select the entire day",
-        value: false
-    },
-    {
-        key: '9_12',
-        text: "9AM-12PM",
-        value: false
-    },
-    {
-        key: '12_3',
-        text: "12PM-3PM",
-        value: false
-    },
-    {
-        key: '3_6',
-        text: "3PM-6PM",
-        value: false
-    },
-    {
-        key: '6_9',
-        text: "6PM-9PM",
-        value: false
-    },
-]
-
 export default class TimeList extends React.Component {
     constructor(props) {
         super(props);
@@ -54,7 +26,7 @@ export default class TimeList extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                {times.map((time, i) => (<TimeOp id={i} text={time.text} value={time.value} />))}
+                {this.props.data.map((time, i) => (<TimeOp id={i} text={time.text} value={time.value} />))}
             </View>
         );
     }

@@ -6,8 +6,6 @@ import {
     ScrollView,
     Text,
     TextInput,
-    FlatList,
-    Switch,
     Image,
     TouchableOpacity
 } from "react-native";
@@ -24,7 +22,34 @@ export default class TimeTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selected: 0
+            selected: 0,
+            times: [
+                {
+                    key: 'all',
+                    text: "Select the entire day",
+                    value: false
+                },
+                {
+                    key: '9_12',
+                    text: "9AM-12PM",
+                    value: false
+                },
+                {
+                    key: '12_3',
+                    text: "12PM-3PM",
+                    value: false
+                },
+                {
+                    key: '3_6',
+                    text: "3PM-6PM",
+                    value: false
+                },
+                {
+                    key: '6_9',
+                    text: "6PM-9PM",
+                    value: false
+                },
+            ]
         }
         this.updateIndex = this.updateIndex.bind(this)
     }
@@ -50,7 +75,7 @@ export default class TimeTab extends React.Component {
                 </View>
 
                 <View style={{ flex: 4 }}>
-                    <TimeList />
+                    <TimeList data={this.state.times} />
                 </View>
                 <View style={{ flex: 2 }} />
             </View>

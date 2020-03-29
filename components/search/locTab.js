@@ -18,10 +18,34 @@ import { normalize } from "../../utils/Normalize";
 
 import TimeList from "./timeList.js";
 
+
+
 export default class TimeTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            loca: [
+                {
+                    key: 'loca1',
+                    text: "Bowery",
+                    value: false
+                },
+                {
+                    key: 'loca2',
+                    text: "Chelsea",
+                    value: false
+                },
+                {
+                    key: 'loca3',
+                    text: "Chinatown",
+                    value: false
+                },
+                {
+                    key: 'loca5',
+                    text: "Clinton",
+                    value: false
+                },
+            ]
         }
     }
 
@@ -32,7 +56,7 @@ export default class TimeTab extends React.Component {
     render() {
 
         return (
-            <View style={{ ...Styles.container, ...styles.container }}>
+            <KeyboardAvoidingView style={{ ...Styles.container, ...styles.container }}>
                 <View style={{ flex: 1, backgroundColor: "#EEEEEE" }}>
 
                 </View>
@@ -52,10 +76,10 @@ export default class TimeTab extends React.Component {
 
                 <View style={{ flex: 7 }}>
                     <ScrollView>
-                        <TimeList />
+                        <TimeList data={this.state.loca} />
                     </ScrollView>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         );
     }
 }
