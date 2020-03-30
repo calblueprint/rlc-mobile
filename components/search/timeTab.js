@@ -22,7 +22,6 @@ export default class TimeTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selected: 0,
             times: [
                 {
                     key: 'all',
@@ -59,25 +58,23 @@ export default class TimeTab extends React.Component {
     }
 
     render() {
-        const buttons = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-        const { selected } = this.state;
-
         return (
             <View style={{ ...Styles.container, ...styles.container }}>
-                <View style={{ ...styles.selContainer, backgroundColor: "#EEEEEE" }}>
+                <View style={{ ...styles.selContainer, backgroundColor: "#EEEEEE", paddingHorizontal: "10%" }}>
                     <Text style={{ ...styles.selObj, fontSize: normalize(14) }}>Select All Days and All Times </Text>
                     <CheckBox checked={false} style={styles.selObj} />
                 </View>
-                <View style={{ flex: 1, borderBottomColor: "#CCCCCC", borderBottomWidth: 2, }}>
+                <View style={{ flex: 1, borderBottomColor: "#CCCCCC", borderBottomWidth: 2, width: "100%" }}>
                     <ScrollView horizontal={true}>
                         <DayButtons />
                     </ScrollView>
                 </View>
 
-                <View style={{ flex: 4 }}>
-                    <TimeList data={this.state.times} />
+                <View style={{ flex: 6 }}>
+                    <ScrollView>
+                        <TimeList data={this.state.times} />
+                    </ScrollView>
                 </View>
-                <View style={{ flex: 2 }} />
             </View>
         );
     }
@@ -101,28 +98,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignSelf: "center",
         paddingHorizontal: "3%",
-    },
-
-    buttonCont: {
-        marginVertical: "5%",
-        height: "70%",
-        borderWidth: 0,
-    },
-
-    unSelButton: {
-        borderWidth: 0,
-        borderColor: "white",
-        margin: "5%",
-    },
-    unSelText: {
-
-    },
-    selButton: {
-        borderWidth: 0,
-        margin: "5%",
-    },
-    selText: {
-
     },
 
 })

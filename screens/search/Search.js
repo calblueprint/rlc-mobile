@@ -17,7 +17,7 @@ export default class Search extends Component {
                 <View style={styles.header}>
                     <Text style={Styles.title}>Search for an Event </Text>
                 </View>
-                <View style={{ flex: 12 }}>
+                <View style={{ flex: 14 }}>
                     <TimeOrLoc />
                 </View>
                 <View style={{ flex: 1, marginHorizontal: "10%", marginVertical: "3%" }}>

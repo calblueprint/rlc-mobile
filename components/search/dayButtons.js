@@ -58,53 +58,81 @@ export default class DayButtons extends React.Component {
     }
     render() {
         return (
-            <View style={{ flex: 1, flexDirection: "row" }}>
+            <View style={{
+                flex: 1, flexDirection: "row", padding: "2%"
+            }}>
                 {
-                    options.map(item => (
-                        <View key={item.key} style={styles.buttonContainer}>
+                    options.map((item) => {
+                        return item.key === this.state.value ?
+                            <View key={item.key} style={styles.buttonContainer}>
 
-                            <TouchableOpacity
-                                style={styles.button}
-                                onPress={() => this.setState({ value: item.key })} // we set our value state to key
-                            >
-                                <Text style={styles.overview}>{item.text}</Text>
-                                {this.state.value === item.key && (<View style={styles.checkedCircle} />)}
-                            </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={styles.selButton}
+                                    onPress={() => this.setState({ value: item.key })} // we set our value state to key
+                                >
+                                    <Text style={styles.selText}>{item.text}</Text>
+                                </TouchableOpacity>
 
-                        </View>
+                            </View>
+                            :
+                            <View key={item.key} style={styles.buttonContainer}>
 
-                    ))
-                }
+                                <TouchableOpacity
+                                    style={styles.unSelButton}
+                                    onPress={() => this.setState({ value: item.key })} // we set our value state to key
+                                >
+                                    <Text style={styles.unSelText}>{item.text}</Text>
+                                </TouchableOpacity>
+
+                            </View>
+
+                    })}
             </View>
         );
     }
 }
 
+
+
+
 const styles = StyleSheet.create({
 
     buttonContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: "1%",
-        width: Sizes.width * 0.3
-    },
-    overview: {
         flex: 1,
-        fontSize: 16,
-        paddingTop: 5,
+        flexDirection: 'row',
+        paddingLeft: Sizes.width * 0.015
     },
-    button: {
-        height: Sizes.width * 0.07,
-        width: Sizes.width * 0.3,
-        borderColor: '#38A5DB',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginRight: 10
+
+    unSelButton: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingHorizontal: Sizes.width * 0.025,
+        height: "75%",
+        borderWidth: 3,
+
+        borderColor: "white",
+
     },
-    checkedCircle: {
-        width: Sizes.width * 0.04,
-        height: Sizes.width * 0.04,
-        borderRadius: Sizes.width * 0.04,
-        backgroundColor: '#38A5DB',
+    unSelText: {
+        fontWeight: "400",
+        color: "#757575",
     },
+    selButton: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingHorizontal: Sizes.width * 0.025,
+        height: "75%",
+        borderWidth: 3,
+
+        borderColor: "#EEEEEE",
+    },
+    selText: {
+        fontWeight: "700",
+        color: "#38A5DB",
+    },
+
 })

@@ -14,8 +14,8 @@ import { Icon } from "react-native-elements";
 import Styles from "../../constants/Styles";
 import { normalize } from "../../utils/Normalize";
 import Sizes from "../../constants/Sizes.js";
+import { CheckBox } from 'react-native-elements';
 
-import TimeOp from "./timeOp";
 
 export default class TimeList extends React.Component {
     constructor(props) {
@@ -26,7 +26,11 @@ export default class TimeList extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                {this.props.data.map((time, i) => (<TimeOp id={i} text={time.text} value={time.value} />))}
+                {this.props.data.map((time, i) => (
+                    <View style={styles.selContainer}>
+                        <Text style={{ ...styles.selObj, fontSize: normalize(14) }}>{time.text}</Text>
+                        <CheckBox checked={false} style={{ ...styles.selObj, paddingHorizontal: "0%" }} />
+                    </View>))}
             </View>
         );
     }
@@ -36,7 +40,20 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: "column",
-        width: "86%",
-        marginHorizontal: "7%"
+        width: "80%",
+        marginHorizontal: "10%"
+    },
+    selContainer: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: "center",
+        width: "100%",
+        borderBottomWidth: 2,
+        borderBottomColor: "#EEEEEE"
+    },
+    selObj: {
+        flex: 1,
+        alignSelf: "center",
+        paddingHorizontal: "3%",
     },
 });
