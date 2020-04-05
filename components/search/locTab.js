@@ -107,6 +107,11 @@ export default class TimeTab extends React.Component {
         );
     }
 
+    // handleDelete = itemId => {
+    //     const items = this.state.selectedloca.filter(item => item.key !== itemId);
+    //     this.setState({ items: items });
+    // };
+
     render() {
         const { search } = this.state;
         return (
@@ -128,7 +133,7 @@ export default class TimeTab extends React.Component {
                         <View style={styles.selLocCont}>
                             {this.state.selectedloca.map((loca, i) => (
                                 <View style={styles.buttonContainer}>
-                                    <TouchableOpacity style={{ ...styles.selLocButton, flexDirection: "row" }}>
+                                    <TouchableOpacity style={{ ...styles.selLocButton, flexDirection: "row" }} /**onPress={this.handleDelete(loca.key)}**/>
                                         <Icon
                                             name='close'
                                             color='white'

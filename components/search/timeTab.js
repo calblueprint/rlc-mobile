@@ -22,7 +22,169 @@ export default class TimeTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            times: [
+            monday: [
+                {
+                    key: 'all',
+                    text: "Select the entire day",
+                    value: false
+                },
+                {
+                    key: '9_12',
+                    text: "9AM-12PM",
+                    value: false
+                },
+                {
+                    key: '12_3',
+                    text: "12PM-3PM",
+                    value: false
+                },
+                {
+                    key: '3_6',
+                    text: "3PM-6PM",
+                    value: false
+                },
+                {
+                    key: '6_9',
+                    text: "6PM-9PM",
+                    value: false
+                },
+            ],
+            tuesday: [
+                {
+                    key: 'all',
+                    text: "Select the entire day",
+                    value: false
+                },
+                {
+                    key: '9_12',
+                    text: "9AM-12PM",
+                    value: false
+                },
+                {
+                    key: '12_3',
+                    text: "12PM-3PM",
+                    value: false
+                },
+                {
+                    key: '3_6',
+                    text: "3PM-6PM",
+                    value: false
+                },
+                {
+                    key: '6_9',
+                    text: "6PM-9PM",
+                    value: false
+                },
+            ],
+            wednesday: [
+                {
+                    key: 'all',
+                    text: "Select the entire day",
+                    value: false
+                },
+                {
+                    key: '9_12',
+                    text: "9AM-12PM",
+                    value: false
+                },
+                {
+                    key: '12_3',
+                    text: "12PM-3PM",
+                    value: false
+                },
+                {
+                    key: '3_6',
+                    text: "3PM-6PM",
+                    value: false
+                },
+                {
+                    key: '6_9',
+                    text: "6PM-9PM",
+                    value: false
+                },
+            ],
+            thursday: [
+                {
+                    key: 'all',
+                    text: "Select the entire day",
+                    value: false
+                },
+                {
+                    key: '9_12',
+                    text: "9AM-12PM",
+                    value: false
+                },
+                {
+                    key: '12_3',
+                    text: "12PM-3PM",
+                    value: false
+                },
+                {
+                    key: '3_6',
+                    text: "3PM-6PM",
+                    value: false
+                },
+                {
+                    key: '6_9',
+                    text: "6PM-9PM",
+                    value: false
+                },
+            ],
+            friday: [
+                {
+                    key: 'all',
+                    text: "Select the entire day",
+                    value: false
+                },
+                {
+                    key: '9_12',
+                    text: "9AM-12PM",
+                    value: false
+                },
+                {
+                    key: '12_3',
+                    text: "12PM-3PM",
+                    value: false
+                },
+                {
+                    key: '3_6',
+                    text: "3PM-6PM",
+                    value: false
+                },
+                {
+                    key: '6_9',
+                    text: "6PM-9PM",
+                    value: false
+                },
+            ],
+            saturday: [
+                {
+                    key: 'all',
+                    text: "Select the entire day",
+                    value: false
+                },
+                {
+                    key: '9_12',
+                    text: "9AM-12PM",
+                    value: false
+                },
+                {
+                    key: '12_3',
+                    text: "12PM-3PM",
+                    value: false
+                },
+                {
+                    key: '3_6',
+                    text: "3PM-6PM",
+                    value: false
+                },
+                {
+                    key: '6_9',
+                    text: "6PM-9PM",
+                    value: false
+                },
+            ],
+            sunday: [
                 {
                     key: 'all',
                     text: "Select the entire day",
@@ -50,12 +212,12 @@ export default class TimeTab extends React.Component {
                 },
             ]
         }
-        this.updateIndex = this.updateIndex.bind(this)
+        //this.updateIndex = this.updateIndex.bind(this)
     }
 
-    updateIndex(selected) {
-        this.setState({ selected })
-    }
+    // updateIndex(selected) {
+    //     this.setState({ selected })
+    // }
 
     render() {
         return (
@@ -72,7 +234,7 @@ export default class TimeTab extends React.Component {
 
                 <View style={{ flex: 6 }}>
                     <ScrollView>
-                        <TimeList data={this.state.times} />
+                        <TimeList data={this.state.monday} />
                     </ScrollView>
                 </View>
             </View>
