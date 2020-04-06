@@ -20,6 +20,7 @@ import { normalize } from "../../utils/Normalize.js";
 import {APIRoutes} from '../../config/routes.js'
 import {getRequest} from '../../lib/requests.js'
 import LocalStorage from "../../helpers/LocalStorage.js";
+import {get_event_lists} from "../../helpers/EventsHelper.js";
 
 //Upcoming Events expects { onPressHandler, requestLoaded, upcomingEvents } 
 class UpcomingEventsList extends React.Component {
@@ -48,9 +49,9 @@ class UpcomingEventsList extends React.Component {
         <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
         <ScrollView style={{ height: "100%" }}>
           <Text style={styles.heading}>Sunday, June 19, 2019</Text>
-          {this.props.events.map((event) => {
+          {this.state.upcomingEvents.map((event) => {
             <ActivityCard
-              event = {this.state}
+              event = {event}
               onPressHandler = {this.props.onPressHandler}
             />
           })}
@@ -92,13 +93,15 @@ class AttendedEventsList extends React.Component {
         </View>
       );
     } else {
+      console.log(this.state.attendedEvents)
       return (
         <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
         <ScrollView style={{ height: "100%" }}>
           <Text style={styles.heading}>Sunday, June 19, 2019</Text>
-          {this.props.events.map((event) => {
+          {this.state.attendedEvents.map((event) => {
             <ActivityCard
-              event = {this.state}
+              key = {event.id}
+              event = {event}
               onPressHandler = {this.props.onPressHandler}
             />
           })}    
@@ -138,8 +141,8 @@ export default class EventsList2 extends Component {
 
   // Fetch function; not sure if this works yet
   // TODO: @Johnathan / @Suhas, get fetch events to work 
-  _fetchEvents = () => {
-    getRequest(
+  _fetchEvents = async() => {
+    /* await getRequest(
       APIRoutes.getEventsPath(this.state.user_id, "attended"),
       (fetchedAttended) => {
         LocalStorage.storeItem('attended_events', fetchedAttended);
@@ -152,22 +155,25 @@ export default class EventsList2 extends Component {
         console.log(error)
       }
     );
-    getRequest(
+    await getRequest(
       APIRoutes.getEventsPath(this.state.user_id, "upcoming"),
       (fetchedUpcoming) => {
         LocalStorage.storeItem('upcoming_events', fetchedUpcoming);
         this.setState((prevState)=>{
-          return {...prevState, upcomingEvents: fetchedUpcoming }
+          return {...prevState, upcomingEvents: fetchedUpcoming}
         });
       },
       (error) => {
         alert(error)
         console.log(error)
       }
-    );
-    this.setState({isFetching: false});
-    console.log(this.state.attendedEvents)
-    console.log(this.state.upcomingEvents)
+    ); */
+    let event_lists = await get_event_lists(3); 
+    this.setState({ //Finished fetching events, can render list.
+      upcomingEvents: event_lists.upcoming,
+      attendedEvents: event_lists.attended,
+      isFetching: false
+    })
   };
 
   _handleIndexChange = index => this.setState({ index });
@@ -221,7 +227,7 @@ export default class EventsList2 extends Component {
 
   _renderScene = ({route}) => {
     if (this.state.isFetching) {
-      return null
+      return null // Still fetching the events 
     } else {
       switch (route.key) {
         case 'first' : 

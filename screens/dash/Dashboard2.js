@@ -27,11 +27,6 @@ export default class Dashboard extends Component {
 
   async componentDidMount() {
     let user = await LocalStorage.getItem('user');
-    // let events = await LocalStorage.getItem('events'); Fetch the current event only
-    // this.setState({requestLoaded: true})
-    // console.log(events)
-
-    console.log(user)
   }
 
   // _fetchCurrentEvent () {}
