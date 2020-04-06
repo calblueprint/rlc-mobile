@@ -2,7 +2,7 @@ import React, { Component } from '../../node_modules/react';
 import { AsyncStorage, StyleSheet, View, Text, ScrollView, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import ProfileHeader from '../../components/profile/ProfileHeader.js';
 import ProfileForm from '../../components/profile/ProfileForm.js';
-import LocalStorage from '../../helpers/LocalStorage';
+import LocalStorage from '../../helpers/LocalStorage.js';
 
 import Sizes from "../../constants/Sizes.js";
 

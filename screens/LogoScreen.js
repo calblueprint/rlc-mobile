@@ -1,19 +1,32 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
+import LocalStorage from '../helpers/LocalStorage.js';
 
 // Constants
 import Styles from "../constants/Styles";
 import Sizes from "../constants/Sizes";
 
 class LogoScreen extends React.Component {
-  render() {
+  constructor(props) {
+    super(props);
+  }
+
+  autoNavigate = async () => {
     const { navigate } = this.props.navigation;
-
-    setTimeout(toMain, 1400);
-
-    function toMain() {
-      navigate("Login");
+    try {
+      let user = await LocalStorage.getItem('user'); // function using AsyncStorage
+      if (user) {
+        navigate("Main");
+      } else {
+        navigate("Login");
+      }
+    } catch (err) {
+      navigate("Login")
     }
+  };
+
+  render() {
+    setTimeout(this.autoNavigate, 1400);
 
     return (
       <View style={{ ...Styles.container, ...styles.container }}>
