@@ -2,12 +2,12 @@ import { getRequest } from "../lib/requests";
 import { APIRoutes } from "../config/routes";
 import LocalStorage from "../helpers/LocalStorage";
 
-async function get_event_details(id) {
+async function get_event_details(event_id) {
 
     let event_details = {}
 
     await getRequest(
-        APIRoutes.getEventDetailsPath(id), (fetchedDetails) => {
+        APIRoutes.getEventDetailsPath(event_id), (fetchedDetails) => {
             event_details = fetchedDetails
         },
         (error) => {
