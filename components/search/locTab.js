@@ -163,9 +163,9 @@ export default class TimeTab extends React.Component {
                 </View>
 
                 <View style={{ flex: 7 }}>
-                    <ScrollView>
+                    {/* <ScrollView>
                         <TimeList data={this.state.loca} />
-                    </ScrollView>
+                    </ScrollView> */}
                 </View>
             </KeyboardAvoidingView >
         );

@@ -25,24 +25,16 @@ export default class TimeList extends React.Component {
     }
     render() {
         return (
-            <View style={styles.container}>
-                {this.props.data.map((time, i) => (
-                    <View style={styles.selContainer}>
-                        <Text style={{ ...styles.selObj, fontSize: normalize(14) }}>{time.text}</Text>
-                        <CheckBox checked={false} style={{ ...styles.selObj, paddingHorizontal: "0%" }} />
-                    </View>))}
+
+            <View style={styles.selContainer}>
+                <Text style={{ ...styles.selObj, fontSize: normalize(14) }}>{this.props.text}</Text>
+                <CheckBox checked={this.props.value} style={{ ...styles.selObj, paddingHorizontal: "0%" }} />
             </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: "column",
-        width: "80%",
-        marginHorizontal: "10%"
-    },
     selContainer: {
         flex: 1,
         flexDirection: "row",
