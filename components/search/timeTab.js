@@ -54,6 +54,7 @@ export default class TimeTab extends React.Component {
         this.state = {
 
             selectedDay: "monday",
+            selectedAll: false,
 
             monday: {
                 all: {
@@ -248,9 +249,7 @@ export default class TimeTab extends React.Component {
         //this.updateIndex = this.updateIndex.bind(this)
     }
 
-    // updateIndex(selected) {
-    //     this.setState({ selected })
-    // }
+
 
     chooseDay(param) {
         switch (param) {
@@ -273,46 +272,26 @@ export default class TimeTab extends React.Component {
     }
 
 
+    selectAll = () => {
+
+        // const selDay = { ...this.state[selectedDay] };
+        //const checked = selectedAll;
+        // Object.keys(selDay).map((timeObj) => (selDay[timeObj].value = checked))
+        // this.setState({ [selectedDay]: selDay });
+    }
+
+
     flipState = (day, time) => () => {
-        if (time == 'all') {
-            this.setState(prevState => ({
-                ...prevState,
-                [day]: {
-                    ...prevState[day],
-                    all: {
-                        ...prevState[day]['all'],
-                        value: !prevState[day]['all'].value
-                    },
-                    morn: {
-                        ...prevState[day]['morn'],
-                        value: !prevState[day]['all'].value
-                    },
-                    afternoon: {
-                        ...prevState[day]['afternoon'],
-                        value: !prevState[day]['all'].value
-                    },
-                    evening: {
-                        ...prevState[day]['evening'],
-                        value: !prevState[day]['all'].value
-                    },
-                    night: {
-                        ...prevState[day]['night'],
-                        value: !prevState[day]['all'].value
-                    },
-                }
-            }))
-        } else {
-            this.setState(prevState => ({
-                ...prevState,
-                [day]: {
-                    ...prevState[day],           // copy all other key-value pairs of food object
-                    [time]: {                     // specific object of food object
-                        ...prevState[day][time],   // copy all pizza key-value pairs
-                        value: !prevState[day][time].value          // update value of specific key
-                    }
-                }
-            }))
-        }
+        this.setState(prevState => {
+            let selDay = { ...prevState[day] }
+            if (time == 'all') {
+                const checked = !selDay[time].value
+                Object.keys(selDay).map((timeObj) => (selDay[timeObj].value = checked))
+            } else {
+                selDay[time].value = !selDay[time].value
+            }
+            return selDay
+        })
 
     }
 
@@ -322,7 +301,7 @@ export default class TimeTab extends React.Component {
             <View style={{ ...Styles.container, ...styles.container }}>
                 <View style={{ ...styles.selContainer, backgroundColor: "#EEEEEE", paddingHorizontal: "10%" }}>
                     <Text style={{ ...styles.selObj, fontSize: normalize(14) }}>Select All Days and All Times </Text>
-                    <CheckBox checked={false} style={styles.selObj} />
+                    <CheckBox checked={this.state.selectedAll} style={styles.selObj} onPress={this.selectAll} />
                 </View>
                 <View style={{ flex: 1, borderBottomColor: "#CCCCCC", borderBottomWidth: 2, width: "100%" }}>
                     <ScrollView horizontal={true}>
