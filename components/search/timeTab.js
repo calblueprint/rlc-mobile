@@ -246,38 +246,20 @@ export default class TimeTab extends React.Component {
                 },
             },
         }
-        //this.updateIndex = this.updateIndex.bind(this)
     }
-
-
-
-    chooseDay(param) {
-        switch (param) {
-            case "monday":
-                return this.state.monday;
-            case 2:
-                return this.state.tuesday;
-            case 3:
-                return this.state.wednesday;
-            case 4:
-                return this.state.thursday;
-            case 5:
-                return this.state.friday;
-            case 6:
-                return this.state.saturday;
-            case 7:
-                return this.state.sunday;
-
-        }
-    }
-
 
     selectAll = () => {
+        const checked = !this.state.selectedAll; // get the value
 
-        // const selDay = { ...this.state[selectedDay] };
-        //const checked = selectedAll;
-        // Object.keys(selDay).map((timeObj) => (selDay[timeObj].value = checked))
-        // this.setState({ [selectedDay]: selDay });
+        this.setState(prevState => ({ selectedAll: !prevState.selectedAll })); // set value
+
+        options.map((day) => (this.setState(prevState => { //set for each day
+            let selDay = { ...prevState[day.key] }
+            Object.keys(selDay).map((timeObj) => (selDay[timeObj].value = checked))
+            return selDay
+        })
+        )
+        )
     }
 
 
