@@ -46,7 +46,7 @@ export default class ShiftScreen extends React.Component {
      constructor(props) {
           super(props)
           this.state = {
-               inputShift: ShiftType.searched,
+               inputShift: ShiftType.workingon,
                address: "Happyville 123",
                participantData: [
                     {
