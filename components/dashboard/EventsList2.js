@@ -168,7 +168,7 @@ export default class EventsList2 extends Component {
         console.log(error)
       }
     ); */
-    // let event_lists = await get_event_lists(3); 
+    let event_lists = await get_event_lists(3); 
     this.setState({ //Finished fetching events, can render list.
       upcomingEvents: event_lists.upcoming,
       attendedEvents: event_lists.attended,
