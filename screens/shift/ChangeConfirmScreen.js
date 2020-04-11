@@ -1,11 +1,15 @@
+//radio buttons based on @source: https://dev.to/saadbashar/create-your-own-radio-button-component-in-react-native-easily-59il
+
 import React, { Component } from "react";
 import { StyleSheet, View, Image, ScrollView, Text, KeyboardAvoidingView, TouchableOpacity } from "react-native";
 import Header from "../../components/shift/Header"
 import NavigationFooter from "../../navigation/NavigationFooter";
 
 import Sizes from "../../constants/Sizes";
+import { normalize } from "../../utils/Normalize";
+import Colors from "../../constants/Colors";
 
-export default class WithdrawScreen extends React.Component {
+export default class ChangeConfirmScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -86,19 +90,18 @@ const styles = StyleSheet.create({
     },
     overview: {
         fontWeight: "600",
-        fontSize: 16,
+        fontSize: normalize(16),
         flex: .5,
         paddingVertical: 5,
     },
 
     button: {
-        backgroundColor: '#38A5DB',
+        backgroundColor: Colors.mainBlue,
         justifyContent: 'center',
-        margin: 15,
+        margin: "0.5%",
         borderRadius: 5,
         width: '100%',
-        paddingLeft: 5,
-        height: "50%"
+        height: Sizes.height * 0.06
     },
     buttonContainer: {
         alignItems: 'center',
@@ -109,7 +112,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#FFFFFF',
         fontWeight: '600',
-        fontSize: 16,
+        fontSize: normalize(16),
         textTransform: "uppercase"
     },
 
@@ -124,7 +127,7 @@ const styles = StyleSheet.create({
     radioText: {
         flex: 1,
         flexWrap: 'wrap',
-        fontSize: 16,
+        fontSize: normalize(14),
         paddingTop: 5,
     },
     circle: {
@@ -132,7 +135,7 @@ const styles = StyleSheet.create({
         width: Sizes.width * 0.06,
         borderRadius: Sizes.width * 0.06,
         borderWidth: Sizes.width * 0.005,
-        borderColor: '#38A5DB',
+        borderColor: Colors.mainBlue,
         alignItems: 'center',
         justifyContent: 'center',
         marginRight: 10
@@ -141,6 +144,6 @@ const styles = StyleSheet.create({
         width: Sizes.width * 0.04,
         height: Sizes.width * 0.04,
         borderRadius: Sizes.width * 0.04,
-        backgroundColor: '#38A5DB',
+        backgroundColor: Colors.mainBlue,
     },
 })
