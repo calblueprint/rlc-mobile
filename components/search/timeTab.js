@@ -13,8 +13,9 @@ import { Icon } from "react-native-elements";
 import Styles from "../../constants/Styles";
 import Sizes from "../../constants/Sizes.js";
 import { normalize } from "../../utils/Normalize";
-import { CheckBox, ButtonGroup } from 'react-native-elements';
+import { CheckBox } from 'react-native-elements';
 
+const numOfTimes = 4;
 
 const options = [
     {
@@ -250,6 +251,7 @@ export default class TimeTab extends React.Component {
 
     selectAll = () => {
         const checked = !this.state.selectedAll; // get the value
+        checked ? this.props.action(28, true) : this.props.action(0, true);//set to all or no times selected
 
         this.setState(prevState => ({ selectedAll: !prevState.selectedAll })); // set value
 
@@ -257,19 +259,37 @@ export default class TimeTab extends React.Component {
             let selDay = { ...prevState[day.key] }
             Object.keys(selDay).map((timeObj) => (selDay[timeObj].value = checked))
             return selDay
-        })
-        )
-        )
+        })))
     }
 
 
     flipState = (day, time) => () => {
         this.setState(prevState => {
             let selDay = { ...prevState[day] }
-            if (time == 'all') {
+
+            if (time == 'all') { //if selecting all
                 const checked = !selDay[time].value
+                var alreadySame = 0;
+                for (const timeObj of Object.keys(selDay)) {
+                    if (selDay[timeObj].value == checked) {
+                        alreadySame++;
+                    }
+                }
+                //safety check
+                if (alreadySame > numOfTimes) {
+                    alreadySame = numOfTimes;
+                }
+
+                if (checked) {
+                    this.props.action(numOfTimes - alreadySame, false)
+                } else {
+                    this.props.action(alreadySame - numOfTimes, false)
+                }
+
                 Object.keys(selDay).map((timeObj) => (selDay[timeObj].value = checked))
+
             } else {
+                selDay[time].value ? this.props.action(-1, false) : this.props.action(1, false)
                 selDay[time].value = !selDay[time].value
             }
             return selDay

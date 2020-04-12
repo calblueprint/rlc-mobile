@@ -16,7 +16,7 @@ import Styles from "../../constants/Styles";
 import Sizes from "../../constants/Sizes.js";
 import { normalize } from "../../utils/Normalize";
 
-import TimeList from "./timeList.js";
+import { CheckBox } from 'react-native-elements';
 
 
 
@@ -50,33 +50,27 @@ export default class TimeTab extends React.Component {
             selectedloca: [
                 {
                     key: 'loca1',
-                    text: "Bowery",
-                    value: false
+                    text: "Bowery"
                 },
                 {
                     key: 'loca2',
                     text: "Chelsea",
-                    value: false
                 },
                 {
                     key: 'loca3',
                     text: "Chinatown",
-                    value: false
                 },
                 {
                     key: 'loca5',
                     text: "Clinton",
-                    value: false
                 },
                 {
                     key: 'loca6',
-                    text: "Bowery",
-                    value: false
+                    text: "Downtown",
                 },
                 {
                     key: 'loca7',
-                    text: "Chelsea",
-                    value: false
+                    text: "Tenth Street",
                 },
 
             ]
@@ -107,11 +101,22 @@ export default class TimeTab extends React.Component {
         );
     }
 
-    // handleDelete = itemId => {
-    //     const items = this.state.selectedloca.filter(item => item.key !== itemId);
-    //     this.setState({ items: items });
-    // };
+    handleDelete = (itemId) => () => {
+        const newItems = this.state.selectedloca.filter((item) => { return item.key !== itemId });
+        this.setState({ selectedloca: newItems });
+    };
 
+    handleSelect = (itemId) => () => {
+
+    }
+
+    participantCard = (data) => {
+        const participant = data.item;
+        return (
+            <View></View>
+
+        );
+    }
     render() {
         const { search } = this.state;
         return (
@@ -133,7 +138,7 @@ export default class TimeTab extends React.Component {
                         <View style={styles.selLocCont}>
                             {this.state.selectedloca.map((loca, i) => (
                                 <View style={styles.buttonContainer}>
-                                    <TouchableOpacity style={{ ...styles.selLocButton, flexDirection: "row" }} /**onPress={this.handleDelete(loca.key)}**/>
+                                    <TouchableOpacity style={{ ...styles.selLocButton, flexDirection: "row" }} onPress={this.handleDelete(loca.key)}>
                                         <Icon
                                             name='close'
                                             color='white'
@@ -163,9 +168,17 @@ export default class TimeTab extends React.Component {
                 </View>
 
                 <View style={{ flex: 7 }}>
-                    {/* <ScrollView>
-                        <TimeList data={this.state.loca} />
-                    </ScrollView> */}
+                    <View style={styles.locResultsContainer}>
+                        <FlatList
+                            data={this.state.loca}
+                            renderItem={({ item }) =>
+                                <View style={styles.secSelContainer}>
+                                    <Text style={{ ...styles.selObj, fontSize: normalize(14) }}>{item.text}</Text>
+                                    <CheckBox checked={item.value} style={{ ...styles.selObj, paddingHorizontal: "0%" }} />
+                                </View>
+                            }
+                        />
+                    </View>
                 </View>
             </KeyboardAvoidingView >
         );
@@ -184,6 +197,8 @@ const styles = StyleSheet.create({
         padding: "2%",
         width: "100%"
     },
+
+
     selObj: {
         flex: 1,
         alignSelf: "center",
@@ -209,5 +224,23 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         paddingHorizontal: Sizes.width * 0.025
     },
+
+
+    //location results [same as timeTab.js]
+    locResultsContainer: {
+        flex: 1,
+        flexDirection: "column",
+        width: "80%",
+        marginHorizontal: "10%"
+    },
+    secSelContainer: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: "center",
+        width: "100%",
+        borderBottomWidth: 2,
+        borderBottomColor: "#EEEEEE"
+    },
+
 
 })

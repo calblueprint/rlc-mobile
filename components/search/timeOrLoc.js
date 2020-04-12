@@ -24,23 +24,11 @@ import LocTab from "./locTab.js";
 
 import { normalize } from "../../utils/Normalize";
 
-//time
-const FirstRoute = () => (
-  <View style={{ flex: 1 }}>
-    <TimeTab />
-  </View>
-);
-
-//location
-const SecondRoute = () => (
-  <View style={{ flex: 1 }}>
-    <LocTab />
-  </View>
-);
-
 export default class TimeOrLoc extends Component {
   constructor(props) {
     super(props);
+    this.addTime = this.addTime.bind(this);
+    // this.addLoc = this.addLoc.bind(this);
     this.state = {
       index: 0,
       routes: [
@@ -48,6 +36,47 @@ export default class TimeOrLoc extends Component {
         { key: "second", title: "Location", num: 0 }
       ]
     };
+  }
+
+  //time
+  FirstRoute = () => (
+    <View style={{ flex: 1 }}>
+      <TimeTab action={this.addTime} />
+    </View>
+  );
+
+  //location
+  SecondRoute = () => (
+    <View style={{ flex: 1 }}>
+      <LocTab action={this.addLoc} />
+    </View>
+  );
+
+
+  addTime = (numAdd, selAll) => {
+    this.state.routes.map((item, id) => {
+      if (item.title === "Time") {
+        if (selAll) {
+          this.setState({ ...item.num = numAdd });
+        } else {
+          this.setState(prevState => {
+            item.num = numAdd + prevState.routes[id].num;
+            if (item.num < 0) {
+              item.num = 0;
+            }
+            return item.num
+          });
+        }
+      }
+    })
+  }
+
+  addLoc = (totalNum) => {
+    this.state.routes.map((item, id) => {
+      if (item.title === "Location") {
+        this.setState({ ...item.num = totalNum });
+      }
+    })
   }
 
   _handleIndexChange = index => this.setState({ index });
@@ -100,8 +129,8 @@ export default class TimeOrLoc extends Component {
     );
   };
   _renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute
+    first: this.FirstRoute,
+    second: this.SecondRoute
   });
 
   render() {
