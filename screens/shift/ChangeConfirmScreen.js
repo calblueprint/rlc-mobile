@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         textAlign: 'center',
-        color: '#FFFFFF',
+        color: Colors.buttonText,
         fontWeight: '600',
         fontSize: normalize(16),
         textTransform: "uppercase"
