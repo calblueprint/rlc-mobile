@@ -1,9 +1,12 @@
 import React from 'react';
+import * as Location from 'expo-location';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import StepsTimeline from '../../components/StepsTimeline';
 import { CheckBox } from 'react-native-elements'
 import { frontendError } from '../../lib/alerts';
+
+import { parseCurrentLocation } from '../../helpers/LocationHelpers.js';
 
 const regions = [{
   name: "Albany, NY"
@@ -14,7 +17,7 @@ const regions = [{
 }, {
   name: "San Francisco, CA"
 }, {
-  name: "Washington DC"
+  name: "Washington, DC"
 }
 ]
 
@@ -142,6 +145,17 @@ export default class SignUp3Screen extends React.Component {
     this.setState({ preferredTimes });
   }
 
+  setCurrentLocation = async () => {
+    let status = await Location.requestPermissionsAsync();
+    if (status != 'granted') {
+      await Location.requestPermissionsAsync();
+    } else {
+      current_location = await Location.getCurrentPositionAsync();
+      preferred_location = await parseCurrentLocation(current_location);
+      this.onPreferredRegionChange(preferred_location);
+    }
+  }
+
   gotoPrevStep = () => {
     this.props.setScreenBackward(this.state.user)
   }
@@ -163,7 +177,7 @@ export default class SignUp3Screen extends React.Component {
               Preferred Region*
               </Text>
             <View style={styles.currentLocationButtonContainer}>
-              <TouchableOpacity style={styles.currentLocationButton}>
+              <TouchableOpacity style={styles.currentLocationButton} onPress={this.setCurrentLocation}>
                 <Text style={styles.currentLocationButtonText}>Current Location</Text>
               </TouchableOpacity>
             </View>
@@ -175,7 +189,8 @@ export default class SignUp3Screen extends React.Component {
               colors={colors}
               selectedItems={this.state.preferredRegion}
               items={regions}
-              uniqueKey="name"
+              uniqueKey="id"
+              displayKey="name"
               onSelectedItemsChange={this.onPreferredRegionChange}
               searchPlaceholderText="Search regions..."
               searchInputStyle={styles.input}
@@ -196,7 +211,8 @@ export default class SignUp3Screen extends React.Component {
               colors={colors}
               selectedItems={this.state.preferredLocation}
               items={locations}
-              uniqueKey="name"
+              uniqueKey="id"
+              displayKey="name"
               onSelectedItemsChange={this.onPreferredLocationChange}
               showChips={false}
               searchPlaceholderText="Search locations..."
