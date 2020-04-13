@@ -1,25 +1,111 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, View, Icon, TextInput, TouchableOpacity, Text } from 'react-native';
+import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import { isTSTypeAliasDeclaration } from '@babel/types';
+
+const regions = [{
+    name: "Albany, NY"
+}, {
+    name: "Amarillo, TX"
+}, {
+    name: "New York City, NY"
+}, {
+    name: "San Francisco, CA"
+}, {
+    name: "Washington DC"
+}
+]
+
+const locations = [{
+    name: "Battery Park City"
+}, {
+    name: "Bowery"
+}, {
+    name: "Carnegie Hall"
+}, {
+    name: "Chelsea"
+}, {
+    name: "Chinatown"
+}, {
+    name: "Civic Center"
+}, {
+    name: "Clinton"
+}, {
+    name: "East Harlem"
+}
+]
+
+const daysandtimes = [{
+    name: "Select all times",
+    id: 0,
+    times: []
+}, {
+    name: "Monday",
+    id: 1,
+    times: [{ name: "9am to 12pm", id: 2 }, { name: "12pm to 4pm", id: 3 }, { name: "4pm to 8pm", id: 4 }, { name: "8pm to 12 am", id: 5 }]
+}, {
+    name: "Tuesday",
+    id: 6,
+    times: [{ name: "9am to 12pm", id: 7 }, { name: "12pm to 4pm", id: 8 }, { name: "4pm to 8pm", id: 9 }, { name: "8pm to 12 am", id: 10 }]
+}, {
+    name: "Wednesday",
+    id: 11,
+    times: [{ name: "9am to 12pm", id: 12 }, { name: "12pm to 4pm", id: 13 }, { name: "4pm to 8pm", id: 14 }, { name: "8pm to 12 am", id: 15 }]
+}, {
+    name: "Thursday",
+    id: 16,
+    times: [{ name: "9am to 12pm", id: 17 }, { name: "12pm to 4pm", id: 18 }, { name: "4pm to 8pm", id: 19 }, { name: "8pm to 12 am", id: 20 }]
+}, {
+    name: "Friday",
+    id: 21,
+    times: [{ name: "9am to 12pm", id: 22 }, { name: "12pm to 4pm", id: 23 }, { name: "4pm to 8pm", id: 24 }, { name: "8pm to 12 am", id: 25 }]
+}, {
+    name: "Saturday",
+    id: 26,
+    times: [{ name: "9am to 12pm", id: 27 }, { name: "12pm to 4pm", id: 28 }, { name: "4pm to 8pm", id: 29 }, { name: "8pm to 12 am", id: 30 }]
+}, {
+    name: "Sunday",
+    id: 31,
+    times: [{ name: "9am to 12pm", id: 32 }, { name: "12pm to 4pm", id: 33 }, { name: "4pm to 8pm", id: 34 }, { name: "8pm to 12 am", id: 35 }]
+}
+]
+
+const colors = {
+    primary: "#38A5DB",
+}
 
 export default class ProfileForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            'userId': "",
-            'firstName': "",
-            'lastName': "",
-            'occupation': "",
-            'phoneNumber': "",
-            'address': "",
-            'city': null,
-            'state': null,
-            'zipCode': "",
-            'email': "",
-            'preferredRegion': "",
-            'preferredLocation': "",
-            'preferredTimes': null
+            preferredRegion: [],
+            preferredLocation: [],
+            preferredTimes: [],
         }
+    }
+
+    componentDidMount = () => {
+        if (this.props.getUserAttribute('preferredRegion') != null) {
+            this.setState({ preferredRegion: this.props.getUserAttribute('preferredRegion') })
+        }
+        if (this.props.getUserAttribute('preferredLocation') != null) {
+            this.setState({ preferredLocation: this.props.getUserAttribute('preferredLocation') })
+        }
+        if (this.props.getUserAttribute('preferredTimes') != null) {
+            this.setState({ preferredTimes: this.props.getUserAttribute('preferredTimes') })
+        }
+    }
+
+    onPreferredRegionChange = (preferredRegion) => {
+        this.setState({ preferredRegion });
+    }
+
+    onPreferredLocationChange = (preferredLocation) => {
+        this.setState({ preferredLocation });
+    }
+
+    onPreferredTimesChange = (preferredTimes) => {
+        this.setState({ preferredTimes });
     }
 
     render() {
@@ -168,10 +254,9 @@ export default class ProfileForm extends Component {
                 </Text>
                 <TextInput
                     inlineImageLeft="lock"
-                    placeholder="Password"
+                    onChangeText={text => { this.props.changeUserInfo('password', text); this.props.enableSaveButton(); }}
                     secureTextEntry
                     style={styles.input}
-                    ref={(input) => this.passwordInput = input}
                     returnKeyType="go"
                 ></TextInput>
 
@@ -190,43 +275,67 @@ export default class ProfileForm extends Component {
                 <Text style={styles.subHeading}>
                     Preferred Region
                     </Text>
-                <TextInput
-                    defaultValue={this.props.getUserAttribute('preferredRegion')}
-                    onChangeText={text => { this.props.changeUserInfo('preferredRegion', text); this.props.enableSaveButton(); }}
-                    returnKeyType="next"
-                    onSubmitEditing={() => this.preferredLocationInput.focus()}
-                    autoCapitalize="none"
-                    style={styles.input}
-                    autoCorrect={false}
-                ></TextInput>
+                <SectionedMultiSelect
+                    single
+                    colors={colors}
+                    selectedItems={this.state.preferredRegion}
+                    items={regions}
+                    uniqueKey="name"
+                    onSelectedItemsChange={preferredRegion => { this.props.changeUserInfo('preferredRegion', preferredRegion); this.props.enableSaveButton(); }}
+                    searchPlaceholderText="Search regions..."
+                    searchInputStyle={styles.input}
+                    modalWithSafeAreaView={true}
+                    submitButtonText="Select"
+                    confirmText="SAVE"
+                    styles={{
+                        selectToggle: { borderBottomWidth: 1, marginBottom: 20, height: 40 },
+                        selectToggleText: { fontSize: 14, color: "#333333" }
+                    }}
+                />
 
                 <Text style={styles.subHeading}>
                     Preferred Locations (Optional)
                     </Text>
-                <TextInput
-                    defaultValue={this.props.getUserAttribute('preferredLocation')}
-                    onChangeText={text => { this.props.changeUserInfo('preferredLocation', text); this.props.enableSaveButton(); }}
-                    returnKeyType="next"
-                    onSubmitEditing={() => this.preferredTimeInput.focus()}
-                    ref={(input) => this.preferredLocationInput = input}
-                    autoCapitalize="none"
-                    style={styles.input}
-                    autoCorrect={false}
-                ></TextInput>
+                <SectionedMultiSelect
+                    colors={colors}
+                    selectedItems={this.state.preferredLocation}
+                    items={locations}
+                    uniqueKey="name"
+                    onSelectedItemsChange={preferredLocation => { this.props.changeUserInfo('preferredLocation', preferredLocation); this.props.enableSaveButton(); }}
+                    showChips={false}
+                    searchPlaceholderText="Search locations..."
+                    searchInputStyle={styles.input}
+                    modalWithSafeAreaView={true}
+                    submitButtonText="Select"
+                    confirmText="SAVE"
+                    styles={{
+                        selectToggle: { borderBottomWidth: 1, marginBottom: 20, height: 40 },
+                        selectToggleText: { fontSize: 14, color: "#333333" }
+                    }}
+                />
 
                 <Text style={styles.subHeading}>
                     Preferred Times (Optional)
                     </Text>
-                <TextInput
-                    defaultValue={this.props.getUserAttribute('preferredTimes')}
-                    onChangeText={text => { this.props.changeUserInfo('preferredTimes', text); this.props.enableSaveButton(); }}
-                    returnKeyType="done"
-                    ref={(input) => this.preferredTimeInput = input}
-                    autoCapitalize="none"
-                    autoCapitalize="none"
-                    style={styles.input}
-                    autoCorrect={false}
-                ></TextInput>
+                <SectionedMultiSelect
+                    hideSearch
+                    colors={colors}
+                    selectedItems={this.state.preferredTimes}
+                    items={daysandtimes}
+                    uniqueKey="id"
+                    expandDropDowns={true}
+                    onSelectedItemsChange={preferredTimes => { this.props.changeUserInfo('preferredTimes', preferredTimes); this.props.enableSaveButton(); }}
+                    subKey="times"
+                    showChips={false}
+                    searchInputStyle={styles.input}
+                    modalWithSafeAreaView={true}
+                    submitButtonText="Select"
+                    confirmText="SAVE"
+                    styles={{
+                        selectToggle: { borderBottomWidth: 1, marginBottom: 20, height: 40 },
+                        selectToggleText: { fontSize: 14, color: "#333333" }
+                    }}
+                />
 
             </View>
         );
