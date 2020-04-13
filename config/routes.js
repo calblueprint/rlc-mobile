@@ -28,4 +28,17 @@ export class APIRoutes {
   static getEventsPath(id, type) {
     return APIRoutes.deviseRoute(`${id}/events/${type}`);
   }
+
+  //Locations
+  static getRegionsPath() {
+    return APIRoutes.createRoute('/get_locations')
+  }
+
+  static getLocationsPath() {
+    return APIRoutes.createRoute('/get_regions')
+  }
+
+  static getLocationsByRegionPath(id) {
+    return APIRoutes.createRoute(`/get_locations/${id}`)
+  }
 }
