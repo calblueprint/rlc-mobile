@@ -1,9 +1,9 @@
 import React, { Component } from '../../node_modules/react';
-import { FlatList, StyleSheet, View, Text, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import { FlatList, StyleSheet, View, Text, ScrollView, SafeAreaView } from 'react-native';
 import ActivityCard from '../dashboard/ActivityCard.js';
 import DatePicker from 'react-native-datepicker'
 import ShiftType from "../../constants/ShiftType.js";
-import getRequest from "../../lib/requests.js"
+import { getRequest } from "../../lib/requests.js"
 
 import Styles from '../../constants/Styles.js';
 import Sizes from "../../constants/Sizes.js";
@@ -45,13 +45,13 @@ export default class SuggestedEventsList extends Component {
         // the desired times that the user provided in the previous screen
         // Call some get request here to get the data for a certain date and then set that to the selectedEventsInDay
         getRequest(
-            `mdterrenal.dev.calblueprint.org:3000/api/get_events/${this.state.date.toString()}`,
+            `api/get_events/${this.state.date.toString()}`,
             responseData => {
                 console.log("event info", responseData);
                 // this.setState({ events: responseData });
             },
             error => {
-                console.log(error)
+                console.log("There was some error: ", error)
             });
         this.setState({ selectedEventsInDay: data });
     }
@@ -140,7 +140,7 @@ export default class SuggestedEventsList extends Component {
         // Find the events in the larger dataset that match the date with the proper get request
         // Modify data prop provided to FlatList to take in only the events for the date we're looking at
         getRequest(
-            `mdterrenal.dev.calblueprint.org:3000/api/get_events/${chosenDate.toString()}`,
+            `api/get_events/${chosenDate.toString()}`,
             responseData => {
                 console.log("event info", responseData);
                 // this.setState({ events: responseData });
