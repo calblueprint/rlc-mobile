@@ -3,6 +3,7 @@ import { AsyncStorage, StyleSheet, View, Text, ScrollView, TouchableOpacity, Key
 import ProfileHeader from '../../components/profile/ProfileHeader.js';
 import ProfileForm from '../../components/profile/ProfileForm.js';
 import LocalStorage from '../../helpers/LocalStorage.js';
+import { frontendError } from '../../lib/alerts';
 
 import Sizes from "../../constants/Sizes.js";
 
@@ -22,17 +23,18 @@ export default class Profile extends Component {
                 'state': null,
                 'zipCode': "",
                 'email': "",
-                'preferredRegion': "",
-                'preferredLocation': "",
-                'preferredTimes': null
-            }
+                'preferredRegion': [],
+                'preferredLocation': [],
+                'preferredTimes': []
+            },
+            password: ""
         }
     }
 
     async componentDidMount() {
         try {
             let user = await LocalStorage.getItem('user');
-            this.setState({ user: user }), () => { this.render() };
+            this.setState({ user: user }, () => { this.render() });
         } catch (err) {
             console.error(err)
             this.props.navigation.navigate("Login")
@@ -54,7 +56,11 @@ export default class Profile extends Component {
     }
 
     saveUserInfo = async () => {
-        await LocalStorage.storeItem('user', JSON.stringify(this.state.user));
+        if (this.state.password.length > 0 && this.state.password.length <= 8) {
+            frontendError("Passwords must be more than 8 characters long.")
+        } else {
+            await LocalStorage.storeItem('user', JSON.stringify(this.state.user));
+        }
     }
 
     logoutUser = () => {
