@@ -1,8 +1,9 @@
 import React, { Component } from '../../node_modules/react';
-import { FlatList, Icon, StyleSheet, View, Text, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import { FlatList, StyleSheet, View, Text, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import ActivityCard from '../dashboard/ActivityCard.js';
 import DatePicker from 'react-native-datepicker'
 import ShiftType from "../../constants/ShiftType.js";
+import getRequest from "../../lib/requests.js"
 
 import Styles from '../../constants/Styles.js';
 import Sizes from "../../constants/Sizes.js";
@@ -43,6 +44,15 @@ export default class SuggestedEventsList extends Component {
         // Before rendering, we need to set the date to today, retrieve the events and choose the ones for today and that match
         // the desired times that the user provided in the previous screen
         // Call some get request here to get the data for a certain date and then set that to the selectedEventsInDay
+        getRequest(
+            `mdterrenal.dev.calblueprint.org:3000/api/get_events/${this.state.date.toString()}`,
+            responseData => {
+                console.log("event info", responseData);
+                // this.setState({ events: responseData });
+            },
+            error => {
+                console.log(error)
+            });
         this.setState({ selectedEventsInDay: data });
     }
 
@@ -129,6 +139,15 @@ export default class SuggestedEventsList extends Component {
     renderNewEvents(chosenDate) {
         // Find the events in the larger dataset that match the date with the proper get request
         // Modify data prop provided to FlatList to take in only the events for the date we're looking at
+        getRequest(
+            `mdterrenal.dev.calblueprint.org:3000/api/get_events/${chosenDate.toString()}`,
+            responseData => {
+                console.log("event info", responseData);
+                // this.setState({ events: responseData });
+            },
+            error => {
+                console.log(error)
+            });
         this.setState({ selectedEventsInDay: [data[1]] });
     }
 
@@ -153,7 +172,7 @@ export default class SuggestedEventsList extends Component {
                                 name={item.name}
                                 time={item.time}
                                 weight={item.weight}
-                                numpickups={item.numpickups}
+                                numpickups={item.numPickups}
                                 spotsOpen={item.spotsOpen}
                                 onPressHandler={(location, time, weight, numpickups, spotsOpen) => { this.moveToShiftScreen(location, time, weight, numpickups, spotsOpen) }}
                             />
