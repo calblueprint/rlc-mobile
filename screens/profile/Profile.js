@@ -66,7 +66,7 @@ export default class Profile extends Component {
     logoutUser = () => {
         const { navigate } = this.props.navigation;
         AsyncStorage.clear();
-        navigate("Logo");
+        navigate("Login");
     }
 
     render() {
