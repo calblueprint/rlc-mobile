@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { frontendError } from '../../lib/alerts';
-import StepsTimeline from '../../components/StepsTimeline'; 
+import StepsTimeline from '../../components/StepsTimeline';
 
 export default class SignUp2Screen extends React.Component {
 
@@ -16,7 +16,7 @@ export default class SignUp2Screen extends React.Component {
   }
 
   //Setup User Payload
-  setupParams = ()  => {
+  setupParams = () => {
     this.setState({ user: this.props.user });
     this.state.user.email = this.state.email;
     this.state.user.password = this.state.password;
@@ -44,6 +44,8 @@ export default class SignUp2Screen extends React.Component {
   checkValidNext = () => {
     if (this.state.email == "" || this.state.password == "" || this.state.confirmPassword == "") {
       frontendError("Please fill out all fields.")
+    } else if (this.state.password.length <= 8) {
+      frontendError("Passwords must be more than 8 characters long.")
     } else if (this.state.password != this.state.confirmPassword) {
       frontendError("Passwords must match.")
     } else if (!this.state.password.match(/\d/) || !this.state.password.match(/[a-z]/i)) {
@@ -64,53 +66,53 @@ export default class SignUp2Screen extends React.Component {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={this.gotoPrevStep}>
-                  <Text style={styles.buttonText}>PREVIOUS</Text>
-              </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={this.gotoPrevStep}>
+            <Text style={styles.buttonText}>PREVIOUS</Text>
+          </TouchableOpacity>
         </View>
-        <StepsTimeline currentPosition={1}/>
+        <StepsTimeline currentPosition={1} />
         <ScrollView
           contentContainerStyle={styles.contentContainer}>
-            <Text style={styles.heading}>Hi {this.props.previousUserInfo.firstname}! Let's continue setting up your account. Your email will be your username!</Text>
-            <View style={styles.inputContainer}>
-              <Text style={styles.subHeading}>Email (this will also be your username)</Text>
-              <TextInput 
-                style={styles.input} 
-                placeholder={'email@email.com'} 
-                autoCapitalize={'none'} 
-                returnKeyType={"next"}
-                keyboardType={"email-address"}
-                onChangeText={text => this.setState({email: text})}
-                onSubmitEditing={() => this.passwordInput.focus()}
-                value={this.state.email}
-              ></TextInput>
-              <Text style={styles.subHeading}>Password</Text>
-              <TextInput 
-                style={styles.input} 
-                secureTextEntry={true}
-                placeholder={'Please include one letter and one number'}
-                returnKeyType={"next"}
-                onChangeText={text => this.setState({password: text})}
-                onSubmitEditing={() => this.confirmPasswordInput.focus()}
-                ref={(input) => {this.passwordInput = input;}}
-                value={this.state.password}
-              ></TextInput>
-              <Text style={styles.subHeading}>Confirm Password</Text>
-              <TextInput
-                style={styles.input} 
-                secureTextEntry={true} 
-                placeholder={'Please re-enter your password'}
-                returnKeyType={"next"}
-                onChangeText={text => this.setState({confirmPassword: text})}
-                ref={(input) => {this.confirmPasswordInput = input;}}
-                value={this.state.confirmPassword}
-              ></TextInput>
-            </View>
+          <Text style={styles.heading}>Hi {this.props.previousUserInfo.firstname}! Let's continue setting up your account. Your email will be your username!</Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.subHeading}>Email (this will also be your username)</Text>
+            <TextInput
+              style={styles.input}
+              placeholder={'email@email.com'}
+              autoCapitalize={'none'}
+              returnKeyType={"next"}
+              keyboardType={"email-address"}
+              onChangeText={text => this.setState({ email: text })}
+              onSubmitEditing={() => this.passwordInput.focus()}
+              value={this.state.email}
+            ></TextInput>
+            <Text style={styles.subHeading}>Password</Text>
+            <TextInput
+              style={styles.input}
+              secureTextEntry={true}
+              placeholder={'Please include one letter and one number'}
+              returnKeyType={"next"}
+              onChangeText={text => this.setState({ password: text })}
+              onSubmitEditing={() => this.confirmPasswordInput.focus()}
+              ref={(input) => { this.passwordInput = input; }}
+              value={this.state.password}
+            ></TextInput>
+            <Text style={styles.subHeading}>Confirm Password</Text>
+            <TextInput
+              style={styles.input}
+              secureTextEntry={true}
+              placeholder={'Please re-enter your password'}
+              returnKeyType={"next"}
+              onChangeText={text => this.setState({ confirmPassword: text })}
+              ref={(input) => { this.confirmPasswordInput = input; }}
+              value={this.state.confirmPassword}
+            ></TextInput>
+          </View>
         </ScrollView>
         <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={this.checkValidNext}>
-                  <Text style={styles.buttonText}>NEXT</Text>
-              </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={this.checkValidNext}>
+            <Text style={styles.buttonText}>NEXT</Text>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
     );
@@ -130,7 +132,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: 320
-  }, 
+  },
   buttonContainer: {
     alignItems: 'center',
     marginTop: 50,

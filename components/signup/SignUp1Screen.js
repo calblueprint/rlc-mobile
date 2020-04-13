@@ -17,7 +17,7 @@ export default class SignUp1Screen extends React.Component {
   }
 
   //Setup User Payload
-  setupParams = ()  => {
+  setupParams = () => {
     this.setState({ user: this.props.user });
     this.state.user.firstname = this.state.firstName;
     this.state.user.lastname = this.state.lastName;
@@ -33,12 +33,20 @@ export default class SignUp1Screen extends React.Component {
       frontendError("Please fill out all fields.")
     } else if (this.state.telephone.match(/[a-z]/i)) {
       frontendError("Invalid telephone number.")
+    } else if (!this.isOverEighteen()) {
+      frontendError("You must at least 18 years old to be a RLC volunteer.")
     } else {
       this.setupParams()
       this.props.setScreenForward(this.state.user)
     }
   }
-  
+
+  isOverEighteen = () => {
+    var today = new Date();
+    var birthdayDate = new Date(this.state.birthday);
+    return ((today - birthdayDate) / (1000 * 60 * 60 * 24)) >= 6570;
+  }
+
   gotoPrevStep = () => {
     this.props.setScreenBackward(this.state.user)
   }
@@ -68,56 +76,56 @@ export default class SignUp1Screen extends React.Component {
     var yyyy = today.getFullYear();
     today = yyyy + '/' + mm + '/' + dd;
     this.setState({ birthday: today });
-    this.setState({ birth_month: monthNames[mm-1]})
+    this.setState({ birth_month: monthNames[mm - 1] })
   }
 
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <StepsTimeline currentPosition={0}/>
+        <StepsTimeline currentPosition={0} />
         <ScrollView
           contentContainerStyle={styles.contentContainer}>
-            <Text style={styles.heading}>We're excited to have you join the team! First off, tell us a little bit about yourself!</Text>
-            <View style={styles.inputContainer}>
-              <Text style={styles.subHeading}>First Name</Text>
-              <TextInput
-                style={styles.input} 
-                placeholder={'Jane'} 
-                onChangeText={text => this.setState({firstName: text})}
-                returnKeyType={"next"}
-                onSubmitEditing={() => this.lastNameInput.focus()}
-                value={this.state.firstName}
-              ></TextInput>
-              <Text style={styles.subHeading}>Last Name</Text>
-              <TextInput
-                style={styles.input}
-                placeholder={'Doe'}
-                onChangeText={text => this.setState({lastName: text})}
-                returnKeyType={"next"}
-                ref={(input) => {this.lastNameInput = input;}}
-                value={this.state.lastName}
-              ></TextInput>
-              <Text style={styles.subHeading}>Birthday</Text>
-              <DatePicker format="YYYY-MM-DD" date={this.state.birthday} style={styles.datePicker} onDateChange={
-                (date) => {
-                  this.setState({birthday: date})
-                  this.setState({birth_month: monthNames[parseInt(date.substr(5, 2))-1]})
-               }
-              } confirmBtnText={'Confirm'} cancelBtnText={'Cancel'} value={this.state.birthday}/>
-              <Text style={styles.subHeading}>Mobile Phone Number</Text>
-              <TextInput 
-                style={styles.input} 
-                keyboardType="phone-pad"
-                placeholder={'(123)-456-7890'} 
-                onChangeText={text => this.setState({telephone: text})}
-                returnKeyType={"next"}
-                value={this.state.telephone}></TextInput>
-            </View>
+          <Text style={styles.heading}>We're excited to have you join the team! First off, tell us a little bit about yourself!</Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.subHeading}>First Name</Text>
+            <TextInput
+              style={styles.input}
+              placeholder={'Jane'}
+              onChangeText={text => this.setState({ firstName: text })}
+              returnKeyType={"next"}
+              onSubmitEditing={() => this.lastNameInput.focus()}
+              value={this.state.firstName}
+            ></TextInput>
+            <Text style={styles.subHeading}>Last Name</Text>
+            <TextInput
+              style={styles.input}
+              placeholder={'Doe'}
+              onChangeText={text => this.setState({ lastName: text })}
+              returnKeyType={"next"}
+              ref={(input) => { this.lastNameInput = input; }}
+              value={this.state.lastName}
+            ></TextInput>
+            <Text style={styles.subHeading}>Birthday</Text>
+            <DatePicker format="YYYY-MM-DD" date={this.state.birthday} style={styles.datePicker} onDateChange={
+              (date) => {
+                this.setState({ birthday: date })
+                this.setState({ birth_month: monthNames[parseInt(date.substr(5, 2)) - 1] })
+              }
+            } confirmBtnText={'Confirm'} cancelBtnText={'Cancel'} value={this.state.birthday} />
+            <Text style={styles.subHeading}>Mobile Phone Number</Text>
+            <TextInput
+              style={styles.input}
+              keyboardType="phone-pad"
+              placeholder={'(123)-456-7890'}
+              onChangeText={text => this.setState({ telephone: text })}
+              returnKeyType={"next"}
+              value={this.state.telephone}></TextInput>
+          </View>
         </ScrollView>
         <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={this.checkValidNext}>
-                  <Text style={styles.buttonText}>NEXT</Text>
-              </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={this.checkValidNext}>
+            <Text style={styles.buttonText}>NEXT</Text>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
     )
@@ -152,7 +160,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#FFFFFF',
     fontWeight: '600',
-    textTransform: "uppercase"  
+    textTransform: "uppercase"
   },
   input: {
     height: 40,
