@@ -10,6 +10,10 @@ export default class ActivityCard extends React.Component {
   //   this.props.onPressHandler();
   // };
 
+  checkforNullValues(attribute) {
+    return (this.props[attribute] !== null && this.props[attribute] !== undefined) ? this.props[attribute] : "N/A";
+  }
+
   render() {
     return (
       <TouchableOpacity
@@ -18,23 +22,23 @@ export default class ActivityCard extends React.Component {
           this.props.onPressHandler();
         }}
       >
-        <Text style={styles.location}>📍 {this.props.location}</Text>
+        <Text style={styles.location}>📍 {this.checkforNullValues("location")}</Text>
 
-        <Text style={styles.name}>{this.props.name}</Text>
+        <Text style={styles.name}>{this.checkforNullValues("name")}</Text>
 
-        <Text style={styles.time}>{this.props.time}</Text>
+        <Text style={styles.time}>{this.checkforNullValues("time")}</Text>
         <View style={styles.details}>
           <View>
             <Text style={styles.smallGreyText}>Weight</Text>
-            <Text style={styles.smallBlackText}>{this.props.weight}</Text>
+            <Text style={styles.smallBlackText}>{this.checkforNullValues("weight")}</Text>
           </View>
           <View>
             <Text style={styles.smallGreyText}># of Pickups</Text>
-            <Text style={styles.smallBlackText}>{this.props.numpickups}</Text>
+            <Text style={styles.smallBlackText}>{this.checkforNullValues("numpickups")}</Text>
           </View>
           <View>
             <Text style={styles.smallGreyText}>Spots Open</Text>
-            <Text style={styles.smallBlackText}>{this.props.spotsOpen}</Text>
+            <Text style={styles.smallBlackText}>{this.checkforNullValues("spotsOpen")}</Text>
           </View>
         </View>
       </TouchableOpacity>
