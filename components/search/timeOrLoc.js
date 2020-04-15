@@ -27,13 +27,13 @@ import { normalize } from "../../utils/Normalize";
 export default class TimeOrLoc extends Component {
   constructor(props) {
     super(props);
-    this.addTime = this.addTime.bind(this);
+    // this.addTime = this.addTime.bind(this);
     // this.addLoc = this.addLoc.bind(this);
     this.state = {
       index: 0,
       routes: [
-        { key: "first", title: "Time", num: 0 },
-        { key: "second", title: "Location", num: 0 }
+        { key: "first", title: "Time" },
+        { key: "second", title: "Location" }
       ]
     };
   }
@@ -41,43 +41,45 @@ export default class TimeOrLoc extends Component {
   //time
   FirstRoute = () => (
     <View style={{ flex: 1 }}>
-      <TimeTab action={this.addTime} />
+      <TimeTab updateParentOneTime={this.props.updateOneTime} updateParentAll={this.props.updateSelectAll} selAllVal={this.state.selAllVal}
+        selectedDay={this.props.selectedDay} updateSelDay={this.props.updateSelDay}
+        dayops={this.props.dayops} timeops={this.props.timeops} />
     </View>
   );
 
   //location
   SecondRoute = () => (
     <View style={{ flex: 1 }}>
-      <LocTab action={this.addLoc} />
+      <LocTab />
     </View>
   );
 
 
-  addTime = (numAdd, selAll) => {
-    this.state.routes.map((item, id) => {
-      if (item.title === "Time") {
-        if (selAll) {
-          this.setState({ ...item.num = numAdd });
-        } else {
-          this.setState(prevState => {
-            item.num = numAdd + prevState.routes[id].num;
-            if (item.num < 0) {
-              item.num = 0;
-            }
-            return item.num
-          });
-        }
-      }
-    })
-  }
+  // addTime = (numAdd, selAll) => {
+  //   this.state.routes.map((item, id) => {
+  //     if (item.title === "Time") {
+  //       if (selAll) {
+  //         this.setState({ ...item.num = numAdd });
+  //       } else {
+  //         this.setState(prevState => {
+  //           item.num = numAdd + prevState.routes[id].num;
+  //           if (item.num < 0) {
+  //             item.num = 0;
+  //           }
+  //           return item.num
+  //         });
+  //       }
+  //     }
+  //   })
+  // }
 
-  addLoc = (totalNum) => {
-    this.state.routes.map((item, id) => {
-      if (item.title === "Location") {
-        this.setState({ ...item.num = totalNum });
-      }
-    })
-  }
+  // addLoc = (totalNum) => {
+  //   this.state.routes.map((item, id) => {
+  //     if (item.title === "Location") {
+  //       this.setState({ ...item.num = totalNum });
+  //     }
+  //   })
+  // }
 
   _handleIndexChange = index => this.setState({ index });
 
@@ -120,7 +122,7 @@ export default class TimeOrLoc extends Component {
               onPress={() => this.setState({ index: i })}
             >
               <Animated.View style={{ ...styles.tabCont, borderBottomColor: color, }}>
-                <Animated.Text style={{ ...styles.tabText, color: color }}>{route.title} ({route.num})</Animated.Text>
+                <Animated.Text style={{ ...styles.tabText, color: color }}>{route.title} ()</Animated.Text>
               </Animated.View>
             </TouchableOpacity>
           );
