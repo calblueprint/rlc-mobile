@@ -13,14 +13,31 @@ export default class SuggestedEventsList extends Component {
         super(props)
         this.state = {
             date: new Date(),
-            selectedEventsInDay: []
+            selectedEventsInDay: [],
+            locations: {}
         }
     }
 
     componentDidMount() {
-        // Before rendering, we need to set the date to today, retrieve the events and choose the ones for today and that match
-        // the desired times that the user provided in the previous screen
-        // Call some get request here to get the data for a certain date and then set that to the selectedEventsInDay
+        // Need to consider the location and time preferences sent from previous screen
+        getRequest(
+            `/api/get_locations`,
+            locationData => {
+                console.log("location info", locationData);
+                locations = {}
+                for (let i = 0; i < locationData.length; i++) {
+                    locationId = locationData[i]["id"];
+                    locationName = locationData[i]["name"];
+                    locations[locationId] = locationName;
+                }
+                this.setState({ locations: locations }, () => { this.processEventData() });
+            },
+            error => {
+                console.log(error);
+            });
+    }
+
+    processEventData() {
         getRequest(
             `/api/get_events/${this.state.date.toString()}`,
             responseData => {
@@ -30,8 +47,14 @@ export default class SuggestedEventsList extends Component {
                     endingTime = new Date(responseData[i]["ending_time"]);
                     responseData[i]["starting_time"] = startingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
                     responseData[i]["ending_time"] = endingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                    if (responseData[i]["location_id"] !== null) {
+                        locationIdString = responseData[i]["location_id"].toString();
+                        responseData[i]["location"] = this.state.locations[locationIdString];
+                    } else {
+                        responseData[i]["location"] = "No available location.";
+                    }
                 }
-                this.setState({ selectedEventsInDay: responseData }, () => { this.render });
+                this.setState({ selectedEventsInDay: responseData }, () => { this.render() });
             },
             error => {
                 console.log(error);
@@ -130,6 +153,12 @@ export default class SuggestedEventsList extends Component {
                     endingTime = new Date(responseData[i]["ending_time"]);
                     responseData[i]["starting_time"] = startingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
                     responseData[i]["ending_time"] = endingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                    if (responseData[i]["location_id"] !== null) {
+                        locationIdString = responseData[i]["location_id"].toString();
+                        responseData[i]["location"] = this.state.locations[locationIdString];
+                    } else {
+                        responseData[i]["location"] = "No available location.";
+                    }
                 }
                 this.setState({ selectedEventsInDay: responseData }, () => { this.render });
             },
@@ -139,37 +168,55 @@ export default class SuggestedEventsList extends Component {
     }
 
     render() {
-        return (
-            <SafeAreaView behavior="padding" style={styles.container}>
-                <View style={styles.header}>
-                    <Text style={Styles.title}>Suggested Events</Text>
-                    <View style={{
-                        boderBottomColor: 'black',
-                        borderBottomWidth: StyleSheet.hairlineWidth,
-                        width: '100%'
-                    }}></View>
-                    <DatePicker style={{ marginTop: '2%', marginBottom: '2%' }} date={this.state.date} mode='date' minimumDate={this.state.date} onDateChange={date => this.setState({ date: date }, () => { this.renderNewEvents(date) })} />
-                </View>
-                <ScrollView>
-                    <FlatList
-                        data={this.state.selectedEventsInDay}
-                        renderItem={({ item }) => (
-                            <ActivityCard
-                                event={item}
-                                location={"Union Square"} // item.location
-                                name={item["title"]}
-                                time={item["starting_time"] + " to " + item["ending_time"]}
-                                weight={item["pound"] + " lbs"}
-                                numpickups={"1"} // item.numPickups
-                                spotsOpen={item["slot"]}
-                                onPressHandler={(location, time, weight, numpickups, spotsOpen) => { this.moveToShiftScreen(location, time, weight, numpickups, spotsOpen) }}
-                            />
-                        )}
-                        keyExtractor={item => item["id"]}
-                    />
-                </ScrollView>
-            </SafeAreaView>
-        );
+        if (this.state.selectedEventsInDay.length === 0) {
+            return (
+                <SafeAreaView behavior="padding" style={styles.container}>
+                    <View style={styles.header}>
+                        <Text style={Styles.title}>Suggested Events</Text>
+                        <View style={{
+                            boderBottomColor: 'black',
+                            borderBottomWidth: StyleSheet.hairlineWidth,
+                            width: '100%'
+                        }}></View>
+                        <DatePicker style={{ marginTop: '2%', marginBottom: '2%' }} date={this.state.date} mode='date' minimumDate={this.state.date} onDateChange={date => this.setState({ date: date }, () => { this.renderNewEvents(date) })} />
+                    </View>
+                    <View>
+                        <Text>There are no events on this date.</Text>
+                    </View>
+                </SafeAreaView>
+            );
+        } else {
+            return (
+                <SafeAreaView behavior="padding" style={styles.container}>
+                    <View style={styles.header}>
+                        <Text style={Styles.title}>Suggested Events</Text>
+                        <View style={{
+                            boderBottomColor: 'black',
+                            borderBottomWidth: StyleSheet.hairlineWidth,
+                            width: '100%'
+                        }}></View>
+                        <DatePicker style={{ marginTop: '2%', marginBottom: '2%' }} date={this.state.date} mode='date' minimumDate={this.state.date} onDateChange={date => this.setState({ date: date }, () => { this.renderNewEvents(date) })} />
+                    </View>
+                    <ScrollView>
+                        <FlatList
+                            data={this.state.selectedEventsInDay}
+                            renderItem={({ item }) => (
+                                <ActivityCard
+                                    location={item["location"]}
+                                    name={item["title"]}
+                                    time={item["starting_time"] + " to " + item["ending_time"]}
+                                    weight={item["pound"] + " lbs"}
+                                    numpickups={item["numPickups"]}
+                                    spotsOpen={item["slot"]}
+                                    onPressHandler={(location, time, weight, numpickups, spotsOpen) => { this.moveToShiftScreen(location, time, weight, numpickups, spotsOpen) }}
+                                />
+                            )}
+                            keyExtractor={item => item["id"]}
+                        />
+                    </ScrollView>
+                </SafeAreaView>
+            );
+        }
     }
 }
 
