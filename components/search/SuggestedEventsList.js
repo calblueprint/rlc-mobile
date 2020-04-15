@@ -8,35 +8,12 @@ import { getRequest } from "../../lib/requests.js"
 import Styles from '../../constants/Styles.js';
 import Sizes from "../../constants/Sizes.js";
 
-const data = [
-    {
-        id: "1",
-        date: "today",
-        location: "Union Square",
-        name: "Union Square (US014)",
-        time: "8:15 to 9:15 PM",
-        weight: "10 to 45 lbs",
-        numpickups: "2",
-        spotsOpen: "1 of 2"
-    },
-    {
-        id: "2",
-        date: "tomorrow",
-        location: "Williamsburg",
-        name: "South Side Mission (WB001)",
-        time: "10:30 to 11:30 AM",
-        weight: "10 to 45 lbs",
-        numpickups: "1",
-        spotsOpen: "2 of 4"
-    }
-]
-
 export default class SuggestedEventsList extends Component {
     constructor(props) {
         super(props)
         this.state = {
             date: new Date(),
-            selectedEventsInDay: data
+            selectedEventsInDay: []
         }
     }
 
@@ -45,15 +22,20 @@ export default class SuggestedEventsList extends Component {
         // the desired times that the user provided in the previous screen
         // Call some get request here to get the data for a certain date and then set that to the selectedEventsInDay
         getRequest(
-            `api/get_events/${this.state.date.toString()}`,
+            `/api/get_events/${this.state.date.toString()}`,
             responseData => {
                 console.log("event info", responseData);
-                // this.setState({ events: responseData });
+                for (let i = 0; i < responseData.length; i++) {
+                    startingTime = new Date(responseData[i]["starting_time"]);
+                    endingTime = new Date(responseData[i]["ending_time"]);
+                    responseData[i]["starting_time"] = startingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                    responseData[i]["ending_time"] = endingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                }
+                this.setState({ selectedEventsInDay: responseData }, () => { this.render });
             },
             error => {
-                console.log("There was some error: ", error)
+                console.log(error);
             });
-        this.setState({ selectedEventsInDay: data });
     }
 
     moveToShiftScreen(location, time, weight, numpickups, spotsOpen) {
@@ -140,15 +122,20 @@ export default class SuggestedEventsList extends Component {
         // Find the events in the larger dataset that match the date with the proper get request
         // Modify data prop provided to FlatList to take in only the events for the date we're looking at
         getRequest(
-            `api/get_events/${chosenDate.toString()}`,
+            `/api/get_events/${chosenDate.toString()}`,
             responseData => {
                 console.log("event info", responseData);
-                // this.setState({ events: responseData });
+                for (let i = 0; i < responseData.length; i++) {
+                    startingTime = new Date(responseData[i]["starting_time"]);
+                    endingTime = new Date(responseData[i]["ending_time"]);
+                    responseData[i]["starting_time"] = startingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                    responseData[i]["ending_time"] = endingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                }
+                this.setState({ selectedEventsInDay: responseData }, () => { this.render });
             },
             error => {
-                console.log(error)
+                console.log(error);
             });
-        this.setState({ selectedEventsInDay: [data[1]] });
     }
 
     render() {
@@ -168,16 +155,17 @@ export default class SuggestedEventsList extends Component {
                         data={this.state.selectedEventsInDay}
                         renderItem={({ item }) => (
                             <ActivityCard
-                                location={item.location}
-                                name={item.name}
-                                time={item.time}
-                                weight={item.weight}
-                                numpickups={item.numPickups}
-                                spotsOpen={item.spotsOpen}
+                                event={item}
+                                location={"Union Square"} // item.location
+                                name={item["title"]}
+                                time={item["starting_time"] + " to " + item["ending_time"]}
+                                weight={item["pound"] + " lbs"}
+                                numpickups={"1"} // item.numPickups
+                                spotsOpen={item["slot"]}
                                 onPressHandler={(location, time, weight, numpickups, spotsOpen) => { this.moveToShiftScreen(location, time, weight, numpickups, spotsOpen) }}
                             />
                         )}
-                        keyExtractor={item => item.id}
+                        keyExtractor={item => item["id"]}
                     />
                 </ScrollView>
             </SafeAreaView>
