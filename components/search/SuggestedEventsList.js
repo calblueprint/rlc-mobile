@@ -19,22 +19,13 @@ export default class SuggestedEventsList extends Component {
     }
 
     componentDidMount() {
-        // Need to consider the location and time preferences sent from previous screen
-        getRequest(
-            `/api/get_locations`,
-            locationData => {
-                console.log("location info", locationData);
-                locations = {}
-                for (let i = 0; i < locationData.length; i++) {
-                    locationId = locationData[i]["id"];
-                    locationName = locationData[i]["name"];
-                    locations[locationId] = locationName;
-                }
-                this.setState({ locations: locations }, () => { this.processEventData() });
-            },
-            error => {
-                console.log(error);
-            });
+        locations = {}
+        for (let i = 0; i < this.props.preferredLocations.length; i++) {
+            locationId = this.props.preferredLocations[i]["id"];
+            locationName = this.props.preferredLocations[i]["name"];
+            locations[locationId] = locationName;
+        }
+        this.setState({ locations: locations }, () => { this.processEventData() });
     }
 
     processEventData() {
@@ -42,6 +33,7 @@ export default class SuggestedEventsList extends Component {
             `/api/get_events/${this.state.date.toString()}`,
             responseData => {
                 console.log("event info", responseData);
+                selectedEventsInDay = [];
                 for (let i = 0; i < responseData.length; i++) {
                     startingTime = new Date(responseData[i]["starting_time"]);
                     endingTime = new Date(responseData[i]["ending_time"]);
@@ -49,12 +41,13 @@ export default class SuggestedEventsList extends Component {
                     responseData[i]["ending_time"] = endingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
                     if (responseData[i]["location_id"] !== null) {
                         locationIdString = responseData[i]["location_id"].toString();
-                        responseData[i]["location"] = this.state.locations[locationIdString];
-                    } else {
-                        responseData[i]["location"] = "No available location.";
+                        if (this.state.locations[locationIdString] != null) {
+                            responseData[i]["location"] = this.state.locations[locationIdString];
+                            selectedEventsInDay.push(responseData[i]);
+                        }
                     }
                 }
-                this.setState({ selectedEventsInDay: responseData }, () => { this.render() });
+                this.setState({ selectedEventsInDay: selectedEventsInDay }, () => { this.render() });
             },
             error => {
                 console.log(error);
@@ -142,12 +135,11 @@ export default class SuggestedEventsList extends Component {
     }
 
     renderNewEvents(chosenDate) {
-        // Find the events in the larger dataset that match the date with the proper get request
-        // Modify data prop provided to FlatList to take in only the events for the date we're looking at
         getRequest(
             `/api/get_events/${chosenDate.toString()}`,
             responseData => {
                 console.log("event info", responseData);
+                selectedEventsInDay = [];
                 for (let i = 0; i < responseData.length; i++) {
                     startingTime = new Date(responseData[i]["starting_time"]);
                     endingTime = new Date(responseData[i]["ending_time"]);
@@ -155,12 +147,13 @@ export default class SuggestedEventsList extends Component {
                     responseData[i]["ending_time"] = endingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
                     if (responseData[i]["location_id"] !== null) {
                         locationIdString = responseData[i]["location_id"].toString();
-                        responseData[i]["location"] = this.state.locations[locationIdString];
-                    } else {
-                        responseData[i]["location"] = "No available location.";
+                        if (this.state.locations[locationIdString] != null) {
+                            responseData[i]["location"] = this.state.locations[locationIdString];
+                            selectedEventsInDay.push(responseData[i]);
+                        }
                     }
                 }
-                this.setState({ selectedEventsInDay: responseData }, () => { this.render });
+                this.setState({ selectedEventsInDay: selectedEventsInDay }, () => { this.render });
             },
             error => {
                 console.log(error);
