@@ -4,23 +4,21 @@ import {
   StyleSheet,
   ScrollView,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 
 // Animation Libraries
 import { TabView, SceneMap } from "react-native-tab-view";
 import Animated from "react-native-reanimated";
 
-
 // Components
 import ActivityCard from "../dashboard/ActivityCard.js";
-import { APIRoutes } from '../../config/routes.js'
-import { getRequest } from '../../lib/requests.js'
+import { APIRoutes } from "../../config/routes.js";
+import { getRequest } from "../../lib/requests.js";
 import LocalStorage from "../../helpers/LocalStorage.js";
 
 import TimeTab from "./timeTab.js";
 import LocTab from "./locTab.js";
-
 
 import { normalize } from "../../utils/Normalize";
 
@@ -33,17 +31,23 @@ export default class TimeOrLoc extends Component {
       index: 0,
       routes: [
         { key: "first", title: "Time" },
-        { key: "second", title: "Location" }
-      ]
+        { key: "second", title: "Location" },
+      ],
     };
   }
 
   //time
   FirstRoute = () => (
     <View style={{ flex: 1 }}>
-      <TimeTab updateParentOneTime={this.props.updateOneTime} updateParentAll={this.props.updateSelectAll} selAllVal={this.state.selAllVal}
-        selectedDay={this.props.selectedDay} updateSelDay={this.props.updateSelDay}
-        dayops={this.props.dayops} timeops={this.props.timeops} />
+      <TimeTab
+        updateParentOneTime={this.props.updateOneTime}
+        updateParentAll={this.props.updateSelectAll}
+        selAllVal={this.props.selAllVal}
+        selectedDay={this.props.selectedDay}
+        updateSelDay={this.props.updateSelDay}
+        dayops={this.props.dayops}
+        timeops={this.props.timeops}
+      />
     </View>
   );
 
@@ -53,7 +57,6 @@ export default class TimeOrLoc extends Component {
       <LocTab />
     </View>
   );
-
 
   // addTime = (numAdd, selAll) => {
   //   this.state.routes.map((item, id) => {
@@ -81,9 +84,9 @@ export default class TimeOrLoc extends Component {
   //   })
   // }
 
-  _handleIndexChange = index => this.setState({ index });
+  _handleIndexChange = (index) => this.setState({ index });
 
-  _renderTabBar = props => {
+  _renderTabBar = (props) => {
     const inputRange = props.navigationState.routes.map((x, i) => i);
 
     return (
@@ -93,25 +96,25 @@ export default class TimeOrLoc extends Component {
             Animated.round(
               Animated.interpolate(props.position, {
                 inputRange,
-                outputRange: inputRange.map(inputIndex =>
+                outputRange: inputRange.map((inputIndex) =>
                   inputIndex === i ? 56 : 117
-                )
+                ),
               })
             ),
             Animated.round(
               Animated.interpolate(props.position, {
                 inputRange,
-                outputRange: inputRange.map(inputIndex =>
+                outputRange: inputRange.map((inputIndex) =>
                   inputIndex === i ? 165 : 117
-                )
+                ),
               })
             ),
             Animated.round(
               Animated.interpolate(props.position, {
                 inputRange,
-                outputRange: inputRange.map(inputIndex =>
+                outputRange: inputRange.map((inputIndex) =>
                   inputIndex === i ? 219 : 117
-                )
+                ),
               })
             )
           );
@@ -121,8 +124,12 @@ export default class TimeOrLoc extends Component {
               style={styles.tabItem}
               onPress={() => this.setState({ index: i })}
             >
-              <Animated.View style={{ ...styles.tabCont, borderBottomColor: color, }}>
-                <Animated.Text style={{ ...styles.tabText, color: color }}>{route.title} ()</Animated.Text>
+              <Animated.View
+                style={{ ...styles.tabCont, borderBottomColor: color }}
+              >
+                <Animated.Text style={{ ...styles.tabText, color: color }}>
+                  {route.title} ()
+                </Animated.Text>
               </Animated.View>
             </TouchableOpacity>
           );
@@ -130,16 +137,42 @@ export default class TimeOrLoc extends Component {
       </View>
     );
   };
+
+  renderScene = ({ route }) => {
+    switch (route.key) {
+      case "first":
+        return (
+          <View style={{ flex: 1 }}>
+            <TimeTab
+              updateParentOneTime={this.props.updateOneTime}
+              updateParentAll={this.props.updateSelectAll}
+              selAllVal={this.props.selAllVal}
+              selectedDay={this.props.selectedDay}
+              updateSelDay={this.props.updateSelDay}
+              dayops={this.props.dayops}
+              timeops={this.props.timeops}
+            />
+          </View>
+        );
+      case "second":
+        return (
+          <View style={{ flex: 1 }}>
+            <LocTab />
+          </View>
+        );
+    }
+  };
+
   _renderScene = SceneMap({
     first: this.FirstRoute,
-    second: this.SecondRoute
+    second: this.SecondRoute,
   });
 
   render() {
     return (
       <TabView
         navigationState={this.state}
-        renderScene={this._renderScene}
+        renderScene={this.renderScene}
         renderTabBar={this._renderTabBar}
         onIndexChange={this._handleIndexChange}
         swipeEnabled={false}
@@ -149,7 +182,6 @@ export default class TimeOrLoc extends Component {
 }
 
 const styles = StyleSheet.create({
-
   tabBar: {
     flexDirection: "row",
   },
@@ -165,9 +197,6 @@ const styles = StyleSheet.create({
   tabText: {
     fontSize: normalize(16),
     margin: "10%",
-    alignSelf: "center"
-  }
-
-
-
+    alignSelf: "center",
+  },
 });
