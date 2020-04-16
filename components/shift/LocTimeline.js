@@ -1,59 +1,44 @@
 import React from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
-import Timeline from "react-native-timeline-listview";
 
 import Sizes from "../../constants/Sizes";
 
 import Colors from "../../constants/Colors";
+import { normalize } from "react-native-elements";
 export default class ParticipantCard1 extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  renderRow(puppy) {
+  renderRow(location, index) {
+    const locations = this.props.markers
     return (
-      <View style={{ ...styles.timelineContainer, flexDirection: "column" }}>
-        <View style={styles.timelineContainer}>
-          <View style={{ ...styles.circle, ...styles.filledCircle }} />
-          <Text style={{}}> an object</Text>
+      <View style={{ ...styles.timelineContainer }}>
+        <View style={{ ...styles.timelineComponent }}>
+          {location.arrived ? <View style={{ ...styles.circle, ...styles.filledCircle }} /> : <View style={{ ...styles.circle, ...styles.outCircle }} />}
+          {index !== locations.length - 1 ? <View style={styles.separator} /> : <View />}
+        </View>
+        <View style={{
+          ...styles.timelineComponent,
+          alignItems: 'flex-start',
+          justifyContent: 'flex-start',
+        }}>
+          <Text style={styles.title}> {location.title}</Text>
+          <Text style={styles.description}> {location.description}</Text>
         </View>
 
-        <View style={styles.separator} />
       </View>
     )
   }
 
   render() {
     return (
-      <View>
-        <FlatList
-          style={styles.container}
-          data={this.props.markers}
-          renderItem={({ item: puppy }) => this.renderRow(puppy)}
-        />
+      <FlatList
+        style={styles.container}
+        data={this.props.markers}
+        renderItem={({ item, index }) => this.renderRow(item, index)}
+      />
 
-        <Timeline
-          style={styles.list}
-          data={this.props.markers}
-          circleSize={15}
-          circleColor="#79B830"
-          innerCircle={"dot"}
-          dotColor="#79B830"
-          lineColor="#79B830"
-          titleStyle={{
-            color: "#4A4A4A",
-            fontWeight: "600",
-            fontSize: 17
-          }}
-          descriptionStyle={{
-            color: "#4A4A4A",
-            fontSize: 15,
-            selectable: true
-          }}
-          showTime={false}
-          detailContainerStyle={{ marginTop: -12 }}
-        />
-      </View>
     );
   }
 }
@@ -61,22 +46,21 @@ export default class ParticipantCard1 extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: "10%",
     backgroundColor: "white"
   },
-  list: {
-    flex: 1,
-    marginTop: 20
-  },
-
 
 
   timelineContainer: {
-    flex: 1,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    flexDirection: "row",
+  },
+  timelineComponent: {
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: "row",
-    padding: "10%"
+    flexDirection: "column",
+    paddingRight: "15%",
   },
   circle: {
     height: Sizes.width * 0.04,
@@ -85,18 +69,26 @@ const styles = StyleSheet.create({
   },
   outCircle: {
     borderWidth: Sizes.width * 0.005,
-    borderColor: Colors.mainBlue,
+    borderColor: Colors.green,
   },
   filledCircle: {
-    backgroundColor: Colors.mainBlue,
+    backgroundColor: Colors.green,
   },
-  text: {
-
+  title: {
+    color: Colors.regularText,
+    fontWeight: "600",
+    fontSize: normalize(14),
+    paddingBottom: "3%",
+  },
+  description: {
+    color: Colors.regularText,
+    fontSize: normalize(12),
+    paddingLeft: "3%"
   },
   separator: {
-    height: 10,
+    height: Sizes.height * 0.1,
     borderLeftWidth: 2,
-    borderLeftColor: Colors.mainBlue
+    borderLeftColor: Colors.green,
   }
 
 
