@@ -1,7 +1,7 @@
 //radio buttons based on @source: https://dev.to/saadbashar/create-your-own-radio-button-component-in-react-native-easily-59il
 
 import React, { Component } from "react";
-import { StyleSheet, View, Image, ScrollView, Text, KeyboardAvoidingView, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import Header from "../../components/shift/Header"
 import NavigationFooter from "../../navigation/NavigationFooter";
 
@@ -85,13 +85,13 @@ const styles = StyleSheet.create({
     container: {
         height: "100%",
         width: "100%",
-        flex: 8,
+        flex: 5,
         padding: 40,
     },
     overview: {
         fontWeight: "600",
         fontSize: normalize(16),
-        flex: .5,
+        flex: 1,
         paddingVertical: 5,
     },
 
