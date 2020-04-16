@@ -20,70 +20,8 @@ import { CheckBox } from 'react-native-elements';
 
 
 
-export default class TimeTab extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            search: '',
-            loca: [
-                {
-                    key: 'loca1',
-                    text: "Bowery",
-                    value: false
-                },
-                {
-                    key: 'loca2',
-                    text: "Chelsea",
-                    value: false
-                },
-                {
-                    key: 'loca3',
-                    text: "Chinatown",
-                    value: false
-                },
-                {
-                    key: 'loca5',
-                    text: "Clinton",
-                    value: false
-                },
-            ],
-            selectedloca: [
-                {
-                    key: 'loca1',
-                    text: "Bowery"
-                },
-                {
-                    key: 'loca2',
-                    text: "Chelsea",
-                },
-                {
-                    key: 'loca3',
-                    text: "Chinatown",
-                },
-                {
-                    key: 'loca5',
-                    text: "Clinton",
-                },
-                {
-                    key: 'loca6',
-                    text: "Downtown",
-                },
-                {
-                    key: 'loca7',
-                    text: "Tenth Street",
-                },
+export default class locTab extends React.Component {
 
-            ]
-        }
-    }
-
-    getLocation = () => {
-
-    };
-
-    updateSearch = search => {
-        this.setState({ search });
-    };
 
     selLoc = (item) => {
         return (
@@ -101,31 +39,14 @@ export default class TimeTab extends React.Component {
         );
     }
 
-    handleDelete = (itemId) => () => {
-        const newItems = this.state.selectedloca.filter((item) => { return item.key !== itemId });
-        this.setState({ selectedloca: newItems });
-    };
-
-    handleSelect = (itemId) => () => {
-
-    }
-
-    participantCard = (data) => {
-        const participant = data.item;
-        return (
-            <View></View>
-
-        );
-    }
     render() {
-        const { search } = this.state;
         return (
             <KeyboardAvoidingView style={{ ...Styles.container, ...styles.container }}>
                 <View style={styles.secCont}>
                     <SearchBar
                         placeholder="Type Here..."
-                        onChangeText={this.updateSearch}
-                        value={search}
+                        onChangeText={this.props.updateSearch}
+                        value={this.props.searchVal}
                         containerStyle={{
                             backgroundColor: "#EEEEEE", borderBottomColor: 'transparent',
                             borderTopColor: 'transparent'
@@ -136,15 +57,15 @@ export default class TimeTab extends React.Component {
                 <View style={{ ...styles.secCont }}>
                     <ScrollView horizontal={true}>
                         <View style={styles.selLocCont}>
-                            {this.state.selectedloca.map((loca, i) => (
+                            {this.props.locOptions.filter((item) => { return item.selected === true }).map((loca, i) => (
                                 <View style={styles.buttonContainer}>
-                                    <TouchableOpacity style={{ ...styles.selLocButton, flexDirection: "row" }} onPress={this.handleDelete(loca.key)}>
+                                    <TouchableOpacity style={{ ...styles.selLocButton, flexDirection: "row" }} onPress={this.props.updateLoc(loca.selected, loca.id)}>
                                         <Icon
                                             name='close'
                                             color='white'
                                             size={20}
                                         />
-                                        <Text style={{ color: "white", paddingLeft: Sizes.width * 0.015 }}>{loca.text}</Text>
+                                        <Text style={{ color: "white", paddingLeft: Sizes.width * 0.015 }}>{loca.name}</Text>
                                     </TouchableOpacity>
                                 </View>
                             ))}
@@ -157,7 +78,7 @@ export default class TimeTab extends React.Component {
                     <TouchableOpacity style={{
                         width: "80%", margin: "10%", flex: 1, flexDirection: "row", alignItems: "center",
                     }}
-                        onPress={this.getLocation} >
+                        onPress={this.props.getLocation} >
                         <Icon
                             name='location-searching'
                             color='#517fa4'
@@ -170,11 +91,11 @@ export default class TimeTab extends React.Component {
                 <View style={{ flex: 7 }}>
                     <View style={styles.locResultsContainer}>
                         <FlatList
-                            data={this.state.loca}
+                            data={this.props.locOptions}
                             renderItem={({ item }) =>
                                 <View style={styles.secSelContainer}>
-                                    <Text style={{ ...styles.selObj, fontSize: normalize(14) }}>{item.text}</Text>
-                                    <CheckBox checked={item.value} style={{ ...styles.selObj, paddingHorizontal: "0%" }} />
+                                    <Text style={{ ...styles.selObj, fontSize: normalize(14) }}>{item.name}</Text>
+                                    <CheckBox checked={item.selected} onPress={this.props.updateLoc(item.selected, item.id)} style={{ ...styles.selObj, paddingHorizontal: "0%" }} />
                                 </View>
                             }
                         />

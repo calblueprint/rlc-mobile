@@ -21,7 +21,7 @@ export default class MainScreen extends React.Component {
   _onNavigationScrollEnd(event) {
     let scrollToIndex = Math.round(
       event.nativeEvent.contentOffset.x /
-        event.nativeEvent.layoutMeasurement.width
+      event.nativeEvent.layoutMeasurement.width
     );
     if (this.state.currentScreenIndex !== scrollToIndex) {
       this.setState({ currentScreenIndex: scrollToIndex });
@@ -41,11 +41,37 @@ export default class MainScreen extends React.Component {
 
   render() {
     return (
-      <SearchScreen
-        navigation={this.props.navigation}
-        onNavSelect={this._onSelectNavigationMenu}
-      />
-    );
+      <View>
+        <ScrollView
+          ref="MainScrollView"
+          style={styles.screenNavigatorScroll}
+          contentContainerStyle={{ height: Sizes.height * 0.92, width: Sizes.width * 3 }}
+          horizontal={true}
+          pagingEnabled={true}
+          showsHorizontalScrollIndicator={false}
+          contentOffset={{
+            x: Sizes.width * this.state.currentScreenIndex,
+            y: 0
+          }}
+        >
+          <ProfileScreen
+            navigation={this.props.navigation}
+            onNavSelect={this._onSelectNavigationMenu}
+          />
+          <DashboardScreen
+            navigation={this.props.navigation}
+            onNavSelect={this._onSelectNavigationMenu}
+          />
+          <SearchScreen
+            navigation={this.props.navigation}
+            onNavSelect={this._onSelectNavigationMenu}
+          />
+        </ScrollView>
+        <View style={{ height: Sizes.height * 0.08 }}>
+          <NavigationFooter index={this.state.currentScreenIndex} navigationHandler={this._onSelectNavigationMenu} />
+        </View>
+      </View>
+    )
   }
 }
 

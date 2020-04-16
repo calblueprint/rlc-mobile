@@ -40,16 +40,38 @@ const dayOptions = [
 ];
 
 const numOfTimes = 4;
+const totalTimes = 28;
 export default class Search extends Component {
   constructor(props) {
     super(props);
 
     this.selectAll = this.selectAll.bind(this);
     this.flipState = this.flipState.bind(this);
+    //const properLocations = this.props.location.map(loc => ({ ...loc, selected: false }));
 
     this.state = {
       selectedDay: "monday",
       selectedAll: false,
+      numTimes: 0,
+
+      numLocs: 0,
+      search: '',
+      locations: [{
+        id: 125,
+        name: "Bowery",
+        selected: false
+      },
+      {
+        id: 23,
+        name: "Chelsea",
+        selected: false
+
+      },
+      {
+        id: 67,
+        name: "Downtown",
+        selected: false
+      },],
 
       monday: {
         all: {
@@ -58,22 +80,22 @@ export default class Search extends Component {
           value: false,
         },
         morn: {
-          key: "9_12",
+          key: "monday_morning",
           text: "9AM-12PM",
           value: false,
         },
         afternoon: {
-          key: "12_3",
+          key: "monday_afternoon",
           text: "12PM-3PM",
           value: false,
         },
         evening: {
-          key: "3_6",
+          key: "monday_evening",
           text: "3PM-6PM",
           value: false,
         },
         night: {
-          key: "6_9",
+          key: "monday_night",
           text: "6PM-9PM",
           value: false,
         },
@@ -85,22 +107,22 @@ export default class Search extends Component {
           value: false,
         },
         morn: {
-          key: "9_12",
+          key: "tuesday_morning",
           text: "9AM-12PM",
           value: false,
         },
         afternoon: {
-          key: "12_3",
+          key: "tuesday_afternoon",
           text: "12PM-3PM",
           value: false,
         },
         evening: {
-          key: "3_6",
+          key: "tuesday_evening",
           text: "3PM-6PM",
           value: false,
         },
         night: {
-          key: "6_9",
+          key: "tuesday_night",
           text: "6PM-9PM",
           value: false,
         },
@@ -240,18 +262,51 @@ export default class Search extends Component {
           value: false,
         },
       },
+
+
     };
+  }
+
+  //LOCATION FUNCTIONS
+
+  updateSearch = (val) = () => {
+    this.setState({ search: val });
+  };
+
+  handleSelect = (val, id) => () => {
+    val === true ? this.addLoc(-1) : this.addLoc(1);
+    const nextState = this.state.locations.map(loc => loc.id === id ? { ...loc, selected: !loc.selected } : loc);
+    this.setState({ locations: nextState });
+  }
+
+  addLoc = (val) => {
+    this.setState(prevState => ({ numLocs: prevState.numLocs + val }));
+    if (this.state.numLocs < 0) {
+      this.setState({ numLocs: 0 })
+    }
+  }
+
+  resultLocs = () => {
+    const loc_preferences = this.state.locations.filter((item) => { return item.selected === true });
+    return loc_preferences;
+  }
+
+
+
+  //TIME FUNCTIONS 
+  compile_times = () => {
+    const time_preferences = [this.state.monday, this.state.tuesday, this.state.wednesday, this.state.thursday, this.state.friday, this.state.saturday, this.state.sunday];
+    return time_preferences;
   }
 
   selectAll = () => {
     const checked = !this.state.selectedAll; // get the value
-    // checked ? pass number into time
+    checked ? this.countTime(totalTimes, true) : this.countTime(0, true)
 
     this.setState((prevState) => ({ selectedAll: !prevState.selectedAll })); // set value
 
     dayOptions.map((day) =>
-      this.setState((prevState) => {
-        //set for each day
+      this.setState((prevState) => { //set for each day
         let selDay = { ...prevState[day.key] };
         Object.keys(selDay).map((timeObj) => (selDay[timeObj].value = checked));
         return selDay;
@@ -282,21 +337,35 @@ export default class Search extends Component {
         }
 
         if (checked) {
-          // pass value into time this.props.action(numOfTimes - alreadySame, false)
+          this.countTime(numOfTimes - alreadySame, false)
         } else {
-          // pass value into time this.props.action(alreadySame - numOfTimes, false)
+          this.countTime(alreadySame - numOfTimes, false)
         }
-
         Object.keys(selDay).map((timeObj) => (selDay[timeObj].value = checked));
       } else {
-        // pass value into time selDay[time].value ? this.props.action(-1, false) : this.props.action(1, false)
+        selDay[time].value ? this.countTime(-1, false) : this.countTime(1, false)
         selDay[time].value = !selDay[time].value;
       }
       return selDay;
     });
   };
 
-  search = () => {};
+  countTime = (val, selAll) => {
+    if (selAll) {
+      this.setState({ numTimes: val });
+    } else {
+      this.setState(prevState => ({
+        numTimes: prevState.numTimes + val
+      }));
+    }
+  }
+
+  search = () => {
+    //props are the selected locations and selected times
+  };
+
+
+
 
   render() {
     return (
@@ -313,6 +382,14 @@ export default class Search extends Component {
             updateSelDay={this.updateDay}
             dayops={dayOptions}
             timeops={this.state[this.state.selectedDay]}
+            numTimes={this.state.numTimes}
+
+            locOptions={this.state.locations}
+            updateLoc={this.handleSelect}
+            searchVal={this.state.search}
+            updateSearch={this.updateSearch}
+            numLocs={this.state.numLocs}
+
           />
         </View>
         <View
@@ -330,6 +407,7 @@ export default class Search extends Component {
   }
 }
 
+
 const styles = StyleSheet.create({
   container: {
     marginTop: "5%",
@@ -341,8 +419,6 @@ const styles = StyleSheet.create({
   header: {
     flex: 1,
     marginHorizontal: "10%",
-    //borderBottomWidth: 2,
-    //borderBottomColor: Colors.tabIconDefault,
   },
   button: {
     backgroundColor: "#38A5DB",

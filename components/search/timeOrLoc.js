@@ -25,8 +25,6 @@ import { normalize } from "../../utils/Normalize";
 export default class TimeOrLoc extends Component {
   constructor(props) {
     super(props);
-    // this.addTime = this.addTime.bind(this);
-    // this.addLoc = this.addLoc.bind(this);
     this.state = {
       index: 0,
       routes: [
@@ -35,54 +33,6 @@ export default class TimeOrLoc extends Component {
       ],
     };
   }
-
-  //time
-  FirstRoute = () => (
-    <View style={{ flex: 1 }}>
-      <TimeTab
-        updateParentOneTime={this.props.updateOneTime}
-        updateParentAll={this.props.updateSelectAll}
-        selAllVal={this.props.selAllVal}
-        selectedDay={this.props.selectedDay}
-        updateSelDay={this.props.updateSelDay}
-        dayops={this.props.dayops}
-        timeops={this.props.timeops}
-      />
-    </View>
-  );
-
-  //location
-  SecondRoute = () => (
-    <View style={{ flex: 1 }}>
-      <LocTab />
-    </View>
-  );
-
-  // addTime = (numAdd, selAll) => {
-  //   this.state.routes.map((item, id) => {
-  //     if (item.title === "Time") {
-  //       if (selAll) {
-  //         this.setState({ ...item.num = numAdd });
-  //       } else {
-  //         this.setState(prevState => {
-  //           item.num = numAdd + prevState.routes[id].num;
-  //           if (item.num < 0) {
-  //             item.num = 0;
-  //           }
-  //           return item.num
-  //         });
-  //       }
-  //     }
-  //   })
-  // }
-
-  // addLoc = (totalNum) => {
-  //   this.state.routes.map((item, id) => {
-  //     if (item.title === "Location") {
-  //       this.setState({ ...item.num = totalNum });
-  //     }
-  //   })
-  // }
 
   _handleIndexChange = (index) => this.setState({ index });
 
@@ -128,7 +78,7 @@ export default class TimeOrLoc extends Component {
                 style={{ ...styles.tabCont, borderBottomColor: color }}
               >
                 <Animated.Text style={{ ...styles.tabText, color: color }}>
-                  {route.title} ()
+                  {route.title} ({route.key === 'first' ? this.props.numTimes : this.props.numLocs})
                 </Animated.Text>
               </Animated.View>
             </TouchableOpacity>
@@ -151,13 +101,20 @@ export default class TimeOrLoc extends Component {
               updateSelDay={this.props.updateSelDay}
               dayops={this.props.dayops}
               timeops={this.props.timeops}
+              numTimes={this.state.numTimes}
             />
           </View>
         );
       case "second":
         return (
           <View style={{ flex: 1 }}>
-            <LocTab />
+            <LocTab
+              locOptions={this.props.locOptions}
+              updateLoc={this.props.updateLoc}
+              searchVal={this.props.searchVal}
+              updateSearch={this.props.updateSearch}
+              numLocs={this.state.numLocs}
+            />
           </View>
         );
     }
