@@ -1,54 +1,26 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import { normalize } from "../../utils/Normalize";
-import { getRequest } from "../../lib/requests";
-import { APIRoutes } from "../../config/routes";
-import LocalStorage from "../../helpers/LocalStorage";
 
 export default class ActivityCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
       event : this.props.event,
-      // event_card : {},
-      // isFetching: true
     }
     console.log(this.props.event)
   }
-// Going to get all event data at once instead
-  // async componentDidMount() {
-  //   this._fetchEventsCard();
-  // }
 
-  // _fetchEventsCard = async () => {
-  //   await getRequest (
-  //     APIRoutes.getEventsCardPath(this.state.event.id),
-  //     (fetchedCardData) => {
-  //       // LocalStorage.storeItem(`event_card_${this.state.event.id}`, fetchedCardData);
-  //       this.setState((prevState) => {
-  //         return {...prevState, event_card: fetchedCardData }
-  //       }, () => {
-  //         console.log(this.state)
-  //       });
-  //     }, (error) => {
-  //       alert(error)
-  //       console.log(error)
-  //     }
-  //   );
-  //   this.setState({
-  //     isFetching: false
-  //   });
-  // }
-
+  navigateToShift = (eventData) => {
+    const { navigate } = this.props.navigation;
+    navigate("Shift", eventData);
+  };
 
   render() {
-      // if (this.state.isFetching) {
-      //   return <TouchableOpacity style={styles.card}/>
-      // }
       return ( //Return loaded card
         <TouchableOpacity
           style={styles.card}
-          // onPress={() => this.props.onPressHandler.bind(this, this.state.event.eventId)}
+          onPress={() => navigateToShift(this.state.event)}
         >
           <Text style={styles.location}>📍 {this.state.event.address}</Text>
   
@@ -58,15 +30,15 @@ export default class ActivityCard extends React.Component {
           <View style={styles.details}>
             <View>
               <Text style={styles.smallGreyText}>Weight</Text>
-              <Text style={styles.smallBlackText}>{/*{this.props.weight}*/} FILLER </Text>
+              <Text style={styles.smallBlackText}>{this.state.event.weight} </Text>
             </View>
             <View>
               <Text style={styles.smallGreyText}># of Pickups</Text>
-              <Text style={styles.smallBlackText}>{/*{this.props.numpickups}*/} FILLER </Text>
+              <Text style={styles.smallBlackText}>{this.state.event.numpickups} </Text>
             </View>
             <View>
               <Text style={styles.smallGreyText}>Spots Open</Text>
-      <Text style={styles.smallBlackText}>{/*{this.props.spotsOpen} */} FILLER </Text>
+      <Text style={styles.smallBlackText}>{this.state.event.spotsOpen} </Text>
             </View>
           </View>
         </TouchableOpacity>

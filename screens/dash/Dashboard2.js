@@ -31,9 +31,9 @@ export default class Dashboard extends Component {
 
   // _fetchCurrentEvent () {}
 
-  navigateToShift = () => {
+  navigateToShift = (eventData) => {
     const { navigate } = this.props.navigation;
-    navigate("Shift");
+    navigate("Shift", eventData);
   };
 
   navigateToProfile = () => {
@@ -53,7 +53,7 @@ export default class Dashboard extends Component {
             />
           </View>
         </View>
-        <EventsList />
+        <EventsList navigation = {this.props.navigation} />
       </View>
     );
   }

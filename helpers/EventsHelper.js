@@ -45,12 +45,12 @@ export async function get_event_lists(user_id) {
     );
 
     let attended_details = await Promise.all(attended_events.map(item => get_event_details(item.id)));
-    console.log(attended_details)
+    // console.log(attended_details)
     attended_events = attended_events.map((item, index) => ({ ...item, details: attended_details[index]}));
     LocalStorage.storeItem('attended_events', attended_events) // Put attended events in Local Storage
 
     let upcoming_details = await Promise.all(upcoming_events.map(item => get_event_details(item.id)));
-    console.log(upcoming_details)
+    // console.log(upcoming_details)
     upcoming_events = upcoming_events.map((item, index) => ({ ...item, details: upcoming_details[index]}));
     LocalStorage.storeItem('upcoming_events', upcoming_events) // Put attended events in Local Storage
 

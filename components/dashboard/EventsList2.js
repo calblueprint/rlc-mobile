@@ -17,8 +17,6 @@ import ActivityCard from "../../components/dashboard/ActivityCard.js";
 // Utils
 import Sizes from "../../constants/Sizes"
 import { normalize } from "../../utils/Normalize.js";
-import {APIRoutes} from '../../config/routes.js'
-import {getRequest} from '../../lib/requests.js'
 import LocalStorage from "../../helpers/LocalStorage.js";
 import {get_event_lists} from "../../helpers/EventsHelper.js";
 
@@ -37,7 +35,7 @@ class UpcomingEventsList extends React.Component {
           <View style={styles.infoContainer}>
             <Text style={styles.subText}>Oh no! You have no upcoming shifts.</Text>
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button}>
+              <TouchableOpacity style={styles.button} onPress={this.props.navigation.navigate("Search")}>
                 <Text style={styles.buttonText}>Sign Up for Shift</Text>
               </TouchableOpacity>
             </View>
@@ -52,7 +50,7 @@ class UpcomingEventsList extends React.Component {
           {this.state.upcomingEvents.map((event) => {
             <ActivityCard
               event = {event}
-              onPressHandler = {this.props.onPressHandler}
+              navigation = {this.props.navigation}
             />
           })}
           <Text style={styles.heading}>Monday, June 20, 2019</Text>
@@ -85,7 +83,7 @@ class AttendedEventsList extends React.Component {
             </Text>
       
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button}>
+              <TouchableOpacity style={styles.button} onPress={this.props.navigation.navigate("Search")}>
                 <Text style={styles.buttonText}>Sign Up for Shift</Text>
               </TouchableOpacity>
             </View>
@@ -102,7 +100,7 @@ class AttendedEventsList extends React.Component {
             <ActivityCard
               key = {event.id}
               event = {event}
-              onPressHandler = {this.props.onPressHandler}
+              navigation = {this.props.navigation}
             />
           })}    
           </ScrollView>
@@ -131,44 +129,17 @@ export default class EventsList2 extends Component {
   async componentDidMount() {
     try {
       let user = await LocalStorage.getItem('user');
-      this.setState({ user_id: user.id });
+      this.setState({ user_id: user.userId }, this._fetchEvents);
     } catch(err) {
       console.error(err)
       this.props.navigation.navigate("Login")
     }
-    this._fetchEvents();
+    
   }
 
-  // Fetch function; not sure if this works yet
-  // TODO: @Johnathan / @Suhas, get fetch events to work 
+  // Fetch function
   _fetchEvents = async() => {
-    /* await getRequest(
-      APIRoutes.getEventsPath(this.state.user_id, "attended"),
-      (fetchedAttended) => {
-        LocalStorage.storeItem('attended_events', fetchedAttended);
-        this.setState((prevState)=>{
-          return {...prevState, attendedEvents: fetchedAttended }
-        });
-      },
-      (error) => {
-        alert(error)
-        console.log(error)
-      }
-    );
-    await getRequest(
-      APIRoutes.getEventsPath(this.state.user_id, "upcoming"),
-      (fetchedUpcoming) => {
-        LocalStorage.storeItem('upcoming_events', fetchedUpcoming);
-        this.setState((prevState)=>{
-          return {...prevState, upcomingEvents: fetchedUpcoming}
-        });
-      },
-      (error) => {
-        alert(error)
-        console.log(error)
-      }
-    ); */
-    let event_lists = await get_event_lists(3); 
+    let event_lists = await get_event_lists(this.state.user_id); 
     this.setState({ //Finished fetching events, can render list.
       upcomingEvents: event_lists.upcoming,
       attendedEvents: event_lists.attended,
@@ -231,9 +202,9 @@ export default class EventsList2 extends Component {
     } else {
       switch (route.key) {
         case 'first' : 
-          return <UpcomingEventsList upcomingEvents = {this.state.upcomingEvents}/>
+          return <UpcomingEventsList upcomingEvents = {this.state.upcomingEvents} navigation = {this.props.navigation}/>
         case 'second' : 
-          return <AttendedEventsList attendedEvents = {this.state.attendedEvents}/>
+          return <AttendedEventsList attendedEvents = {this.state.attendedEvents} navigation = {this.props.navigation}/>
         default: 
           return null
       }

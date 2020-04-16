@@ -60,7 +60,8 @@ export default class LoginForm extends React.Component {
     const params = {
       user: {
         email: this.state.email,
-        password: this.state.password
+        password: this.state.password,
+        remember_me: 1
       }
     };
     this.fetchUser(params);
