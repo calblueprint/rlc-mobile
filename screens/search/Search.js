@@ -57,18 +57,62 @@ export default class Search extends Component {
       numLocs: 0,
       search: '',
       locations: [{
-        id: 125,
+        id: 27,
         name: "Bowery",
         selected: false
       },
       {
-        id: 23,
+        id: 28,
         name: "Chelsea",
         selected: false
 
       },
       {
-        id: 67,
+        id: 29,
+        name: "Downtown",
+        selected: false
+      },
+      {
+        id: 30,
+        name: "Chelsea",
+        selected: false
+
+      },
+      {
+        id: 31,
+        name: "Downtown",
+        selected: false
+      },
+      {
+        id: 32,
+        name: "Chelsea",
+        selected: false
+
+      },
+      {
+        id: 33,
+        name: "Downtown",
+        selected: false
+      },
+      {
+        id: 34,
+        name: "Chelsea",
+        selected: false
+
+      },
+      {
+        id: 35,
+        name: "Downtown",
+        selected: false
+      },
+      {
+        id: 36,
+        name: "Chelsea",
+        selected: false
+
+      },
+      {
+        id: 37,
         name: "Downtown",
         selected: false
       },],

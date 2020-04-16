@@ -5,18 +5,16 @@ import {
     KeyboardAvoidingView,
     ScrollView,
     Text,
-    TextInput,
     FlatList,
-    Switch,
-    Image,
     TouchableOpacity
 } from "react-native";
 import { Icon, SearchBar } from "react-native-elements";
 import Styles from "../../constants/Styles";
 import Sizes from "../../constants/Sizes.js";
 import { normalize } from "../../utils/Normalize";
-
 import { CheckBox } from 'react-native-elements';
+
+import Colors from "../../constants/Colors";
 
 
 
@@ -72,9 +70,9 @@ export default class locTab extends React.Component {
                         </View>
 
                     </ScrollView>
-
                 </View>
-                <View style={{ flex: 1, borderBottomColor: "#CCCCCC", borderBottomWidth: 2, width: "100%", flexDirection: "row", alignItems: "center", }}>
+
+                <View style={{ flex: 1, borderBottomColor: "#CCCCCC", borderBottomWidth: 2, width: "100%", flexDirection: "row", alignItems: "center", padding: "3%" }}>
                     <TouchableOpacity style={{
                         width: "80%", margin: "10%", flex: 1, flexDirection: "row", alignItems: "center",
                     }}
@@ -88,7 +86,7 @@ export default class locTab extends React.Component {
 
                 </View>
 
-                <View style={{ flex: 7 }}>
+                <View style={{ flex: 6 }}>
                     <View style={styles.locResultsContainer}>
                         <FlatList
                             data={this.props.locOptions}
@@ -115,7 +113,7 @@ const styles = StyleSheet.create({
     secCont: {
         flex: 1,
         backgroundColor: "#EEEEEE",
-        padding: "2%",
+        padding: "5%",
         width: "100%"
     },
 

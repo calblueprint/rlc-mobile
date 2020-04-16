@@ -2,11 +2,8 @@ import React from "react";
 import {
   View,
   StyleSheet,
-  KeyboardAvoidingView,
   ScrollView,
   Text,
-  TextInput,
-  Image,
   TouchableOpacity,
 } from "react-native";
 import { Icon } from "react-native-elements";
@@ -15,6 +12,8 @@ import Sizes from "../../constants/Sizes.js";
 import { normalize } from "../../utils/Normalize";
 import { CheckBox } from "react-native-elements";
 
+
+import Colors from "../../constants/Colors";
 export default class TimeTab extends React.Component {
   constructor(props) {
     super(props);
@@ -33,7 +32,7 @@ export default class TimeTab extends React.Component {
           }}
         >
           <Text style={{ ...styles.selObj, fontSize: normalize(14) }}>
-            Select All Days and All Times{" "}
+            Select All Days and All Times
           </Text>
           <CheckBox
             checked={this.props.selAllVal}
@@ -68,21 +67,21 @@ export default class TimeTab extends React.Component {
                     </TouchableOpacity>
                   </View>
                 ) : (
-                  <View key={item.key} style={styles.buttonContainer}>
-                    <TouchableOpacity
-                      style={styles.unSelButton}
-                      onPress={this.props.updateSelDay(item.key)} // we set our value state to key
-                    >
-                      <Text style={styles.unSelText}>{item.text}</Text>
-                    </TouchableOpacity>
-                  </View>
-                );
+                    <View key={item.key} style={styles.buttonContainer}>
+                      <TouchableOpacity
+                        style={styles.unSelButton}
+                        onPress={this.props.updateSelDay(item.key)} // we set our value state to key
+                      >
+                        <Text style={styles.unSelText}>{item.text}</Text>
+                      </TouchableOpacity>
+                    </View>
+                  );
               })}
             </View>
           </ScrollView>
         </View>
 
-        <View style={{ flex: 6 }}>
+        <View style={{ flex: 5 }}>
           <ScrollView>
             <View style={styles.timecontainer}>
               {Object.keys(this.props.timeops).map((time) => (
