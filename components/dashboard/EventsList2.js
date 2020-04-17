@@ -18,9 +18,8 @@ import ActivityCard from "../../components/dashboard/ActivityCard.js";
 import Sizes from "../../constants/Sizes"
 import { normalize } from "../../utils/Normalize.js";
 import LocalStorage from "../../helpers/LocalStorage.js";
-import {get_event_lists} from "../../helpers/EventsHelper.js";
+import { get_dashboard_events_lists } from "../../helpers/EventsHelper.js";
 
-//Upcoming Events expects { onPressHandler, requestLoaded, upcomingEvents } 
 class UpcomingEventsList extends React.Component {
   constructor(props) {
     super(props)
@@ -46,14 +45,13 @@ class UpcomingEventsList extends React.Component {
       return (
         <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
         <ScrollView style={{ height: "100%" }}>
-          <Text style={styles.heading}>Sunday, June 19, 2019</Text>
           {this.state.upcomingEvents.map((event) => {
             <ActivityCard
+              key = {event.id}
               event = {event}
               navigation = {this.props.navigation}
             />
           })}
-          <Text style={styles.heading}>Monday, June 20, 2019</Text>
         </ScrollView>
       </View>  
       );
@@ -61,7 +59,6 @@ class UpcomingEventsList extends React.Component {
   }
 }
 
-//Attended Events expects { onPressHandler, requestLoaded, attendedEvents }
 class AttendedEventsList extends React.Component {
   constructor(props) {
     super(props)
@@ -91,12 +88,11 @@ class AttendedEventsList extends React.Component {
         </View>
       );
     } else {
-      console.log(this.state.attendedEvents)
       return (
         <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
         <ScrollView style={{ height: "100%" }}>
-          <Text style={styles.heading}>Sunday, June 19, 2019</Text>
           {this.state.attendedEvents.map((event) => {
+            {console.log(`Rendering Activity Card with event ${event.id}`)}
             <ActivityCard
               key = {event.id}
               event = {event}
@@ -139,7 +135,7 @@ export default class EventsList2 extends Component {
 
   // Fetch function
   _fetchEvents = async() => {
-    let event_lists = await get_event_lists(this.state.user_id); 
+    let event_lists = await get_dashboard_events_lists(this.state.user_id); 
     this.setState({ //Finished fetching events, can render list.
       upcomingEvents: event_lists.upcoming,
       attendedEvents: event_lists.attended,

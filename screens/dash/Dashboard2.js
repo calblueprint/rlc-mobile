@@ -47,10 +47,10 @@ export default class Dashboard extends Component {
         <View style={styles.currentEvent}>
           <View style={styles.slideStructure}>
             <Text style={styles.inProgress}>• In Progress</Text>
-            <ActivityCard 
+            {/* <ActivityCard 
               event = {this.state.currentEvent}
               onPressHandler={this.navigateToShift}
-            />
+            /> */}
           </View>
         </View>
         <EventsList navigation = {this.props.navigation} />

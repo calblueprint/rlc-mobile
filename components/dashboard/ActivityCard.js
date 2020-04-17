@@ -6,15 +6,18 @@ export default class ActivityCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      event : this.props.event,
+      event : props.event,
     }
-    console.log(this.props.event)
   }
 
-  navigateToShift = (eventData) => {
+  navigateToShift = (event) => {
     const { navigate } = this.props.navigation;
-    navigate("Shift", eventData);
+    navigate("Shift", event);
   };
+
+  componentDidMount() {
+    console.log(this.state.event)
+  }
 
   render() {
       return ( //Return loaded card
@@ -24,21 +27,21 @@ export default class ActivityCard extends React.Component {
         >
           <Text style={styles.location}>📍 {this.state.event.address}</Text>
   
-          <Text style={styles.name}>{this.state.event.title}</Text>
+          <Text style={styles.name}>{this.state.event.details.name}</Text>
   
-          <Text style={styles.time}>{this.state.event.starting_hour}</Text>
+          <Text style={styles.time}>{this.state.event.details.start_time}</Text>
           <View style={styles.details}>
             <View>
               <Text style={styles.smallGreyText}>Weight</Text>
-              <Text style={styles.smallBlackText}>{this.state.event.weight} </Text>
+              <Text style={styles.smallBlackText}>{this.state.event.details.weight} </Text>
             </View>
             <View>
               <Text style={styles.smallGreyText}># of Pickups</Text>
-              <Text style={styles.smallBlackText}>{this.state.event.numpickups} </Text>
+              <Text style={styles.smallBlackText}>{this.state.event.details.numPickups} </Text>
             </View>
             <View>
               <Text style={styles.smallGreyText}>Spots Open</Text>
-      <Text style={styles.smallBlackText}>{this.state.event.spotsOpen} </Text>
+              <Text style={styles.smallBlackText}>{this.state.event.details.spotsOpen} </Text>
             </View>
           </View>
         </TouchableOpacity>
