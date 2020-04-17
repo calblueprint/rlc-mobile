@@ -45,13 +45,14 @@ export async function get_dashboard_events_lists(user_id) {
             console.log(error)
         }
     );
-
+    console.log("Attended Events: ")
     let attended_details = await Promise.all(attended_events.map(item => get_event_details(item.id)));
-    attended_events = attended_events.map((item, index) => ({ ...item, details: attended_details[index], shiftType: ShiftTypes.attended}));
+    attended_events = attended_events.map((item, index) => ({ ...item, details: attended_details[index], shiftType: ShiftTypes.attended, tempIndex: index}));
     LocalStorage.storeItem('attended_events', attended_events) // Put attended events in Local Storage
 
+    console.log("Upcoming Events: ")
     let upcoming_details = await Promise.all(upcoming_events.map(item => get_event_details(item.id)));
-    upcoming_events = upcoming_events.map((item, index) => ({ ...item, details: upcoming_details[index], shiftType: ShiftTypes.upcoming}));
+    upcoming_events = upcoming_events.map((item, index) => ({ ...item, details: upcoming_details[index], shiftType: ShiftTypes.upcoming, tempIndex: index}));
     LocalStorage.storeItem('upcoming_events', upcoming_events) // Put attended events in Local Storage
 
     return { upcoming: upcoming_events, attended : attended_events }

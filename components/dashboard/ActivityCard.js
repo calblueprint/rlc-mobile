@@ -5,9 +5,11 @@ import { normalize } from "../../utils/Normalize";
 export default class ActivityCard extends React.Component {
   constructor(props) {
     super(props);
+    console.log("Rendering!")
     this.state = { 
       event : props.event,
     }
+    console.log(this.state.event)
   }
 
   navigateToShift = (event) => {

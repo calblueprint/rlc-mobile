@@ -4,7 +4,8 @@ import {
   StyleSheet,
   ScrollView,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  FlatList
 } from "react-native";
 
 // Animation Libraries
@@ -24,9 +25,10 @@ class UpcomingEventsList extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      upcomingEvents : props.upcomingEvents
+      upcomingEvents : props.upcomingEvents,
     }
   }
+
   render() {
     if (this.state.upcomingEvents === undefined || this.state.upcomingEvents.length == 0) {
       return (
@@ -44,15 +46,24 @@ class UpcomingEventsList extends React.Component {
     } else {
       return (
         <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
-        <ScrollView style={{ height: "100%" }}>
-          {this.state.upcomingEvents.map((event) => {
+        {/* <ScrollView style={{ height: "100%" }}> */}
+          <FlatList
+            style={{ height: "100%" }}
+            horizontal={false}
+            data={this.state.upcomingEvents}
+            keyExtractor = {event => event? event.tempIndex:99}
+            renderItem={({event}) => (<ActivityCard event = {event} navigation = {this.props.navigation}/>)}
+          />
+          {/* {this.state.upcomingEvents.map((event) => {
+            return (
             <ActivityCard
               key = {event.id}
               event = {event}
               navigation = {this.props.navigation}
             />
-          })}
-        </ScrollView>
+            )}
+          )} */}
+        {/* </ScrollView> */}
       </View>  
       );
     }
@@ -63,7 +74,7 @@ class AttendedEventsList extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      attendedEvents : props.attendedEvents
+      attendedEvents : props.attendedEvents,
     }
   }
 
@@ -90,16 +101,25 @@ class AttendedEventsList extends React.Component {
     } else {
       return (
         <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
-        <ScrollView style={{ height: "100%" }}>
-          {this.state.attendedEvents.map((event) => {
+        {/* <ScrollView style={{ height: "100%" }}> */}
+        <FlatList
+            style={{ height: "100%" }}
+            horizontal={false}
+            data={this.state.attendedEvents}
+            keyExtractor = {event => event? event.tempIndex:99}
+            renderItem={({event}) => (
+              <ActivityCard event = {event} navigation = {this.props.navigation}/>)}
+          />
+
+          {/* {this.state.attendedEvents.map((event) => {
             {console.log(`Rendering Activity Card with event ${event.id}`)}
             <ActivityCard
               key = {event.id}
               event = {event}
               navigation = {this.props.navigation}
             />
-          })}    
-          </ScrollView>
+          })}     */}
+          {/* </ScrollView> */}
         </View>
       );
     }
