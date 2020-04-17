@@ -32,7 +32,6 @@ export default class SuggestedEventsList extends Component {
         getRequest(
             `/api/get_events/${this.state.date.toString()}`,
             responseData => {
-                console.log("event info", responseData);
                 selectedEventsInDay = [];
                 for (let i = 0; i < responseData.length; i++) {
                     startingTime = new Date(responseData[i]["starting_time"]);
@@ -138,7 +137,6 @@ export default class SuggestedEventsList extends Component {
         getRequest(
             `/api/get_events/${chosenDate.toString()}`,
             responseData => {
-                console.log("event info", responseData);
                 selectedEventsInDay = [];
                 for (let i = 0; i < responseData.length; i++) {
                     startingTime = new Date(responseData[i]["starting_time"]);
@@ -153,7 +151,7 @@ export default class SuggestedEventsList extends Component {
                         }
                     }
                 }
-                this.setState({ selectedEventsInDay: selectedEventsInDay }, () => { this.render });
+                this.setState({ selectedEventsInDay: selectedEventsInDay }, () => { this.render() });
             },
             error => {
                 console.log(error);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, View, Icon, TextInput, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, View, TextInput, TouchableOpacity, Text } from 'react-native';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import { isTSTypeAliasDeclaration } from '@babel/types';
 
