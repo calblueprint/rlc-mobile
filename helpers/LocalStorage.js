@@ -6,6 +6,8 @@ class LocalStorage {
     AsyncStorage.setItem(item_name, JSON.stringify(item_json));
   }
 
+  // example usage: let user = await getItem(item_name); 
+
   static async getItem(item_name) {
     try {
       var item_json = await AsyncStorage.getItem(item_name);
@@ -22,7 +24,7 @@ class LocalStorage {
   static clearItem(item_name) {
     AsyncStorage.removeItem(item_name);
   }
-  
+
 }
 
 export default LocalStorage;
