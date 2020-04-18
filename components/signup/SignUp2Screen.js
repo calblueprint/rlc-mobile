@@ -1,7 +1,10 @@
-import React from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { frontendError } from '../../lib/alerts';
-import StepsTimeline from '../../components/StepsTimeline'; 
+import React from "react";
+import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { frontendError } from "../../lib/alerts";
+import StepsTimeline from "../../components/StepsTimeline";
+
+import Colors from "../../constants/Colors";
+import { normalize } from "../../utils/Normalize";
 
 export default class SignUp2Screen extends React.Component {
 
@@ -16,7 +19,7 @@ export default class SignUp2Screen extends React.Component {
   }
 
   //Setup User Payload
-  setupParams = ()  => {
+  setupParams = () => {
     this.setState({ user: this.props.user });
     this.state.user.email = this.state.email;
     this.state.user.password = this.state.password;
@@ -44,6 +47,8 @@ export default class SignUp2Screen extends React.Component {
   checkValidNext = () => {
     if (this.state.email == "" || this.state.password == "" || this.state.confirmPassword == "") {
       frontendError("Please fill out all fields.")
+    } else if (this.state.password.length <= 8) {
+      frontendError("Passwords must be more than 8 characters long.")
     } else if (this.state.password != this.state.confirmPassword) {
       frontendError("Passwords must match.")
     } else if (!this.state.password.match(/\d/) || !this.state.password.match(/[a-z]/i)) {
@@ -64,53 +69,53 @@ export default class SignUp2Screen extends React.Component {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={this.gotoPrevStep}>
-                  <Text style={styles.buttonText}>PREVIOUS</Text>
-              </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={this.gotoPrevStep}>
+            <Text style={styles.buttonText}>PREVIOUS</Text>
+          </TouchableOpacity>
         </View>
-        <StepsTimeline currentPosition={1}/>
+        <StepsTimeline currentPosition={1} />
         <ScrollView
           contentContainerStyle={styles.contentContainer}>
-            <Text style={styles.heading}>Hi {this.props.previousUserInfo.firstname}! Let's continue setting up your account. Your email will be your username!</Text>
-            <View style={styles.inputContainer}>
-              <Text style={styles.subHeading}>Email (this will also be your username)</Text>
-              <TextInput 
-                style={styles.input} 
-                placeholder={'email@email.com'} 
-                autoCapitalize={'none'} 
-                returnKeyType={"next"}
-                keyboardType={"email-address"}
-                onChangeText={text => this.setState({email: text})}
-                onSubmitEditing={() => this.passwordInput.focus()}
-                value={this.state.email}
-              ></TextInput>
-              <Text style={styles.subHeading}>Password</Text>
-              <TextInput 
-                style={styles.input} 
-                secureTextEntry={true}
-                placeholder={'Please include one letter and one number'}
-                returnKeyType={"next"}
-                onChangeText={text => this.setState({password: text})}
-                onSubmitEditing={() => this.confirmPasswordInput.focus()}
-                ref={(input) => {this.passwordInput = input;}}
-                value={this.state.password}
-              ></TextInput>
-              <Text style={styles.subHeading}>Confirm Password</Text>
-              <TextInput
-                style={styles.input} 
-                secureTextEntry={true} 
-                placeholder={'Please re-enter your password'}
-                returnKeyType={"next"}
-                onChangeText={text => this.setState({confirmPassword: text})}
-                ref={(input) => {this.confirmPasswordInput = input;}}
-                value={this.state.confirmPassword}
-              ></TextInput>
-            </View>
+          <Text style={styles.heading}>Hi {this.props.previousUserInfo.firstname}! Let's continue setting up your account. Your email will be your username!</Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.subHeading}>Email (this will also be your username)</Text>
+            <TextInput
+              style={styles.input}
+              placeholder={"email@email.com"}
+              autoCapitalize={"none"}
+              returnKeyType={"next"}
+              keyboardType={"email-address"}
+              onChangeText={text => this.setState({ email: text })}
+              onSubmitEditing={() => this.passwordInput.focus()}
+              value={this.state.email}
+            ></TextInput>
+            <Text style={styles.subHeading}>Password</Text>
+            <TextInput
+              style={styles.input}
+              secureTextEntry={true}
+              placeholder={"Please include one letter and one number"}
+              returnKeyType={"next"}
+              onChangeText={text => this.setState({ password: text })}
+              onSubmitEditing={() => this.confirmPasswordInput.focus()}
+              ref={(input) => { this.passwordInput = input; }}
+              value={this.state.password}
+            ></TextInput>
+            <Text style={styles.subHeading}>Confirm Password</Text>
+            <TextInput
+              style={styles.input}
+              secureTextEntry={true}
+              placeholder={"Please re-enter your password"}
+              returnKeyType={"next"}
+              onChangeText={text => this.setState({ confirmPassword: text })}
+              ref={(input) => { this.confirmPasswordInput = input; }}
+              value={this.state.confirmPassword}
+            ></TextInput>
+          </View>
         </ScrollView>
         <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={this.checkValidNext}>
-                  <Text style={styles.buttonText}>NEXT</Text>
-              </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={this.checkValidNext}>
+            <Text style={styles.buttonText}>NEXT</Text>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
     );
@@ -123,54 +128,54 @@ const styles = StyleSheet.create({
     paddingTop: 25,
   },
   button: {
-    backgroundColor: '#38A5DB',
+    backgroundColor: Colors.mainBlue,
     paddingVertical: 15,
     marginBottom: 20,
     borderRadius: 5,
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
-    width: 320
-  }, 
+    width: "85%",
+  },
   buttonContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 50,
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    height: 50
+    alignItems: "center",
+    justifyContent: "flex-end",
+    height: 50,
   },
   buttonText: {
-    textAlign: 'center',
-    color: '#FFFFFF',
-    fontWeight: '600',
-    textTransform: "uppercase"
+    textAlign: "center",
+    color: Colors.white,
+    fontWeight: "600",
+    textTransform: "uppercase",
   },
   input: {
     height: 40,
     marginBottom: 20,
     paddingHorizontal: 0,
     borderBottomWidth: 1,
-    borderBottomColor: '#333333',
-    color: '#333333',
+    borderBottomColor: "#333333",
+    color: "#333333",
   },
   inputContainer: {
     paddingTop: 25,
   },
   subHeading: {
-    color: '#333333',
+    color: "#333333",
     marginTop: 10,
-    textAlign: 'left',
-    fontWeight: '600',
+    textAlign: "left",
+    fontWeight: "600",
     opacity: 0.9,
-    fontSize: 14
+    fontSize: normalize(14),
   },
   contentContainer: {
     padding: 25,
     paddingTop: 30,
   },
   heading: {
-    fontSize: 20,
-    color: 'rgba(96,100,109, 1)',
+    fontSize: normalize(20),
+    color: "rgba(96,100,109, 1)",
     lineHeight: 24,
   },
 });
