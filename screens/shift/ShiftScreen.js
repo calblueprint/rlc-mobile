@@ -132,6 +132,8 @@ export default class ShiftScreen extends React.Component {
 
      participantCard = (data) => {
           const participant = data.item;
+          console.log("hello")
+          console.log(data.item.firstname)
           return (
                <View styles={styles.participant_card}>
 
@@ -146,7 +148,7 @@ export default class ShiftScreen extends React.Component {
                               source={require("../../assets/images/rlcprofilepic.png")} />
                          <View style={styles.participant_detail}>
                               <Text styles={styles.participant_name}>
-                                   {participant.name}
+                                   {participant.firstname} {participant.lastname}
                               </Text>
                               <Text styles={styles.particpant_role}>
                                    {participant.role}
@@ -185,13 +187,21 @@ export default class ShiftScreen extends React.Component {
      };
 
      render() {
+          const pEvent = this.props.navigation.state.params.event;
+
+          //set latitude and longitude
+          let lat = 37.78825
+          let lon = -122.4324
+          pEvent.latitude ? lat = pEvent.latitude : null
+          pEvent.longitude ? lon = pEvent.longitude : null
+
           return (
                <View style={{ flex: 1 }}>
                     <View style={{ flex: 1 }}>
                          <Header
                               centerTitle="In Progress"
                               onPressBack={this.navigateToMain}
-                              rightSide={this.state.inputShift === ShiftType.workingon ? true : false}
+                              rightSide={(pEvent.shiftType === ShiftType.upcoming || pEvent.shiftType === ShiftType.current) ? true : false}
                               actionTitle="Withdraw"
                               onPressHandler={this.navigateToWithdraw}
                          />
@@ -207,19 +217,19 @@ export default class ShiftScreen extends React.Component {
                                              happening now
                               </Text>
                                         <Text style={styles.title}>
-                                             Union Square (US014)
-                              </Text>
-                                        <Text style={styles.overview}>
-                                             📍  {this.props.event.details.location}
+                                             {pEvent.title}
                                         </Text>
                                         <Text style={styles.overview}>
-                                             ⏰  Mondays, 8.15pm to 9:00pm
-                              </Text>
-                                        <Text style={styles.overview}>
-                                             ⚖️  {this.props.event.details.weight}
+                                             📍  {pEvent.details.location}
                                         </Text>
                                         <Text style={styles.overview}>
-                                             👥  {this.props.event.details.spotsOpen}
+                                             ⏰  {pEvent.date}
+                                        </Text>
+                                        <Text style={styles.overview}>
+                                             ⚖️  {pEvent.details.weight} lbs
+                                        </Text>
+                                        <Text style={styles.overview}>
+                                             👥  {pEvent.details.spotsOpen}
                                         </Text>
                                         <Text style={styles.overview}>
                                              💪  Multi-pickup
@@ -228,8 +238,8 @@ export default class ShiftScreen extends React.Component {
                                         <View style={styles.mapcontainer}>
                                              <MapView style={styles.map}
                                                   initialRegion={{
-                                                       latitude: 37.78825,
-                                                       longitude: -122.4324,
+                                                       latitude: lat,
+                                                       longitude: lon,
                                                        latitudeDelta: 0.0922,
                                                        longitudeDelta: 0.0421,
                                                   }}
@@ -248,10 +258,10 @@ export default class ShiftScreen extends React.Component {
                                         </MapView> */}
                                         </View>
 
-                                        <LocTimeline markers={this.props.dropoff_locations} />
+                                        <LocTimeline markers={pEvent.dropoff_locations} />
 
                                         <FlatList style={styles.list}
-                                             data={this.state.participantData}
+                                             data={pEvent.attendees}
                                              renderItem={this.participantCard}
                                         />
 
@@ -285,7 +295,7 @@ export default class ShiftScreen extends React.Component {
                                              <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>Tap "Complete" to confirm the completion of the event. The last three steps must be completed.</Text>
                                         </View>
 
-                                        {this.state.inputShift === ShiftType.workingon && <View style={styles.buttonContainer}>
+                                        {(pEvent.shiftType === ShiftType.upcoming || pEvent.shiftType === ShiftType.current) && <View style={styles.buttonContainer}>
                                              <TouchableOpacity style={styles.button}>
                                                   <Text style={styles.buttonText}>Complete</Text>
                                              </TouchableOpacity>
@@ -294,7 +304,7 @@ export default class ShiftScreen extends React.Component {
 
                                    </View>
                               </ScrollView>
-                              {this.state.inputShift === ShiftType.searched && <View style={styles.signUpButtonContainer}>
+                              {pEvent.shiftType === ShiftType.searched && <View style={styles.signUpButtonContainer}>
                                    <TouchableOpacity style={styles.signUpButton} onPress={this.navigateToSignConfirm}
                                    >
                                         <Text style={styles.buttonText}>Sign Up</Text>
@@ -348,6 +358,7 @@ const styles = StyleSheet.create({
           paddingTop: 5,
      },
      list: {
+          flex: 1,
           padding: 10,
           paddingBottom: 20,
      },
