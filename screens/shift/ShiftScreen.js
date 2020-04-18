@@ -47,18 +47,10 @@ export default class ShiftScreen extends React.Component {
      constructor(props) {
           super(props)
           this.state = {
-               inputShift: ShiftType.workingon,
-               address: "Happyville 123",
                participantData: [
                     {
                          name: "Alice Russel (You)",
                          role: "Lead Rescuer",
-                         profilePic: "../../assets/images/rlcprofilepic.png",
-                         verified: false
-                    },
-                    {
-                         name: "William Franklin",
-                         role: "Volunteer",
                          profilePic: "../../assets/images/rlcprofilepic.png",
                          verified: false
                     },
@@ -74,37 +66,6 @@ export default class ShiftScreen extends React.Component {
                          step: 1,
                          description: "Meet your group at Latin Beet (17 East 16th Street).",
                          photo_needed: false
-                    },
-                    {
-                         step: 2,
-                         description: "Check in all volunteers.",
-                         photo_needed: false
-                    },
-                    {
-                         step: 3,
-                         description: "Collect food from vendor.",
-                         photo_needed: false
-                    },
-                    {
-                         step: 4,
-                         description: "Walk to Dig Inn (364 Bleecker St.).",
-                         photo_needed: false
-                    },
-                    {
-                         step: 5,
-                         description: "Collect food from vendor.",
-                         photo_needed: false
-                    },
-                    {
-                         step: 6,
-                         description: "Walk to Bowery Mission (227 Bowery).",
-                         photo_needed: false
-
-                    },
-                    {
-                         step: 7,
-                         description: "Take a photo of the food once it is delivered to Bowery Mission*",
-                         photo_needed: true
                     },
                     {
                          step: 8,
@@ -178,7 +139,7 @@ export default class ShiftScreen extends React.Component {
      navigateToSignConfirm = () => {
           const { navigate } = this.props.navigation;
           navigate("ChangeConfirm", {
-               title: this.state.address,
+               title: this.props.navigation.state.params.event.details.name,
                description: "This is a recurring event.",
                hasQ: true,
                question: "How often do you want to attend?",
@@ -217,13 +178,13 @@ export default class ShiftScreen extends React.Component {
                                              happening now
                               </Text>
                                         <Text style={styles.title}>
-                                             {pEvent.title}
+                                             {pEvent.details.name}
                                         </Text>
                                         <Text style={styles.overview}>
                                              📍  {pEvent.details.location}
                                         </Text>
                                         <Text style={styles.overview}>
-                                             ⏰  {pEvent.date}
+                                             ⏰  {pEvent.details.date}, {pEvent.details.start_time} to {pEvent.details.end_time}
                                         </Text>
                                         <Text style={styles.overview}>
                                              ⚖️  {pEvent.details.weight} lbs
@@ -232,7 +193,7 @@ export default class ShiftScreen extends React.Component {
                                              👥  {pEvent.details.spotsOpen}
                                         </Text>
                                         <Text style={styles.overview}>
-                                             💪  Multi-pickup
+                                             💪  {pEvent.details.numPickups} Pickup(s)
                               </Text>
 
                                         <View style={styles.mapcontainer}>
@@ -243,25 +204,21 @@ export default class ShiftScreen extends React.Component {
                                                        latitudeDelta: 0.0922,
                                                        longitudeDelta: 0.0421,
                                                   }}
-                                             />
-                                             {/* <MapView style={styles.map}
-                                             region={this.state.region}
-                                             onRegionChange={this.onRegionChange}
-                                        >
-                                             {this.state.markers.map(marker => (
-                                                  <Marker
-                                                       coordinate={marker.latlng}
-                                                       title={marker.title}
-                                                       description={marker.description}
-                                                  />
-                                             ))}
-                                        </MapView> */}
+                                             >
+                                                  {pEvent.dropoff_locations && pEvent.dropoff_locations.map(marker => (
+                                                       <Marker
+                                                            coordinate={marker.latlng}
+                                                            title={marker.title}
+                                                            description={marker.description}
+                                                       />
+                                                  ))}
+                                             </MapView>
                                         </View>
 
                                         <LocTimeline markers={pEvent.dropoff_locations} />
 
                                         <FlatList style={styles.list}
-                                             data={pEvent.attendees}
+                                             data={pEvent.details.attendees}
                                              renderItem={this.participantCard}
                                         />
 
@@ -272,7 +229,7 @@ export default class ShiftScreen extends React.Component {
                                              *Please take a cab only under extenuating circumstances (weight of food is heavy, harsh weather conditions, etc). Please keep the receipt so that we can reimburse you.
                               </Text>
                                         <FlatList
-                                             data={this.state.shiftInstructions}
+                                             data={pEvent.details.instructions}
                                              renderItem={instructionDetail}
                                         />
 
