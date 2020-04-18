@@ -25,7 +25,7 @@ export default class SuggestedEventsList extends Component {
             locationName = this.props.preferredLocations[i]["name"];
             locations[locationId] = locationName;
         }
-        this.setState({ locations: locations }, () => { this.processEventData(); console.log("Location info: " + locations); });
+        this.setState({ locations: locations }, () => { this.processEventData(); });
     }
 
     processEventData() {
@@ -46,7 +46,7 @@ export default class SuggestedEventsList extends Component {
                         }
                     }
                 }
-                this.setState({ selectedEventsInDay: selectedEventsInDay }, () => { console.log("Event info: " + selectedEventsInDay); this.render() });
+                this.setState({ selectedEventsInDay: selectedEventsInDay }, () => { this.render() });
             },
             error => {
                 console.log(error);
@@ -158,10 +158,6 @@ export default class SuggestedEventsList extends Component {
             });
     }
 
-    cancel() {
-        console.log("Cancelled the operation!");
-    }
-
     render() {
         if (this.state.selectedEventsInDay.length === 0) {
             return (
@@ -173,7 +169,8 @@ export default class SuggestedEventsList extends Component {
                             borderBottomWidth: StyleSheet.hairlineWidth,
                             width: '100%'
                         }}></View>
-                        <DatePicker style={{ marginTop: '2%', marginBottom: '2%' }} date={this.state.date} mode='date' minimumDate={this.state.date} onDateChange={date => this.setState({ date: date }, () => { this.renderNewEvents(date) })} />
+                        <DatePicker style={{ marginTop: '2%', marginBottom: '2%' }} date={this.state.date} mode='date' minDate={this.state.date} onDateChange={date => this.setState({ date: date }, () => { this.renderNewEvents(date) })} confirmBtnText="Confirm"
+                            cancelBtnText="Cancel" />
                     </View>
                     <View>
                         <Text>There are no events on this date.</Text>
@@ -190,7 +187,8 @@ export default class SuggestedEventsList extends Component {
                             borderBottomWidth: StyleSheet.hairlineWidth,
                             width: '100%'
                         }}></View>
-                        <DatePicker style={{ marginTop: '2%', marginBottom: '2%' }} date={this.state.date} mode='date' minimumDate={this.state.date} onDateChange={date => this.setState({ date: date }, () => { this.renderNewEvents(date) })} />
+                        <DatePicker style={{ marginTop: '2%', marginBottom: '2%' }} date={this.state.date} mode='date' minDate={this.state.date} onDateChange={date => this.setState({ date: date }, () => { this.renderNewEvents(date) })} confirmBtnText="Confirm"
+                            cancelBtnText="Cancel" />
                     </View>
                     <ScrollView>
                         <FlatList
