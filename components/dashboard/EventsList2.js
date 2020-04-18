@@ -5,7 +5,7 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
-  FlatList,
+  ActivityIndicator,
 } from "react-native";
 
 // Animation Libraries
@@ -15,9 +15,12 @@ import Animated from "react-native-reanimated";
 // Components
 import ActivityCard from "../../components/dashboard/ActivityCard.js";
 
-// Utils
+// Constants
 import Sizes from "../../constants/Sizes";
+import Colors from "../../constants/Colors";
 import { normalize } from "../../utils/Normalize.js";
+
+// Utils
 import LocalStorage from "../../helpers/LocalStorage.js";
 import { get_dashboard_events_lists } from "../../helpers/EventsHelper.js";
 
@@ -213,7 +216,23 @@ export default class EventsList2 extends Component {
 
   _renderScene = ({ route }) => {
     if (this.state.isFetching) {
-      return null; // Still fetching the events
+      // return null; // Still fetching the events
+      switch (route.key) {
+        case "first":
+          return (
+            <View style={styles.infoContainer}>
+              <ActivityIndicator size="large" color={Colors.mainBlue} />
+            </View>
+          );
+        case "second":
+          return (
+            <View style={styles.infoContainer}>
+              <ActivityIndicator size="large" color={Colors.mainBlue} />
+            </View>
+          );
+        default:
+          return null;
+      }
     } else {
       switch (route.key) {
         case "first":

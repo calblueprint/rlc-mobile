@@ -5,11 +5,11 @@ import { normalize } from "../../utils/Normalize";
 export default class ActivityCard extends React.Component {
   navigateToShift = (event) => {
     const { navigate } = this.props.navigation;
-    navigate("Shift", event);
+    navigate("Shift", { event: event })
   };
 
   checkforNullValues(attribute) {
-    return (attribute != null && attribute != undefined) ? attribute : "N/A";
+    return attribute != null && attribute != undefined ? attribute : "N/A";
   }
 
   render() {
@@ -19,11 +19,17 @@ export default class ActivityCard extends React.Component {
         style={styles.card}
         onPress={() => this.navigateToShift(this.props.event)}
       >
-        <Text style={styles.location}>📍 {this.checkforNullValues(this.props.event.address)}</Text>
+        <Text style={styles.location}>
+          📍 {this.checkforNullValues(this.props.event.address)}
+        </Text>
 
-        <Text style={styles.name}>{this.checkforNullValues(this.props.event.details.name)}</Text>
+        <Text style={styles.name}>
+          {this.checkforNullValues(this.props.event.details.name)}
+        </Text>
 
-        <Text style={styles.time}>{this.checkforNullValues(this.props.event.details.start_time)}</Text>
+        <Text style={styles.time}>
+          {this.checkforNullValues(this.props.event.details.start_time)}
+        </Text>
         <View style={styles.details}>
           <View>
             <Text style={styles.smallGreyText}>Weight</Text>

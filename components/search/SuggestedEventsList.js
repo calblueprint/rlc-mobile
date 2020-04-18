@@ -9,15 +9,18 @@ import Sizes from "../../constants/Sizes.js";
 import { normalize } from "../../utils/Normalize.js";
 import Colors from "../../constants/Colors";
 
+import ShiftType from "../../constants/ShiftType.js";
+
 const dummyEventData = {
     location_id: 7,
     name: "Soho Bagels",
+    location: "Soho",
     date: "2020-04-18",
     start_time: '2020-04-18T02:00:00.000-04:00',
     end_time: '2020-04-18T04:00:00.000-04:00',
     weight: 20,
     spotsOpen: 3,
-    numPickups: 1
+    numPickups: 1,
 };
 
 export default class SuggestedEventsList extends Component {
@@ -48,11 +51,14 @@ export default class SuggestedEventsList extends Component {
         eventDetails["spotsOpen"] = dummyEventData["spotsOpen"];
         eventDetails["weight"] = dummyEventData["weight"];
         eventDetails["numPickups"] = dummyEventData["numPickups"];
+        eventDetails["location"] = dummyEventData["location"];
+        eventDetails["date"] = dummyEventData["date"];
         startingTime = new Date(dummyEventData["start_time"]);
         endingTime = new Date(dummyEventData["end_time"]);
         eventDetails["start_time"] = startingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }) + " to " + endingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
         eventOne["address"] = "SoHo";
         eventOne["details"] = eventDetails;
+        eventOne["shiftType"] = ShiftType.searched;
         selectedEventsInDay.push(eventOne);
         this.setState({ selectedEventsInDay: selectedEventsInDay }, () => { this.render() });
         // getRequest(
