@@ -28,8 +28,4 @@ export class APIRoutes {
   static getEventsPath(id, type) {
     return APIRoutes.deviseRoute(`${id}/events/${type}`);
   }
-
-  static getEventDetailsPath(id) {
-    return APIRoutes.createRoute(`show_event/${id}`)
-  }
 }

@@ -5,7 +5,6 @@ import {
   TextInput,
   TouchableOpacity,
   Text,
-  AsyncStorage,
 } from "react-native";
 import { frontendError } from "../lib/alerts";
 import { postRequest } from "../lib/requests";
@@ -40,7 +39,7 @@ export default class LoginForm extends React.Component {
           'preferredLocation': user.preferred_location_id,
           'preferredTimes': ""
         }
-        LocalStorage.storeItem('user', userJSON);
+        LocalStorage.storeItem('user',userJSON)
         this.props.navigateHandler();
       },
       error => {
@@ -60,8 +59,7 @@ export default class LoginForm extends React.Component {
     const params = {
       user: {
         email: this.state.email,
-        password: this.state.password,
-        remember_me: 1
+        password: this.state.password
       }
     };
     this.fetchUser(params);

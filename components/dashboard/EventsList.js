@@ -1,77 +1,55 @@
-import React, { Component } from "react";
+import * as React from "react";
 import {
   View,
   StyleSheet,
-  ScrollView,
+  Dimensions,
   Text,
   TouchableOpacity
 } from "react-native";
-
-// Animation Libraries
 import { TabView, SceneMap } from "react-native-tab-view";
 import Animated from "react-native-reanimated";
-
-// Components
-import ActivityCard from "../../components/dashboard/ActivityCard.js";
-import { APIRoutes } from '../../config/routes.js'
-import { getRequest } from '../../lib/requests.js'
-import LocalStorage from "../../helpers/LocalStorage.js";
+import LocalStorage from "../../helpers/LocalStorage";
+import { postRequest, getRequest } from "../../lib/requests";
+import { APIRoutes } from "../../config/routes";
 
 const FirstRoute = () => (
   <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
-    <ScrollView style={{ height: "100%" }}>
-      <Text style={styles.heading}>Sunday, June 19, 2019</Text>
-      <ActivityCard
-        location={"📍 Union Square"}
-        name={"Union Square (US014)"}
-        time={"8:15 to 9:15 PM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"2"}
-        spotsOpen={"1 of 2"}
-      />
-      <ActivityCard
-        location={"📍 Greenwich Village"}
-        name={"Greenwich Village (GW007)"}
-        time={"4:15 to 6:15 PM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"2"}
-        spotsOpen={"1 of 2"}
-      />
-      <Text style={styles.heading}>Monday, June 20, 2019</Text>
-      <ActivityCard
-        location={"📍 Williamsburg"}
-        name={"South Side Mission (WB001)"}
-        time={"10:30 to 11:30 AM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"1"}
-        spotsOpen={"2 of 4"}
-      />
-    </ScrollView>
+    <View style={styles.infoContainer}>
+      <Text style={styles.subText}>Oh no! You have no upcoming shifts.</Text>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Sign Up for Shift</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   </View>
 );
 
 const SecondRoute = () => (
   <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
-    <ScrollView style={{ height: "100%" }}>
-      <Text style={styles.heading}>Sunday, June 19, 2019</Text>
-      <ActivityCard
-        location={"📍 Home"}
-        name={"Union Square (US014)"}
-        time={"8:15 to 9:15 AM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"2"}
-        spotsOpen={"1 of 2"}
-      />
-    </ScrollView>
+    <View style={styles.infoContainer}>
+      <Text style={styles.subText}>
+        Did you know?{"\n"}
+        RLC has rescued over 1.7 million{"\n"}
+        pounds of food! Sign up for an event{"\n"}
+        and be a part of the movement!
+      </Text>
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Sign Up for Shift</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   </View>
 );
 
-export default class EventsList2 extends Component {
+export default class EventsList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       index: 0,
-      user_id: '',
+      user_id: 0,
       events: [],
       routes: [
         { key: "first", title: "Upcoming" },
@@ -83,38 +61,18 @@ export default class EventsList2 extends Component {
   async componentDidMount() {
     try {
       let user = await LocalStorage.getItem('user');
-      this.setState(prevState => {
-        return { ...prevState, user_id: user.userId }
-      }, () => this._fetchEvents());
-    } catch (err) {
+      this.setState({ user_id: user.id });
+    } catch(err) {
       console.error(err)
       this.props.navigation.navigate("Login")
     }
+    this._fetchEvents();
   }
-
-  // Fetch function; not sure if this works yet
-  // TODO: @Johnathan / @Suhas, get fetch events to work 
-  _fetchEvents = () => {
-    return getRequest(
-      APIRoutes.getEventsPath(this.state.user_id, "attended"),
-      (eventData) => {
-        LocalStorage.storeItem('events', eventData);
-        this.setState((prevState) => {
-          return { ...prevState, events: eventData }
-        });
-      },
-      (error) => {
-        alert(error)
-        console.log(error)
-      }
-    );
-  };
 
   _handleIndexChange = index => this.setState({ index });
 
   _renderTabBar = props => {
     const inputRange = props.navigationState.routes.map((x, i) => i);
-
     return (
       <View style={styles.tabBar}>
         {props.navigationState.routes.map((route, i) => {
@@ -158,10 +116,24 @@ export default class EventsList2 extends Component {
       </View>
     );
   };
+
   _renderScene = SceneMap({
     first: FirstRoute,
     second: SecondRoute
   });
+
+  _fetchEvents = () => {
+    return getRequest(
+      APIRoutes.getEventsPath(this.state.user_id, "attended"),
+      responseData => {
+        console.log("event info", responseData);
+        this.setState({ events: responseData });
+      },
+      error => {
+        // console.log(error)
+      }
+    );
+  };
 
   render() {
     return (
@@ -212,8 +184,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FFFFFF",
-    margin: "auto"
+    backgroundColor: "#FFFFFF"
+    // margin: 'auto',
   },
   container: {
     flex: 1
@@ -226,15 +198,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     padding: 10
-  },
-  heading: {
-    color: "#000000",
-    marginTop: 10,
-    marginBottom: 10,
-    marginLeft: "8%",
-    textAlign: "left",
-    fontWeight: "600",
-    opacity: 0.7,
-    fontSize: 16
   }
 });
