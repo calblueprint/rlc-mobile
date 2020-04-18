@@ -169,7 +169,7 @@ export default class SuggestedEventsList extends Component {
                             borderBottomWidth: StyleSheet.hairlineWidth,
                             width: '100%'
                         }}></View>
-                        <DatePicker style={{ marginTop: '2%', marginBottom: '2%' }} date={this.state.date} mode='date' minDate={this.state.date} onDateChange={date => this.setState({ date: date }, () => { this.renderNewEvents(date) })} confirmBtnText="Confirm"
+                        <DatePicker style={{ marginTop: '2%', marginBottom: '2%' }} date={this.state.date} mode='date' onDateChange={date => this.setState({ date: date }, () => { this.renderNewEvents(date) })} confirmBtnText="Confirm"
                             cancelBtnText="Cancel" />
                     </View>
                     <View>
@@ -187,7 +187,7 @@ export default class SuggestedEventsList extends Component {
                             borderBottomWidth: StyleSheet.hairlineWidth,
                             width: '100%'
                         }}></View>
-                        <DatePicker style={{ marginTop: '2%', marginBottom: '2%' }} date={this.state.date} mode='date' minDate={this.state.date} onDateChange={date => this.setState({ date: date }, () => { this.renderNewEvents(date) })} confirmBtnText="Confirm"
+                        <DatePicker style={{ marginTop: '2%', marginBottom: '2%' }} date={this.state.date} mode='date' onDateChange={date => this.setState({ date: date }, () => { this.renderNewEvents(date) })} confirmBtnText="Confirm"
                             cancelBtnText="Cancel" />
                     </View>
                     <ScrollView>
