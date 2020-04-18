@@ -2,7 +2,6 @@ import React, { Component } from "../../node_modules/react";
 import { FlatList, StyleSheet, View, Text, ScrollView, SafeAreaView } from "react-native";
 import ActivityCard from "../dashboard/ActivityCard.js";
 import DatePicker from "react-native-datepicker";
-import ShiftType from "../../constants/ShiftType.js";
 import { getRequest } from "../../lib/requests.js"
 
 import Styles from "../../constants/Styles.js";
@@ -33,16 +32,22 @@ export default class SuggestedEventsList extends Component {
             `/api/get_events/${this.state.date.toString()}`,
             responseData => {
                 selectedEventsInDay = [];
-                for (let i = 0; i < responseData.length; i++) {
+                for (i = 0; i < responseData.length; i++) {
+                    currentEvent = {};
+                    eventDetails = {};
+                    eventDetails["name"] = responseData[i]["title"];
+                    eventDetails["spotsOpen"] = responseData[i]["slot"];
+                    eventDetails["weight"] = responseData[i]["weight"];
+                    eventDetails["numPickups"] = responseData[i]["numPickups"];
                     startingTime = new Date(responseData[i]["starting_time"]);
                     endingTime = new Date(responseData[i]["ending_time"]);
-                    responseData[i]["starting_time"] = startingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-                    responseData[i]["ending_time"] = endingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                    eventDetails["start_time"] = startingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + " to " + endingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
                     if (responseData[i]["location_id"] !== null) {
                         locationIdString = responseData[i]["location_id"].toString();
                         if (this.state.locations[locationIdString] != null) {
-                            responseData[i]["location"] = this.state.locations[locationIdString];
-                            selectedEventsInDay.push(responseData[i]);
+                            currentEvent["address"] = this.state.locations[locationIdString];
+                            currentEvent["details"] = eventDetails;
+                            selectedEventsInDay.push(currentEvent);
                         }
                     }
                 }
@@ -53,101 +58,27 @@ export default class SuggestedEventsList extends Component {
             });
     }
 
-    moveToShiftScreen(location, time, weight, numpickups, spotsOpen) {
-        const { navigate } = this.props.navigation;
-        navigate("Shift", {
-            typeOfShift: ShiftType.searched,
-            locationName: location,
-            timeOfShift: time,
-            foodWeight: weight,
-            numSpots: spotsOpen,
-            pickup: numpickups,
-            mapMarkers: [
-                {
-                    markID: 1, latitude: null, longitude: null, title: "Latin Beet (Meet here) ", description: "18 East 16th Street, New York, NY 10003 \n",
-                }
-            ],
-            shiftInstructions: [
-                {
-                    step: 1,
-                    description: "Meet your group at Latin Beet (17 East 16th Street).",
-                    photo_needed: false
-                },
-                {
-                    step: 2,
-                    description: "Check in all volunteers.",
-                    photo_needed: false
-                },
-                {
-                    step: 3,
-                    description: "Collect food from vendor.",
-                    photo_needed: false
-                },
-                {
-                    step: 4,
-                    description: "Walk to Dig Inn (364 Bleecker St.).",
-                    photo_needed: false
-                },
-                {
-                    step: 5,
-                    description: "Collect food from vendor.",
-                    photo_needed: false
-                },
-                {
-                    step: 6,
-                    description: "Walk to Bowery Mission (227 Bowery).",
-                    photo_needed: false
-
-                },
-                {
-                    step: 7,
-                    description: "Take a photo of the food once it is delivered to Bowery Mission*",
-                    photo_needed: true
-                },
-                {
-                    step: 8,
-                    description: "Request a receipt from Bowery Mission and take a photo of the receipt*",
-                    photo_needed: true
-                },
-            ],
-            participantData: [
-                {
-                    name: "Alice Russel (You)",
-                    role: "Lead Rescuer",
-                    profilePic: "../../assets/images/rlcprofilepic.png",
-                    verified: false
-                },
-                {
-                    name: "William Franklin",
-                    role: "Volunteer",
-                    profilePic: "../../assets/images/rlcprofilepic.png",
-                    verified: false
-                },
-                {
-                    name: "Dan Schneider",
-                    role: "Volunteer",
-                    profilePic: "../../assets/images/rlcprofilepic.png",
-                    verified: true
-                },
-            ],
-        });
-    }
-
     renderNewEvents(chosenDate) {
         getRequest(
             `/api/get_events/${chosenDate.toString()}`,
             responseData => {
                 selectedEventsInDay = [];
-                for (let i = 0; i < responseData.length; i++) {
+                for (i = 0; i < responseData.length; i++) {
+                    currentEvent = {};
+                    eventDetails = {};
+                    eventDetails["name"] = responseData[i]["title"];
+                    eventDetails["spotsOpen"] = responseData[i]["slot"];
+                    eventDetails["weight"] = responseData[i]["weight"];
+                    eventDetails["numPickups"] = responseData[i]["numPickups"];
                     startingTime = new Date(responseData[i]["starting_time"]);
                     endingTime = new Date(responseData[i]["ending_time"]);
-                    responseData[i]["starting_time"] = startingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-                    responseData[i]["ending_time"] = endingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-                    if (responseData[i]["location_id"] !== null) {
+                    eventDetails["start_time"] = startingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + " to " + endingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                    if (responseData[i]["location_id"] != null) {
                         locationIdString = responseData[i]["location_id"].toString();
                         if (this.state.locations[locationIdString] != null) {
-                            responseData[i]["location"] = this.state.locations[locationIdString];
-                            selectedEventsInDay.push(responseData[i]);
+                            currentEvent["address"] = this.state.locations[locationIdString];
+                            currentEvent["details"] = eventDetails;
+                            selectedEventsInDay.push(currentEvent);
                         }
                     }
                 }
@@ -195,13 +126,13 @@ export default class SuggestedEventsList extends Component {
                             data={this.state.selectedEventsInDay}
                             renderItem={({ item }) => (
                                 <ActivityCard
-                                    location={item["location"]}
-                                    name={item["title"]}
-                                    time={item["starting_time"] + " to " + item["ending_time"]}
-                                    weight={item["pound"] + " lbs"}
-                                    numpickups={item["numPickups"]}
-                                    spotsOpen={item["slot"]}
-                                    onPressHandler={(location, time, weight, numpickups, spotsOpen) => { this.moveToShiftScreen(location, time, weight, numpickups, spotsOpen) }}
+                                    event={item}
+                                // location={item["location"]}
+                                // name={item["title"]}
+                                // time={item["starting_time"] + " to " + item["ending_time"]}
+                                // weight={item["pound"] + " lbs"}
+                                // numpickups={item["numPickups"]}
+                                // spotsOpen={item["slot"]}
                                 />
                             )}
                             keyExtractor={item => item["id"]}
@@ -216,7 +147,7 @@ export default class SuggestedEventsList extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: Sizes.width
+        width: Sizes.width,
     },
     header: {
         alignItems: 'center',
@@ -225,7 +156,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#000000',
         fontWeight: '600',
-        textTransform: "uppercase"
+        textTransform: 'uppercase',
     },
     datePicker: {
         marginBottom: 20,
