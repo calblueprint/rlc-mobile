@@ -29,6 +29,10 @@ export class APIRoutes {
     return APIRoutes.deviseRoute(`${id}/events/${type}`);
   }
 
+  static getEventDetailsPath(id) {
+    return APIRoutes.createRoute(`show_event/${id}`)
+  }
+
   //Locations
   static getRegionsPath() {
     return APIRoutes.createRoute('/get_locations')
