@@ -5,7 +5,8 @@ import {
   Image,
   ScrollView,
   Text,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Platform
 } from "react-native";
 
 // Components
@@ -38,7 +39,7 @@ export default class LoginScreen extends Component {
 
   render() {
     return (
-      <KeyboardAvoidingView behavior="padding" style={Styles.container}>
+      <KeyboardAvoidingView behavior={Platform.OS==="ios"? "padding":""} style={Styles.container}>
         <ScrollView>
           <View style={Styles.logoContainer}>
             <Image

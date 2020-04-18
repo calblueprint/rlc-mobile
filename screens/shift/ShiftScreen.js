@@ -263,7 +263,7 @@ export default class ShiftScreen extends React.Component {
                                         </View>
 
                                         {(pEvent.shiftType === ShiftType.upcoming || pEvent.shiftType === ShiftType.current) && <View style={styles.buttonContainer}>
-                                             <TouchableOpacity style={styles.button}>
+                                             <TouchableOpacity style={styles.button} onPress={this.navigateToMain}>
                                                   <Text style={styles.buttonText}>Complete</Text>
                                              </TouchableOpacity>
                                         </View>}

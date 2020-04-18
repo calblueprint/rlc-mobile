@@ -12,12 +12,16 @@ if (process.env.NODE_ENV === "production") {
   console.log("staging");
   URL = Platform.select({
     ios: "http://johnathan.dev.calblueprint.org:3000/",
+<<<<<<< HEAD
     android: BASE_URL
+=======
+    android: BASE_URL,
+>>>>>>> eb5b15af1c98c45fb12a219dd5c0ba2fed2b8220
   });
 }
 export const settings = {
   env: process.env.NODE_ENV,
-  URL
+  URL,
 };
 
 export default settings;
