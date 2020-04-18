@@ -8,6 +8,9 @@ import {
   View
 } from "react-native";
 
+import Colors from "../../constants/Colors.js";
+import { normalize } from "../../utils/Normalize";
+
 export default class ConfirmationScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -46,17 +49,17 @@ export default class ConfirmationScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    paddingTop: 25
+    backgroundColor: Colors.white,
+    paddingTop: 25,
   },
   button: {
-    backgroundColor: "#38A5DB",
+    backgroundColor: Colors.mainBlue,
     paddingVertical: 15,
     marginBottom: 20,
     borderRadius: 5,
     position: "absolute",
     bottom: 0,
-    width: 320
+    width: "85%",
   },
   buttonContainer: {
     alignItems: "center",
@@ -64,32 +67,32 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-end",
-    height: 50
+    height: 50,
   },
   buttonText: {
     textAlign: "center",
-    color: "#FFFFFF",
+    color: Colors.white,
     fontWeight: "600",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
   },
   contentContainer: {
-    paddingTop: 30
+    paddingTop: 30,
   },
   image: {
     marginTop: 25,
-    marginBottom: 25
+    marginBottom: 25,
   },
   text: {
-    fontSize: 14
+    fontSize: normalize(14),
   },
   confirmationContainer: {
     alignItems: "center",
-    marginHorizontal: 50
+    marginHorizontal: 50,
   },
   heading: {
-    fontSize: 20,
+    fontSize: normalize(20),
     color: "#000000",
     lineHeight: 24,
-    textAlign: "center"
+    textAlign: "center",
   }
 });

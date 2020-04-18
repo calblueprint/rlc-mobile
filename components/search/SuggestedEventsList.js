@@ -7,6 +7,7 @@ import { getRequest } from "../../lib/requests.js"
 import Styles from "../../constants/Styles.js";
 import Sizes from "../../constants/Sizes.js";
 import { normalize } from "../../utils/Normalize.js";
+import Colors from "../../constants/Colors";
 
 export default class SuggestedEventsList extends Component {
     constructor(props) {
@@ -42,7 +43,7 @@ export default class SuggestedEventsList extends Component {
                     eventDetails["numPickups"] = responseData[i]["numPickups"];
                     startingTime = new Date(responseData[i]["starting_time"]);
                     endingTime = new Date(responseData[i]["ending_time"]);
-                    eventDetails["start_time"] = startingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + " to " + endingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                    eventDetails["start_time"] = startingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }) + " to " + endingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
                     if (responseData[i]["location_id"] !== null) {
                         locationIdString = responseData[i]["location_id"].toString();
                         if (this.state.locations[locationIdString] != null) {
@@ -73,7 +74,7 @@ export default class SuggestedEventsList extends Component {
                     eventDetails["numPickups"] = responseData[i]["numPickups"];
                     startingTime = new Date(responseData[i]["starting_time"]);
                     endingTime = new Date(responseData[i]["ending_time"]);
-                    eventDetails["start_time"] = startingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + " to " + endingTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                    eventDetails["start_time"] = startingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }) + " to " + endingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
                     if (responseData[i]["location_id"] != null) {
                         locationIdString = responseData[i]["location_id"].toString();
                         if (this.state.locations[locationIdString] != null) {
@@ -97,12 +98,12 @@ export default class SuggestedEventsList extends Component {
                     <View style={styles.header}>
                         <Text style={Styles.title}>Suggested Events</Text>
                         <View style={{
-                            boderBottomColor: 'black',
+                            boderBottomColor: "black",
                             borderBottomWidth: StyleSheet.hairlineWidth,
-                            width: '100%'
+                            width: "100%"
                         }}></View>
-                        <DatePicker style={{ marginTop: '2%', marginBottom: '2%' }} date={this.state.date} mode='date' onDateChange={date => this.setState({ date: date }, () => { this.renderNewEvents(date) })} confirmBtnText="Confirm"
-                            cancelBtnText="Cancel" />
+                        <DatePicker style={{ marginTop: "2%", marginBottom: "2%" }} date={this.state.date} mode="date" onDateChange={date => this.setState({ date: date }, () => { this.renderNewEvents(date) })} confirmBtnText="Confirm"
+                            cancelBtnText="Cancel" customStyles={{ btnTextConfirm: { color: Colors.mainBlue } }} />
                     </View>
                     <View style={styles.textContainer}>
                         <Text style={styles.subText}>
@@ -117,12 +118,12 @@ export default class SuggestedEventsList extends Component {
                     <View style={styles.header}>
                         <Text style={Styles.title}>Suggested Events</Text>
                         <View style={{
-                            boderBottomColor: 'black',
+                            boderBottomColor: "black",
                             borderBottomWidth: StyleSheet.hairlineWidth,
-                            width: '100%'
+                            width: "100%"
                         }}></View>
-                        <DatePicker style={{ marginTop: '2%', marginBottom: '2%' }} date={this.state.date} mode='date' onDateChange={date => this.setState({ date: date }, () => { this.renderNewEvents(date) })} confirmBtnText="Confirm"
-                            cancelBtnText="Cancel" />
+                        <DatePicker style={{ marginTop: "2%", marginBottom: "2%" }} date={this.state.date} mode="date" onDateChange={date => this.setState({ date: date }, () => { this.renderNewEvents(date) })} confirmBtnText="Confirm"
+                            cancelBtnText="Cancel" customStyles={{ btnTextConfirm: { color: Colors.mainBlue } }} />
                     </View>
                     <FlatList
                         data={this.state.selectedEventsInDay}
@@ -146,13 +147,13 @@ const styles = StyleSheet.create({
         width: Sizes.width,
     },
     header: {
-        alignItems: 'center',
+        alignItems: "center",
     },
     headerText: {
-        textAlign: 'center',
-        color: '#000000',
-        fontWeight: '600',
-        textTransform: 'uppercase',
+        textAlign: "center",
+        color: "#000000",
+        fontWeight: "600",
+        textTransform: "uppercase",
     },
     datePicker: {
         marginBottom: "3%",
@@ -162,7 +163,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#FFFFFF",
+        backgroundColor: Colors.white,
         margin: "auto",
     },
     subText: {

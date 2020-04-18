@@ -1,9 +1,12 @@
-import React from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import SectionedMultiSelect from 'react-native-sectioned-multi-select';
-import StepsTimeline from '../../components/StepsTimeline';
-import { CheckBox } from 'react-native-elements'
-import { frontendError } from '../../lib/alerts';
+import React from "react";
+import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import SectionedMultiSelect from "react-native-sectioned-multi-select";
+import StepsTimeline from "../../components/StepsTimeline";
+import { CheckBox } from "react-native-elements"
+import { frontendError } from "../../lib/alerts";
+
+import Colors from "../../constants/Colors";
+import { normalize } from "../../utils/Normalize";
 
 const regions = [{
   name: "Albany, NY"
@@ -185,7 +188,7 @@ export default class SignUp3Screen extends React.Component {
               value={this.state.preferredRegion}
               styles={{
                 selectToggle: { borderBottomWidth: 1, marginBottom: 20, height: 40 },
-                selectToggleText: { fontSize: 14, color: "#333333" }
+                selectToggleText: { fontSize: normalize(14), color: "#333333" }
               }}
             />
 
@@ -207,7 +210,7 @@ export default class SignUp3Screen extends React.Component {
               value={this.state.preferredLocation}
               styles={{
                 selectToggle: { borderBottomWidth: 1, marginBottom: 20, height: 40 },
-                selectToggleText: { fontSize: 14, color: "#333333" }
+                selectToggleText: { fontSize: normalize(14), color: "#333333" }
               }}
             />
 
@@ -231,7 +234,7 @@ export default class SignUp3Screen extends React.Component {
               value={this.state.preferredTimes}
               styles={{
                 selectToggle: { borderBottomWidth: 1, marginBottom: 20, height: 40 },
-                selectToggleText: { fontSize: 14, color: "#333333" }
+                selectToggleText: { fontSize: normalize(14), color: "#333333" }
               }}
             />
             <CheckBox title="By creating an account, you agree to the Terms and Conditions and RLC Rescuer Policy." checked={this.state.agreementChecked} onPress={() => this.setState({ agreementChecked: !this.state.agreementChecked })} />
@@ -253,83 +256,83 @@ const styles = StyleSheet.create({
     paddingTop: 25,
   },
   button: {
-    backgroundColor: '#38A5DB',
+    backgroundColor: Colors.mainBlue,
     paddingVertical: 15,
     marginBottom: 20,
     borderRadius: 5,
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
-    width: 320
+    width: 320,
   },
   buttonContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 50,
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    height: 50
+    alignItems: "center",
+    justifyContent: "flex-end",
+    height: 50,
   },
   buttonText: {
-    textAlign: 'center',
-    color: '#FFFFFF',
-    fontWeight: '600',
-    textTransform: "uppercase"
+    textAlign: "center",
+    color: Colors.white,
+    fontWeight: "600",
+    textTransform: "uppercase",
   },
   currentLocationButton: {
     paddingVertical: 15,
     marginBottom: 10,
     borderRadius: 5,
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     width: 320,
     borderWidth: 2,
-    borderColor: "#38A5DB"
+    borderColor: Colors.mainBlue,
   },
   currentLocationButtonContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 20,
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+    alignItems: "center",
+    justifyContent: "flex-end",
     height: 50
   },
   currentLocationButtonText: {
-    textAlign: 'center',
-    color: '#38A5DB',
-    fontWeight: '600',
+    textAlign: "center",
+    color: Colors.mainBlue,
+    fontWeight: "600",
   },
   input: {
     height: 40,
     marginBottom: 20,
     paddingHorizontal: 0,
     borderBottomWidth: 1,
-    borderBottomColor: '#333333',
-    color: '#333333',
+    borderBottomColor: "#333333",
+    color: "#333333",
   },
   inputContainer: {
     paddingTop: 25,
   },
   subHeading: {
-    color: '#333333',
+    color: "#333333",
     marginTop: 10,
-    textAlign: 'left',
-    fontWeight: '600',
+    textAlign: "left",
+    fontWeight: "600",
     opacity: 0.9,
-    fontSize: 14
+    fontSize: normalize(14),
   },
   regionsubHeading: {
-    color: '#333333',
-    textAlign: 'center',
+    color: "#333333",
+    textAlign: "center",
     opacity: 0.9,
-    fontSize: 14
+    fontSize: normalize(14),
   },
   contentContainer: {
     padding: 25,
     paddingTop: 30,
   },
   heading: {
-    fontSize: 20,
-    color: 'rgba(96,100,109, 1)',
+    fontSize: normalize(20),
+    color: "rgba(96,100,109, 1)",
     lineHeight: 24,
   },
 });

@@ -1,7 +1,10 @@
-import React from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { frontendError } from '../../lib/alerts';
-import StepsTimeline from '../../components/StepsTimeline';
+import React from "react";
+import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { frontendError } from "../../lib/alerts";
+import StepsTimeline from "../../components/StepsTimeline";
+
+import Colors from "../../constants/Colors";
+import { normalize } from "../../utils/Normalize";
 
 export default class SignUp2Screen extends React.Component {
 
@@ -78,8 +81,8 @@ export default class SignUp2Screen extends React.Component {
             <Text style={styles.subHeading}>Email (this will also be your username)</Text>
             <TextInput
               style={styles.input}
-              placeholder={'email@email.com'}
-              autoCapitalize={'none'}
+              placeholder={"email@email.com"}
+              autoCapitalize={"none"}
               returnKeyType={"next"}
               keyboardType={"email-address"}
               onChangeText={text => this.setState({ email: text })}
@@ -90,7 +93,7 @@ export default class SignUp2Screen extends React.Component {
             <TextInput
               style={styles.input}
               secureTextEntry={true}
-              placeholder={'Please include one letter and one number'}
+              placeholder={"Please include one letter and one number"}
               returnKeyType={"next"}
               onChangeText={text => this.setState({ password: text })}
               onSubmitEditing={() => this.confirmPasswordInput.focus()}
@@ -101,7 +104,7 @@ export default class SignUp2Screen extends React.Component {
             <TextInput
               style={styles.input}
               secureTextEntry={true}
-              placeholder={'Please re-enter your password'}
+              placeholder={"Please re-enter your password"}
               returnKeyType={"next"}
               onChangeText={text => this.setState({ confirmPassword: text })}
               ref={(input) => { this.confirmPasswordInput = input; }}
@@ -125,54 +128,54 @@ const styles = StyleSheet.create({
     paddingTop: 25,
   },
   button: {
-    backgroundColor: '#38A5DB',
+    backgroundColor: Colors.mainBlue,
     paddingVertical: 15,
     marginBottom: 20,
     borderRadius: 5,
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
-    width: 320
+    width: "85%",
   },
   buttonContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 50,
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    height: 50
+    alignItems: "center",
+    justifyContent: "flex-end",
+    height: 50,
   },
   buttonText: {
-    textAlign: 'center',
-    color: '#FFFFFF',
-    fontWeight: '600',
-    textTransform: "uppercase"
+    textAlign: "center",
+    color: Colors.white,
+    fontWeight: "600",
+    textTransform: "uppercase",
   },
   input: {
     height: 40,
     marginBottom: 20,
     paddingHorizontal: 0,
     borderBottomWidth: 1,
-    borderBottomColor: '#333333',
-    color: '#333333',
+    borderBottomColor: "#333333",
+    color: "#333333",
   },
   inputContainer: {
     paddingTop: 25,
   },
   subHeading: {
-    color: '#333333',
+    color: "#333333",
     marginTop: 10,
-    textAlign: 'left',
-    fontWeight: '600',
+    textAlign: "left",
+    fontWeight: "600",
     opacity: 0.9,
-    fontSize: 14
+    fontSize: normalize(14),
   },
   contentContainer: {
     padding: 25,
     paddingTop: 30,
   },
   heading: {
-    fontSize: 20,
-    color: 'rgba(96,100,109, 1)',
+    fontSize: normalize(20),
+    color: "rgba(96,100,109, 1)",
     lineHeight: 24,
   },
 });

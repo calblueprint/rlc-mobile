@@ -16,4 +16,5 @@ export default {
   buttonText: '#FFFFFF',
   green: "#79B830",
   regularText: "#4A4A4A",
+  white: '#FFFFFF',
 };
