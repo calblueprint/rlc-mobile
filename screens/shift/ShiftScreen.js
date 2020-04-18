@@ -215,13 +215,13 @@ export default class ShiftScreen extends React.Component {
                                                        longitudeDelta: 0.0421,
                                                   }}
                                              >
-                                                  {pEvent.dropoff_locations && pEvent.dropoff_locations.map(marker => (
+                                                  {/* {pEvent.dropoff_locations && pEvent.dropoff_locations.map(marker => (
                                                        <Marker
                                                             coordinate={marker.latlng}
                                                             title={marker.title}
                                                             description={marker.description}
                                                        />
-                                                  ))}
+                                                  ))} */}
                                              </MapView>
                                         </View>
 
