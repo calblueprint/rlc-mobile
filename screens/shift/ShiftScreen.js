@@ -6,6 +6,7 @@ import LocTimeline from '../../components/shift/LocTimeline'
 import MapView, { Marker } from 'react-native-maps';
 import ShiftType from "../../constants/ShiftType.js";
 
+import Avatar from 'react-avatar';
 import Colors from "../../constants/Colors";
 function instructionDetail(data) {
      const step = data.item;
@@ -102,9 +103,10 @@ export default class ShiftScreen extends React.Component {
                               checked={participant.verified}
                               onPress={() => this.setState(prevState => { participant.verified != prevState.participant.verified })}
                          />}
-                         <Image
+
+                         {/* <Image
                               style={styles.profilePic}
-                              source={require("../../assets/images/rlcprofilepic.png")} />
+                              source={require("../../assets/images/rlcprofilepic.png")} /> */}
                          <View style={styles.participant_detail}>
                               <Text styles={styles.participant_name}>
                                    {participant.firstname} {participant.lastname}
@@ -263,7 +265,7 @@ export default class ShiftScreen extends React.Component {
                                         </View>
 
                                         {(pEvent.shiftType === ShiftType.upcoming || pEvent.shiftType === ShiftType.current) && <View style={styles.buttonContainer}>
-                                             <TouchableOpacity style={styles.button}>
+                                             <TouchableOpacity style={styles.button} onPress={this.navigateToMain}>
                                                   <Text style={styles.buttonText}>Complete</Text>
                                              </TouchableOpacity>
                                         </View>}
