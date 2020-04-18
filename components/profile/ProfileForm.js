@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, View, Icon, TextInput, TouchableOpacity, Text, Switch, AsyncStorage } from 'react-native';
+import { Platform, StyleSheet, View, Icon, TextInput, TouchableOpacity, Text } from 'react-native';
 import { isTSTypeAliasDeclaration } from '@babel/types';
-import LocalStorage from '../../helpers/LocalStorage';
 
-export default class LoginForm extends Component {
+export default class ProfileForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -23,16 +22,6 @@ export default class LoginForm extends Component {
         }
     }
 
-    async componentDidMount() {
-        try {
-            let user = await LocalStorage.getItem('user');
-            this.setState(user);
-        } catch(err) {
-            console.error(err)
-            this.props.navigation.navigate("Login")
-        }
-    }
-
     render() {
         return (
             <View behavior="padding" style={styles.container}>
@@ -40,114 +29,122 @@ export default class LoginForm extends Component {
                 <Text style={styles.heading}>Basic Information 🤓</Text>
 
                 <Text style={styles.subHeading}>First Name</ Text>
-                <TextInput 
+                <TextInput
                     style={styles.input}
-                    placeholder={this.state.firstName}
+                    defaultValue={this.props.getUserAttribute('firstName')}
+                    onChangeText={text => { this.props.changeUserInfo('firstName', text); this.props.enableSaveButton(); }}
                     returnKeyType="next"
                     onSubmitEditing={() => this.lastNameInput.focus()}
                     keyboardType="default"
                     style={styles.input}
-                    autoCorrct={false}
+                    autoCorrect={false}
                 ></TextInput>
 
                 <Text style={styles.subHeading}>Last Name</ Text>
-                <TextInput 
+                <TextInput
                     style={styles.input}
-                    placeholder={this.state.lastName}
+                    defaultValue={this.props.getUserAttribute('lastName')}
+                    onChangeText={text => { this.props.changeUserInfo('lastName', text); this.props.enableSaveButton(); }}
                     returnKeyType="next"
                     ref={(input) => this.lastNameInput = input}
                     onSubmitEditing={() => this.occupationInput.focus()}
                     keyboardType="default"
                     style={styles.input}
-                    autoCorrct={false}
+                    autoCorrect={false}
                 ></TextInput>
 
                 <Text style={styles.subHeading}>Occupation</ Text>
-                <TextInput 
+                <TextInput
                     style={styles.input}
-                    placeholder={this.state.occupation}
+                    defaultValue={this.props.getUserAttribute('occupation')}
+                    onChangeText={text => { this.props.changeUserInfo('occupation', text); this.props.enableSaveButton(); }}
                     returnKeyType="done"
                     ref={(input) => this.occupationInput = input}
                     keyboardType="default"
                     style={styles.input}
-                    autoCorrct={false}
+                    autoCorrect={false}
                 ></TextInput>
 
                 <Text style={styles.heading}>Contact Information 📱</Text>
                 {/* I suggest we embed this in some sort of interactive info button; like a question mark icon  */}
-                <Text style={styles.subtext}>RLC needs your complete address in order to successfully place you in the right area.</Text> 
+                <Text style={styles.subtext}>RLC needs your complete address in order to successfully place you in the right area.</Text>
 
                 <Text style={styles.subHeading}>Phone Number</ Text>
-                <TextInput 
+                <TextInput
                     style={styles.input}
-                    placeholder={this.state.phoneNumber} 
+                    defaultValue={this.props.getUserAttribute('phoneNumber')}
+                    onChangeText={text => { this.props.changeUserInfo('phoneNumber', text); this.props.enableSaveButton(); }}
                     returnKeyType="next"
                     onSubmitEditing={() => this.addressA.focus()}
                     keyboardType="phone-pad"
                     style={styles.input}
-                    autoCorrct={false}
+                    autoCorrect={false}
                 ></TextInput>
 
                 <Text style={styles.subHeading}>Address (Line 1)</ Text>
-                <TextInput 
+                <TextInput
                     style={styles.input}
-                    placeholder={this.state.address}
+                    defaultValue={this.props.getUserAttribute('address')}
+                    onChangeText={text => { this.props.changeUserInfo('address', text); this.props.enableSaveButton(); }}
                     returnKeyType="next"
                     ref={(input) => this.addressA = input}
                     onSubmitEditing={() => this.addressB.focus()}
                     keyboardType="default"
                     style={styles.input}
-                    autoCorrct={false}
+                    autoCorrect={false}
                 ></TextInput>
 
                 <Text style={styles.subHeading}>Address (Line 2)</ Text>
-                <TextInput 
+                <TextInput
                     style={styles.input}
-                    placeholder="" 
+                    placeholder=""
                     returnKeyType="next"
                     ref={(input) => this.addressB = input}
                     onSubmitEditing={() => this.cityInput.focus()}
                     keyboardType="default"
                     style={styles.input}
-                    autoCorrct={false}
+                    autoCorrect={false}
                 ></TextInput>
 
                 <Text style={styles.subHeading}>City</ Text>
-                <TextInput 
+                <TextInput
                     style={styles.input}
-                    placeholder={this.state.city}
+                    defaultValue={this.props.getUserAttribute('city')}
+                    onChangeText={text => { this.props.changeUserInfo('city', text); this.props.enableSaveButton(); }}
                     returnKeyType="next"
                     ref={(input) => this.cityInput = input}
                     onSubmitEditing={() => this.stateInput.focus()}
                     keyboardType="default"
                     style={styles.input}
-                    autoCorrct={false}
+                    autoCorrect={false}
                 ></TextInput>
 
                 <Text style={styles.subHeading}>State</ Text>
-                <TextInput 
+                <TextInput
                     style={styles.input}
-                    placeholder={this.state.state}
+                    defaultValue={this.props.getUserAttribute('state')}
+                    onChangeText={text => { this.props.changeUserInfo('state', text); this.props.enableSaveButton(); }}
                     returnKeyType="next"
                     ref={(input) => this.stateInput = input}
                     onSubmitEditing={() => this.zipInput.focus()}
                     keyboardType="default"
                     style={styles.input}
-                    autoCorrct={false}
+                    autoCorrect={false}
                 ></TextInput>
 
                 <Text style={styles.subHeading}>Zip Code</ Text>
-                <TextInput 
+                <TextInput
                     style={styles.input}
-                    placeholder={this.state.zipCode}
+                    defaultValue={this.props.getUserAttribute('zipCode')}
+                    onChangeText={text => { this.props.changeUserInfo('zipCode', text); this.props.enableSaveButton(); }}
                     returnKeyType="done"
                     ref={(input) => this.zipInput = input}
                     keyboardType="number-pad"
                     style={styles.input}
-                    autoCorrct={false}
+                    autoCorrect={false}
                 ></TextInput>
-                
-               {/* Account Details */}
+
+                {/* Account Details */}
                 <Text style={styles.heading}>
                     Account Details ⚙️
                 </Text>
@@ -156,28 +153,29 @@ export default class LoginForm extends Component {
                     Email
                 </Text>
                 <TextInput
-                placeholder={this.state.email}
-                returnKeyType="next"
-                onSubmitEditing={() => this.passwordInput.focus()}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                style={styles.input}
-                autoCorrct={false}
+                    defaultValue={this.props.getUserAttribute('email')}
+                    onChangeText={text => { this.props.changeUserInfo('email', text); this.props.enableSaveButton(); }}
+                    returnKeyType="next"
+                    onSubmitEditing={() => this.passwordInput.focus()}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    style={styles.input}
+                    autoCorrect={false}
                 ></TextInput>
 
                 <Text style={styles.subHeading}>
                     Password
                 </Text>
-                <TextInput 
-                inlineImageLeft="lock"
-                placeholder="Password"
-                secureTextEntry
-                style={styles.input}
-                ref={(input) => this.passwordInput = input}
-                returnKeyType="go"
+                <TextInput
+                    inlineImageLeft="lock"
+                    placeholder="Password"
+                    secureTextEntry
+                    style={styles.input}
+                    ref={(input) => this.passwordInput = input}
+                    returnKeyType="go"
                 ></TextInput>
 
-                <View style={{width: 150, height: 50}}>
+                <View style={{ width: 150, height: 50 }}>
                     <TouchableOpacity style={styles.helpLink}>
                         <Text style={styles.helpLinkText}>
                             Reset password
@@ -186,47 +184,50 @@ export default class LoginForm extends Component {
                 </View>
 
                 <Text style={styles.heading}>
-                         Event Preferences 🍎
+                    Event Preferences 🍎
                     </Text>
 
-                    <Text style={styles.subHeading}>
-                         Preferred Region
+                <Text style={styles.subHeading}>
+                    Preferred Region
                     </Text>
-                    <TextInput
-                    placeholder={this.state.preferred_region_id}
+                <TextInput
+                    defaultValue={this.props.getUserAttribute('preferredRegion')}
+                    onChangeText={text => { this.props.changeUserInfo('preferredRegion', text); this.props.enableSaveButton(); }}
                     returnKeyType="next"
                     onSubmitEditing={() => this.preferredLocationInput.focus()}
                     autoCapitalize="none"
                     style={styles.input}
-                    autoCorrct={false}
-                    ></TextInput>
+                    autoCorrect={false}
+                ></TextInput>
 
-                    <Text style={styles.subHeading}>
-                         Preferred Locations (Optional)
+                <Text style={styles.subHeading}>
+                    Preferred Locations (Optional)
                     </Text>
-                    <TextInput
-                    placeholder={this.state.preferred_location_id}
+                <TextInput
+                    defaultValue={this.props.getUserAttribute('preferredLocation')}
+                    onChangeText={text => { this.props.changeUserInfo('preferredLocation', text); this.props.enableSaveButton(); }}
                     returnKeyType="next"
                     onSubmitEditing={() => this.preferredTimeInput.focus()}
                     ref={(input) => this.preferredLocationInput = input}
                     autoCapitalize="none"
                     style={styles.input}
-                    autoCorrct={false}
-                    ></TextInput>
+                    autoCorrect={false}
+                ></TextInput>
 
-                    <Text style={styles.subHeading}>
-                         Preferred Times (Optional)
+                <Text style={styles.subHeading}>
+                    Preferred Times (Optional)
                     </Text>
-                    <TextInput
-                    placeholder={this.state.preferredTimes}
+                <TextInput
+                    defaultValue={this.props.getUserAttribute('preferredTimes')}
+                    onChangeText={text => { this.props.changeUserInfo('preferredTimes', text); this.props.enableSaveButton(); }}
                     returnKeyType="done"
                     ref={(input) => this.preferredTimeInput = input}
                     autoCapitalize="none"
                     autoCapitalize="none"
                     style={styles.input}
-                    autoCorrct={false}
-                    ></TextInput>
-       
+                    autoCorrect={false}
+                ></TextInput>
+
             </View>
         );
     }
@@ -244,7 +245,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#3b3b3b',
         color: '#000000',
-    }, 
+    },
     heading: {
         color: '#000000',
         marginTop: 10,

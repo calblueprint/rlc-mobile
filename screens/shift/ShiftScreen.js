@@ -4,11 +4,50 @@ import Header from "../../components/shift/Header"
 import { CheckBox } from 'react-native-elements'
 import LocTimeline from '../../components/shift/LocTimeline'
 import MapView, { Marker } from 'react-native-maps';
+import ShiftType from "../../constants/ShiftType.js";
+
+function instructionDetail(data) {
+     const step = data.item;
+     return (
+          <View>
+               <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
+                    <Text style={{ fontSize: 17 }}>{step.step}. </Text>
+                    <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>{step.description}</Text>
+               </View>
+               {step.photo_needed && <View style={styles.upload_box}></View>}
+          </View>
+     )
+}
+
+const withdrawOptions = [
+     {
+          key: 'one',
+          text: 'Withdraw from this event only',
+     },
+     {
+          key: 'all',
+          text: 'Withdraw from this and all future events',
+     }
+];
+
+const recurOptions = [
+     {
+          key: 'only',
+          text: 'This week only',
+     },
+     {
+          key: 'every',
+          text: 'Every week',
+     }
+];
+
 
 export default class ShiftScreen extends React.Component {
      constructor(props) {
           super(props)
           this.state = {
+               inputShift: ShiftType.workingon,
+               address: "Happyville 123",
                participantData: [
                     {
                          name: "Alice Russel (You)",
@@ -118,6 +157,7 @@ export default class ShiftScreen extends React.Component {
           )
      }
 
+<<<<<<< HEAD
 
      instructionDetail = (data) => {
           const step = data.item;
@@ -140,8 +180,33 @@ export default class ShiftScreen extends React.Component {
 
 
      navigateToDash = () => {
+=======
+     navigateToMain = () => {
           const { navigate } = this.props.navigation;
-          navigate("Dash");
+          navigate("Main");
+     };
+
+     navigateToWithdraw = () => {
+          const { navigate } = this.props.navigation;
+          navigate("ChangeConfirm", {
+               title: "Withdraw Your Spot",
+               description: "You are about to withdraw your spot from a recurring event.",
+               hasQ: false,
+               question: "",
+               options: withdrawOptions
+          });
+     };
+
+     navigateToSignConfirm = () => {
+>>>>>>> master
+          const { navigate } = this.props.navigation;
+          navigate("ChangeConfirm", {
+               title: this.state.address,
+               description: "This is a recurring event.",
+               hasQ: true,
+               question: "How often do you want to attend?",
+               options: recurOptions
+          });
      };
 
      navigateToCamera = () => {
@@ -156,9 +221,10 @@ export default class ShiftScreen extends React.Component {
                          <View style={{ height: '10%' }}>
                               <Header
                                    centerTitle="In Progress"
-                                   onPressBack={this.navigateToDash}
+                                   onPressBack={this.navigateToMain}
+                                   rightSide={this.state.inputShift === ShiftType.workingon ? true : false}
                                    actionTitle="Withdraw"
-                                   onPressHandler={this.navigateToDash}
+                                   onPressHandler={this.navigateToWithdraw}
                               />
                          </View>
 
@@ -248,14 +314,21 @@ export default class ShiftScreen extends React.Component {
                                         <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>Tap "Complete" to confirm the completion of the event. The last three steps must be completed.</Text>
                                    </View>
 
-                                   <View style={styles.buttonContainer}>
+                                   {this.state.inputShift === ShiftType.workingon && <View style={styles.buttonContainer}>
                                         <TouchableOpacity style={styles.button}>
                                              <Text style={styles.buttonText}>Complete</Text>
                                         </TouchableOpacity>
-                                   </View>
-                              </View>
+                                   </View>}
 
+
+                              </View>
                          </ScrollView>
+                         {this.state.inputShift === ShiftType.searched && <View style={styles.signUpButtonContainer}>
+                              <TouchableOpacity style={styles.signUpButton} onPress={this.navigateToSignConfirm}
+                              >
+                                   <Text style={styles.buttonText}>Sign Up</Text>
+                              </TouchableOpacity>
+                         </View>}
                     </View>
                </KeyboardAvoidingView>
           )
@@ -356,6 +429,23 @@ const styles = StyleSheet.create({
      weight_input: {
           fontSize: 17
      },
+
+
+
+
+
+     buttonContainer: {
+          alignItems: 'center',
+          marginTop: 20,
+          justifyContent: 'center',
+          flex: 1,
+     },
+     signUpButtonContainer: {
+          alignItems: 'center',
+          flex: 1,
+          justifyContent: 'flex-end',
+          height: 50,
+     },
      button: {
           backgroundColor: '#38A5DB',
           justifyContent: 'center',
@@ -365,11 +455,14 @@ const styles = StyleSheet.create({
           width: '100%',
           height: 50
      },
-     buttonContainer: {
-          alignItems: 'center',
-          marginTop: 20,
-          justifyContent: 'center',
-          flex: 1,
+     signUpButton: {
+          backgroundColor: '#38A5DB',
+          paddingVertical: 15,
+          marginBottom: 30,
+          borderRadius: 5,
+          position: 'absolute',
+          bottom: 0,
+          width: "80%",
      },
      buttonText: {
           textAlign: 'center',
@@ -378,6 +471,9 @@ const styles = StyleSheet.create({
           fontSize: 16,
           textTransform: "uppercase"
      },
+
+
+
      mapcontainer: {
           //...StyleSheet.absoluteFillObject,
           height: 200,
@@ -389,4 +485,7 @@ const styles = StyleSheet.create({
      map: {
           ...StyleSheet.absoluteFillObject,
      },
+
+
+
 })

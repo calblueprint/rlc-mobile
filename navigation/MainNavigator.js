@@ -9,6 +9,7 @@ import SignupScreen from "../screens/signup/SignUpScreen.js";
 import ConfirmationScreen from "../components/signup/ConfirmationScreen.js";
 import ShiftScreen from "../screens/shift/ShiftScreen.js";
 import CameraScreen from "../screens/shift/CameraScreen.js";
+import ChangeConfirmScreen from "../screens/shift/ChangeConfirmScreen.js";
 import MainScreen from "../screens/MainScreen.js";
 
 const routeConfiguration = {
@@ -17,13 +18,14 @@ const routeConfiguration = {
   Signup: { screen: SignupScreen, name: "Signup" },
   Shift: { screen: ShiftScreen, name: "Shift" },
   Camera: { screen: CameraScreen, name: "Camera" },
+  ChangeConfirm: { screen: ChangeConfirmScreen, name: "ChangeConfirm" },
   Main: { screen: MainScreen, name: "Main" },
   Confirmation: { screen: ConfirmationScreen, name: "Confirmation" }
 };
 
 const stackConfiguration = {
   headerMode: "none",
-  initialRouteName: "Logo",
+  initialRouteName: "Main",
   backBehavior: "history",
   defaultNavigationOptions: {
     ...TransitionPresets.FadeFromBottomAndroid,
