@@ -35,7 +35,8 @@ const fetch_locations_by_region = async (region_id) => getRequest(
     }
 )
 
-const find_nearest_region = (cooridnates, regions => {
+const find_nearest_region = (async cooridnates => {
+    let regions = await fetch_regions();
     let nearest_region = {}
     let nearest_distance = Infinity
     
@@ -73,7 +74,8 @@ const parseCurrentLocation = async (coordinate_arr) => {
     }
 
     if (parsed == null) {
-        parsed = find_nearest_region(user_coordinates);
+        parsed = await find_nearest_region(user_coordinates);
+        console.log(parsed)
     }
 
     return parsed

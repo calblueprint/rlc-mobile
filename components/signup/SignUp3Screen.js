@@ -147,11 +147,15 @@ export default class SignUp3Screen extends React.Component {
 
   setCurrentLocation = async () => {
     let status = await Location.requestPermissionsAsync();
+    console.log(`Current permissions status : ${status}`)
     if (status != 'granted') {
       await Location.requestPermissionsAsync();
     } else {
-      user_coordinates_arr = await Location.getCurrentPositionAsync();
-      preferred_region = await parseCurrentLocation(user_coordinates_arr);
+      console.log(`Getting current position`)
+      let user_coordinates_arr = await Location.getCurrentPositionAsync();
+      console.log(`Getting preferred region for coordinates ${user_coordinates_arr}`)
+      let preferred_region = await parseCurrentLocation(user_coordinates_arr);
+      console.log(`Setting preferred region to ${preferred_region}`)
       this.onPreferredRegionChange(preferred_region);
     }
   }
