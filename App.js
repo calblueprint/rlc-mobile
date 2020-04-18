@@ -15,7 +15,7 @@ Sentry.init({
     "https://9f8eb25711f0439ca61120e47914d75a@o306199.ingest.sentry.io/5204759",
   enableInExpoDevelopment: true,
   debug: true,
-  environment: env.env,
+  environment: process.env.NODE_ENV,
 });
 
 Sentry.setRelease(Constants.manifest.revisionId);

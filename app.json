@@ -23,11 +23,7 @@
       "postPublish": [
         {
           "file": "sentry-expo/upload-sourcemaps",
-          "config": {
-            "organization": "",
-            "project": "",
-            "authToken": ""
-          }
+          "config": {}
         }
       ]
     }
