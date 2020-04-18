@@ -4,7 +4,9 @@ import Header from "../../components/shift/Header"
 import { CheckBox } from 'react-native-elements'
 import LocTimeline from '../../components/shift/LocTimeline'
 import MapView, { Marker } from 'react-native-maps';
+import ShiftType from "../../constants/ShiftType.js";
 
+import Colors from "../../constants/Colors";
 function instructionDetail(data) {
      const step = data.item;
      return (
@@ -18,12 +20,35 @@ function instructionDetail(data) {
      )
 }
 
+const withdrawOptions = [
+     {
+          key: 'one',
+          text: 'Withdraw from this event only',
+     },
+     {
+          key: 'all',
+          text: 'Withdraw from this and all future events',
+     }
+];
+
+const recurOptions = [
+     {
+          key: 'only',
+          text: 'This week only',
+     },
+     {
+          key: 'every',
+          text: 'Every week',
+     }
+];
 
 
 export default class ShiftScreen extends React.Component {
      constructor(props) {
           super(props)
           this.state = {
+               inputShift: ShiftType.workingon,
+               address: "Happyville 123",
                participantData: [
                     {
                          name: "Alice Russel (You)",
@@ -92,13 +117,13 @@ export default class ShiftScreen extends React.Component {
                // },
                markers: [
                     {
-                         latlng: '1', title: 'Latin Beet (Meet here) ', description: '18 East 16th Street, New York, NY 10003 \n'
+                         latlng: '1', title: 'Latin Beet (Meet here) ', description: '18 East 16th Street, New York, NY 10003 \n', arrived: true
                     },
                     {
-                         latlng: '2', title: 'Digg Inn', description: '364 Bleecker St., New York, NY 10002 \n', dotColor: '#fff'
+                         latlng: '2', title: 'Digg Inn', description: '364 Bleecker St., New York, NY 10002 \n', arrived: false
                     },
                     {
-                         latlng: '3', title: 'Bowery Mission', description: '227 Bower, New York, NY 10002 \n'
+                         latlng: '3', title: 'Bowery Mission', description: '227 Bower, New York, NY 10002 \n', arrived: false
                     }
 
                ]
@@ -140,58 +165,77 @@ export default class ShiftScreen extends React.Component {
 
      navigateToWithdraw = () => {
           const { navigate } = this.props.navigation;
-          navigate("Withdraw");
+          navigate("ChangeConfirm", {
+               title: "Withdraw Your Spot",
+               description: "You are about to withdraw your spot from a recurring event.",
+               hasQ: false,
+               question: "",
+               options: withdrawOptions
+          });
+     };
+
+     navigateToSignConfirm = () => {
+          const { navigate } = this.props.navigation;
+          navigate("ChangeConfirm", {
+               title: this.state.address,
+               description: "This is a recurring event.",
+               hasQ: true,
+               question: "How often do you want to attend?",
+               options: recurOptions
+          });
      };
 
      render() {
           return (
-               <KeyboardAvoidingView behavior="position">
-                    <View>
-                         <View style={{ height: '10%' }}>
-                              <Header
-                                   centerTitle="In Progress"
-                                   onPressBack={this.navigateToMain}
-                                   rightSide={true}
-                                   actionTitle="Withdraw"
-                                   onPressHandler={this.navigateToWithdraw}
-                              />
-                         </View>
+               <View style={{ flex: 1 }}>
+                    <View style={{ flex: 1 }}>
+                         <Header
+                              centerTitle="In Progress"
+                              onPressBack={this.navigateToMain}
+                              rightSide={this.state.inputShift === ShiftType.workingon ? true : false}
+                              actionTitle="Withdraw"
+                              onPressHandler={this.navigateToWithdraw}
+                         />
+                    </View>
 
-                         <ScrollView style={{ height: '90%' }}>
-                              <View style={styles.container}>
+                    <KeyboardAvoidingView behavior="position" style={{ flex: 5 }}>
+                         <View>
 
-                                   <Text style={styles.status}>
-                                        happening now
+                              <ScrollView>
+                                   <View style={styles.container}>
+
+                                        <Text style={styles.status}>
+                                             happening now
                               </Text>
-                                   <Text style={styles.title}>
-                                        Union Square (US014)
+                                        <Text style={styles.title}>
+                                             Union Square (US014)
                               </Text>
-                                   <Text style={styles.overview}>
-                                        📍  Union Square
+                                        <Text style={styles.overview}>
+                                             📍  Union Square
                               </Text>
-                                   <Text style={styles.overview}>
-                                        ⏰  Mondays, 8.15pm to 9:00pm
+                                        <Text style={styles.overview}>
+                                             ⏰  Mondays, 8.15pm to 9:00pm
                               </Text>
-                                   <Text style={styles.overview}>
-                                        ⚖️  10lbs to 45 lbs
+                                        <Text style={styles.overview}>
+                                             ⚖️  10lbs to 45 lbs
                               </Text>
-                                   <Text style={styles.overview}>
-                                        👥  1 of 2 spots open
+                                        <Text style={styles.overview}>
+                                             👥  1 of 2 spots open
                               </Text>
-                                   <Text style={styles.overview}>
-                                        💪  Multi-pickup
+                                        <Text style={styles.overview}>
+                                             💪  Multi-pickup
                               </Text>
 
-                                   <View style={styles.mapcontainer}>
-                                        <MapView style={styles.map}
-                                             initialRegion={{
-                                                  latitude: 37.78825,
-                                                  longitude: -122.4324,
-                                                  latitudeDelta: 0.0922,
-                                                  longitudeDelta: 0.0421,
-                                             }}
-                                        />
-                                        {/* <MapView style={styles.map}
+                                        <View style={styles.mapcontainer}>
+                                             <MapView style={styles.map}
+                                                  initialRegion={{
+                                                       latitude: 37.78825,
+                                                       longitude: -122.4324,
+                                                       latitudeDelta: 0.0922,
+                                                       longitudeDelta: 0.0421,
+                                                  }}
+                                             />
+                                             {/* <MapView style={styles.map}
                                              region={this.state.region}
                                              onRegionChange={this.onRegionChange}
                                         >
@@ -203,55 +247,63 @@ export default class ShiftScreen extends React.Component {
                                                   />
                                              ))}
                                         </MapView> */}
-                                   </View>
+                                        </View>
 
-                                   <LocTimeline markers={this.state.markers} />
+                                        <LocTimeline markers={this.state.markers} />
 
-                                   <FlatList style={styles.list}
-                                        data={this.state.participantData}
-                                        renderItem={this.participantCard}
-                                   />
-
-                                   <Text style={styles.title}>
-                                        Shift Tasks
-                              </Text>
-                                   <Text style={{ fontSize: 17, paddingTop: 10, paddingBottom: 10 }}>
-                                        *Please take a cab only under extenuating circumstances (weight of food is heavy, harsh weather conditions, etc). Please keep the receipt so that we can reimburse you.
-                              </Text>
-                                   <FlatList
-                                        data={this.state.shiftInstructions}
-                                        renderItem={instructionDetail}
-                                   />
-
-                                   <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
-                                        <Text style={{ fontSize: 16 }}>9.</Text>
-                                        <Text style={{ fontSize: 16, flex: 1, paddingLeft: 5 }}>Enter pounds of food saved:*</Text>
-                                   </View>
-
-                                   <View style={styles.input_box}>
-                                        <TextInput
-                                             style={styles.weight_input}
-                                             returnKeyType="next"
-                                             onSubmitEditing={() => this.submit.focus()}
-                                             keyboardType="number-pad"
-                                             style={styles.input}
+                                        <FlatList style={styles.list}
+                                             data={this.state.participantData}
+                                             renderItem={this.participantCard}
                                         />
-                                   </View>
-                                   <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
-                                        <Text style={{ fontSize: 17 }}>10.</Text>
-                                        <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>Tap "Complete" to confirm the completion of the event. The last three steps must be completed.</Text>
-                                   </View>
 
-                                   <View style={styles.buttonContainer}>
-                                        <TouchableOpacity style={styles.button}>
-                                             <Text style={styles.buttonText}>Complete</Text>
-                                        </TouchableOpacity>
-                                   </View>
-                              </View>
+                                        <Text style={styles.title}>
+                                             Shift Tasks
+                              </Text>
+                                        <Text style={{ fontSize: 17, paddingTop: 10, paddingBottom: 10 }}>
+                                             *Please take a cab only under extenuating circumstances (weight of food is heavy, harsh weather conditions, etc). Please keep the receipt so that we can reimburse you.
+                              </Text>
+                                        <FlatList
+                                             data={this.state.shiftInstructions}
+                                             renderItem={instructionDetail}
+                                        />
 
-                         </ScrollView>
-                    </View>
-               </KeyboardAvoidingView>
+                                        <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
+                                             <Text style={{ fontSize: 16 }}>9.</Text>
+                                             <Text style={{ fontSize: 16, flex: 1, paddingLeft: 5 }}>Enter pounds of food saved:*</Text>
+                                        </View>
+
+                                        <View style={styles.input_box}>
+                                             <TextInput
+                                                  style={styles.weight_input}
+                                                  returnKeyType="next"
+                                                  onSubmitEditing={() => this.submit.focus()}
+                                                  keyboardType="number-pad"
+                                                  style={styles.input}
+                                             />
+                                        </View>
+                                        <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
+                                             <Text style={{ fontSize: 17 }}>10.</Text>
+                                             <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>Tap "Complete" to confirm the completion of the event. The last three steps must be completed.</Text>
+                                        </View>
+
+                                        {this.state.inputShift === ShiftType.workingon && <View style={styles.buttonContainer}>
+                                             <TouchableOpacity style={styles.button}>
+                                                  <Text style={styles.buttonText}>Complete</Text>
+                                             </TouchableOpacity>
+                                        </View>}
+
+
+                                   </View>
+                              </ScrollView>
+                              {this.state.inputShift === ShiftType.searched && <View style={styles.signUpButtonContainer}>
+                                   <TouchableOpacity style={styles.signUpButton} onPress={this.navigateToSignConfirm}
+                                   >
+                                        <Text style={styles.buttonText}>Sign Up</Text>
+                                   </TouchableOpacity>
+                              </View>}
+                         </View>
+                    </KeyboardAvoidingView>
+               </View>
           )
      }
 
@@ -279,13 +331,13 @@ const styles = StyleSheet.create({
      },
      status: {
           textTransform: "uppercase",
-          color: "#79B830",
+          color: Colors.green,
           fontWeight: "500",
           fontSize: 15,
           paddingVertical: 5
      },
      title: {
-          color: "#4A4A4A",
+          color: Colors.regularText,
           fontWeight: "600",
           fontSize: 20,
           paddingVertical: 5
@@ -350,6 +402,23 @@ const styles = StyleSheet.create({
      weight_input: {
           fontSize: 17
      },
+
+
+
+
+
+     buttonContainer: {
+          alignItems: 'center',
+          marginTop: 20,
+          justifyContent: 'center',
+          flex: 1,
+     },
+     signUpButtonContainer: {
+          alignItems: 'center',
+          flex: 1,
+          justifyContent: 'flex-end',
+          height: 50,
+     },
      button: {
           backgroundColor: '#38A5DB',
           justifyContent: 'center',
@@ -359,11 +428,14 @@ const styles = StyleSheet.create({
           width: '100%',
           height: 50
      },
-     buttonContainer: {
-          alignItems: 'center',
-          marginTop: 20,
-          justifyContent: 'center',
-          flex: 1,
+     signUpButton: {
+          backgroundColor: Colors.mainBlue,
+          paddingVertical: 15,
+          marginBottom: 30,
+          borderRadius: 5,
+          position: 'absolute',
+          bottom: 0,
+          width: "80%",
      },
      buttonText: {
           textAlign: 'center',
@@ -372,6 +444,9 @@ const styles = StyleSheet.create({
           fontSize: 16,
           textTransform: "uppercase"
      },
+
+
+
      mapcontainer: {
           //...StyleSheet.absoluteFillObject,
           height: 200,
@@ -383,4 +458,7 @@ const styles = StyleSheet.create({
      map: {
           ...StyleSheet.absoluteFillObject,
      },
+
+
+
 })

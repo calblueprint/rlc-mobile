@@ -13,6 +13,9 @@ import {
 } from "react-native";
 import { Icon } from "react-native-elements";
 import Styles from "../../constants/Styles";
+
+import Colors from "../../constants/Colors";
+import Sizes from "../../constants/Sizes";
 import { normalize } from "../../utils/Normalize";
 
 class Header extends React.Component {
@@ -31,10 +34,10 @@ class Header extends React.Component {
           <Icon
             name="left"
             type="antdesign"
+            color="#38A5DB"
             style={{
               height: 15,
               width: 15,
-              color: "#38A5DB",
               alignSelf: "left"
             }}
           />
@@ -43,7 +46,7 @@ class Header extends React.Component {
           {this.props.centerTitle}
         </Text>
         {this.props.rightSide ? <TouchableOpacity
-          style={styles.sides}
+          style={{ ...styles.sides, flex: 2 }}
           onPress={() => {
             this.props.onPressHandler();
           }}
@@ -51,7 +54,8 @@ class Header extends React.Component {
           <Text style={{ ...Styles.title, ...styles.subtitle }}>
             {this.props.actionTitle}
           </Text>
-        </TouchableOpacity> : <View style={styles.sides}></View>}
+        </TouchableOpacity> : <View style={{ ...styles.sides }}></View>
+        }
       </View>
     );
   }
@@ -65,28 +69,31 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-end",
     justifyContent: "center",
-    padding: 15,
+    paddingTop: Sizes.height * 0.07,
+    paddingBottom: Sizes.height * 0.03,
     borderBottomWidth: 2,
     borderBottomColor: "#ccc",
-    paddingTop: 50
+    marginHorizontal: "0.5%"
   },
   sides: {
-    width: "25%",
-    textAlign: "center"
+    flex: 1,
+    textAlign: "center",
+    alignItems: "center",
   },
   center: {
-    width: "50%",
+    flex: 2,
+    flexGrow: 3,
     textAlign: "center"
   },
   title: {
-    color: "#4A4A4A",
+    color: Colors.regularText,
     fontWeight: "600",
     fontSize: 20,
     marginTop: "0%",
     marginBottom: "0%"
   },
   subtitle: {
-    color: "#38A5DB",
+    color: Colors.mainBlue,
     textAlign: "center",
     fontWeight: "bold",
     opacity: 0.9,
