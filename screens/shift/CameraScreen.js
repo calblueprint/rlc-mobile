@@ -2,19 +2,45 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
+import settings from '../../config/settings'
+
 
 import { normalize } from "../../utils/Normalize";
 
 export default function CameraScreen({ navigation }) {
     const [hasPermission, setHasPermission] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
-
     takePicture = async () => {
         if (this.camera) {
             this.camera.takePictureAsync({ base64: true, quality: 0, exif: true }).then(photo => {
                 this.camera.pausePreview();
                 const base64 = `data:image/jpeg;base64,${photo.base64}`;
-            });
+
+                const formData = new FormData();
+                // TODO: @Johnathan. Once shift details screen is loading information properly,
+                // I'll grab the event ID and pass it into camera this.navigation.navigate(camera, this.state.id)
+                formData.append('image[event_id]', '6');
+                formData.append('image[file]', base64);
+                const postURL = settings.URL + '/images'
+                fetch(postURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                      },
+                    body: formData
+                })
+                .then((response) => response.json())
+                .then((result) => {
+                    console.log('Success uploading!', result);
+                    alert("Image upload success! Please go back")
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            })
+            .catch((error) => {
+                console.error("Error: ", error)
+            })
         }
     };
 
@@ -25,7 +51,6 @@ export default function CameraScreen({ navigation }) {
         })();
     }, []);
 
-
     if (hasPermission === null) {
         return <View />;
     }
@@ -35,7 +60,13 @@ export default function CameraScreen({ navigation }) {
     }
     return (
         <View style={{ flex: 1, flexDirection: "column" }}>
-            <Camera style={{ flex: 9 }} type={type}>
+            <Camera 
+                style={{ flex: 9 }} 
+                type={type}
+                ref={ref => {
+                    this.camera = ref;
+                }}
+                >
                 <View
                     style={{
                         flex: 1,
