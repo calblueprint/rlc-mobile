@@ -1,11 +1,11 @@
-import React, { Component } from '../../node_modules/react';
-import { FlatList, StyleSheet, View, Text, ScrollView, SafeAreaView } from 'react-native';
-import ActivityCard from '../dashboard/ActivityCard.js';
-import DatePicker from 'react-native-datepicker'
+import React, { Component } from "../../node_modules/react";
+import { FlatList, StyleSheet, View, Text, ScrollView, SafeAreaView } from "react-native";
+import ActivityCard from "../dashboard/ActivityCard.js";
+import DatePicker from "react-native-datepicker";
 import ShiftType from "../../constants/ShiftType.js";
 import { getRequest } from "../../lib/requests.js"
 
-import Styles from '../../constants/Styles.js';
+import Styles from "../../constants/Styles.js";
 import Sizes from "../../constants/Sizes.js";
 
 export default class SuggestedEventsList extends Component {
@@ -25,7 +25,7 @@ export default class SuggestedEventsList extends Component {
             locationName = this.props.preferredLocations[i]["name"];
             locations[locationId] = locationName;
         }
-        this.setState({ locations: locations }, () => { this.processEventData() });
+        this.setState({ locations: locations }, () => { this.processEventData(); console.log("Location info: " + locations); });
     }
 
     processEventData() {
@@ -46,7 +46,7 @@ export default class SuggestedEventsList extends Component {
                         }
                     }
                 }
-                this.setState({ selectedEventsInDay: selectedEventsInDay }, () => { this.render() });
+                this.setState({ selectedEventsInDay: selectedEventsInDay }, () => { console.log("Event info: " + selectedEventsInDay); this.render() });
             },
             error => {
                 console.log(error);
@@ -55,7 +55,7 @@ export default class SuggestedEventsList extends Component {
 
     moveToShiftScreen(location, time, weight, numpickups, spotsOpen) {
         const { navigate } = this.props.navigation;
-        navigate('Shift', {
+        navigate("Shift", {
             typeOfShift: ShiftType.searched,
             locationName: location,
             timeOfShift: time,
@@ -64,7 +64,7 @@ export default class SuggestedEventsList extends Component {
             pickup: numpickups,
             mapMarkers: [
                 {
-                    markID: 1, latitude: null, longitude: null, title: 'Latin Beet (Meet here) ', description: '18 East 16th Street, New York, NY 10003 \n'
+                    markID: 1, latitude: null, longitude: null, title: "Latin Beet (Meet here) ", description: "18 East 16th Street, New York, NY 10003 \n",
                 }
             ],
             shiftInstructions: [
@@ -128,7 +128,7 @@ export default class SuggestedEventsList extends Component {
                     role: "Volunteer",
                     profilePic: "../../assets/images/rlcprofilepic.png",
                     verified: true
-                }
+                },
             ],
         });
     }
@@ -156,6 +156,10 @@ export default class SuggestedEventsList extends Component {
             error => {
                 console.log(error);
             });
+    }
+
+    cancel() {
+        console.log("Cancelled the operation!");
     }
 
     render() {
