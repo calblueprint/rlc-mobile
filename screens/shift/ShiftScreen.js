@@ -10,6 +10,7 @@ import Colors from "../../constants/Colors";
 function instructionDetail(data) {
      const step = data.item;
      return (
+
           <View>
                <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
                     <Text style={{ fontSize: 17 }}>{step.step}. </Text>
@@ -46,6 +47,7 @@ const recurOptions = [
 export default class ShiftScreen extends React.Component {
      constructor(props) {
           super(props)
+          const pEvent = this.props.navigation.state.params.event;
           this.state = {
                participantData: [
                     {
@@ -64,18 +66,46 @@ export default class ShiftScreen extends React.Component {
                shiftInstructions: [
                     {
                          step: 1,
-                         description: "Meet your group at Latin Beet (17 East 16th Street).",
+                         description: "Meet your group at " + pEvent.details.location,
                          photo_needed: false
                     },
                     {
+                         step: 2,
+                         description: "Check in all volunteers.",
+                         photo_needed: false
+                    },
+                    {
+                         step: 3,
+                         description: "Collect food from vendor.",
+                         photo_needed: false
+                    },
+                    {
+                         step: 4,
+                         description: "Walk to " + pEvent.details.dropoff_locations[1].title,
+                         photo_needed: false
+                    },
+                    {
+                         step: 5,
+                         description: "Collect food from vendor.",
+                         photo_needed: false
+                    },
+                    {
+                         step: 6,
+                         description: "Walk to " + pEvent.details.dropoff_locations[2].title,
+                         photo_needed: false
+
+                    },
+                    {
+                         step: 7,
+                         description: "Take a photo of the food once it is delivered to " + pEvent.details.dropoff_locations[2].title,
+                         photo_needed: true
+                    },
+                    {
                          step: 8,
-                         description: "Request a receipt from Bowery Mission and take a photo of the receipt*",
+                         description: "Request a receipt from " + pEvent.details.dropoff_locations[2].title + " and take a photo of the receipt*",
                          photo_needed: true
                     },
                ],
-               // region: {
-
-               // },
                markers: [
                     {
                          latlng: '1', title: 'Latin Beet (Meet here) ', description: '18 East 16th Street, New York, NY 10003 \n', arrived: true
@@ -158,7 +188,9 @@ export default class ShiftScreen extends React.Component {
           }
      }
      render() {
+
           const pEvent = this.props.navigation.state.params.event;
+          console.log(pEvent)
 
           //set latitude and longitude
           let lat = 37.78825
@@ -238,10 +270,10 @@ export default class ShiftScreen extends React.Component {
                                         <Text style={{ fontSize: 17, paddingTop: 10, paddingBottom: 10 }}>
                                              *Please take a cab only under extenuating circumstances (weight of food is heavy, harsh weather conditions, etc). Please keep the receipt so that we can reimburse you.
                               </Text>
-                                        <FlatList
-                                             data={pEvent.details.instructions}
+                                        {pEvent.details.dropoff_locations && <FlatList
+                                             data={this.state.shiftInstructions}
                                              renderItem={instructionDetail}
-                                        />
+                                        />}
 
                                         {/* <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
                                              <Text style={{ fontSize: 16 }}>9.</Text>
@@ -257,6 +289,11 @@ export default class ShiftScreen extends React.Component {
                                                   style={styles.input}
                                              />
                                         </View> */}
+
+                                        {(pEvent.shiftType === ShiftType.upcoming || pEvent.shiftType === ShiftType.current) && <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
+                                             <Text style={{ fontSize: 17 }}>10.</Text>
+                                             <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>Tap "Complete" to confirm the completion of the event. The last three steps must be completed.</Text>
+                                        </View>}
 
                                         {(pEvent.shiftType === ShiftType.upcoming || pEvent.shiftType === ShiftType.current) && <View style={styles.buttonContainer}>
                                              <TouchableOpacity style={styles.button} onPress={this.navigateToMain}>
