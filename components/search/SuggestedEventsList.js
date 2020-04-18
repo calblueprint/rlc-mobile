@@ -9,6 +9,20 @@ import Sizes from "../../constants/Sizes.js";
 import { normalize } from "../../utils/Normalize.js";
 import Colors from "../../constants/Colors";
 
+import ShiftType from "../../constants/ShiftType.js";
+
+const dummyEventData = {
+    location_id: 7,
+    name: "Soho Bagels",
+    location: "Soho",
+    date: "2020-04-18",
+    start_time: '2020-04-18T02:00:00.000-04:00',
+    end_time: '2020-04-18T04:00:00.000-04:00',
+    weight: 20,
+    spotsOpen: 3,
+    numPickups: 1,
+};
+
 export default class SuggestedEventsList extends Component {
     constructor(props) {
         super(props)
@@ -30,34 +44,51 @@ export default class SuggestedEventsList extends Component {
     }
 
     processEventData() {
-        getRequest(
-            `api/get_events/${this.state.date.toString()}`,
-            responseData => {
-                selectedEventsInDay = [];
-                for (i = 0; i < responseData.length; i++) {
-                    currentEvent = {};
-                    eventDetails = {};
-                    eventDetails["name"] = responseData[i]["title"];
-                    eventDetails["spotsOpen"] = responseData[i]["slot"];
-                    eventDetails["weight"] = responseData[i]["weight"];
-                    eventDetails["numPickups"] = responseData[i]["numPickups"];
-                    startingTime = new Date(responseData[i]["starting_time"]);
-                    endingTime = new Date(responseData[i]["ending_time"]);
-                    eventDetails["start_time"] = startingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }) + " to " + endingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
-                    if (responseData[i]["location_id"] !== null) {
-                        locationIdString = responseData[i]["location_id"].toString();
-                        if (this.state.locations[locationIdString] != null) {
-                            currentEvent["address"] = this.state.locations[locationIdString];
-                            currentEvent["details"] = eventDetails;
-                            selectedEventsInDay.push(currentEvent);
-                        }
-                    }
-                }
-                this.setState({ selectedEventsInDay: selectedEventsInDay }, () => { this.render() });
-            },
-            error => {
-                console.log(error);
-            });
+        selectedEventsInDay = [];
+        eventOne = {};
+        eventDetails = {};
+        eventDetails["name"] = dummyEventData["name"];
+        eventDetails["spotsOpen"] = dummyEventData["spotsOpen"];
+        eventDetails["weight"] = dummyEventData["weight"];
+        eventDetails["numPickups"] = dummyEventData["numPickups"];
+        eventDetails["location"] = dummyEventData["location"];
+        eventDetails["date"] = dummyEventData["date"];
+        startingTime = new Date(dummyEventData["start_time"]);
+        endingTime = new Date(dummyEventData["end_time"]);
+        eventDetails["start_time"] = startingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }) + " to " + endingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+        eventOne["address"] = "SoHo";
+        eventOne["details"] = eventDetails;
+        eventOne["shiftType"] = ShiftType.searched;
+        selectedEventsInDay.push(eventOne);
+        this.setState({ selectedEventsInDay: selectedEventsInDay }, () => { this.render() });
+        // getRequest(
+        //     `api/get_events/${this.state.date.toString()}`,
+        //     responseData => {
+        //         selectedEventsInDay = [];
+        //         for (i = 0; i < responseData.length; i++) {
+        //             currentEvent = {};
+        //             eventDetails = {};
+        //             eventDetails["name"] = responseData[i]["title"];
+        //             eventDetails["spotsOpen"] = responseData[i]["slot"];
+        //             eventDetails["weight"] = responseData[i]["weight"];
+        //             eventDetails["numPickups"] = responseData[i]["numPickups"];
+        //             startingTime = new Date(responseData[i]["starting_time"]);
+        //             endingTime = new Date(responseData[i]["ending_time"]);
+        //             eventDetails["start_time"] = startingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }) + " to " + endingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+        //             if (responseData[i]["location_id"] !== null) {
+        //                 locationIdString = responseData[i]["location_id"].toString();
+        //                 if (this.state.locations[locationIdString] != null) {
+        //                     currentEvent["address"] = this.state.locations[locationIdString];
+        //                     currentEvent["details"] = eventDetails;
+        //                     selectedEventsInDay.push(currentEvent);
+        //                 }
+        //             }
+        //         }
+        //         this.setState({ selectedEventsInDay: selectedEventsInDay }, () => { this.render() });
+        //     },
+        //     error => {
+        //         console.log(error);
+        //     });
     }
 
     renderNewEvents(chosenDate) {
