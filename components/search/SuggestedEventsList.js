@@ -6,6 +6,7 @@ import { getRequest } from "../../lib/requests.js"
 
 import Styles from "../../constants/Styles.js";
 import Sizes from "../../constants/Sizes.js";
+import { normalize } from "../../utils/Normalize.js";
 
 export default class SuggestedEventsList extends Component {
     constructor(props) {
@@ -29,7 +30,7 @@ export default class SuggestedEventsList extends Component {
 
     processEventData() {
         getRequest(
-            `/api/get_events/${this.state.date.toString()}`,
+            `api/get_events/${this.state.date.toString()}`,
             responseData => {
                 selectedEventsInDay = [];
                 for (i = 0; i < responseData.length; i++) {
@@ -60,7 +61,7 @@ export default class SuggestedEventsList extends Component {
 
     renderNewEvents(chosenDate) {
         getRequest(
-            `/api/get_events/${chosenDate.toString()}`,
+            `api/get_events/${chosenDate.toString()}`,
             responseData => {
                 selectedEventsInDay = [];
                 for (i = 0; i < responseData.length; i++) {
@@ -68,7 +69,7 @@ export default class SuggestedEventsList extends Component {
                     eventDetails = {};
                     eventDetails["name"] = responseData[i]["title"];
                     eventDetails["spotsOpen"] = responseData[i]["slot"];
-                    eventDetails["weight"] = responseData[i]["weight"];
+                    eventDetails["weight"] = responseData[i]["pound"] + " lbs";
                     eventDetails["numPickups"] = responseData[i]["numPickups"];
                     startingTime = new Date(responseData[i]["starting_time"]);
                     endingTime = new Date(responseData[i]["ending_time"]);
@@ -92,7 +93,7 @@ export default class SuggestedEventsList extends Component {
     render() {
         if (this.state.selectedEventsInDay.length === 0) {
             return (
-                <SafeAreaView behavior="padding" style={styles.container}>
+                <SafeAreaView style={styles.container}>
                     <View style={styles.header}>
                         <Text style={Styles.title}>Suggested Events</Text>
                         <View style={{
@@ -103,14 +104,16 @@ export default class SuggestedEventsList extends Component {
                         <DatePicker style={{ marginTop: '2%', marginBottom: '2%' }} date={this.state.date} mode='date' onDateChange={date => this.setState({ date: date }, () => { this.renderNewEvents(date) })} confirmBtnText="Confirm"
                             cancelBtnText="Cancel" />
                     </View>
-                    <View>
-                        <Text>There are no events on this date.</Text>
+                    <View style={styles.textContainer}>
+                        <Text style={styles.subText}>
+                            There are no events on this date.
+                        </Text>
                     </View>
                 </SafeAreaView>
             );
         } else {
             return (
-                <SafeAreaView behavior="padding" style={styles.container}>
+                <SafeAreaView style={styles.container}>
                     <View style={styles.header}>
                         <Text style={Styles.title}>Suggested Events</Text>
                         <View style={{
@@ -127,12 +130,7 @@ export default class SuggestedEventsList extends Component {
                             renderItem={({ item }) => (
                                 <ActivityCard
                                     event={item}
-                                // location={item["location"]}
-                                // name={item["title"]}
-                                // time={item["starting_time"] + " to " + item["ending_time"]}
-                                // weight={item["pound"] + " lbs"}
-                                // numpickups={item["numPickups"]}
-                                // spotsOpen={item["slot"]}
+                                    navigation={this.props.navigation}
                                 />
                             )}
                             keyExtractor={item => item["id"]}
@@ -159,7 +157,24 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase',
     },
     datePicker: {
-        marginBottom: 20,
-        marginTop: 5,
+        marginBottom: "3%",
+        marginTop: "1%",
+    },
+    textContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#FFFFFF",
+        margin: "auto",
+    },
+    subText: {
+        color: "#757575",
+        fontStyle: "italic",
+        textAlign: "center",
+        justifyContent: "center",
+        fontWeight: "normal",
+        marginTop: "0%",
+        opacity: 0.85,
+        fontSize: normalize(16),
     },
 });
