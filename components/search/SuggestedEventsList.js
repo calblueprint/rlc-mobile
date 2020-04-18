@@ -91,7 +91,7 @@ export default class SuggestedEventsList extends Component {
     }
 
     render() {
-        if (this.state.selectedEventsInDay.length === 0) {
+        if (this.state.selectedEventsInDay.length == 0) {
             return (
                 <SafeAreaView style={styles.container}>
                     <View style={styles.header}>
@@ -124,18 +124,16 @@ export default class SuggestedEventsList extends Component {
                         <DatePicker style={{ marginTop: '2%', marginBottom: '2%' }} date={this.state.date} mode='date' onDateChange={date => this.setState({ date: date }, () => { this.renderNewEvents(date) })} confirmBtnText="Confirm"
                             cancelBtnText="Cancel" />
                     </View>
-                    <ScrollView>
-                        <FlatList
-                            data={this.state.selectedEventsInDay}
-                            renderItem={({ item }) => (
-                                <ActivityCard
-                                    event={item}
-                                    navigation={this.props.navigation}
-                                />
-                            )}
-                            keyExtractor={item => item["id"]}
-                        />
-                    </ScrollView>
+                    <FlatList
+                        data={this.state.selectedEventsInDay}
+                        renderItem={({ item }) => (
+                            <ActivityCard
+                                event={item}
+                                navigation={this.props.navigation}
+                            />
+                        )}
+                        keyExtractor={item => item["id"]}
+                    />
                 </SafeAreaView>
             );
         }
