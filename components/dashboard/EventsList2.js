@@ -5,7 +5,7 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
-  FlatList
+  FlatList,
 } from "react-native";
 
 // Animation Libraries
@@ -16,82 +16,35 @@ import Animated from "react-native-reanimated";
 import ActivityCard from "../../components/dashboard/ActivityCard.js";
 
 // Utils
-import Sizes from "../../constants/Sizes"
+import Sizes from "../../constants/Sizes";
 import { normalize } from "../../utils/Normalize.js";
 import LocalStorage from "../../helpers/LocalStorage.js";
 import { get_dashboard_events_lists } from "../../helpers/EventsHelper.js";
 
 class UpcomingEventsList extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      upcomingEvents : props.upcomingEvents,
-    }
+      upcomingEvents: props.upcomingEvents,
+    };
   }
 
   render() {
-    if (this.state.upcomingEvents === undefined || this.state.upcomingEvents.length == 0) {
+    if (
+      this.state.upcomingEvents === undefined ||
+      this.state.upcomingEvents.length == 0
+    ) {
       return (
-        <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
-          <View style={styles.infoContainer}>
-            <Text style={styles.subText}>Oh no! You have no upcoming shifts.</Text>
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={this.props.navigation.navigate("Search")}>
-                <Text style={styles.buttonText}>Sign Up for Shift</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>    
-      );
-    } else {
-      return (
-        <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
-        {/* <ScrollView style={{ height: "100%" }}> */}
-          <FlatList
-            style={{ height: "100%" }}
-            horizontal={false}
-            data={this.state.upcomingEvents}
-            keyExtractor = {event => event? event.tempIndex:99}
-            renderItem={({event}) => (<ActivityCard event = {event} navigation = {this.props.navigation}/>)}
-          />
-          {/* {this.state.upcomingEvents.map((event) => {
-            return (
-            <ActivityCard
-              key = {event.id}
-              event = {event}
-              navigation = {this.props.navigation}
-            />
-            )}
-          )} */}
-        {/* </ScrollView> */}
-      </View>  
-      );
-    }
-  }
-}
-
-class AttendedEventsList extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      attendedEvents : props.attendedEvents,
-    }
-  }
-
-  render() {
-    if (this.state.attendedEvents === undefined || this.state.attendedEvents.length == 0) {
-      return ( 
         <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
           <View style={styles.infoContainer}>
             <Text style={styles.subText}>
-              Did you know?{"\n"}
-              RLC has rescued over 1.7 million{"\n"}
-              pounds of food! Sign up for an event{"\n"}
-              and be a part of the movement!
+              Oh no! You have no upcoming shifts.
             </Text>
-      
             <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={this.props.navigation.navigate("Search")}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={this.props.navigation.navigate("Search")}
+              >
                 <Text style={styles.buttonText}>Sign Up for Shift</Text>
               </TouchableOpacity>
             </View>
@@ -101,25 +54,71 @@ class AttendedEventsList extends React.Component {
     } else {
       return (
         <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
-        {/* <ScrollView style={{ height: "100%" }}> */}
-        <FlatList
-            style={{ height: "100%" }}
-            horizontal={false}
-            data={this.state.attendedEvents}
-            keyExtractor = {event => event? event.tempIndex:99}
-            renderItem={({event}) => (
-              <ActivityCard event = {event} navigation = {this.props.navigation}/>)}
-          />
+          <ScrollView style={{ height: "100%" }}>
+            {this.state.upcomingEvents.map((event) => {
+              return (
+                <ActivityCard
+                  key={event.id}
+                  event={event}
+                  navigation={this.props.navigation}
+                />
+              );
+            })}
+          </ScrollView>
+        </View>
+      );
+    }
+  }
+}
 
-          {/* {this.state.attendedEvents.map((event) => {
-            {console.log(`Rendering Activity Card with event ${event.id}`)}
-            <ActivityCard
-              key = {event.id}
-              event = {event}
-              navigation = {this.props.navigation}
-            />
-          })}     */}
-          {/* </ScrollView> */}
+class AttendedEventsList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      attendedEvents: props.attendedEvents,
+    };
+  }
+
+  render() {
+    if (
+      this.state.attendedEvents === undefined ||
+      this.state.attendedEvents.length == 0
+    ) {
+      return (
+        <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
+          <View style={styles.infoContainer}>
+            <Text style={styles.subText}>
+              Did you know?{"\n"}
+              RLC has rescued over 1.7 million{"\n"}
+              pounds of food! Sign up for an event{"\n"}
+              and be a part of the movement!
+            </Text>
+
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={this.props.navigation.navigate("Search")}
+              >
+                <Text style={styles.buttonText}>Sign Up for Shift</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      );
+    } else {
+      return (
+        <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
+          <ScrollView style={{ height: "100%" }}>
+            {this.state.attendedEvents.map((event) => {
+              return (
+                <ActivityCard
+                  key={event.id}
+                  event={event}
+                  navigation={this.props.navigation}
+                />
+              );
+            })}
+          </ScrollView>
         </View>
       );
     }
@@ -131,41 +130,41 @@ export default class EventsList2 extends Component {
     super(props);
     this.state = {
       index: 0,
-      user_id: '',
-      isFetching : true,
+      user_id: "",
+      isFetching: true,
       attendedEvents: [],
       upcomingEvents: [],
       routes: [
         { key: "first", title: "Upcoming" },
-        { key: "second", title: "Attended" }
-      ]
+        { key: "second", title: "Attended" },
+      ],
     };
   }
 
   async componentDidMount() {
     try {
-      let user = await LocalStorage.getItem('user');
+      let user = await LocalStorage.getItem("user");
       this.setState({ user_id: user.userId }, this._fetchEvents);
-    } catch(err) {
-      console.error(err)
-      this.props.navigation.navigate("Login")
+    } catch (err) {
+      console.error(err);
+      this.props.navigation.navigate("Login");
     }
-    
   }
 
   // Fetch function
-  _fetchEvents = async() => {
-    let event_lists = await get_dashboard_events_lists(this.state.user_id); 
-    this.setState({ //Finished fetching events, can render list.
+  _fetchEvents = async () => {
+    let event_lists = await get_dashboard_events_lists(this.state.user_id);
+    this.setState({
+      //Finished fetching events, populate state.
       upcomingEvents: event_lists.upcoming,
       attendedEvents: event_lists.attended,
-      isFetching: false
-    })
+      isFetching: false,
+    });
   };
 
-  _handleIndexChange = index => this.setState({ index });
+  _handleIndexChange = (index) => this.setState({ index });
 
-  _renderTabBar = props => {
+  _renderTabBar = (props) => {
     const inputRange = props.navigationState.routes.map((x, i) => i);
 
     return (
@@ -175,25 +174,25 @@ export default class EventsList2 extends Component {
             Animated.round(
               Animated.interpolate(props.position, {
                 inputRange,
-                outputRange: inputRange.map(inputIndex =>
+                outputRange: inputRange.map((inputIndex) =>
                   inputIndex === i ? 56 : 117
-                )
+                ),
               })
             ),
             Animated.round(
               Animated.interpolate(props.position, {
                 inputRange,
-                outputRange: inputRange.map(inputIndex =>
+                outputRange: inputRange.map((inputIndex) =>
                   inputIndex === i ? 165 : 117
-                )
+                ),
               })
             ),
             Animated.round(
               Animated.interpolate(props.position, {
                 inputRange,
-                outputRange: inputRange.map(inputIndex =>
+                outputRange: inputRange.map((inputIndex) =>
                   inputIndex === i ? 219 : 117
-                )
+                ),
               })
             )
           );
@@ -212,20 +211,30 @@ export default class EventsList2 extends Component {
     );
   };
 
-  _renderScene = ({route}) => {
+  _renderScene = ({ route }) => {
     if (this.state.isFetching) {
-      return null // Still fetching the events 
+      return null; // Still fetching the events
     } else {
       switch (route.key) {
-        case 'first' : 
-          return <UpcomingEventsList upcomingEvents = {this.state.upcomingEvents} navigation = {this.props.navigation}/>
-        case 'second' : 
-          return <AttendedEventsList attendedEvents = {this.state.attendedEvents} navigation = {this.props.navigation}/>
-        default: 
-          return null
+        case "first":
+          return (
+            <UpcomingEventsList
+              upcomingEvents={this.state.upcomingEvents}
+              navigation={this.props.navigation}
+            />
+          );
+        case "second":
+          return (
+            <AttendedEventsList
+              attendedEvents={this.state.attendedEvents}
+              navigation={this.props.navigation}
+            />
+          );
+        default:
+          return null;
       }
     }
-  }
+  };
 
   render() {
     return (
@@ -234,7 +243,7 @@ export default class EventsList2 extends Component {
         renderScene={this._renderScene}
         renderTabBar={this._renderTabBar}
         onIndexChange={this._handleIndexChange}
-        initialLayout={{height: 0, width: Sizes.width}}
+        initialLayout={{ height: 0, width: Sizes.width }}
       />
     );
   }
@@ -245,22 +254,22 @@ const styles = StyleSheet.create({
     backgroundColor: "#38A5DB",
     paddingVertical: "4%",
     borderRadius: 5,
-    maxWidth: 250
+    maxWidth: 250,
   },
   buttonContainer: {
     alignItems: "center",
     marginTop: "5.3%",
-    height: "13.3%"
+    height: "13.3%",
   },
   buttonText: {
     textAlign: "center",
     color: "#FFFFFF",
     fontWeight: "600",
     textTransform: "uppercase",
-    paddingHorizontal: "13.3%"
+    paddingHorizontal: "13.3%",
   },
   scene: {
-    flex: 1
+    flex: 1,
   },
   subText: {
     color: "#757575",
@@ -272,26 +281,26 @@ const styles = StyleSheet.create({
     marginTop: "0%",
 
     opacity: 0.85,
-    fontSize: normalize(16)
+    fontSize: normalize(16),
   },
   infoContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#FFFFFF",
-    margin: "auto"
+    margin: "auto",
   },
   container: {
-    flex: 1
+    flex: 1,
   },
   tabBar: {
     flexDirection: "row",
-    paddingTop: "2.6%"
+    paddingTop: "2.6%",
   },
   tabItem: {
     flex: 1,
     alignItems: "center",
-    padding: "2.6%"
+    padding: "2.6%",
   },
   heading: {
     color: "#000000",
@@ -301,6 +310,6 @@ const styles = StyleSheet.create({
     textAlign: "left",
     fontWeight: "600",
     opacity: 0.7,
-    fontSize: normalize(16)
-  }
+    fontSize: normalize(16),
+  },
 });
