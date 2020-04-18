@@ -93,8 +93,6 @@ export default class ShiftScreen extends React.Component {
 
      participantCard = (data) => {
           const participant = data.item;
-          console.log("hello")
-          console.log(data.item.firstname)
           return (
                <View styles={styles.participant_card}>
 
@@ -147,6 +145,18 @@ export default class ShiftScreen extends React.Component {
           });
      };
 
+     selectShiftTitle = (sType) => {
+          switch (sType) {
+               case ShiftType.searched:
+                    return "Event";
+               case ShiftType.upcoming:
+                    return "Upcoming"
+               case ShiftType.attended:
+                    return "Attended"
+               case ShiftType.current:
+                    return "In Progress"
+          }
+     }
      render() {
           const pEvent = this.props.navigation.state.params.event;
 
@@ -160,7 +170,7 @@ export default class ShiftScreen extends React.Component {
                <View style={{ flex: 1 }}>
                     <View style={{ flex: 1 }}>
                          <Header
-                              centerTitle="In Progress"
+                              centerTitle={this.selectShiftTitle(pEvent.shiftType)}
                               onPressBack={this.navigateToMain}
                               rightSide={(pEvent.shiftType === ShiftType.upcoming || pEvent.shiftType === ShiftType.current) ? true : false}
                               actionTitle="Withdraw"
@@ -174,9 +184,9 @@ export default class ShiftScreen extends React.Component {
                               <ScrollView>
                                    <View style={styles.container}>
 
-                                        <Text style={styles.status}>
+                                        {pEvent.shiftType === ShiftType.current && <Text style={styles.status}>
                                              happening now
-                              </Text>
+                              </Text>}
                                         <Text style={styles.title}>
                                              {pEvent.details.name}
                                         </Text>
