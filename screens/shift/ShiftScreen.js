@@ -211,17 +211,17 @@ export default class ShiftScreen extends React.Component {
                                              Union Square (US014)
                               </Text>
                                         <Text style={styles.overview}>
-                                             📍  Union Square
-                              </Text>
+                                             📍  {this.props.location}
+                                        </Text>
                                         <Text style={styles.overview}>
                                              ⏰  Mondays, 8.15pm to 9:00pm
                               </Text>
                                         <Text style={styles.overview}>
-                                             ⚖️  10lbs to 45 lbs
-                              </Text>
+                                             ⚖️  {this.props.weight}
+                                        </Text>
                                         <Text style={styles.overview}>
-                                             👥  1 of 2 spots open
-                              </Text>
+                                             👥  {this.props.spotsOpen}
+                                        </Text>
                                         <Text style={styles.overview}>
                                              💪  Multi-pickup
                               </Text>
@@ -249,7 +249,7 @@ export default class ShiftScreen extends React.Component {
                                         </MapView> */}
                                         </View>
 
-                                        <LocTimeline markers={this.state.markers} />
+                                        <LocTimeline markers={this.props.dropoff_locations} />
 
                                         <FlatList style={styles.list}
                                              data={this.state.participantData}
