@@ -110,7 +110,7 @@ export default class ShiftScreen extends React.Component {
                                    {participant.firstname} {participant.lastname}
                               </Text>
                               <Text styles={styles.particpant_role}>
-                                   {participant.role}
+                                   {participant.role === 'normal' ? "Rescuer" : null}
                               </Text>
                          </View>
                     </View>
@@ -243,7 +243,7 @@ export default class ShiftScreen extends React.Component {
                                              renderItem={instructionDetail}
                                         />
 
-                                        <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
+                                        {/* <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
                                              <Text style={{ fontSize: 16 }}>9.</Text>
                                              <Text style={{ fontSize: 16, flex: 1, paddingLeft: 5 }}>Enter pounds of food saved:*</Text>
                                         </View>
@@ -256,11 +256,7 @@ export default class ShiftScreen extends React.Component {
                                                   keyboardType="number-pad"
                                                   style={styles.input}
                                              />
-                                        </View>
-                                        <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
-                                             <Text style={{ fontSize: 17 }}>10.</Text>
-                                             <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>Tap "Complete" to confirm the completion of the event. The last three steps must be completed.</Text>
-                                        </View>
+                                        </View> */}
 
                                         {(pEvent.shiftType === ShiftType.upcoming || pEvent.shiftType === ShiftType.current) && <View style={styles.buttonContainer}>
                                              <TouchableOpacity style={styles.button} onPress={this.navigateToMain}>
