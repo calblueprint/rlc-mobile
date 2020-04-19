@@ -26,6 +26,7 @@ export default class SuggestedEventsList extends Component {
             locationName = this.props.preferredLocations[i]["name"];
             locations[locationId] = locationName;
         }
+        locations[1] = "Bushwick";
         this.setState({ locations: locations }, () => { this.processEventData(); });
     }
 
@@ -47,9 +48,11 @@ export default class SuggestedEventsList extends Component {
         // // eventOne["shiftType"] = ShiftType.searched;
         // // selectedEventsInDay.push(eventOne);
         // // this.setState({ selectedEventsInDay: selectedEventsInDay }, () => { this.render() });
+        console.log("processing Search");
         getRequest(
-            `api/get_events/${this.state.date.toString()}`,
+            `api/get_events/${this.state.date.toISOString()}`,
             responseData => {
+                console.log(responseData);
                 selectedEventsInDay = [];
                 for (i = 0; i < responseData.length; i++) {
                     currentEvent = {};
@@ -62,6 +65,7 @@ export default class SuggestedEventsList extends Component {
                     endingTime = new Date(responseData[i]["ending_time"]);
                     eventDetails["start_time"] = startingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }) + " to " + endingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
                     if (responseData[i]["location_id"] !== null) {
+                        console.log("nullcheck");
                         locationIdString = responseData[i]["location_id"].toString();
                         if (this.state.locations[locationIdString] != null) {
                             currentEvent["address"] = this.state.locations[locationIdString];
@@ -70,6 +74,7 @@ export default class SuggestedEventsList extends Component {
                         }
                     }
                 }
+                console.log(selectedEventsInDay);
                 this.setState({ selectedEventsInDay: selectedEventsInDay }, () => { this.render() });
             },
             error => {
