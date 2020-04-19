@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, ScrollView, View } from "react-native";
+import { StyleSheet, ScrollView, View, Keyboard} from "react-native";
 import Sizes from "../constants/Sizes.js";
 
 import DashboardScreen from "../screens/dash/Dashboard2.js";
@@ -19,6 +19,7 @@ export default class MainScreen extends React.Component {
 
   // Used for horizontal swiping to navigate between the screens.
   _onNavigationScrollEnd(event) {
+    Keyboard.dismiss();
     let scrollToIndex = Math.round(
       event.nativeEvent.contentOffset.x /
       event.nativeEvent.layoutMeasurement.width
@@ -30,6 +31,7 @@ export default class MainScreen extends React.Component {
 
   // Navigate between screens by pressing one of the screens at the bottom tabbar.
   _onSelectNavigationMenu(index) {
+    Keyboard.dismiss();
     this.refs["MainScrollView"].scrollTo({
       x: Sizes.width * index,
       y: 0,
