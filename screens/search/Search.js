@@ -5,6 +5,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import Sizes from "../../constants/Sizes.js";
 import Styles from "../../constants/Styles";
 import Colors from "../../constants/Colors";
+import {getRequest} from "../../lib/requests";
 
 import TimeOrLoc from "../../components/search/timeOrLoc.js";
 import SuggestedEventsList from "../../components/search/SuggestedEventsList.js"
@@ -406,20 +407,21 @@ export default class Search extends Component {
     }
   }
 
+
   search = () => {
     //props are the selected locations and selected times
-    // getRequest(
-    //   "/get_events",
-    //   responseData => {
-    //     console.log("Got search events");
-    //     console.log(responseData);
-    //   }, 
-    //   error => {
-    //     console.log("error");
-    //     console.log(error);
-    //   },
-    //   {'date': this.state, 'location': this.state}
-    // )
+    return getRequest(
+      "/get_events",
+      responseData => {
+        console.log("Got search events");
+        console.log(responseData);
+      }, 
+      error => {
+        console.log("error");
+        console.log(error);
+      },
+      {'date': this.state., 'location': this.state.}
+    )
     this.setState({ hasCompletedPreferences: true }, () => { this.render() });
   };
 

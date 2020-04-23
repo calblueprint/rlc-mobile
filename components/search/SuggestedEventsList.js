@@ -9,6 +9,20 @@ import Sizes from "../../constants/Sizes.js";
 import { normalize } from "../../utils/Normalize.js";
 import Colors from "../../constants/Colors";
 
+import ShiftType from "../../constants/ShiftType.js";
+
+const dummyEventData = {
+    location_id: 7,
+    name: "Soho Bagels",
+    location: "Soho",
+    date: "2020-04-18",
+    start_time: '2020-04-18T02:00:00.000-04:00',
+    end_time: '2020-04-18T04:00:00.000-04:00',
+    weight: 20,
+    spotsOpen: 3,
+    numPickups: 1,
+};
+
 export default class SuggestedEventsList extends Component {
     constructor(props) {
         super(props)
