@@ -6,8 +6,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "test": "jest --watchAll",
-    "postinstall": "rm -rf ./node_modules/expo/node_modules/expo-font/"
+    "test": "jest --watchAll"
   },
   "jest": {
     "preset": "jest-expo"
