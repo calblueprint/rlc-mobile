@@ -1,11 +1,10 @@
 const ShiftTypes = {
+  searched: 1,
+  upcoming: 2,
+  attended: 3,
+  current: 4,
+};
 
-    searched: 1,
-    workingon: 2,
-    completed: 3,
-
-}
-
-Object.freeze(ShiftTypes)
+Object.freeze(ShiftTypes);
 
 export default ShiftTypes;

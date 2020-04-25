@@ -5,10 +5,10 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import Sizes from "../../constants/Sizes.js";
 import Styles from "../../constants/Styles";
 import Colors from "../../constants/Colors";
-import {getRequest} from "../../lib/requests";
+import { getRequest } from "../../lib/requests";
 
 import TimeOrLoc from "../../components/search/timeOrLoc.js";
-import SuggestedEventsList from "../../components/search/SuggestedEventsList.js"
+import SuggestedEventsList from "../../components/search/SuggestedEventsList.js";
 
 const dayOptions = [
   {
@@ -58,71 +58,68 @@ export default class Search extends Component {
       numTimes: 0,
 
       numLocs: 0,
-      search: '',
-      locations: [{
-        id: 27,
-        name: "Bowery",
-        selected: false
-      },
-      {
-        id: 2,
-        name: "SoHo",
-        selected: false
-
-      },
-      {
-        id: 29,
-        name: "Downtown",
-        selected: false
-      },
-      {
-        id: 30,
-        name: "Chelsea",
-        selected: false
-
-      },
-      {
-        id: 31,
-        name: "Downtown",
-        selected: false
-      },
-      {
-        id: 32,
-        name: "Chelsea",
-        selected: false
-
-      },
-      {
-        id: 33,
-        name: "Downtown",
-        selected: false
-      },
-      {
-        id: 34,
-        name: "Chelsea",
-        selected: false
-
-      },
-      {
-        id: 35,
-        name: "Downtown",
-        selected: false
-      },
-      {
-        id: 36,
-        name: "Chelsea",
-        selected: false
-
-      },
-      {
-        id: 37,
-        name: "Downtown",
-        selected: false
-      },],
+      search: "",
+      locations: [
+        {
+          id: 27,
+          name: "Bowery",
+          selected: false,
+        },
+        {
+          id: 2,
+          name: "SoHo",
+          selected: false,
+        },
+        {
+          id: 29,
+          name: "Downtown",
+          selected: false,
+        },
+        {
+          id: 30,
+          name: "Chelsea",
+          selected: false,
+        },
+        {
+          id: 31,
+          name: "Downtown",
+          selected: false,
+        },
+        {
+          id: 32,
+          name: "Chelsea",
+          selected: false,
+        },
+        {
+          id: 33,
+          name: "Downtown",
+          selected: false,
+        },
+        {
+          id: 34,
+          name: "Chelsea",
+          selected: false,
+        },
+        {
+          id: 35,
+          name: "Downtown",
+          selected: false,
+        },
+        {
+          id: 36,
+          name: "Chelsea",
+          selected: false,
+        },
+        {
+          id: 37,
+          name: "Downtown",
+          selected: false,
+        },
+      ],
 
       monday: {
         all: {
-          key: "all",
+          key: "monday_all",
           text: "Select the entire day",
           value: false,
         },
@@ -149,7 +146,7 @@ export default class Search extends Component {
       },
       tuesday: {
         all: {
-          key: "all",
+          key: "tuesday_all",
           text: "Select the entire day",
           value: false,
         },
@@ -176,184 +173,193 @@ export default class Search extends Component {
       },
       wednesday: {
         all: {
-          key: "all",
+          key: "wednesday_all",
           text: "Select the entire day",
           value: false,
         },
         morn: {
-          key: "9_12",
+          key: "wednesday_morning",
           text: "9AM-12PM",
           value: false,
         },
         afternoon: {
-          key: "12_3",
+          key: "wednesday_afternoon",
           text: "12PM-3PM",
           value: false,
         },
         evening: {
-          key: "3_6",
+          key: "wednesday_evening",
           text: "3PM-6PM",
           value: false,
         },
         night: {
-          key: "6_9",
+          key: "wednesday_night",
           text: "6PM-9PM",
           value: false,
         },
       },
       thursday: {
         all: {
-          key: "all",
+          key: "thursday_all",
           text: "Select the entire day",
           value: false,
         },
         morn: {
-          key: "9_12",
+          key: "thursday_morning",
           text: "9AM-12PM",
           value: false,
         },
         afternoon: {
-          key: "12_3",
+          key: "thursday_afternoon",
           text: "12PM-3PM",
           value: false,
         },
         evening: {
-          key: "3_6",
+          key: "thursday_evening",
           text: "3PM-6PM",
           value: false,
         },
         night: {
-          key: "6_9",
+          key: "thursday_night",
           text: "6PM-9PM",
           value: false,
         },
       },
       friday: {
         all: {
-          key: "all",
+          key: "friday_all",
           text: "Select the entire day",
           value: false,
         },
         morn: {
-          key: "9_12",
+          key: "friday_morning",
           text: "9AM-12PM",
           value: false,
         },
         afternoon: {
-          key: "12_3",
+          key: "friday_afternoon",
           text: "12PM-3PM",
           value: false,
         },
         evening: {
-          key: "3_6",
+          key: "friday_evening",
           text: "3PM-6PM",
           value: false,
         },
         night: {
-          key: "6_9",
+          key: "friday_night",
           text: "6PM-9PM",
           value: false,
         },
       },
       saturday: {
         all: {
-          key: "all",
+          key: "saturday_all",
           text: "Select the entire day",
           value: false,
         },
         morn: {
-          key: "9_12",
+          key: "saturday_morning",
           text: "9AM-12PM",
           value: false,
         },
         afternoon: {
-          key: "12_3",
+          key: "saturday_afternoon",
           text: "12PM-3PM",
           value: false,
         },
         evening: {
-          key: "3_6",
+          key: "saturday_evening",
           text: "3PM-6PM",
           value: false,
         },
         night: {
-          key: "6_9",
+          key: "saturday_night",
           text: "6PM-9PM",
           value: false,
         },
       },
       sunday: {
         all: {
-          key: "all",
+          key: "sunday_all",
           text: "Select the entire day",
           value: false,
         },
         morn: {
-          key: "9_12",
+          key: "sunday_morning",
           text: "9AM-12PM",
           value: false,
         },
         afternoon: {
-          key: "12_3",
+          key: "sunday_afternoon",
           text: "12PM-3PM",
           value: false,
         },
         evening: {
-          key: "3_6",
+          key: "sunday_evening",
           text: "3PM-6PM",
           value: false,
         },
         night: {
-          key: "6_9",
+          key: "sunday_night",
           text: "6PM-9PM",
           value: false,
         },
       },
-
-
     };
   }
 
   //LOCATION FUNCTIONS
 
-  updateSearch = (val) = () => {
+  updateSearch = (val = () => {
     this.setState({ search: val });
-  };
+  });
 
   handleSelect = (val, id) => () => {
     val === true ? this.addLoc(-1) : this.addLoc(1);
-    const nextState = this.state.locations.map(loc => loc.id === id ? { ...loc, selected: !loc.selected } : loc);
+    const nextState = this.state.locations.map((loc) =>
+      loc.id === id ? { ...loc, selected: !loc.selected } : loc
+    );
     this.setState({ locations: nextState });
-  }
+  };
 
   addLoc = (val) => {
-    this.setState(prevState => ({ numLocs: prevState.numLocs + val }));
+    this.setState((prevState) => ({ numLocs: prevState.numLocs + val }));
     if (this.state.numLocs < 0) {
-      this.setState({ numLocs: 0 })
+      this.setState({ numLocs: 0 });
     }
-  }
+  };
 
   resultLocs = () => {
-    const loc_preferences = this.state.locations.filter((item) => { return item.selected === true });
+    const loc_preferences = this.state.locations.filter((item) => {
+      return item.selected === true;
+    });
     return loc_preferences;
-  }
+  };
 
-
-
-  //TIME FUNCTIONS 
+  //TIME FUNCTIONS
   compile_times = () => {
-    const time_preferences = [this.state.monday, this.state.tuesday, this.state.wednesday, this.state.thursday, this.state.friday, this.state.saturday, this.state.sunday];
+    const time_preferences = [
+      this.state.monday,
+      this.state.tuesday,
+      this.state.wednesday,
+      this.state.thursday,
+      this.state.friday,
+      this.state.saturday,
+      this.state.sunday,
+    ];
     return time_preferences;
-  }
+  };
 
   selectAll = () => {
     const checked = !this.state.selectedAll; // get the value
-    checked ? this.countTime(totalTimes, true) : this.countTime(0, true)
+    checked ? this.countTime(totalTimes, true) : this.countTime(0, true);
 
     this.setState((prevState) => ({ selectedAll: !prevState.selectedAll })); // set value
 
     dayOptions.map((day) =>
-      this.setState((prevState) => { //set for each day
+      this.setState((prevState) => {
+        //set for each day
         let selDay = { ...prevState[day.key] };
         Object.keys(selDay).map((timeObj) => (selDay[timeObj].value = checked));
         return selDay;
@@ -384,13 +390,15 @@ export default class Search extends Component {
         }
 
         if (checked) {
-          this.countTime(numOfTimes - alreadySame, false)
+          this.countTime(numOfTimes - alreadySame, false);
         } else {
-          this.countTime(alreadySame - numOfTimes, false)
+          this.countTime(alreadySame - numOfTimes, false);
         }
         Object.keys(selDay).map((timeObj) => (selDay[timeObj].value = checked));
       } else {
-        selDay[time].value ? this.countTime(-1, false) : this.countTime(1, false)
+        selDay[time].value
+          ? this.countTime(-1, false)
+          : this.countTime(1, false);
         selDay[time].value = !selDay[time].value;
       }
       return selDay;
@@ -401,12 +409,11 @@ export default class Search extends Component {
     if (selAll) {
       this.setState({ numTimes: val });
     } else {
-      this.setState(prevState => ({
-        numTimes: prevState.numTimes + val
+      this.setState((prevState) => ({
+        numTimes: prevState.numTimes + val,
       }));
     }
-  }
-
+  };
 
   // search = () => {
   //   //props are the selected locations and selected times
@@ -415,7 +422,7 @@ export default class Search extends Component {
   //     responseData => {
   //       console.log("Got search events");
   //       console.log(responseData);
-  //     }, 
+  //     },
   //     error => {
   //       console.log("error");
   //       console.log(error);
@@ -429,7 +436,10 @@ export default class Search extends Component {
     if (this.state.hasCompletedPreferences) {
       return (
         <View style={styles.container}>
-          <SuggestedEventsList navigation={this.props.navigation} preferredLocations={this.state.locations} />
+          <SuggestedEventsList
+            navigation={this.props.navigation}
+            preferredLocations={this.state.locations}
+          />
         </View>
       );
     } else {
@@ -438,7 +448,7 @@ export default class Search extends Component {
           <View style={styles.header}>
             <Text style={Styles.title}>Search for an Event </Text>
           </View>
-          <View style={{ flex: 14 }}>
+          <View style={{ flex: 13 }}>
             <TimeOrLoc
               updateOneTime={this.flipState}
               updateSelectAll={this.selectAll}
@@ -448,13 +458,11 @@ export default class Search extends Component {
               dayops={dayOptions}
               timeops={this.state[this.state.selectedDay]}
               numTimes={this.state.numTimes}
-
               locOptions={this.state.locations}
               updateLoc={this.handleSelect}
               searchVal={this.state.search}
               updateSearch={this.updateSearch}
               numLocs={this.state.numLocs}
-
             />
           </View>
           <View
@@ -472,7 +480,6 @@ export default class Search extends Component {
     }
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {
