@@ -448,7 +448,7 @@ export default class Search extends Component {
           <View style={styles.header}>
             <Text style={Styles.title}>Search for an Event </Text>
           </View>
-          <View style={{ flex: 14 }}>
+          <View style={{ flex: 13 }}>
             <TimeOrLoc
               updateOneTime={this.flipState}
               updateSelectAll={this.selectAll}
