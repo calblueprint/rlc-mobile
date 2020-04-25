@@ -2,13 +2,14 @@ import React from "react";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 
 export default class ActivityCard extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+  navigateToShift = (event) => {
+    const { navigate } = this.props.navigation;
+    navigate("Shift", { event: event })
+  };
 
-  // onPressShiftHandler = () => {
-  //   this.props.onPressHandler();
-  // };
+  checkforNullValues(attribute) {
+    return attribute != null && attribute != undefined ? attribute : "N/A";
+  }
 
   render() {
     return (
@@ -18,23 +19,35 @@ export default class ActivityCard extends React.Component {
           this.props.onPressHandler();
         }}
       >
-        <Text style={styles.location}>📍 {this.props.location}</Text>
+        <Text style={styles.location}>
+          📍 {this.checkforNullValues(this.props.event.address)}
+        </Text>
 
-        <Text style={styles.name}>{this.props.name}</Text>
+        <Text style={styles.name}>
+          {this.checkforNullValues(this.props.event.details.name)}
+        </Text>
 
-        <Text style={styles.time}>{this.props.time}</Text>
+        <Text style={styles.time}>
+          {this.checkforNullValues(this.props.event.details.start_time)}
+        </Text>
         <View style={styles.details}>
           <View>
             <Text style={styles.smallGreyText}>Weight</Text>
-            <Text style={styles.smallBlackText}>{this.props.weight}</Text>
+            <Text style={styles.smallBlackText}>
+              {this.checkforNullValues(this.props.event.details.weight)}{" "}
+            </Text>
           </View>
           <View>
             <Text style={styles.smallGreyText}># of Pickups</Text>
-            <Text style={styles.smallBlackText}>{this.props.numpickups}</Text>
+            <Text style={styles.smallBlackText}>
+              {this.checkforNullValues(this.props.event.details.numPickups)}{" "}
+            </Text>
           </View>
           <View>
             <Text style={styles.smallGreyText}>Spots Open</Text>
-            <Text style={styles.smallBlackText}>{this.props.spotsOpen}</Text>
+            <Text style={styles.smallBlackText}>
+              {this.checkforNullValues(this.props.event.details.spotsOpen)}{" "}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -46,7 +59,8 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
     borderRadius: 5,
-    marginBottom: 10,
+    elevation: 1,
+    marginBottom: "2.6%",
     marginLeft: "8%",
     width: "84%",
     shadowColor: "#000",

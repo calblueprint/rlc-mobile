@@ -5,8 +5,10 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import Sizes from "../../constants/Sizes.js";
 import Styles from "../../constants/Styles";
 import Colors from "../../constants/Colors";
+import {getRequest} from "../../lib/requests";
 
 import TimeOrLoc from "../../components/search/timeOrLoc.js";
+import SuggestedEventsList from "../../components/search/SuggestedEventsList.js"
 
 const dayOptions = [
   {
@@ -50,6 +52,7 @@ export default class Search extends Component {
     //const properLocations = this.props.location.map(loc => ({ ...loc, selected: false }));
 
     this.state = {
+      hasCompletedPreferences: false,
       selectedDay: "monday",
       selectedAll: false,
       numTimes: 0,
@@ -62,8 +65,8 @@ export default class Search extends Component {
         selected: false
       },
       {
-        id: 28,
-        name: "Chelsea",
+        id: 2,
+        name: "SoHo",
         selected: false
 
       },
@@ -404,50 +407,69 @@ export default class Search extends Component {
     }
   }
 
+
   search = () => {
     //props are the selected locations and selected times
+    return getRequest(
+      "/get_events",
+      responseData => {
+        console.log("Got search events");
+        console.log(responseData);
+      }, 
+      error => {
+        console.log("error");
+        console.log(error);
+      },
+      {'date': this.state., 'location': this.state.}
+    )
+    this.setState({ hasCompletedPreferences: true }, () => { this.render() });
   };
 
-
-
-
   render() {
-    return (
-      <View style={{ ...Styles.container, ...styles.container }}>
-        <View style={styles.header}>
-          <Text style={Styles.title}>Search for an Event </Text>
+    if (this.state.hasCompletedPreferences) {
+      return (
+        <View style={styles.container}>
+          <SuggestedEventsList navigation={this.props.navigation} preferredLocations={this.state.locations} />
         </View>
-        <View style={{ flex: 14 }}>
-          <TimeOrLoc
-            updateOneTime={this.flipState}
-            updateSelectAll={this.selectAll}
-            selAllVal={this.state.selectedAll}
-            selectedDay={this.state.selectedDay}
-            updateSelDay={this.updateDay}
-            dayops={dayOptions}
-            timeops={this.state[this.state.selectedDay]}
-            numTimes={this.state.numTimes}
+      );
+    } else {
+      return (
+        <View style={{ ...Styles.container, ...styles.container }}>
+          <View style={styles.header}>
+            <Text style={Styles.title}>Search for an Event </Text>
+          </View>
+          <View style={{ flex: 14 }}>
+            <TimeOrLoc
+              updateOneTime={this.flipState}
+              updateSelectAll={this.selectAll}
+              selAllVal={this.state.selectedAll}
+              selectedDay={this.state.selectedDay}
+              updateSelDay={this.updateDay}
+              dayops={dayOptions}
+              timeops={this.state[this.state.selectedDay]}
+              numTimes={this.state.numTimes}
 
-            locOptions={this.state.locations}
-            updateLoc={this.handleSelect}
-            searchVal={this.state.search}
-            updateSearch={this.updateSearch}
-            numLocs={this.state.numLocs}
+              locOptions={this.state.locations}
+              updateLoc={this.handleSelect}
+              searchVal={this.state.search}
+              updateSearch={this.updateSearch}
+              numLocs={this.state.numLocs}
 
-          />
-        </View>
-        <View
-          style={{ flex: 1, marginHorizontal: "10%", marginVertical: "3%" }}
-        >
-          <TouchableOpacity
-            style={{ ...styles.button, ...styles.buttonText }}
-            onPress={this.search}
+            />
+          </View>
+          <View
+            style={{ flex: 1, marginHorizontal: "10%", marginVertical: "3%" }}
           >
-            <Text style={styles.buttonText}>Search</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={{ ...styles.button, ...styles.buttonText }}
+              onPress={this.search}
+            >
+              <Text style={styles.buttonText}>Search</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    );
+      );
+    }
   }
 }
 

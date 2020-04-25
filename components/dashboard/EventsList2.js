@@ -4,7 +4,8 @@ import {
   StyleSheet,
   ScrollView,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 
 // Animation Libraries
@@ -15,6 +16,13 @@ import Animated from "react-native-reanimated";
 import ActivityCard from "../../components/dashboard/ActivityCard.js";
 import { APIRoutes } from '../../config/routes.js'
 import { getRequest } from '../../lib/requests.js'
+
+// Constants
+import Sizes from "../../constants/Sizes";
+import Colors from "../../constants/Colors";
+import { normalize } from "../../utils/Normalize.js";
+
+// Utils
 import LocalStorage from "../../helpers/LocalStorage.js";
 
 const FirstRoute = () => (
@@ -158,10 +166,47 @@ export default class EventsList2 extends Component {
       </View>
     );
   };
-  _renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute
-  });
+
+  _renderScene = ({ route }) => {
+    if (this.state.isFetching) {
+      // return null; // Still fetching the events
+      switch (route.key) {
+        case "first":
+          return (
+            <View style={styles.infoContainer}>
+              <ActivityIndicator size="large" color={Colors.mainBlue} />
+            </View>
+          );
+        case "second":
+          return (
+            <View style={styles.infoContainer}>
+              <ActivityIndicator size="large" color={Colors.mainBlue} />
+            </View>
+          );
+        default:
+          return null;
+      }
+    } else {
+      switch (route.key) {
+        case "first":
+          return (
+            <UpcomingEventsList
+              upcomingEvents={this.state.upcomingEvents}
+              navigation={this.props.navigation}
+            />
+          );
+        case "second":
+          return (
+            <AttendedEventsList
+              attendedEvents={this.state.attendedEvents}
+              navigation={this.props.navigation}
+            />
+          );
+        default:
+          return null;
+      }
+    }
+  };
 
   render() {
     return (

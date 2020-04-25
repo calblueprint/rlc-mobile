@@ -3,12 +3,7 @@
     "name": "Rescuing Leftover Cuisine",
     "slug": "rlc-mobile",
     "privacy": "public",
-    "sdkVersion": "35.0.0",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -20,9 +15,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
@@ -30,6 +23,14 @@
         "NSPhotoLibraryAddUsageDescription": "Your message to user when the photo library is accessed for the first time",
         "NSPhotoLibraryUsageDescription": "Your message to user when the photo library is accessed for the first time"
       }
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {}
+        }
+      ]
     }
   }
 }
