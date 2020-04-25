@@ -13,28 +13,12 @@ export default class MainScreen extends React.Component {
     this.state = {
       currentScreenIndex: 1, //default to Dashboard
     };
-    this._onNavigationScrollEnd = this._onNavigationScrollEnd.bind(this);
     this._onSelectNavigationMenu = this._onSelectNavigationMenu.bind(this);
   }
 
-  // Used for horizontal swiping to navigate between the screens.
-  _onNavigationScrollEnd(event) {
-    let scrollToIndex = Math.round(
-      event.nativeEvent.contentOffset.x /
-      event.nativeEvent.layoutMeasurement.width
-    );
-    if (this.state.currentScreenIndex !== scrollToIndex) {
-      this.setState({ currentScreenIndex: scrollToIndex });
-    }
-  }
-
   // Navigate between screens by pressing one of the screens at the bottom tabbar.
-  _onSelectNavigationMenu(index) {
-    this.refs["MainScrollView"].scrollTo({
-      x: Sizes.width * index,
-      y: 0,
-      animated: true,
-    });
+  _onSelectNavigationMenu = (index) => () => {
+    this.setState({currentScreenIndex: index})
   }
 
   //async logoutHandler() To be implemented.
@@ -42,31 +26,20 @@ export default class MainScreen extends React.Component {
   render() {
     return (
       <View>
-        <ScrollView
-          ref="MainScrollView"
-          style={styles.screenNavigatorScroll}
-          contentContainerStyle={{ height: Sizes.height * 0.92, width: Sizes.width * 3 }}
-          horizontal={true}
-          pagingEnabled={true}
-          showsHorizontalScrollIndicator={false}
-          contentOffset={{
-            x: Sizes.width * this.state.currentScreenIndex,
-            y: 0
-          }}
-        >
-          <ProfileScreen
+        <View style={{ height: Sizes.height * 0.9, marginTop: Sizes.height * 0.02 }}>
+          {this.state.currentScreenIndex == 0 && <ProfileScreen
             navigation={this.props.navigation}
             onNavSelect={this._onSelectNavigationMenu}
-          />
-          <DashboardScreen
+          />}
+          {this.state.currentScreenIndex == 1 && <DashboardScreen
             navigation={this.props.navigation}
             onNavSelect={this._onSelectNavigationMenu}
-          />
-          <SearchScreen
+          />}
+          {this.state.currentScreenIndex == 2 && <SearchScreen
             navigation={this.props.navigation}
             onNavSelect={this._onSelectNavigationMenu}
-          />
-        </ScrollView>
+          />}
+          </View>
         <View style={{ height: Sizes.height * 0.08 }}>
           <NavigationFooter index={this.state.currentScreenIndex} navigationHandler={this._onSelectNavigationMenu} />
         </View>
