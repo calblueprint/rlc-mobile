@@ -119,7 +119,7 @@ export default class Search extends Component {
 
       monday: {
         all: {
-          key: "all",
+          key: "monday_all",
           text: "Select the entire day",
           value: false,
         },
@@ -146,7 +146,7 @@ export default class Search extends Component {
       },
       tuesday: {
         all: {
-          key: "all",
+          key: "tuesday_all",
           text: "Select the entire day",
           value: false,
         },
@@ -173,135 +173,135 @@ export default class Search extends Component {
       },
       wednesday: {
         all: {
-          key: "all",
+          key: "wednesday_all",
           text: "Select the entire day",
           value: false,
         },
         morn: {
-          key: "9_12",
+          key: "wednesday_morning",
           text: "9AM-12PM",
           value: false,
         },
         afternoon: {
-          key: "12_3",
+          key: "wednesday_afternoon",
           text: "12PM-3PM",
           value: false,
         },
         evening: {
-          key: "3_6",
+          key: "wednesday_evening",
           text: "3PM-6PM",
           value: false,
         },
         night: {
-          key: "6_9",
+          key: "wednesday_night",
           text: "6PM-9PM",
           value: false,
         },
       },
       thursday: {
         all: {
-          key: "all",
+          key: "thursday_all",
           text: "Select the entire day",
           value: false,
         },
         morn: {
-          key: "9_12",
+          key: "thursday_morning",
           text: "9AM-12PM",
           value: false,
         },
         afternoon: {
-          key: "12_3",
+          key: "thursday_afternoon",
           text: "12PM-3PM",
           value: false,
         },
         evening: {
-          key: "3_6",
+          key: "thursday_evening",
           text: "3PM-6PM",
           value: false,
         },
         night: {
-          key: "6_9",
+          key: "thursday_night",
           text: "6PM-9PM",
           value: false,
         },
       },
       friday: {
         all: {
-          key: "all",
+          key: "friday_all",
           text: "Select the entire day",
           value: false,
         },
         morn: {
-          key: "9_12",
+          key: "friday_morning",
           text: "9AM-12PM",
           value: false,
         },
         afternoon: {
-          key: "12_3",
+          key: "friday_afternoon",
           text: "12PM-3PM",
           value: false,
         },
         evening: {
-          key: "3_6",
+          key: "friday_evening",
           text: "3PM-6PM",
           value: false,
         },
         night: {
-          key: "6_9",
+          key: "friday_night",
           text: "6PM-9PM",
           value: false,
         },
       },
       saturday: {
         all: {
-          key: "all",
+          key: "saturday_all",
           text: "Select the entire day",
           value: false,
         },
         morn: {
-          key: "9_12",
+          key: "saturday_morning",
           text: "9AM-12PM",
           value: false,
         },
         afternoon: {
-          key: "12_3",
+          key: "saturday_afternoon",
           text: "12PM-3PM",
           value: false,
         },
         evening: {
-          key: "3_6",
+          key: "saturday_evening",
           text: "3PM-6PM",
           value: false,
         },
         night: {
-          key: "6_9",
+          key: "saturday_night",
           text: "6PM-9PM",
           value: false,
         },
       },
       sunday: {
         all: {
-          key: "all",
+          key: "sunday_all",
           text: "Select the entire day",
           value: false,
         },
         morn: {
-          key: "9_12",
+          key: "sunday_morning",
           text: "9AM-12PM",
           value: false,
         },
         afternoon: {
-          key: "12_3",
+          key: "sunday_afternoon",
           text: "12PM-3PM",
           value: false,
         },
         evening: {
-          key: "3_6",
+          key: "sunday_evening",
           text: "3PM-6PM",
           value: false,
         },
         night: {
-          key: "6_9",
+          key: "sunday_night",
           text: "6PM-9PM",
           value: false,
         },
