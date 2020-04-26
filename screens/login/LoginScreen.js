@@ -14,6 +14,7 @@ import LoginForm from "../../components/LoginForm.js";
 
 // Constants
 import Styles from "../../constants/Styles";
+const offset = (Platform.OS === 'android') ? -200 : 0;
 
 export default class LoginScreen extends Component {
   constructor(props) {
@@ -39,24 +40,22 @@ export default class LoginScreen extends Component {
 
   render() {
     return (
-      <KeyboardAvoidingView behavior={Platform.OS==="ios"? "padding":""} style={Styles.container}>
-        <ScrollView>
-          <View style={Styles.logoContainer}>
-            <Image
-              style={Styles.logo}
-              source={require("../../assets/images/rlclogo.png")}
-            />
-            <Text style={Styles.title}>Let's rescue some food 👍</Text>
-            <Text style={Styles.subtext}>{this.state.inValidText}</Text>
-          </View>
-          <View style={styles.formContainer}>
-            <LoginForm
-              setInvalidText={this.setInvalidText}
-              navigateHandler={this.navigateToMain}
-              navigateToSignup={this.navigateToSignup}
-            />
-          </View>
-        </ScrollView>
+      <KeyboardAvoidingView keyboardVerticalOffset={offset} behavior={Platform.OS === "ios" ? "padding" : ""} style={Styles.container}>
+        <View style={Styles.logoContainer}>
+          <Image
+            style={Styles.logo}
+            source={require("../../assets/images/rlclogo.png")}
+          />
+          <Text style={Styles.title}>Let's rescue some food 👍</Text>
+          <View style={{ marginBottom: -12 }}><Text style={Styles.subtext}>{this.state.inValidText}</Text></View>
+        </View>
+        <View style={styles.formContainer}>
+          <LoginForm
+            setInvalidText={this.setInvalidText}
+            navigateHandler={this.navigateToMain}
+            navigateToSignup={this.navigateToSignup}
+          />
+        </View>
       </KeyboardAvoidingView>
     );
   }
@@ -64,6 +63,6 @@ export default class LoginScreen extends Component {
 
 const styles = StyleSheet.create({
   formContainer: {
-    height: "100%"
+    height: "100%",
   }
 });
