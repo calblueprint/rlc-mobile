@@ -19,7 +19,7 @@ const routeConfiguration = {
   Signup: { screen: SignupScreen, name: "Signup" },
   Shift: { screen: ShiftScreen, name: "Shift" },
   ChangeConfirm: { screen: ChangeConfirmScreen, name: "ChangeConfirm" },
-  Main: { screen: MainScreen2, name: "Main" },
+  Main: { screen: MainScreen, name: "Main" },
   Confirmation: { screen: ConfirmationScreen, name: "Confirmation" }
 };
 
@@ -30,7 +30,7 @@ const stackConfiguration = {
   defaultNavigationOptions: {
     ...TransitionPresets.FadeFromBottomAndroid,
     cardOverlayEnabled: true,
-    gestureEnabled: true
+    gestureEnabled: false
   }
 };
 
