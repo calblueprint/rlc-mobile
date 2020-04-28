@@ -40,47 +40,33 @@ export default class SuggestedEventsList extends Component {
             locationName = this.props.preferredLocations[i]["name"];
             locations[locationId] = locationName;
         }
-        locations[1] = "Bushwick";
+        console.log("my locs", this.props.preferredLocations[0]);
+        console.log("hello times", this.props.preferredTimes[0]);
+        //locations[1] = "Bushwick";
         this.setState({ locations: locations }, () => { this.processEventData(); });
     }
 
     processEventData() {
-        // selectedEventsInDay = [];
-        // // eventOne = {};
-        // // eventDetails = {};
-        // // eventDetails["name"] = dummyEventData["name"];
-        // // eventDetails["spotsOpen"] = dummyEventData["spotsOpen"];
-        // // eventDetails["weight"] = dummyEventData["weight"];
-        // // eventDetails["numPickups"] = dummyEventData["numPickups"];
-        // // eventDetails["location"] = dummyEventData["location"];
-        // // eventDetails["date"] = dummyEventData["date"];
-        // // startingTime = new Date(dummyEventData["start_time"]);
-        // // endingTime = new Date(dummyEventData["end_time"]);
-        // // eventDetails["start_time"] = startingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }) + " to " + endingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
-        // // eventOne["address"] = "SoHo";
-        // // eventOne["details"] = eventDetails;
-        // // eventOne["shiftType"] = ShiftType.searched;
-        // // selectedEventsInDay.push(eventOne);
-        // // this.setState({ selectedEventsInDay: selectedEventsInDay }, () => { this.render() });
         console.log("processing Search");
         getRequest(
             `api/get_events/${this.state.date.toISOString()}`,
             responseData => {
                 console.log(responseData);
-                selectedEventsInDay = [];
-                for (i = 0; i < responseData.length; i++) {
-                    currentEvent = {};
-                    eventDetails = {};
+                const selectedEventsInDay = [];
+                for (let i = 0; i < responseData.length; i++) {
+                    const currentEvent = {};
+                    const eventDetails = {};
                     eventDetails["name"] = responseData[i]["title"];
                     eventDetails["spotsOpen"] = responseData[i]["slot"];
                     eventDetails["weight"] = responseData[i]["weight"];
                     eventDetails["numPickups"] = responseData[i]["numPickups"];
-                    startingTime = new Date(responseData[i]["starting_time"]);
-                    endingTime = new Date(responseData[i]["ending_time"]);
+                    const startingTime = new Date(responseData[i]["starting_time"]);
+                    const endingTime = new Date(responseData[i]["ending_time"]);
+                    eventDetails["shiftType"] = ShiftType.searched;
                     eventDetails["start_time"] = startingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }) + " to " + endingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
                     if (responseData[i]["location_id"] !== null) {
                         console.log("nullcheck");
-                        locationIdString = responseData[i]["location_id"].toString();
+                        const locationIdString = responseData[i]["location_id"].toString();
                         if (this.state.locations[locationIdString] != null) {
                             currentEvent["address"] = this.state.locations[locationIdString];
                             currentEvent["details"] = eventDetails;
@@ -88,6 +74,7 @@ export default class SuggestedEventsList extends Component {
                         }
                     }
                 }
+                console.log("finsihed?");
                 console.log(selectedEventsInDay);
                 this.setState({ selectedEventsInDay: selectedEventsInDay }, () => { this.render() });
             },
@@ -100,19 +87,19 @@ export default class SuggestedEventsList extends Component {
         getRequest(
             `api/get_events/${chosenDate.toString()}`,
             responseData => {
-                selectedEventsInDay = [];
-                for (i = 0; i < responseData.length; i++) {
-                    currentEvent = {};
-                    eventDetails = {};
+                const selectedEventsInDay = [];
+                for (let i = 0; i < responseData.length; i++) {
+                    const currentEvent = {};
+                    const eventDetails = {};
                     eventDetails["name"] = responseData[i]["title"];
                     eventDetails["spotsOpen"] = responseData[i]["slot"];
                     eventDetails["weight"] = responseData[i]["pound"] + " lbs";
                     eventDetails["numPickups"] = responseData[i]["numPickups"];
-                    startingTime = new Date(responseData[i]["starting_time"]);
-                    endingTime = new Date(responseData[i]["ending_time"]);
+                    const startingTime = new Date(responseData[i]["starting_time"]);
+                    const endingTime = new Date(responseData[i]["ending_time"]);
                     eventDetails["start_time"] = startingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }) + " to " + endingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
                     if (responseData[i]["location_id"] != null) {
-                        locationIdString = responseData[i]["location_id"].toString();
+                        const locationIdString = responseData[i]["location_id"].toString();
                         if (this.state.locations[locationIdString] != null) {
                             currentEvent["address"] = this.state.locations[locationIdString];
                             currentEvent["details"] = eventDetails;
@@ -120,6 +107,7 @@ export default class SuggestedEventsList extends Component {
                         }
                     }
                 }
+                console.log("done?");
                 this.setState({ selectedEventsInDay: selectedEventsInDay }, () => { this.render() });
             },
             error => {
