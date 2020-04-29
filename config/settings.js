@@ -12,12 +12,12 @@ if (process.env.NODE_ENV === "production") {
   console.log("staging");
   URL = Platform.select({
     ios: BASE_URL,
-    android: BASE_URL
+    android: BASE_URL,
   });
 }
 export const settings = {
   env: process.env.NODE_ENV,
-  URL
+  URL,
 };
 
 export default settings;

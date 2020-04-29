@@ -5,8 +5,12 @@ import { normalize } from "../../utils/Normalize";
 export default class ActivityCard extends React.Component {
   navigateToShift = (event) => {
     const { navigate } = this.props.navigation;
-    navigate("Shift", event);
+    navigate("Shift", { event: event })
   };
+
+  checkforNullValues(attribute) {
+    return attribute != null && attribute != undefined ? attribute : "N/A";
+  }
 
   render() {
     return (
@@ -15,28 +19,34 @@ export default class ActivityCard extends React.Component {
         style={styles.card}
         onPress={() => this.navigateToShift(this.props.event)}
       >
-        <Text style={styles.location}>📍 {this.props.event.address}</Text>
+        <Text style={styles.location}>
+          📍 {this.checkforNullValues(this.props.event.address)}
+        </Text>
 
-        <Text style={styles.name}>{this.props.event.details.name}</Text>
+        <Text style={styles.name}>
+          {this.checkforNullValues(this.props.event.details.name)}
+        </Text>
 
-        <Text style={styles.time}>{this.props.event.details.start_time}</Text>
+        <Text style={styles.time}>
+          {this.checkforNullValues(this.props.event.details.start_time)}
+        </Text>
         <View style={styles.details}>
           <View>
             <Text style={styles.smallGreyText}>Weight</Text>
             <Text style={styles.smallBlackText}>
-              {this.props.event.details.weight}{" "}
+              {this.checkforNullValues(this.props.event.details.weight)}{" "}
             </Text>
           </View>
           <View>
             <Text style={styles.smallGreyText}># of Pickups</Text>
             <Text style={styles.smallBlackText}>
-              {this.props.event.details.numPickups}{" "}
+              {this.checkforNullValues(this.props.event.details.numPickups)}{" "}
             </Text>
           </View>
           <View>
             <Text style={styles.smallGreyText}>Spots Open</Text>
             <Text style={styles.smallBlackText}>
-              {this.props.event.details.spotsOpen}{" "}
+              {this.checkforNullValues(this.props.event.details.spotsOpen)}{" "}
             </Text>
           </View>
         </View>
@@ -49,6 +59,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
     borderRadius: 5,
+    elevation: 1,
     marginBottom: "2.6%",
     marginLeft: "8%",
     width: "84%",
