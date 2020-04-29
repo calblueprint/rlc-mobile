@@ -22,7 +22,7 @@ export default StyleSheet.create({
     maxHeight: "25%"
   },
   logo: {
-    width: "26%",
+    width: "29%",
     height: Sizes.width * 0.26
   },
   // Text
