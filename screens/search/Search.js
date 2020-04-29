@@ -9,7 +9,6 @@ import {getRequest} from "../../lib/requests";
 
 import TimeOrLoc from "../../components/search/timeOrLoc.js";
 import SuggestedEventsList from "../../components/search/SuggestedEventsList.js"
-import { timestampWithMs } from "@sentry/utils";
 
 const dayOptions = [
   {
@@ -370,10 +369,10 @@ export default class Search extends Component {
         intervals.push({'start': start_time, 'end': end_time})
       }
       else {
-        curr_day_periods.map((period)=>{
-          if (period.key !== "all") {
+        Object.keys(curr_day_periods).map((period)=>{
+          if (period !== "all") {
             // Get ending time from current period
-            const curr_end_hours = period.text.split("-")[1].slice(0,-2);
+            let curr_end_hours = curr_day_periods[period].text.split("-")[1].slice(0,-2);
             // Parse number of hours
             curr_end_hours = parseInt(curr_end_hours) % 12 + 12;
             curr_start_hours = curr_end_hours - 3;
@@ -465,7 +464,7 @@ export default class Search extends Component {
         <View style={styles.container}>
           <SuggestedEventsList navigation={this.props.navigation} 
                                preferredLocations={this.state.locations}
-                               preferredTimes={this.compile_times()} />
+                               preferredTimes={this.format_api_times()} />
         </View>
       );
     } else {

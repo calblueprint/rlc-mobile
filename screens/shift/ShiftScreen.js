@@ -81,7 +81,7 @@ export default class ShiftScreen extends React.Component {
                     },
                     {
                          step: 4,
-                         description: "Walk to " + pEvent.details.dropoff_locations[1].title,
+                         description: "Walk to ",// + pEvent.details.dropoff_locations[1].title,
                          photo_needed: false
                     },
                     {
@@ -91,7 +91,7 @@ export default class ShiftScreen extends React.Component {
                     },
                     {
                          step: 6,
-                         description: "Walk to " + pEvent.details.dropoff_locations[2].title,
+                         description: "Walk to ",// + pEvent.details.dropoff_locations[2].title,
                          photo_needed: false
 
                     },

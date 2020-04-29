@@ -2,7 +2,7 @@ import React, { Component } from "../../node_modules/react";
 import { FlatList, StyleSheet, View, Text, ScrollView, SafeAreaView } from "react-native";
 import ActivityCard from "../dashboard/ActivityCard.js";
 import DatePicker from "react-native-datepicker";
-import { getRequest } from "../../lib/requests.js"
+import { getRequest, postRequest } from "../../lib/requests.js"
 
 import Styles from "../../constants/Styles.js";
 import Sizes from "../../constants/Sizes.js";
@@ -10,18 +10,6 @@ import { normalize } from "../../utils/Normalize.js";
 import Colors from "../../constants/Colors";
 
 import ShiftType from "../../constants/ShiftType.js";
-
-const dummyEventData = {
-    location_id: 7,
-    name: "Soho Bagels",
-    location: "Soho",
-    date: "2020-04-18",
-    start_time: '2020-04-18T02:00:00.000-04:00',
-    end_time: '2020-04-18T04:00:00.000-04:00',
-    weight: 20,
-    spotsOpen: 3,
-    numPickups: 1,
-};
 
 export default class SuggestedEventsList extends Component {
     constructor(props) {
@@ -34,22 +22,30 @@ export default class SuggestedEventsList extends Component {
     }
 
     componentDidMount() {
-        locations = {}
+        const locations = {};
+        const location_ids = [];
         for (let i = 0; i < this.props.preferredLocations.length; i++) {
-            locationId = this.props.preferredLocations[i]["id"];
-            locationName = this.props.preferredLocations[i]["name"];
+            const locationId = this.props.preferredLocations[i]["id"];
+            const locationName = this.props.preferredLocations[i]["name"];
             locations[locationId] = locationName;
+            location_ids.push(locationId);
         }
         console.log("my locs", this.props.preferredLocations[0]);
-        console.log("hello times", this.props.preferredTimes[0]);
+        const times = this.props.preferredTimes;
+        // console.log("hello times", this.props.preferredTimes);
+        // let times = [];
+        // this.props.preferredTimes.map((time)=>{
+        //     times.push(time.start.toISOString() + ", " + time.end.toISOString());
+        // })
+        // console.log(times);
         //locations[1] = "Bushwick";
-        this.setState({ locations: locations }, () => { this.processEventData(); });
+        this.setState({ locations: locations, location_ids: location_ids, times: times }, () => { this.processEventData(); });
     }
 
     processEventData() {
         console.log("processing Search");
-        getRequest(
-            `api/get_events/${this.state.date.toISOString()}`,
+        postRequest(
+            `api/search_events`,//${this.state.date.toISOString()}`,
             responseData => {
                 console.log(responseData);
                 const selectedEventsInDay = [];
@@ -80,9 +76,10 @@ export default class SuggestedEventsList extends Component {
             },
             error => {
                 console.log(error);
-            });
+            },
+            {times: this.state.times, location_ids: this.state.location_ids});
     }
-
+ 
     renderNewEvents(chosenDate) {
         getRequest(
             `api/get_events/${chosenDate.toString()}`,
