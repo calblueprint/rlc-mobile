@@ -37,6 +37,7 @@ export default class Dashboard extends Component {
     navigate("Profile");
   };
 
+
   render() {
     return (
       <View style={styles.container}>
@@ -49,7 +50,7 @@ export default class Dashboard extends Component {
             /> */}
           </View>
         </View>
-        <EventsList navigation={this.props.navigation} />
+        <EventsList navigation={this.props.navigation} toSearch={this.props.toSearch} />
       </View>
     );
   }

@@ -46,7 +46,7 @@ class UpcomingEventsList extends React.Component {
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={styles.button}
-                onPress={this.props.navigation.navigate("Search")}
+                onPress={this.props.toSearch}
               >
                 <Text style={styles.buttonText}>Sign Up for Shift</Text>
               </TouchableOpacity>

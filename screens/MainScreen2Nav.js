@@ -18,9 +18,15 @@ function Profile({ navigation }) {
     );
 }
 
+
+
+
 function Dashboard({ navigation }) {
+    navigateToSearch = () => {
+        navigation.jumpTo("Search");
+    };
     return (
-        <DashboardScreen navigation={navigation}
+        <DashboardScreen navigation={navigation} toSearch={navigateToSearch}
         />
     );
 }
@@ -39,13 +45,13 @@ export default function MainScreen2Nav() {
             <Tab.Navigator
                 initialRouteName="Dashboard"
                 screenOptions={{ gestureEnabled: false, swipeEnabled: false, }}
-                tabBarOptions={{ backgroundColor: '#42a5f5', }}
+                tabBarOptions={{ activeTintColor: "#fefefe", style: { backgroundColor: Colors.mainBlue }, }}
             >
                 <Tab.Screen name="Profile" component={Profile}
                     options={{
                         tabBarLabel: 'Profile',
                         tabBarIcon: ({ color, size }) => (
-                            <Icon name="person" color={"#000"} size={size} />
+                            <Icon name="person" color={color} size={size} />
                         ),
                     }}
                 />
@@ -66,6 +72,6 @@ export default function MainScreen2Nav() {
                     }}
                 />
             </Tab.Navigator>
-        </NavigationContainer>
+        </NavigationContainer >
     );
 }

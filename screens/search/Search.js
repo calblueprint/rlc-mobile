@@ -415,22 +415,22 @@ export default class Search extends Component {
     }
   };
 
-  // search = () => {
-  //   //props are the selected locations and selected times
-  //   return getRequest(
-  //     "/get_events",
-  //     responseData => {
-  //       console.log("Got search events");
-  //       console.log(responseData);
-  //     },
-  //     error => {
-  //       console.log("error");
-  //       console.log(error);
-  //     },
-  //     {'date': this.state., 'location': this.state.}
-  //   )
-  //   this.setState({ hasCompletedPreferences: true }, () => { this.render() });
-  // };
+  search = () => {
+    //props are the selected locations and selected times
+    // return getRequest(
+    //   "/get_events",
+    //   responseData => {
+    //     console.log("Got search events");
+    //     console.log(responseData);
+    //   },
+    //   error => {
+    //     console.log("error");
+    //     console.log(error);
+    //   },
+    //   { 'date': this.state., 'location': this.state.}
+    // )
+    this.setState({ hasCompletedPreferences: true }, () => { this.render() });
+  };
 
   render() {
     if (this.state.hasCompletedPreferences) {
