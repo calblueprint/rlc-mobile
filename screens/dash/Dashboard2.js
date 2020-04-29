@@ -22,7 +22,7 @@ export default class Dashboard extends Component {
   }
 
   async componentDidMount() {
-    let user = await LocalStorage.getItem("user");
+    let user = await LocalStorage.getNonNullItem("user");
   }
 
   // _fetchCurrentEvent () {}

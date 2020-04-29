@@ -33,7 +33,7 @@ export default class Profile extends Component {
 
     async componentDidMount() {
         try {
-            let user = await LocalStorage.getItem('user');
+            let user = await LocalStorage.getNonNullItem('user');
             this.setState({ user: user }, () => { this.render() });
         } catch (err) {
             console.error(err)

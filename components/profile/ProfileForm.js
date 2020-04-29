@@ -5,38 +5,15 @@ import { isTSTypeAliasDeclaration } from "@babel/types";
 
 import Colors from "../../constants/Colors.js";
 import { normalize } from "../../utils/Normalize.js";
+import LocalStorage from "../../helpers/LocalStorage.js";
 
-const regions = [{
-    name: "Albany, NY"
-}, {
-    name: "Amarillo, TX"
-}, {
-    name: "New York City, NY"
-}, {
-    name: "San Francisco, CA"
-}, {
-    name: "Washington DC"
-}
-]
-
-const locations = [{
-    name: "Battery Park City"
-}, {
-    name: "Bowery"
-}, {
-    name: "Carnegie Hall"
-}, {
-    name: "Chelsea"
-}, {
-    name: "Chinatown"
-}, {
-    name: "Civic Center"
-}, {
-    name: "Clinton"
-}, {
-    name: "East Harlem"
-}
-]
+import {
+    fetch_locations_by_region,
+    parseCurrentLocation,
+    fetch_regions,
+    fetch_locations,
+  } from "../../helpers/LocationHelpers.js";
+  
 
 const daysandtimes = [{
     name: "Select all times",
@@ -77,9 +54,14 @@ export default class ProfileForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            preferredRegion: [],
-            preferredLocation: [],
+            preferredRegion: {},
+            preferredRegionId: [],
+            preferredLocations: [],
+            preferredLocationIds: [],
             preferredTimes: [],
+            regions: [],
+            locations: [],
+            isFetching: true,
         }
     }
 
@@ -87,18 +69,44 @@ export default class ProfileForm extends Component {
         if (this.props.getUserAttribute("preferredRegion") != null) {
             this.setState({ preferredRegion: this.props.getUserAttribute("preferredRegion") });
         }
-        if (this.props.getUserAttribute("preferredLocation") != null) {
-            this.setState({ preferredLocation: this.props.getUserAttribute("preferredLocation") });
+        if (this.props.getUserAttribute("preferredLocations") != null) {
+            this.setState({ preferredLocations: this.props.getUserAttribute("preferredLocations") });
         }
         if (this.props.getUserAttribute("preferredTimes") != null) {
             this.setState({ preferredTimes: this.props.getUserAttribute("preferredTimes") });
         }
+        this._get_location_data();
     }
 
-    onPreferredRegionChange = (preferredRegion) => {
-        this.setState({ preferredRegion: preferredRegion });
+    _get_location_data = async () => {
+        let regions =  await fetch_regions();
+        let locations =  await fetch_locations();
+        this.setState({
+            regions: regions,
+            locations: locations,
+            isFetching: false,
+        }) 
     }
 
+    onPreferredRegionChange = async (preferredRegion) => {
+        console.log(preferredRegion)
+        let region_id = preferredRegion[0].id
+    
+        let included_locations = await fetch_locations_by_region(
+          region_id
+        );
+        if (included_locations === undefined || included_locations.length == 0) {
+          this.setState({ preferredRegion: preferredRegion, preferredRegionId: [region_id], preferredLocationIds: [], locations: [] });
+        } else {
+          this.setState({
+            preferredRegion: preferredRegion,
+            preferredRegionId: [region_id],
+            locations: included_locations,
+            preferredLocationIds: [],
+          });
+        }
+      };
+    
     onPreferredLocationChange = (preferredLocation) => {
         this.setState({ preferredLocation: preferredLocation });
     }
@@ -108,6 +116,7 @@ export default class ProfileForm extends Component {
     }
 
     render() {
+        if (!this.state.isFetching) {
         return (
             <View behavior="padding" style={styles.container}>
 
@@ -277,15 +286,17 @@ export default class ProfileForm extends Component {
                 <SectionedMultiSelect
                     single
                     colors={{ primary: Colors.mainBlue }}
-                    selectedItems={this.state.preferredRegion}
-                    items={regions}
-                    uniqueKey="name"
-                    onSelectedItemsChange={preferredRegion => { this.onPreferredRegionChange(preferredRegion); this.props.changeUserInfo("preferredRegion", preferredRegion); this.props.enableSaveButton(); }}
+                    selectedItems={this.state.preferredRegionId}
+                    items={this.state.regions}
+                    uniqueKey="id"
+                    displayKey="name"
+                    onSelectedItemsChange={preferredRegionId => { this.onPreferredRegionChange(preferredRegionId); this.props.changeUserInfo("preferredRegionId", preferredRegionId); this.props.enableSaveButton(); }}
                     searchPlaceholderText="Search regions..."
                     searchInputStyle={styles.input}
                     modalWithSafeAreaView={true}
                     submitButtonText="Select"
                     confirmText="SAVE"
+                    value={this.state.preferredRegionId}
                     styles={{
                         selectToggle: { borderBottomWidth: 1, marginBottom: 20, height: 40 },
                         selectToggleText: { fontSize: normalize(14), color: "#333333", marginTop: 20 }
@@ -297,16 +308,18 @@ export default class ProfileForm extends Component {
                     </Text>
                 <SectionedMultiSelect
                     colors={{ primary: Colors.mainBlue }}
-                    selectedItems={this.state.preferredLocation}
-                    items={locations}
-                    uniqueKey="name"
-                    onSelectedItemsChange={preferredLocation => { this.onPreferredLocationChange(preferredLocation); this.props.changeUserInfo("preferredLocation", preferredLocation); this.props.enableSaveButton(); }}
+                    selectedItems={this.state.preferredLocationIds}
+                    items={this.state.locations}
+                    uniqueKey="id"
+                    displayKey="name"
+                    onSelectedItemsChange={preferredLocationIds => { this.onPreferredLocationChange(preferredLocationIds); this.props.changeUserInfo("preferredLocationIds", preferredLocationIds); this.props.enableSaveButton(); }}
                     showChips={false}
                     searchPlaceholderText="Search locations..."
                     searchInputStyle={styles.input}
                     modalWithSafeAreaView={true}
                     submitButtonText="Select"
                     confirmText="SAVE"
+                    value={this.state.preferredLocationIds}
                     styles={{
                         selectToggle: { borderBottomWidth: 1, marginBottom: 20, height: 40 },
                         selectToggleText: { fontSize: normalize(14), color: "#333333", marginTop: 20 }
@@ -337,6 +350,9 @@ export default class ProfileForm extends Component {
                 />
             </View>
         );
+        } else {
+            return null
+        }
     }
 }
 

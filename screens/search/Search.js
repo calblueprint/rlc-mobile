@@ -420,7 +420,7 @@ export default class Search extends Component {
         console.log("error");
         console.log(error);
       },
-      {'date': this.state., 'location': this.state.}
+      // {'date': this.state.event.date, 'location': this.state.}
     )
     this.setState({ hasCompletedPreferences: true }, () => { this.render() });
   };
