@@ -177,6 +177,11 @@ export default class ShiftScreen extends React.Component {
     navigate("Main");
   };
 
+  navigateToCamera = () => {
+    const { navigate } = this.props.navigation;
+    navigate("Camera");
+  };
+
   navigateToWithdraw = () => {
     const { navigate } = this.props.navigation;
     navigate("ChangeConfirm", {
@@ -344,6 +349,12 @@ export default class ShiftScreen extends React.Component {
                 {(pEvent.shiftType === ShiftType.upcoming ||
                   pEvent.shiftType === ShiftType.current) && (
                   <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={this.navigateToCamera}
+                    >
+                      <Text style={styles.buttonText}>Take picture</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity
                       style={styles.button}
                       onPress={this.navigateToMain}

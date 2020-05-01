@@ -19,7 +19,7 @@ export default function CameraScreen({ navigation }) {
                 const formData = new FormData();
                 // TODO: @Johnathan. Once shift details screen is loading information properly,
                 // I'll grab the event ID and pass it into camera this.navigation.navigate(camera, this.state.id)
-                formData.append('image[event_id]', '6');
+                formData.append('image[event_id]', '58288');
                 formData.append('image[file]', base64);
                 const postURL = settings.URL + '/images'
                 fetch(postURL, {

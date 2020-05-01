@@ -9,13 +9,11 @@ import {
 } from "react-native";
 
 // Animation Libraries
-import { TabView, SceneMap } from "react-native-tab-view";
+import { TabView } from "react-native-tab-view";
 import Animated from "react-native-reanimated";
 
 // Components
 import ActivityCard from "../../components/dashboard/ActivityCard.js";
-import { APIRoutes } from '../../config/routes.js'
-import { getRequest } from '../../lib/requests.js'
 
 // Constants
 import Sizes from "../../constants/Sizes";
@@ -24,103 +22,152 @@ import { normalize } from "../../utils/Normalize.js";
 
 // Utils
 import LocalStorage from "../../helpers/LocalStorage.js";
+import { get_dashboard_events_lists } from "../../helpers/EventsHelper.js";
 
-const FirstRoute = () => (
-  <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
-    <ScrollView style={{ height: "100%" }}>
-      <Text style={styles.heading}>Sunday, June 19, 2019</Text>
-      <ActivityCard
-        location={"📍 Union Square"}
-        name={"Union Square (US014)"}
-        time={"8:15 to 9:15 PM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"2"}
-        spotsOpen={"1 of 2"}
-      />
-      <ActivityCard
-        location={"📍 Greenwich Village"}
-        name={"Greenwich Village (GW007)"}
-        time={"4:15 to 6:15 PM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"2"}
-        spotsOpen={"1 of 2"}
-      />
-      <Text style={styles.heading}>Monday, June 20, 2019</Text>
-      <ActivityCard
-        location={"📍 Williamsburg"}
-        name={"South Side Mission (WB001)"}
-        time={"10:30 to 11:30 AM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"1"}
-        spotsOpen={"2 of 4"}
-      />
-    </ScrollView>
-  </View>
-);
+class UpcomingEventsList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      upcomingEvents: props.upcomingEvents,
+    };
+  }
 
-const SecondRoute = () => (
-  <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
-    <ScrollView style={{ height: "100%" }}>
-      <Text style={styles.heading}>Sunday, June 19, 2019</Text>
-      <ActivityCard
-        location={"📍 Home"}
-        name={"Union Square (US014)"}
-        time={"8:15 to 9:15 AM"}
-        weight={"10 to 45 lbs"}
-        numpickups={"2"}
-        spotsOpen={"1 of 2"}
-      />
-    </ScrollView>
-  </View>
-);
+  render() {
+    if (
+      this.state.upcomingEvents === undefined ||
+      this.state.upcomingEvents.length == 0
+    ) {
+      return (
+        <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
+          <View style={styles.infoContainer}>
+            <Text style={styles.subText}>
+              Oh no! You have no upcoming shifts.
+            </Text>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => this.props.navigation.navigate("Search")}
+              >
+                <Text style={styles.buttonText}>Sign Up for Shift</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      );
+    } else {
+      return (
+        <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
+          <ScrollView style={{ height: "100%" }}>
+            {this.state.upcomingEvents.map((event) => {
+              return (
+                <ActivityCard
+                  key={event.id}
+                  event={event}
+                  navigation={this.props.navigation}
+                />
+              );
+            })}
+          </ScrollView>
+        </View>
+      );
+    }
+  }
+}
+
+class AttendedEventsList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      attendedEvents: props.attendedEvents,
+    };
+  }
+
+  render() {
+    if (
+      this.state.attendedEvents === undefined ||
+      this.state.attendedEvents.length == 0
+    ) {
+      return (
+        <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
+          <View style={styles.infoContainer}>
+            <Text style={styles.subText}>
+              Did you know?{"\n"}
+              RLC has rescued over 1.7 million{"\n"}
+              pounds of food! Sign up for an event{"\n"}
+              and be a part of the movement!
+            </Text>
+
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => this.props.navigation.navigate("Search")}
+              >
+                <Text style={styles.buttonText}>Sign Up for Shift</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      );
+    } else {
+      return (
+        <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
+          <ScrollView style={{ height: "100%" }}>
+            {this.state.attendedEvents.map((event) => {
+              return (
+                <ActivityCard
+                  key={event.id}
+                  event={event}
+                  navigation={this.props.navigation}
+                />
+              );
+            })}
+          </ScrollView>
+        </View>
+      );
+    }
+  }
+}
 
 export default class EventsList2 extends Component {
   constructor(props) {
     super(props);
     this.state = {
       index: 0,
-      user_id: '',
-      events: [],
+      user_id: "",
+      isFetching: true,
+      attendedEvents: [],
+      upcomingEvents: [],
       routes: [
         { key: "first", title: "Upcoming" },
-        { key: "second", title: "Completed" }
-      ]
+        { key: "second", title: "Attended" },
+      ],
     };
   }
 
   async componentDidMount() {
     try {
-      let user = await LocalStorage.getItem('user');
-      this.setState(prevState => {
-        return { ...prevState, user_id: user.userId }
-      }, () => this._fetchEvents());
+      let user = await LocalStorage.getItem("user");
+      this.setState({ user_id: user.userId }, this._fetchEvents);
     } catch (err) {
-      console.error(err)
-      this.props.navigation.navigate("Login")
+      console.error(err);
+      this.props.navigation.navigate("Login");
     }
   }
 
-  // Fetch function; not sure if this works yet
-  // TODO: @Johnathan / @Suhas, get fetch events to work 
-  _fetchEvents = () => {
-    return getRequest(
-      APIRoutes.getEventsPath(this.state.user_id, "attended"),
-      (eventData) => {
-        LocalStorage.storeItem('events', eventData);
-        this.setState((prevState) => {
-          return { ...prevState, events: eventData }
-        });
-      },
-      (error) => {
-        alert(error)
-        console.log(error)
-      }
-    );
+  // Fetch function
+  _fetchEvents = async () => {
+    let event_lists = await get_dashboard_events_lists(this.state.user_id);
+    this.setState({
+      //Finished fetching events, populate state.
+      upcomingEvents: event_lists.upcoming,
+      attendedEvents: event_lists.attended,
+      isFetching: false,
+    });
   };
 
-  _handleIndexChange = index => this.setState({ index });
+  _handleIndexChange = (index) => this.setState({ index });
 
-  _renderTabBar = props => {
+  _renderTabBar = (props) => {
     const inputRange = props.navigationState.routes.map((x, i) => i);
 
     return (
@@ -130,25 +177,25 @@ export default class EventsList2 extends Component {
             Animated.round(
               Animated.interpolate(props.position, {
                 inputRange,
-                outputRange: inputRange.map(inputIndex =>
+                outputRange: inputRange.map((inputIndex) =>
                   inputIndex === i ? 56 : 117
-                )
+                ),
               })
             ),
             Animated.round(
               Animated.interpolate(props.position, {
                 inputRange,
-                outputRange: inputRange.map(inputIndex =>
+                outputRange: inputRange.map((inputIndex) =>
                   inputIndex === i ? 165 : 117
-                )
+                ),
               })
             ),
             Animated.round(
               Animated.interpolate(props.position, {
                 inputRange,
-                outputRange: inputRange.map(inputIndex =>
+                outputRange: inputRange.map((inputIndex) =>
                   inputIndex === i ? 219 : 117
-                )
+                ),
               })
             )
           );
@@ -215,6 +262,7 @@ export default class EventsList2 extends Component {
         renderScene={this._renderScene}
         renderTabBar={this._renderTabBar}
         onIndexChange={this._handleIndexChange}
+        initialLayout={{ height: 0, width: Sizes.width }}
       />
     );
   }
@@ -223,23 +271,24 @@ export default class EventsList2 extends Component {
 const styles = StyleSheet.create({
   button: {
     backgroundColor: "#38A5DB",
-    paddingVertical: 15,
+    paddingVertical: "4%",
     borderRadius: 5,
-    width: 250
+    maxWidth: 250,
   },
   buttonContainer: {
     alignItems: "center",
-    marginTop: 20,
-    height: 50
+    marginTop: "5.3%",
+    height: "13.3%",
   },
   buttonText: {
     textAlign: "center",
     color: "#FFFFFF",
     fontWeight: "600",
-    textTransform: "uppercase"
+    textTransform: "uppercase",
+    paddingHorizontal: "13.3%",
   },
   scene: {
-    flex: 1
+    flex: 1,
   },
   subText: {
     color: "#757575",
@@ -251,35 +300,35 @@ const styles = StyleSheet.create({
     marginTop: "0%",
 
     opacity: 0.85,
-    fontSize: 16
+    fontSize: normalize(16),
   },
   infoContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#FFFFFF",
-    margin: "auto"
+    margin: "auto",
   },
   container: {
-    flex: 1
+    flex: 1,
   },
   tabBar: {
     flexDirection: "row",
-    paddingTop: 10
+    paddingTop: "2.6%",
   },
   tabItem: {
     flex: 1,
     alignItems: "center",
-    padding: 10
+    padding: "2.6%",
   },
   heading: {
     color: "#000000",
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: "2.6%",
+    marginBottom: "2.6%",
     marginLeft: "8%",
     textAlign: "left",
     fontWeight: "600",
     opacity: 0.7,
-    fontSize: 16
-  }
+    fontSize: normalize(16),
+  },
 });
