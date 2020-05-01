@@ -37,7 +37,7 @@ export default class LoginForm extends React.Component {
           'zipCode': user.zip_code,
           'email': user.email,
           'preferredRegion': user.preferred_region_id,
-          'preferredLocation': user.preferred_location_id, //Should be plural,
+          'preferredLocation': user.preferred_location_id,
           'preferredTimes': ""
         }
         LocalStorage.storeItem('user', userJSON);
