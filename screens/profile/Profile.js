@@ -4,6 +4,8 @@ import ProfileHeader from '../../components/profile/ProfileHeader.js';
 import ProfileForm from '../../components/profile/ProfileForm.js';
 import LocalStorage from '../../helpers/LocalStorage.js';
 import { frontendError } from '../../lib/alerts';
+import { putRequest } from "../../lib/requests.js";
+
 
 import Sizes from "../../constants/Sizes.js";
 
@@ -60,6 +62,12 @@ export default class Profile extends Component {
             frontendError("Passwords must be more than 8 characters long.")
         } else {
             await LocalStorage.storeItem('user', JSON.stringify(this.state.user));
+            putRequest(`api/users/${this.state.userId}/update`, (user => {
+                console.log(user)
+            }),
+            (error) => console.error(error),
+            this.state.user
+            )
         }
     }
 
