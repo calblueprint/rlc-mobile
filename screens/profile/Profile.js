@@ -36,6 +36,8 @@ export default class Profile extends Component {
     async componentDidMount() {
         try {
             let user = await LocalStorage.getItem('user');
+            console.log('local storage user', JSON.parse(user))
+            user = JSON.parse(user)
             this.setState({ user: user }, () => { this.render() });
         } catch (err) {
             console.error(err)
@@ -61,12 +63,14 @@ export default class Profile extends Component {
         if (this.state.password.length > 0 && this.state.password.length <= 8) {
             frontendError("Passwords must be more than 8 characters long.")
         } else {
+            const { userId, ...params } = this.state.user
+            console.log(this.state.user.userId)
             await LocalStorage.storeItem('user', JSON.stringify(this.state.user));
-            putRequest(`api/users/${this.state.userId}/update`, (user => {
-                console.log(user)
+            putRequest(`api/users/${this.state.user.userId}/update`, (user => {
+                console.log('success here is update', user)
             }),
             (error) => console.error(error),
-            this.state.user
+            params
             )
         }
     }
