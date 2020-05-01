@@ -65,7 +65,7 @@ export default class SignUpScreen extends Component {
       'zipCode': '',
       'email': this.state.user.email,
       'preferredRegion': this.state.user.preferredRegion,
-      'preferredLocations': this.state.user.preferredLocations,
+      'preferredLocation': this.state.user.preferredLocation,
       'preferredTimes': this.state.user.preferredTimes
     }
     this._asyncSignIn(user)

@@ -48,7 +48,7 @@ async function fetch_regions_by_ids(idArr) {
 }
 
 async function fetch_locations() {
-  let fetched_locations = await LocalStorage.getItem("regions");
+  let fetched_locations = await LocalStorage.getItem("locations");
   if (fetched_locations == null) {
     await getRequest(
       APIRoutes.getLocationsPath(),
