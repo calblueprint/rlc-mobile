@@ -13,33 +13,25 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 function Profile({ navigation }) {
     return (
-        <ProfileScreen navigation={navigation}
-        />
+        <ProfileScreen navigation={navigation} />
     );
 }
-
-
-
 
 function Dashboard({ navigation }) {
-    navigateToSearch = () => {
-        navigation.jumpTo("Search");
-    };
     return (
-        <DashboardScreen navigation={navigation} toSearch={navigateToSearch}
-        />
+        <DashboardScreen navigation={navigation} />
     );
 }
-function Search({ navigation }) {
+
+function Search() {
     return (
-        <SearchScreen navigation={navigation}
-        />
+        <SearchScreen />
     );
 }
 
 const Tab = createBottomTabNavigator();
 
-export default function MainScreen2Nav() {
+export default function MainScreen2Nav({ navigation: rootNavigation }) {
     return (
         <NavigationContainer>
             <Tab.Navigator

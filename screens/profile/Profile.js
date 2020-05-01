@@ -4,6 +4,7 @@ import ProfileHeader from '../../components/profile/ProfileHeader.js';
 import ProfileForm from '../../components/profile/ProfileForm.js';
 import LocalStorage from '../../helpers/LocalStorage.js';
 import { frontendError } from '../../lib/alerts';
+import { NavigationActions } from 'react-navigation'
 
 import Sizes from "../../constants/Sizes.js";
 
@@ -66,6 +67,7 @@ export default class Profile extends Component {
     logoutUser = () => {
         const { navigate } = this.props.navigation;
         AsyncStorage.clear();
+        // navigate("Login");
         navigate("Login");
     }
 

@@ -37,6 +37,10 @@ export default class Dashboard extends Component {
     navigate("Profile");
   };
 
+  navigateToSearch = () => {
+    console.log("call")
+    this.props.navigation.jumpTo("Search");
+  };
 
   render() {
     return (
@@ -50,7 +54,7 @@ export default class Dashboard extends Component {
             /> */}
           </View>
         </View>
-        <EventsList navigation={this.props.navigation} toSearch={this.props.toSearch} />
+        <EventsList navigation={this.props.navigation} toSearch={this.navigateToSearch} />
       </View>
     );
   }
