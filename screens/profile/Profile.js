@@ -81,17 +81,17 @@ export default class Profile extends Component {
 
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity
+                            style={{ ...styles.button, ...styles.buttonText }}
+                            onPress={this.logoutUser}
+                        >
+                            <Text style={styles.buttonText}>Log Out</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
                             style={(this.state.disabled) ? { ...styles.disabledButton, ...styles.disabledButtonText } : { ...styles.button, ...styles.buttonText, ...styles.enabledButton }}
                             disabled={this.state.disabled}
                             onPress={this.saveUserInfo}
                         >
                             <Text style={styles.buttonText}>Save</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={{ ...styles.button, ...styles.buttonText }}
-                            onPress={this.logoutUser}
-                        >
-                            <Text style={styles.buttonText}>Log Out</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         position: 'absolute',
         bottom: 0,
-        right: 40,
+        left: 40,
         width: 135,
     },
     buttonContainer: {
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         position: 'absolute',
         bottom: 0,
-        left: 40,
+        right: 40,
         width: 135,
     },
     disabledButtonText: {
@@ -161,6 +161,6 @@ const styles = StyleSheet.create({
         textTransform: "uppercase"
     },
     enabledButton: {
-        left: 40
+        right: 40
     }
 });
