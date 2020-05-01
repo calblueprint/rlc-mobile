@@ -1,11 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   StyleSheet,
   View,
   TextInput,
   TouchableOpacity,
   Text,
-  AsyncStorage,
 } from "react-native";
 import { frontendError } from "../lib/alerts";
 import { postRequest } from "../lib/requests";

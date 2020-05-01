@@ -7,11 +7,9 @@ import {
   Text,
 } from "react-native";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
-import { isTSTypeAliasDeclaration } from "@babel/types";
 
 import Colors from "../../constants/Colors.js";
 import { normalize } from "../../utils/Normalize.js";
-import LocalStorage from "../../helpers/LocalStorage.js";
 
 import {
   fetch_locations_by_region,

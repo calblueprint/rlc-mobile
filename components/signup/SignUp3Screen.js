@@ -21,8 +21,6 @@ import {
   fetch_locations,
   fetch_locations_by_region,
   parseCurrentLocation,
-  fetch_locations_by_ids,
-  fetch_regions_by_ids,
 } from "../../helpers/LocationHelpers.js";
 
 const daysandtimes = [
