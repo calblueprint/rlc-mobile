@@ -50,12 +50,11 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         justifyContent: 'flex-start',
         marginTop: 25,
-        maxHeight: 200 // change this to be dynamic
+        maxHeight: 200, // change this to be dynamic
     },
     profilePic: {
-        width: 125,
+        width: 137,
         height: 125,
-        borderRadius: 125 / 2
     },
     badgeContainer: {
         flex: 1,

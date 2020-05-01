@@ -14,7 +14,7 @@ import LoginForm from "../../components/LoginForm.js";
 
 // Constants
 import Styles from "../../constants/Styles";
-const offset = (Platform.OS === 'android') ? -200 : 0;
+const offset = (Platform.OS === 'android') ? "-200%" : 0;
 
 export default class LoginScreen extends Component {
   constructor(props) {
@@ -40,7 +40,7 @@ export default class LoginScreen extends Component {
 
   render() {
     return (
-      <KeyboardAvoidingView keyboardVerticalOffset={offset} behavior={Platform.OS === "ios" ? "padding" : ""} style={Styles.container}>
+      <KeyboardAvoidingView keyboardVerticalOffset={offset} behavior={Platform.OS === "ios" ? "padding" : "height"} style={Styles.container}>
         <View style={Styles.logoContainer}>
           <Image
             style={Styles.logo}
