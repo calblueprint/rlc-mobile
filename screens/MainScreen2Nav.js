@@ -36,7 +36,7 @@ export default function MainScreen2Nav({ navigation: rootNavigation }) {
         <Tab.Navigator
             initialRouteName="Dashboard"
             screenOptions={{ gestureEnabled: false, swipeEnabled: false, }}
-            tabBarOptions={{ activeTintColor: "#fefefe", style: { backgroundColor: Colors.mainBlue }, }}
+            tabBarOptions={{ activeTintColor: "#FFFFFF", inactiveTintColor: "#BEDAE8", style: { backgroundColor: Colors.mainBlue }, }}
         >
             <Tab.Screen name="Profile" component={Profile}
                 options={{
