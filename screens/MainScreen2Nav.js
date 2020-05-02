@@ -33,37 +33,35 @@ const Tab = createBottomTabNavigator();
 
 export default function MainScreen2Nav({ navigation: rootNavigation }) {
     return (
-        <NavigationContainer>
-            <Tab.Navigator
-                initialRouteName="Dashboard"
-                screenOptions={{ gestureEnabled: false, swipeEnabled: false, }}
-                tabBarOptions={{ activeTintColor: "#fefefe", style: { backgroundColor: Colors.mainBlue }, }}
-            >
-                <Tab.Screen name="Profile" component={Profile}
-                    options={{
-                        tabBarLabel: 'Profile',
-                        tabBarIcon: ({ color, size }) => (
-                            <Icon name="person" color={color} size={size} />
-                        ),
-                    }}
-                />
-                <Tab.Screen name="Dashboard" component={Dashboard}
-                    options={{
-                        tabBarLabel: 'Home',
-                        tabBarIcon: ({ color, size }) => (
-                            <Icon name="home" color={color} size={size} />
-                        ),
-                    }}
-                />
-                <Tab.Screen name="Search" component={Search}
-                    options={{
-                        tabBarLabel: 'Search',
-                        tabBarIcon: ({ color, size }) => (
-                            <Icon name="search" color={color} size={size} />
-                        ),
-                    }}
-                />
-            </Tab.Navigator>
-        </NavigationContainer >
+        <Tab.Navigator
+            initialRouteName="Dashboard"
+            screenOptions={{ gestureEnabled: false, swipeEnabled: false, }}
+            tabBarOptions={{ activeTintColor: "#fefefe", style: { backgroundColor: Colors.mainBlue }, }}
+        >
+            <Tab.Screen name="Profile" component={Profile}
+                options={{
+                    tabBarLabel: 'Profile',
+                    tabBarIcon: ({ color, size }) => (
+                        <Icon name="person" color={color} size={size} />
+                    ),
+                }}
+            />
+            <Tab.Screen name="Dashboard" component={Dashboard}
+                options={{
+                    tabBarLabel: 'Home',
+                    tabBarIcon: ({ color, size }) => (
+                        <Icon name="home" color={color} size={size} />
+                    ),
+                }}
+            />
+            <Tab.Screen name="Search" component={Search}
+                options={{
+                    tabBarLabel: 'Search',
+                    tabBarIcon: ({ color, size }) => (
+                        <Icon name="search" color={color} size={size} />
+                    ),
+                }}
+            />
+        </Tab.Navigator>
     );
 }

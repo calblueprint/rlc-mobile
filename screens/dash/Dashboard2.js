@@ -38,7 +38,6 @@ export default class Dashboard extends Component {
   };
 
   navigateToSearch = () => {
-    console.log("call")
     this.props.navigation.jumpTo("Search");
   };
 
