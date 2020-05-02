@@ -111,11 +111,12 @@ export default class SignUpScreen extends Component {
       case 1:
         return (
           <View style={styles.formContainer}>
-            <SignUp1Screen
+            <SignUp3Screen
               user={this.state.user}
               setScreenForward={this.setScreenForward}
               setScreenBackward={this.setScreenBackward}
               previousUserInfo={this.state.user}
+              createUserForStorage={this.createUserForStorage} // TESTING
             />
           </View>
         );

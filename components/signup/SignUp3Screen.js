@@ -22,6 +22,7 @@ import {
   fetch_locations_by_region,
   parseCurrentLocation,
 } from "../../helpers/LocationHelpers.js";
+import Sizes from "../../constants/Sizes";
 
 const daysandtimes = [
   {
@@ -127,7 +128,6 @@ export default class SignUp3Screen extends React.Component {
     this.state.user.preferred_location_id = this.state.preferred_location_id;
     // this.state.user.availability = this.state.availability;
     this.state.user.agreementChecked = this.state.agreementChecked;
-    //TODO: ISSUE #9 - https://github.com/calblueprint/rlc-mobile/issues/9
   };
 
   componentDidMount = () => {
@@ -138,7 +138,8 @@ export default class SignUp3Screen extends React.Component {
     }
     if (this.props.previousUserInfo.preferred_location_id != null) {
       this.setState({
-        preferred_location_id: this.props.previousUserInfo.preferred_location_id,
+        preferred_location_id: this.props.previousUserInfo
+          .preferred_location_id,
       });
     }
     // if (this.props.previousUserInfo.availability != null) {
@@ -169,12 +170,11 @@ export default class SignUp3Screen extends React.Component {
    * 2. agree to terms and conditions and RLC rescuer policy.
    */
   checkValidNext = () => {
-    if (
-      this.state.preferred_region_id.length == 0) {
-    //   this.state.preferred_region_id.length == 0 ||
-    //   this.state.preferred_location_id.length == 0 || // I think this field is labeled as optional so shouldn't be checked.
-    //   this.state.availability == ""
-    // ) {
+    if (this.state.preferred_region_id.length == 0) {
+      //   this.state.preferred_region_id.length == 0 ||
+      //   this.state.preferred_location_id.length == 0 || // I think this field is labeled as optional so shouldn't be checked.
+      //   this.state.availability == ""
+      // ) {
       frontendError("Please fill out all fields.");
     } else if (this.state.agreementChecked == false) {
       frontendError(
@@ -203,7 +203,7 @@ export default class SignUp3Screen extends React.Component {
   };
 
   onPreferredLocationChange = (preferred_location_id) => {
-    this.setState({ preferred_location_id : preferred_location_id });
+    this.setState({ preferred_location_id: preferred_location_id });
   };
 
   // onPreferredTimesChange = (availability) => {
@@ -284,7 +284,7 @@ export default class SignUp3Screen extends React.Component {
                   },
                   selectToggleText: {
                     fontSize: normalize(14),
-                    color: "#333333",
+                    color: Colors.black,
                   },
                 }}
               />
@@ -312,7 +312,7 @@ export default class SignUp3Screen extends React.Component {
                   },
                   selectToggleText: {
                     fontSize: normalize(14),
-                    color: "#333333",
+                    color: Colors.black,
                   },
                 }}
               />
@@ -341,11 +341,12 @@ export default class SignUp3Screen extends React.Component {
                   },
                   selectToggleText: {
                     fontSize: normalize(14),
-                    color: "#333333",
+                    color: Colors.black,
                   },
                 }}
               /> */}
               <CheckBox
+                wrapperStyle= {styles.checkBox}
                 title="By creating an account, you agree to the Terms and Conditions and RLC Rescuer Policy."
                 checked={this.state.agreementChecked}
                 onPress={() =>
@@ -377,20 +378,20 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: Colors.mainBlue,
-    paddingVertical: 15,
+    paddingVertical: "4%",
     marginBottom: 20,
     borderRadius: 5,
     position: "absolute",
     bottom: 0,
-    width: 320,
+    width: Sizes.width * (320/375),
   },
   buttonContainer: {
     alignItems: "center",
-    marginTop: 50,
+    marginTop: "6.1%",
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-end",
-    height: 50,
+    height: "13.3%",
   },
   buttonText: {
     textAlign: "center",
@@ -399,12 +400,12 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   currentLocationButton: {
-    paddingVertical: 15,
+    paddingVertical: "4%",
     marginBottom: 10,
     borderRadius: 5,
     position: "absolute",
     bottom: 0,
-    width: 320,
+    width: "80%",
     borderWidth: 2,
     borderColor: Colors.mainBlue,
   },
@@ -414,7 +415,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-end",
-    height: 50,
+    height: Sizes.height * (50/812),
   },
   currentLocationButtonText: {
     textAlign: "center",
@@ -422,18 +423,18 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   input: {
-    height: 40,
-    marginBottom: 20,
+    height: "5%",
+    marginBottom: "2.4%",
     paddingHorizontal: 0,
     borderBottomWidth: 1,
-    borderBottomColor: "#333333",
-    color: "#333333",
+    borderBottomColor: Colors.black,
+    color: Colors.black,
   },
   inputContainer: {
-    paddingTop: 25,
+    paddingTop: "3%",
   },
   subHeading: {
-    color: "#333333",
+    color: Colors.black,
     marginTop: 10,
     textAlign: "left",
     fontWeight: "600",
@@ -441,7 +442,7 @@ const styles = StyleSheet.create({
     fontSize: normalize(14),
   },
   regionsubHeading: {
-    color: "#333333",
+    color: Colors.black,
     textAlign: "center",
     opacity: 0.9,
     fontSize: normalize(14),
@@ -452,7 +453,10 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: normalize(20),
-    color: "rgba(96,100,109, 1)",
+    color: Colors.black,
     lineHeight: 24,
   },
+  checkBox: {
+    width: "95%"
+  }
 });
