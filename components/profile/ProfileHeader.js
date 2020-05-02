@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Icon, Text, Image } from 'react-native';
 
+import Sizes from "../../constants/Sizes.js";
+
+
 export default class ProfileHeader extends Component {
     constructor(props) {
         super(props)
@@ -50,11 +53,11 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         justifyContent: 'flex-start',
         marginTop: 25,
-        maxHeight: 200, // change this to be dynamic
+        maxHeight: '75%'
     },
     profilePic: {
-        width: 137,
-        height: 125,
+        width: '37%',
+        height: Sizes.height * 0.155
     },
     badgeContainer: {
         flex: 1,
