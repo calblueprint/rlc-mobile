@@ -1,5 +1,5 @@
 import React, { Component } from '../../node_modules/react';
-import { AsyncStorage, StyleSheet, View, Text, ScrollView, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { AsyncStorage, StyleSheet, View, Text, ScrollView, TouchableOpacity, KeyboardAvoidingView, Alert } from 'react-native';
 import ProfileHeader from '../../components/profile/ProfileHeader.js';
 import ProfileForm from '../../components/profile/ProfileForm.js';
 import LocalStorage from '../../helpers/LocalStorage.js';
@@ -31,12 +31,12 @@ export default class Profile extends Component {
             },
             password: ""
         }
+        this.changeUserInfo=this.changeUserInfo.bind(this)
     }
 
     async componentDidMount() {
         try {
             let user = await LocalStorage.getItem('user');
-            console.log('local storage user', JSON.parse(user))
             user = JSON.parse(user)
             this.setState({ user: user }, () => { this.render() });
         } catch (err) {
@@ -52,7 +52,12 @@ export default class Profile extends Component {
     }
 
     changeUserInfo = (attribute, text) => {
-        this.setState({ [attribute]: text });
+        const user = this.state.user
+        user[attribute] = text
+        console.log(this.state.user[attribute])
+    
+        this.setState({ user });
+        console.log(this.state.user)
     }
 
     getUserAttribute = (attribute) => {
@@ -63,11 +68,17 @@ export default class Profile extends Component {
         if (this.state.password.length > 0 && this.state.password.length <= 8) {
             frontendError("Passwords must be more than 8 characters long.")
         } else {
-            const { userId, ...params } = this.state.user
-            console.log(this.state.user.userId)
+            // TODO @Johnathan, gracefully handle more complex updates and also 
+            // just change the state naming to not have to rename params.
+            const { userId, firstName, lastName, phoneNumber, city, state, 
+                zipCode, preferredRegion, preferredLocation, 
+                preferredTimes, ...params } = this.state.user
+            params['firstname'] = firstName
+            params['lastname'] = lastName
+            params['telephone'] = phoneNumber
             await LocalStorage.storeItem('user', JSON.stringify(this.state.user));
-            putRequest(`api/users/${this.state.user.userId}/update`, (user => {
-                console.log('success here is update', user)
+            putRequest(`/api/users/${this.state.user.userId}/update`, (user => {
+                Alert.alert("Successfully updated!")
             }),
             (error) => console.error(error),
             params

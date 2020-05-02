@@ -40,7 +40,7 @@ export default class LoginForm extends React.Component {
           'preferredLocation': user.preferred_location_id,
           'preferredTimes': ""
         }
-        console.log('WE ARE SAVING THIS', userJSON)
+        LocalStorage.storeItem('user', userJSON);
         this.props.navigateHandler();
       },
       error => {
