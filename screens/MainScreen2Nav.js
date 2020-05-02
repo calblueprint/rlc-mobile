@@ -10,7 +10,6 @@ import ProfileScreen from "../screens/profile/Profile.js";
 import SearchScreen from "../screens/search/Search.js";
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 function Profile({ navigation }) {
     return (
@@ -30,14 +29,14 @@ function Search() {
     );
 }
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function MainScreen2Nav({ navigation: rootNavigation }) {
     return (
         <Tab.Navigator
             initialRouteName="Dashboard"
             screenOptions={{ gestureEnabled: false, swipeEnabled: false, }}
-            barStyle={{ backgroundColor: Colors.mainBlue }}
+            tabBarOptions={{ activeTintColor: "#fefefe", style: { backgroundColor: Colors.mainBlue }, }}
         >
             <Tab.Screen name="Profile" component={Profile}
                 options={{
