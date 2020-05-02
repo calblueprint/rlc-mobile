@@ -390,6 +390,7 @@ export default class Search extends Component {
         }
 
         if (checked) {
+          // selDay.numtimes = val
           this.countTime(numOfTimes - alreadySame, false);
         } else {
           this.countTime(alreadySame - numOfTimes, false);
@@ -410,7 +411,7 @@ export default class Search extends Component {
       this.setState({ numTimes: val });
     } else {
       this.setState((prevState) => ({
-        numTimes: prevState.numTimes + val,
+        numTimes: prevState.numTimes + val
       }));
     }
   };
