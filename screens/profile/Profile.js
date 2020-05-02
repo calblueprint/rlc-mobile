@@ -5,7 +5,7 @@ import ProfileForm from '../../components/profile/ProfileForm.js';
 import LocalStorage from '../../helpers/LocalStorage.js';
 import { frontendError } from '../../lib/alerts';
 import { putRequest } from "../../lib/requests.js";
-
+import { APIRoutes } from "../../config/routes";
 
 import Sizes from "../../constants/Sizes.js";
 
@@ -54,10 +54,7 @@ export default class Profile extends Component {
     changeUserInfo = (attribute, text) => {
         const user = this.state.user
         user[attribute] = text
-        console.log(this.state.user[attribute])
-    
         this.setState({ user });
-        console.log(this.state.user)
     }
 
     getUserAttribute = (attribute) => {
@@ -77,7 +74,7 @@ export default class Profile extends Component {
             params['lastname'] = lastName
             params['telephone'] = phoneNumber
             await LocalStorage.storeItem('user', JSON.stringify(this.state.user));
-            putRequest(`/api/users/${this.state.user.userId}/update`, (user => {
+            putRequest(APIRoutes.updateUserPath(this.state.user.userId), (user => {
                 Alert.alert("Successfully updated!")
             }),
             (error) => console.error(error),
