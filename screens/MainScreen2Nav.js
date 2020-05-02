@@ -1,6 +1,4 @@
 import React from "react";
-import { StyleSheet, ScrollView, View } from "react-native";
-import Sizes from "../constants/Sizes.js";
 import Colors from "../constants/Colors";
 
 import { Icon } from "react-native-elements";
@@ -8,7 +6,6 @@ import { Icon } from "react-native-elements";
 import DashboardScreen from "../screens/dash/Dashboard2.js";
 import ProfileScreen from "../screens/profile/Profile.js";
 import SearchScreen from "../screens/search/Search.js";
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 function Profile({ navigation }) {

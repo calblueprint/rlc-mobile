@@ -58,7 +58,6 @@ import SignupScreen from "../screens/signup/SignUpScreen.js";
 import ConfirmationScreen from "../components/signup/ConfirmationScreen.js";
 import ShiftScreen from "../screens/shift/ShiftScreen.js";
 import ChangeConfirmScreen from "../screens/shift/ChangeConfirmScreen.js";
-import MainScreen from "../screens/MainScreen.js";
 import MainScreen2 from "../screens/MainScreen2Nav.js";
 
 
