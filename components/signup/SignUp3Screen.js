@@ -109,9 +109,9 @@ export default class SignUp3Screen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      preferredRegion: [],
-      preferredLocation: [],
-      preferredTimes: [],
+      preferred_region_id: [],
+      preferred_location_id: [],
+      availability: [],
       agreementChecked: false,
       user: {},
       isFetching: true,
@@ -123,29 +123,29 @@ export default class SignUp3Screen extends React.Component {
   //Setup User Payload
   setupParams = () => {
     this.setState({ user: this.props.user });
-    this.state.user.preferredRegion = this.state.preferredRegion;
-    this.state.user.preferredLocation = this.state.preferredLocation;
-    this.state.user.preferredTimes = this.state.preferredTimes;
+    this.state.user.preferred_region_id = this.state.preferred_region_id;
+    this.state.user.preferred_location_id = this.state.preferred_location_id;
+    // this.state.user.availability = this.state.availability;
     this.state.user.agreementChecked = this.state.agreementChecked;
     //TODO: ISSUE #9 - https://github.com/calblueprint/rlc-mobile/issues/9
   };
 
   componentDidMount = () => {
-    if (this.props.previousUserInfo.preferredRegion != null) {
+    if (this.props.previousUserInfo.preferred_region_id != null) {
       this.setState({
-        preferredRegion: this.props.previousUserInfo.preferredRegion,
+        preferred_region_id: this.props.previousUserInfo.preferred_region_id,
       });
     }
-    if (this.props.previousUserInfo.preferredLocation != null) {
+    if (this.props.previousUserInfo.preferred_location_id != null) {
       this.setState({
-        preferredLocation: this.props.previousUserInfo.preferredLocation,
+        preferred_location_id: this.props.previousUserInfo.preferred_location_id,
       });
     }
-    if (this.props.previousUserInfo.preferredTimes != null) {
-      this.setState({
-        preferredTimes: this.props.previousUserInfo.preferredTimes,
-      });
-    }
+    // if (this.props.previousUserInfo.availability != null) {
+    //   this.setState({
+    //     availability: this.props.previousUserInfo.availability,
+    //   });
+    // }
     if (this.props.previousUserInfo.agreementChecked) {
       this.setState({
         agreementChecked: this.props.previousUserInfo.agreementChecked,
@@ -170,10 +170,11 @@ export default class SignUp3Screen extends React.Component {
    */
   checkValidNext = () => {
     if (
-      this.state.preferredRegion.length == 0 ||
-      this.state.preferredLocation.length == 0 || // I think this field is labeled as optional so shouldn't be checked.
-      this.state.preferredTimes == ""
-    ) {
+      this.state.preferred_region_id.length == 0) {
+    //   this.state.preferred_region_id.length == 0 ||
+    //   this.state.preferred_location_id.length == 0 || // I think this field is labeled as optional so shouldn't be checked.
+    //   this.state.availability == ""
+    // ) {
       frontendError("Please fill out all fields.");
     } else if (this.state.agreementChecked == false) {
       frontendError(
@@ -187,13 +188,13 @@ export default class SignUp3Screen extends React.Component {
   };
 
   // Single select, expects array of length 1
-  onPreferredRegionChange = async (preferredRegionId) => {
+  onPreferredRegionChange = async (preferred_region_id) => {
     let included_locations = await fetch_locations_by_region(
-      preferredRegionId[0]
+      preferred_region_id[0]
     );
     this.setState({
-      preferredRegion: preferredRegionId,
-      preferredLocation: [],
+      preferred_region_id: preferred_region_id,
+      preferred_location_id: [],
       locations:
         included_locations === undefined || included_locations.length == 0
           ? []
@@ -201,13 +202,13 @@ export default class SignUp3Screen extends React.Component {
     });
   };
 
-  onPreferredLocationChange = (preferredLocationIds) => {
-    this.setState({ preferredLocation : preferredLocationIds });
+  onPreferredLocationChange = (preferred_location_id) => {
+    this.setState({ preferred_location_id : preferred_location_id });
   };
 
-  onPreferredTimesChange = (preferredTimes) => {
-    this.setState({ preferredTimes });
-  };
+  // onPreferredTimesChange = (availability) => {
+  //   this.setState({ availability });
+  // };
 
   // Check user's current location and find corresponding regions, restrict choices in form for locations to those within region.
   setCurrentRegion = async () => {
@@ -264,7 +265,7 @@ export default class SignUp3Screen extends React.Component {
               <SectionedMultiSelect
                 single
                 colors={colors}
-                selectedItems={this.state.preferredRegion}
+                selectedItems={this.state.preferred_region_id}
                 items={this.state.regions}
                 uniqueKey="id"
                 displayKey="name"
@@ -274,7 +275,7 @@ export default class SignUp3Screen extends React.Component {
                 modalWithSafeAreaView={true}
                 submitButtonText="Select"
                 confirmText="SAVE"
-                value={this.state.preferredRegion}
+                value={this.state.preferred_region_id}
                 styles={{
                   selectToggle: {
                     borderBottomWidth: 1,
@@ -291,7 +292,7 @@ export default class SignUp3Screen extends React.Component {
               <Text style={styles.subHeading}>Preferred Location(s)</Text>
               <SectionedMultiSelect
                 colors={colors}
-                selectedItems={this.state.preferredLocation}
+                selectedItems={this.state.preferred_location_id}
                 items={this.state.locations}
                 uniqueKey="id"
                 displayKey="name"
@@ -302,7 +303,7 @@ export default class SignUp3Screen extends React.Component {
                 modalWithSafeAreaView={true}
                 submitButtonText="Select"
                 confirmText="SAVE"
-                value={this.state.preferredLocation}
+                value={this.state.preferred_location_id}
                 styles={{
                   selectToggle: {
                     borderBottomWidth: 1,
@@ -316,11 +317,11 @@ export default class SignUp3Screen extends React.Component {
                 }}
               />
 
-              <Text style={styles.subHeading}>Preferred Time(s)</Text>
+              {/* <Text style={styles.subHeading}>Preferred Time(s)</Text>
               <SectionedMultiSelect
                 hideSearch
                 colors={colors}
-                selectedItems={this.state.preferredTimes}
+                selectedItems={this.state.availability}
                 items={daysandtimes}
                 uniqueKey="id"
                 expandDropDowns={true}
@@ -331,7 +332,7 @@ export default class SignUp3Screen extends React.Component {
                 modalWithSafeAreaView={true}
                 submitButtonText="Select"
                 confirmText="SAVE"
-                value={this.state.preferredTimes}
+                value={this.state.availability}
                 styles={{
                   selectToggle: {
                     borderBottomWidth: 1,
@@ -343,7 +344,7 @@ export default class SignUp3Screen extends React.Component {
                     color: "#333333",
                   },
                 }}
-              />
+              /> */}
               <CheckBox
                 title="By creating an account, you agree to the Terms and Conditions and RLC Rescuer Policy."
                 checked={this.state.agreementChecked}

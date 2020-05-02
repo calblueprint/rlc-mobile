@@ -14,18 +14,18 @@ export default class Profile extends Component {
             disabled: true,
             user: {
                 'userId': "",
-                'firstName': "",
-                'lastName': "",
+                'firstname': "",
+                'lastname': "",
                 'occupation': "",
-                'phoneNumber': "",
+                'telephone': "",
                 'address': "",
                 'city': null,
                 'state': null,
-                'zipCode': "",
+                'zip_code': "",
                 'email': "",
-                'preferredRegion': [],
-                'preferredLocation': [],
-                'preferredTimes': []
+                'preferred_region_id': [],
+                'preferred_location_id': [],
+                'availability': {}
             },
             password: ""
         }

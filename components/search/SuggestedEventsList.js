@@ -30,9 +30,9 @@ export default class SuggestedEventsList extends Component {
 
     componentDidMount() {
         locations = {};
-        for (let i = 0; i < this.props.preferredLocations.length; i++) {
-            locationId = this.props.preferredLocations[i]["id"];
-            locationName = this.props.preferredLocations[i]["name"];
+        for (let i = 0; i < this.props.preferred_location_id.length; i++) {
+            locationId = this.props.preferred_location_id[i]["id"];
+            locationName = this.props.preferred_location_id[i]["name"];
             locations[locationId] = locationName;
         }
         this.setState(

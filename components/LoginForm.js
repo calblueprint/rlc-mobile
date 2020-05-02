@@ -26,18 +26,18 @@ export default class LoginForm extends React.Component {
       APIRoutes.loginPath(),
       user => {
         const userJSON = {'userId': user.id,
-          'firstName': user.firstname,
-          'lastName': user.lastname,
+          'firstname': user.firstname,
+          'lastname': user.lastname,
           'occupation': user.occupation,
-          'phoneNumber': user.telephone,
+          'telephone': user.telephone,
           'address': user.address,
           'city': "",
           'state': "",
-          'zipCode': user.zip_code,
+          'zip_code': user.zip_code,
           'email': user.email,
-          'preferredRegion': user.preferred_region_id,
-          'preferredLocation': user.preferred_location_id,
-          'preferredTimes': ""
+          'preferred_region_id': user.preferred_region_id,
+          'preferred_location_id': user.preferred_location_id,
+          'availability': ""
         }
         LocalStorage.storeItem('user', userJSON);
         this.props.navigateHandler();

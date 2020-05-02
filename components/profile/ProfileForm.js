@@ -99,9 +99,9 @@ export default class ProfileForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      preferredRegion: [],
-      preferredLocation: [],
-      preferredTimes: [],
+      preferred_region_id: [],
+      preferred_location_id: [],
+      availability: {},
       regions: [],
       locations: [],
       isFetching: true,
@@ -109,19 +109,19 @@ export default class ProfileForm extends Component {
   }
 
   componentDidMount() {
-    if (this.props.getUserAttribute("preferredRegion") != null) {
+    if (this.props.getUserAttribute("preferred_region_id") != null) {
       this.setState({
-        preferredRegion: this.props.getUserAttribute("preferredRegion"),
+        preferred_region_id: this.props.getUserAttribute("preferred_region_id"),
       });
     }
-    if (this.props.getUserAttribute("preferredLocation") != null) {
+    if (this.props.getUserAttribute("preferred_location_id") != null) {
       this.setState({
-        preferredLocation: this.props.getUserAttribute("preferredLocation"),
+        preferred_location_id: this.props.getUserAttribute("preferred_location_id"),
       });
     }
-    if (this.props.getUserAttribute("preferredTimes") != null) {
+    if (this.props.getUserAttribute("availability") != null) {
       this.setState({
-        preferredTimes: this.props.getUserAttribute("preferredTimes"),
+        availability: this.props.getUserAttribute("availability"),
       });
     }
     this._get_location_data();
@@ -137,13 +137,13 @@ export default class ProfileForm extends Component {
     });
   };
 
-  onPreferredRegionChange = async (preferredRegionId) => {
+  onPreferredRegionChange = async (preferred_region_id) => {
     let included_locations = await fetch_locations_by_region(
-      preferredRegionId[0]
+      preferred_region_id[0]
     );
     this.setState({
-      preferredRegion: preferredRegionId,
-      preferredLocation: [],
+      preferred_region_id: preferred_region_id,
+      preferred_location_id: [],
       locations:
         included_locations === undefined || included_locations.length == 0
           ? []
@@ -151,12 +151,12 @@ export default class ProfileForm extends Component {
     });
   };
 
-  onPreferredLocationChange = (preferredLocationIds) => {
-    this.setState({ preferredLocation: preferredLocationIds });
+  onPreferredLocationChange = (preferred_location_id) => {
+    this.setState({ preferred_location_id: preferred_location_id });
   };
 
-  onPreferredTimesChange = (preferredTimes) => {
-    this.setState({ preferredTimes: preferredTimes });
+  onPreferredTimesChange = (availability) => {
+    this.setState({ availability: availability });
   };
 
   render() {
@@ -168,9 +168,9 @@ export default class ProfileForm extends Component {
           <Text style={styles.subHeading}>First Name</Text>
           <TextInput
             style={styles.input}
-            defaultValue={this.props.getUserAttribute("firstName")}
+            defaultValue={this.props.getUserAttribute("firstname")}
             onChangeText={(text) => {
-              this.props.changeUserInfo("firstName", text);
+              this.props.changeUserInfo("firstname", text);
               this.props.enableSaveButton();
             }}
             returnKeyType="next"
@@ -183,9 +183,9 @@ export default class ProfileForm extends Component {
           <Text style={styles.subHeading}>Last Name</Text>
           <TextInput
             style={styles.input}
-            defaultValue={this.props.getUserAttribute("lastName")}
+            defaultValue={this.props.getUserAttribute("lastname")}
             onChangeText={(text) => {
-              this.props.changeUserInfo("lastName", text);
+              this.props.changeUserInfo("lastname", text);
               this.props.enableSaveButton();
             }}
             returnKeyType="next"
@@ -221,9 +221,9 @@ export default class ProfileForm extends Component {
           <Text style={styles.subHeading}>Phone Number</Text>
           <TextInput
             style={styles.input}
-            defaultValue={this.props.getUserAttribute("phoneNumber")}
+            defaultValue={this.props.getUserAttribute("telephone")}
             onChangeText={(text) => {
-              this.props.changeUserInfo("phoneNumber", text);
+              this.props.changeUserInfo("telephone", text);
               this.props.enableSaveButton();
             }}
             returnKeyType="next"
@@ -296,9 +296,9 @@ export default class ProfileForm extends Component {
           <Text style={styles.subHeading}>Zip Code</Text>
           <TextInput
             style={styles.input}
-            defaultValue={this.props.getUserAttribute("zipCode")}
+            defaultValue={this.props.getUserAttribute("zip_code")}
             onChangeText={(text) => {
-              this.props.changeUserInfo("zipCode", text);
+              this.props.changeUserInfo("zip_code", text);
               this.props.enableSaveButton();
             }}
             returnKeyType="done"
@@ -350,13 +350,13 @@ export default class ProfileForm extends Component {
           <SectionedMultiSelect
             single
             colors={{ primary: Colors.mainBlue }}
-            selectedItems={this.state.preferredRegionId}
+            selectedItems={this.state.preferred_region_id}
             items={this.state.regions}
             uniqueKey="id"
             displayKey="name"
-            onSelectedItemsChange={(preferredRegionId) => {
-              this.onPreferredRegionChange(preferredRegionId);
-              this.props.changeUserInfo("preferredRegionId", preferredRegionId);
+            onSelectedItemsChange={(preferred_region_id) => {
+              this.onPreferredRegionChange(preferred_region_id);
+              this.props.changeUserInfo("preferred_region_id", preferred_region_id);
               this.props.enableSaveButton();
             }}
             searchPlaceholderText="Search regions..."
@@ -364,7 +364,7 @@ export default class ProfileForm extends Component {
             modalWithSafeAreaView={true}
             submitButtonText="Select"
             confirmText="SAVE"
-            value={this.state.preferredRegionId}
+            value={this.state.preferred_region_id}
             styles={{
               selectToggle: {
                 borderBottomWidth: 1,
@@ -382,15 +382,15 @@ export default class ProfileForm extends Component {
           <Text style={styles.subHeading}>Preferred Locations (Optional)</Text>
           <SectionedMultiSelect
             colors={{ primary: Colors.mainBlue }}
-            selectedItems={this.state.preferredLocationIds}
+            selectedItems={this.state.preferred_location_id}
             items={this.state.locations}
             uniqueKey="id"
             displayKey="name"
-            onSelectedItemsChange={(preferredLocationIds) => {
-              this.onPreferredLocationChange(preferredLocationIds);
+            onSelectedItemsChange={(preferred_location_id) => {
+              this.onPreferredLocationChange(preferred_location_id);
               this.props.changeUserInfo(
-                "preferredLocationIds",
-                preferredLocationIds
+                "preferred_location_id",
+                preferred_location_id
               );
               this.props.enableSaveButton();
             }}
@@ -400,7 +400,7 @@ export default class ProfileForm extends Component {
             modalWithSafeAreaView={true}
             submitButtonText="Select"
             confirmText="SAVE"
-            value={this.state.preferredLocationIds}
+            value={this.state.preferred_location_id}
             styles={{
               selectToggle: {
                 borderBottomWidth: 1,
@@ -419,13 +419,13 @@ export default class ProfileForm extends Component {
           <SectionedMultiSelect
             hideSearch
             colors={{ primary: Colors.mainBlue }}
-            selectedItems={this.state.preferredTimes}
+            selectedItems={this.state.availability}
             items={daysandtimes}
             uniqueKey="id"
             expandDropDowns={true}
-            onSelectedItemsChange={(preferredTimes) => {
-              this.onPreferredTimesChange(preferredTimes);
-              this.props.changeUserInfo("preferredTimes", preferredTimes);
+            onSelectedItemsChange={(availability) => {
+              this.onPreferredTimesChange(availability);
+              this.props.changeUserInfo("availability", availability);
               this.props.enableSaveButton();
             }}
             subKey="times"

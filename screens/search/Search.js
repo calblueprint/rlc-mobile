@@ -438,7 +438,7 @@ export default class Search extends Component {
         <View style={styles.container}>
           <SuggestedEventsList
             navigation={this.props.navigation}
-            preferredLocations={this.state.locations}
+            preferred_location_id={this.state.locations}
           />
         </View>
       );
