@@ -23,15 +23,15 @@ function Dashboard({ navigation }) {
     );
 }
 
-function Search() {
+function Search({ navigation }) {
     return (
-        <SearchScreen />
+        <SearchScreen navigation={navigation} />
     );
 }
 
 const Tab = createBottomTabNavigator();
 
-export default function MainScreen2Nav({ navigation: rootNavigation }) {
+export default function MainScreen2Nav() {
     return (
         <Tab.Navigator
             initialRouteName="Dashboard"
