@@ -48,6 +48,8 @@ export default class ShiftScreen extends React.Component {
      constructor(props) {
           super(props)
           const pEvent = this.props.navigation.state.params.event;
+          console.log("hrre's pevent");
+          console.log(pEvent);
           this.state = {
                participantData: [
                     {
@@ -79,32 +81,32 @@ export default class ShiftScreen extends React.Component {
                          description: "Collect food from vendor.",
                          photo_needed: false
                     },
-                    {
-                         step: 4,
-                         description: "Walk to ",// + pEvent.details.dropoff_locations[1].title,
-                         photo_needed: false
-                    },
-                    {
-                         step: 5,
-                         description: "Collect food from vendor.",
-                         photo_needed: false
-                    },
-                    {
-                         step: 6,
-                         description: "Walk to ",// + pEvent.details.dropoff_locations[2].title,
-                         photo_needed: false
+                    // {
+                    //      step: 4,
+                    //      description: "Walk to " + pEvent.details.dropoff_locations[0].title,
+                    //      photo_needed: false
+                    // },
+                    // {
+                    //      step: 5,
+                    //      description: "Collect food from vendor.",
+                    //      photo_needed: false
+                    // },
+                    // {
+                    //      step: 6,
+                    //      description: "Walk to " + pEvent.details.dropoff_locations[0].title,
+                    //      photo_needed: false
 
-                    },
-                    {
-                         step: 7,
-                         description: "Take a photo of the food once it is delivered to " + pEvent.details.dropoff_locations[2].title,
-                         photo_needed: true
-                    },
-                    {
-                         step: 8,
-                         description: "Request a receipt from " + pEvent.details.dropoff_locations[2].title + " and take a photo of the receipt*",
-                         photo_needed: true
-                    },
+                    // },
+                    // {
+                    //      step: 7,
+                    //      description: "Take a photo of the food once it is delivered to " + pEvent.details.dropoff_locations[0].title,
+                    //      photo_needed: true
+                    // },
+                    // {
+                    //      step: 8,
+                    //      description: "Request a receipt from " + pEvent.details.dropoff_locations[0].title + " and take a photo of the receipt*",
+                    //      photo_needed: true
+                    // },
                ],
                markers: [
                     {
@@ -166,13 +168,26 @@ export default class ShiftScreen extends React.Component {
 
      navigateToSignConfirm = () => {
           const { navigate } = this.props.navigation;
-          navigate("ChangeConfirm", {
-               title: this.props.navigation.state.params.event.details.name,
-               description: "This is a recurring event.",
-               hasQ: true,
-               question: "How often do you want to attend?",
-               options: recurOptions
-          });
+          const pEvent = this.props.navigation.state.params.event;
+          if (pEvent.details.recurring) {
+               navigate("ChangeConfirm", {
+                    title: pEvent.details.name,
+                    description: "This is a recurring event.",
+                    hasQ: true,
+                    question: "How often do you want to attend?",
+                    options: recurOptions,
+                    event_id: pEvent.details.id
+               });
+          }
+          else {
+               navigate("ChangeConfirm", {
+                    title: pEvent.details.name,
+                    description: "Are you sure you want to attend?",
+                    hasQ: false,
+                    options: [],
+                    event_id: pEvent.details.id
+               });
+          }
      };
 
      selectShiftTitle = (sType) => {
@@ -190,7 +205,8 @@ export default class ShiftScreen extends React.Component {
      render() {
 
           const pEvent = this.props.navigation.state.params.event;
-          console.log(pEvent)
+          console.log("here's pevent");
+          console.log(pEvent);
 
           //set latitude and longitude
           let lat = 37.78825
@@ -202,9 +218,9 @@ export default class ShiftScreen extends React.Component {
                <View style={{ flex: 1 }}>
                     <View style={{ flex: 1 }}>
                          <Header
-                              centerTitle={this.selectShiftTitle(pEvent.shiftType)}
+                              centerTitle={this.selectShiftTitle(pEvent.details.shiftType)}
                               onPressBack={this.navigateToMain}
-                              rightSide={(pEvent.shiftType === ShiftType.upcoming || pEvent.shiftType === ShiftType.current) ? true : false}
+                              rightSide={(pEvent.details.shiftType === ShiftType.upcoming || pEvent.shiftType === ShiftType.current) ? true : false}
                               actionTitle="Withdraw"
                               onPressHandler={this.navigateToWithdraw}
                          />
@@ -216,7 +232,7 @@ export default class ShiftScreen extends React.Component {
                               <ScrollView>
                                    <View style={styles.container}>
 
-                                        {pEvent.shiftType === ShiftType.current && <Text style={styles.status}>
+                                        {pEvent.details.shiftType === ShiftType.current && <Text style={styles.status}>
                                              happening now
                               </Text>}
                                         <Text style={styles.title}>
@@ -247,13 +263,13 @@ export default class ShiftScreen extends React.Component {
                                                        longitudeDelta: 0.0421,
                                                   }}
                                              >
-                                                  {/* {pEvent.dropoff_locations && pEvent.dropoff_locations.map(marker => (
+                                                  { pEvent.dropoff_locations && pEvent.dropoff_locations.map(marker => (
                                                        <Marker
                                                             coordinate={marker.latlng}
                                                             title={marker.title}
                                                             description={marker.description}
                                                        />
-                                                  ))} */}
+                                                  )) }
                                              </MapView>
                                         </View>
 
@@ -290,12 +306,12 @@ export default class ShiftScreen extends React.Component {
                                              />
                                         </View> */}
 
-                                        {(pEvent.shiftType === ShiftType.upcoming || pEvent.shiftType === ShiftType.current) && <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
+                                        {(pEvent.details.shiftType === ShiftType.upcoming || pEvent.shiftType === ShiftType.current) && <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
                                              <Text style={{ fontSize: 17 }}>10.</Text>
                                              <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>Tap "Complete" to confirm the completion of the event. The last three steps must be completed.</Text>
                                         </View>}
 
-                                        {(pEvent.shiftType === ShiftType.upcoming || pEvent.shiftType === ShiftType.current) && <View style={styles.buttonContainer}>
+                                        {(pEvent.details.shiftType === ShiftType.upcoming || pEvent.shiftType === ShiftType.current) && <View style={styles.buttonContainer}>
                                              <TouchableOpacity style={styles.button} onPress={this.navigateToMain}>
                                                   <Text style={styles.buttonText}>Complete</Text>
                                              </TouchableOpacity>
@@ -304,7 +320,7 @@ export default class ShiftScreen extends React.Component {
 
                                    </View>
                               </ScrollView>
-                              {pEvent.shiftType === ShiftType.searched && <View style={styles.signUpButtonContainer}>
+                              {pEvent.details.shiftType == ShiftType.searched && <View style={styles.signUpButtonContainer}>
                                    <TouchableOpacity style={styles.signUpButton} onPress={this.navigateToSignConfirm}
                                    >
                                         <Text style={styles.buttonText}>Sign Up</Text>

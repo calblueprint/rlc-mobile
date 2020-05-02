@@ -30,7 +30,9 @@ export default class SuggestedEventsList extends Component {
             locations[locationId] = locationName;
             location_ids.push(locationId);
         }
-        console.log("my locs", this.props.preferredLocations[0]);
+        locations['66']="Astoria";
+        location_ids.push(66);
+        console.log("my locs", locations);
         const times = this.props.preferredTimes;
         // console.log("hello times", this.props.preferredTimes);
         // let times = [];
@@ -59,7 +61,13 @@ export default class SuggestedEventsList extends Component {
                     const startingTime = new Date(responseData[i]["starting_time"]);
                     const endingTime = new Date(responseData[i]["ending_time"]);
                     eventDetails["shiftType"] = ShiftType.searched;
-                    eventDetails["start_time"] = startingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }) + " to " + endingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+                    eventDetails["date"] = startingTime.toLocaleDateString("en-US")
+                    eventDetails["start_time"] = startingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+                    eventDetails["end_time"] = endingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+                    eventDetails["dropoff_locations"] = responseData[i]["dropoff_locations"];
+                    eventDetails["location"] = responseData[i]["location"]
+                    eventDetails["recurring"] = responseData[i]["recurring"]
+                    eventDetails["id"] = responseData[i]["id"]
                     if (responseData[i]["location_id"] !== null) {
                         console.log("nullcheck");
                         const locationIdString = responseData[i]["location_id"].toString();
@@ -92,9 +100,16 @@ export default class SuggestedEventsList extends Component {
                     eventDetails["spotsOpen"] = responseData[i]["slot"];
                     eventDetails["weight"] = responseData[i]["pound"] + " lbs";
                     eventDetails["numPickups"] = responseData[i]["numPickups"];
+                    eventDetails["dropoff_locations"] = responseData[i]["dropoff_locations"];
+                    eventDetails["location"] = responseData[i]["location"]
                     const startingTime = new Date(responseData[i]["starting_time"]);
                     const endingTime = new Date(responseData[i]["ending_time"]);
-                    eventDetails["start_time"] = startingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }) + " to " + endingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+                    eventDetails["shiftType"] = ShiftType.searched;
+                    eventDetails["date"] = startingTime.toLocaleDateString("en-US")
+                    eventDetails["start_time"] = startingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+                    eventDetails["end_time"] = endingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+                    eventDetails["recurring"] = responseData[i]["recurring"]
+                    eventDetails["id"] = responseData[i]["id"]
                     if (responseData[i]["location_id"] != null) {
                         const locationIdString = responseData[i]["location_id"].toString();
                         if (this.state.locations[locationIdString] != null) {
@@ -104,6 +119,7 @@ export default class SuggestedEventsList extends Component {
                         }
                     }
                 }
+                console.log(responseData);
                 console.log("done?");
                 this.setState({ selectedEventsInDay: selectedEventsInDay }, () => { this.render() });
             },

@@ -8,6 +8,7 @@ import NavigationFooter from "../../navigation/NavigationFooter";
 import Sizes from "../../constants/Sizes";
 import { normalize } from "../../utils/Normalize";
 import Colors from "../../constants/Colors";
+import { getRequest } from "../../lib/requests";
 
 export default class ChangeConfirmScreen extends React.Component {
     constructor(props) {
@@ -20,7 +21,18 @@ export default class ChangeConfirmScreen extends React.Component {
 
     navigateToMain = () => {
         const { navigate } = this.props.navigation;
-        navigate("Main");
+        const { navigation } = this.props;
+        const event_id = navigation.getParam('event_id','');
+        getRequest(`events/attend/${event_id}/attend`, 
+        responseData => {
+            console.log("succesfull");
+            console.log(responseData);
+            navigate("Main");
+        },
+        error => {
+            console.log(error);
+            console.log("errrrrr");
+        });
     };
 
     navigateToShift = () => {
