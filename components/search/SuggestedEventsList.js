@@ -57,24 +57,6 @@ export default class SuggestedEventsList extends Component {
   }
 
   processEventData() {
-    // selectedEventsInDay = [];
-    // eventOne = {};
-    // eventDetails = {};
-    // eventDetails["name"] = dummyEventData["name"];
-    // eventDetails["spotsOpen"] = dummyEventData["spotsOpen"];
-    // eventDetails["weight"] = dummyEventData["weight"];
-    // eventDetails["numPickups"] = dummyEventData["numPickups"];
-    // eventDetails["location"] = dummyEventData["location"];
-    // eventDetails["date"] = dummyEventData["date"];
-    // startingTime = new Date(dummyEventData["start_time"]);
-    // endingTime = new Date(dummyEventData["end_time"]);
-    // eventDetails["start_time"] = startingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }) + " to " + endingTime.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
-    // eventOne["address"] = "SoHo";
-    // eventOne["details"] = eventDetails;
-    // eventOne["shiftType"] = ShiftType.searched;
-    // selectedEventsInDay.push(eventOne);
-    // this.setState({ selectedEventsInDay: selectedEventsInDay }, () => { this.render() });
-
     getRequest(
       `api/get_events/${this.state.date.toString()}`,
       (responseData) => {

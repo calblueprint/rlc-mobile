@@ -353,7 +353,7 @@ export default class Search extends Component {
 
   selectAll = () => {
     const checked = !this.state.selectedAll; // get the value
-    checked ? this.countTime(totalTimes, true) : this.countTime(0, true);
+    checked ? this.setState({ numTimes: totalTimes }) : this.setState({ numTimes: 0 });
 
     this.setState((prevState) => ({ selectedAll: !prevState.selectedAll })); // set value
 
@@ -372,11 +372,13 @@ export default class Search extends Component {
   };
 
   flipState = (day, time) => () => {
+    var numToAdd = 0; //number to change the number of selected times
+
     this.setState((prevState) => {
       let selDay = { ...prevState[day] };
 
+      //if selecting all times in a day
       if (time == "all") {
-        //if selecting all
         const checked = !selDay[time].value;
         var alreadySame = 0;
         for (const timeObj of Object.keys(selDay)) {
@@ -384,36 +386,34 @@ export default class Search extends Component {
             alreadySame++;
           }
         }
+
         //safety check
         if (alreadySame > numOfTimes) {
           alreadySame = numOfTimes;
         }
-
+        //add on or subtract the remaining times
         if (checked) {
-          // selDay.numtimes = val
-          this.countTime(numOfTimes - alreadySame, false);
+          numToAdd = numOfTimes - alreadySame;
         } else {
-          this.countTime(alreadySame - numOfTimes, false);
+          numToAdd = alreadySame - numOfTimes;
         }
+        //update all times in that day
         Object.keys(selDay).map((timeObj) => (selDay[timeObj].value = checked));
+
+        //else only selecting one time 
       } else {
         selDay[time].value
-          ? this.countTime(-1, false)
-          : this.countTime(1, false);
+          ? numToAdd = -1
+          : numToAdd = 1;
         selDay[time].value = !selDay[time].value;
       }
       return selDay;
     });
-  };
 
-  countTime = (val, selAll) => {
-    if (selAll) {
-      this.setState({ numTimes: val });
-    } else {
-      this.setState((prevState) => ({
-        numTimes: prevState.numTimes + val
-      }));
-    }
+    this.setState((prevState) => ({
+      numTimes: prevState.numTimes + numToAdd,
+    }))
+
   };
 
   search = () => {

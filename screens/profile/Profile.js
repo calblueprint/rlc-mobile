@@ -83,17 +83,17 @@ export default class Profile extends Component {
 
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity
-                            style={(this.state.disabled) ? { ...styles.disabledButton, ...styles.disabledButtonText } : { ...styles.button, ...styles.buttonText, ...styles.enabledButton }}
-                            disabled={this.state.disabled}
-                            onPress={this.saveUserInfo}
-                        >
-                            <Text style={styles.buttonText}>Save</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
                             style={{ ...styles.button, ...styles.buttonText }}
                             onPress={this.logoutUser}
                         >
                             <Text style={styles.buttonText}>Log Out</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={(this.state.disabled) ? { ...styles.disabledButton, ...styles.disabledButtonText } : { ...styles.buttonText, ...styles.enabledButton }}
+                            disabled={this.state.disabled}
+                            onPress={this.saveUserInfo}
+                        >
+                            <Text style={styles.buttonText}>Save</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -130,14 +130,14 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         position: 'absolute',
         bottom: 0,
-        right: 40,
-        width: 135,
+        left: '10.5%',
+        width: '36%',
     },
     buttonContainer: {
         alignItems: 'center',
         flex: 1,
         justifyContent: 'flex-end',
-        height: 50,
+        height: Sizes.height * 0.1,
     },
     buttonText: {
         textAlign: 'center',
@@ -153,8 +153,8 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         position: 'absolute',
         bottom: 0,
-        left: 40,
-        width: 135,
+        right: '10.5%',
+        width: '36%',
     },
     disabledButtonText: {
         textAlign: 'center',
@@ -163,6 +163,13 @@ const styles = StyleSheet.create({
         textTransform: "uppercase"
     },
     enabledButton: {
-        left: 40
+        backgroundColor: '#38A5DB',
+        paddingVertical: 15,
+        marginBottom: 10,
+        borderRadius: 5,
+        position: 'absolute',
+        bottom: 0,
+        width: '36%',
+        right: '10.5%'
     }
 });

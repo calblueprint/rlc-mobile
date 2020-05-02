@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     marginBottom: "40%"
   },
   logo: {
-    width: "40%",
+    width: "44%",
     height: Sizes.width * 0.4
   }
 });
