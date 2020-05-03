@@ -157,13 +157,29 @@ export default class ShiftScreen extends React.Component {
 
      navigateToWithdraw = () => {
           const { navigate } = this.props.navigation;
-          navigate("ChangeConfirm", {
-               title: "Withdraw Your Spot",
-               description: "You are about to withdraw your spot from a recurring event.",
-               hasQ: false,
-               question: "",
-               options: withdrawOptions
-          });
+          const pEvent = this.props.navigation.state.params.event;
+          console.log(pEvent);
+          if (pEvent.details.recurring) {
+               navigate("ChangeConfirm", {
+                    title: "Withdraw Your Spot",
+                    description: "You are about to withdraw your spot from a recurring event.",
+                    hasQ: false,
+                    question: "",
+                    options: withdrawOptions,
+                    event_id: pEvent.id,
+                    change_type: 'withdraw'
+               });
+          }
+          else {
+               navigate("ChangeConfirm", {
+                    title: pEvent.details.name,
+                    description: "Are you sure you want to withdraw?",
+                    hasQ: false,
+                    options: [],
+                    event_id: pEvent.id,
+                    change_type: 'withdraw'
+               });
+          }
      };
 
      navigateToSignConfirm = () => {
@@ -176,7 +192,8 @@ export default class ShiftScreen extends React.Component {
                     hasQ: true,
                     question: "How often do you want to attend?",
                     options: recurOptions,
-                    event_id: pEvent.details.id
+                    event_id: pEvent.details.id,
+                    change_type: 'signup'
                });
           }
           else {
@@ -185,7 +202,8 @@ export default class ShiftScreen extends React.Component {
                     description: "Are you sure you want to attend?",
                     hasQ: false,
                     options: [],
-                    event_id: pEvent.details.id
+                    event_id: pEvent.details.id,
+                    change_type: 'signup'
                });
           }
      };

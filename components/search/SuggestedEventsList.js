@@ -89,8 +89,8 @@ export default class SuggestedEventsList extends Component {
     }
  
     renderNewEvents(chosenDate) {
-        getRequest(
-            `api/get_events/${chosenDate.toString()}`,
+        postRequest(
+            `api/search_events`,
             responseData => {
                 const selectedEventsInDay = [];
                 for (let i = 0; i < responseData.length; i++) {
@@ -125,7 +125,8 @@ export default class SuggestedEventsList extends Component {
             },
             error => {
                 console.log(error);
-            });
+            },
+            {date: chosenDate, location_ids: this.state.location_ids});
     }
 
     render() {
