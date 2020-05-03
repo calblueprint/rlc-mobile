@@ -484,7 +484,8 @@ export default class Search extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: "5%",
+    paddingTop: "10%",
+    backgroundColor: "white",
     flex: 1,
     flexDirection: "column",
     alignContent: "space-around",
