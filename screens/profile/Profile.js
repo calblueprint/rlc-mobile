@@ -15,18 +15,18 @@ export default class Profile extends Component {
             disabled: true,
             user: {
                 'userId': "",
-                'firstName': "",
-                'lastName': "",
+                'firstname': "",
+                'lastname': "",
                 'occupation': "",
-                'phoneNumber': "",
+                'telephone': "",
                 'address': "",
                 'city': null,
                 'state': null,
-                'zipCode': "",
+                'zip_code': "",
                 'email': "",
-                'preferredRegion': [],
-                'preferredLocation': [],
-                'preferredTimes': []
+                'preferred_region_id': [],
+                'preferred_location_id': [],
+                'availability': {}
             },
             password: ""
         }
@@ -34,7 +34,7 @@ export default class Profile extends Component {
 
     async componentDidMount() {
         try {
-            let user = await LocalStorage.getItem('user');
+            let user = await LocalStorage.getNonNullItem('user');
             this.setState({ user: user }, () => { this.render() });
         } catch (err) {
             console.error(err)

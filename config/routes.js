@@ -30,6 +30,27 @@ export class APIRoutes {
   }
 
   static getEventDetailsPath(id) {
-    return APIRoutes.createRoute(`show_event/${id}`)
+    return APIRoutes.createRoute(`show_event/${id}`);
+  }
+
+  //Locations
+  static getRegionsPath() {
+    return APIRoutes.createRoute("get_regions");
+  }
+
+  static getRegionPath(id) {
+    return APIRoutes.createRoute(`get_region/${id}`);
+  }
+
+  static getLocationsPath() {
+    return APIRoutes.createRoute("get_locations");
+  }
+
+  static getLocationsByRegionPath(id) {
+    return APIRoutes.createRoute(`get_locations/${id}`);
+  }
+
+  static getLocationPath(id) {
+    return APIRoutes.createRoute(`get_location/${id}`);
   }
 }

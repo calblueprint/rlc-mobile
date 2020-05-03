@@ -11,8 +11,8 @@ export default class SignUp1Screen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: "",
-      lastName: "",
+      firstname: "",
+      lastname: "",
       birthday: "",
       telephone: "",
       user: {},
@@ -22,8 +22,8 @@ export default class SignUp1Screen extends React.Component {
   //Setup User Payload
   setupParams = () => {
     this.setState({ user: this.props.user });
-    this.state.user.firstname = this.state.firstName;
-    this.state.user.lastname = this.state.lastName;
+    this.state.user.firstname = this.state.firstname;
+    this.state.user.lastname = this.state.lastname;
     this.state.user.birth_month = this.state.birth_month;
     this.state.user.telephone = this.state.telephone;
   }
@@ -32,7 +32,7 @@ export default class SignUp1Screen extends React.Component {
    * 1. all fields are filled out and not empty.
    */
   checkValidNext = () => {
-    if (this.state.firstName == "" || this.state.lastName == "" || this.state.birthday == "" || this.state.telephone == "") {
+    if (this.state.firstname == "" || this.state.lastname == "" || this.state.birthday == "" || this.state.telephone == "") {
       frontendError("Please fill out all fields.")
     } else if (this.state.telephone.match(/[a-z]/i)) {
       frontendError("Invalid telephone number.")
@@ -58,13 +58,16 @@ export default class SignUp1Screen extends React.Component {
   componentDidMount = () => {
     this.getToday()
     if (this.props.previousUserInfo.firstname != null) {
-      this.setState({ firstName: this.props.previousUserInfo.firstname })
+      this.setState({ firstname: this.props.previousUserInfo.firstname })
     }
     if (this.props.previousUserInfo.lastname != null) {
-      this.setState({ lastName: this.props.previousUserInfo.lastname })
+      this.setState({ lastname: this.props.previousUserInfo.lastname })
     }
     if (this.props.previousUserInfo.birthday != null) {
       this.setState({ birthday: this.props.previousUserInfo.birthday })
+    }
+    if (this.props.previousUserInfo.birth_month != null) {
+      this.setState({ birth_month: this.props.previousUserInfo.birth_month })
     }
     if (this.props.previousUserInfo.telephone != null) {
       this.setState({ telephone: this.props.previousUserInfo.telephone })
@@ -94,19 +97,19 @@ export default class SignUp1Screen extends React.Component {
             <TextInput
               style={styles.input}
               placeholder={"Jane"}
-              onChangeText={text => this.setState({ firstName: text })}
+              onChangeText={text => this.setState({ firstname: text })}
               returnKeyType={"next"}
               onSubmitEditing={() => this.lastNameInput.focus()}
-              value={this.state.firstName}
+              value={this.state.firstname}
             ></TextInput>
             <Text style={styles.subHeading}>Last Name</Text>
             <TextInput
               style={styles.input}
               placeholder={"Doe"}
-              onChangeText={text => this.setState({ lastName: text })}
+              onChangeText={text => this.setState({ lastname: text })}
               returnKeyType={"next"}
               ref={(input) => { this.lastNameInput = input; }}
-              value={this.state.lastName}
+              value={this.state.lastname}
             ></TextInput>
             <Text style={styles.subHeading}>Birthday</Text>
             <DatePicker format="YYYY-MM-DD" date={this.state.birthday} style={styles.datePicker} onDateChange={

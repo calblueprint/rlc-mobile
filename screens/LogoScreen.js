@@ -14,7 +14,7 @@ class LogoScreen extends React.Component {
   autoNavigate = async () => {
     const { navigate } = this.props.navigation;
     try {
-      let user = await LocalStorage.getItem('user'); // function using AsyncStorage
+      let user = await LocalStorage.getNonNullItem('user'); // function using AsyncStorage
       if (user) {
         navigate("Main");
       } else {
