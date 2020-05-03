@@ -1,50 +1,3 @@
-<<<<<<< HEAD
-import React, { Component } from '../../node_modules/react';
-import { AsyncStorage, StyleSheet, View, Text, ScrollView, TouchableOpacity, KeyboardAvoidingView, Alert } from 'react-native';
-import ProfileHeader from '../../components/profile/ProfileHeader.js';
-import ProfileForm from '../../components/profile/ProfileForm.js';
-import LocalStorage from '../../helpers/LocalStorage.js';
-import { frontendError } from '../../lib/alerts';
-import { putRequest, getRequest } from "../../lib/requests.js";
-import { APIRoutes } from "../../config/routes";
-import { NavigationActions } from 'react-navigation'
-
-import Sizes from "../../constants/Sizes.js";
-
-export default class Profile extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            disabled: true,
-            user: {
-                'userId': "",
-                'firstname': "",
-                'lastname': "",
-                'occupation': "",
-                'telephone': "",
-                'address': "",
-                'city': null,
-                'state': null,
-                'zip_code': "",
-                'email': "",
-                'preferred_region_id': [],
-                'preferred_location_id': [],
-                'availability': {}
-            },
-            password: ""
-        }
-        this.changeUserInfo=this.changeUserInfo.bind(this)
-    }
-
-    async componentDidMount() {
-        try {
-            let user = await LocalStorage.getNonNullItem('user');
-            this.setState({ user: user }, () => { this.render() });
-        } catch (err) {
-            console.error(err)
-            this.props.navigation.navigate("Login")
-        }
-=======
 import React, { Component } from "../../node_modules/react";
 import {
   AsyncStorage,
@@ -97,7 +50,6 @@ export default class Profile extends Component {
     } catch (err) {
       console.error(err);
       this.props.navigation.navigate("Login");
->>>>>>> master
     }
   }
 
@@ -107,64 +59,39 @@ export default class Profile extends Component {
     }
   };
 
-<<<<<<< HEAD
-    changeUserInfo = (attribute, text) => {
-        const user = this.state.user
-        user[attribute] = text
-        this.setState({ user });
-    }
-
-    getUserAttribute = (attribute) => {
-        return this.state.user[attribute];
-    }
-
-    saveUserInfo = async () => {
-        if (this.state.password.length > 0 && this.state.password.length <= 8) {
-            frontendError("Passwords must be more than 8 characters long.")
-        } else {
-            // TODO @Johnathan, gracefully handle more complex updates and also 
-            // just change the state naming to not have to rename params.
-            const { city, state, zipCode, preferredRegion, preferredLocation, 
-                preferredTimes, ...params } = this.state.user
-            await LocalStorage.storeItem('user', JSON.stringify(this.state.user));
-            putRequest(APIRoutes.updateUserPath(this.state.user.userId), (user => {
-                Alert.alert("Successfully updated!")
-            }),
-            (error) => console.error(error),
-            params
-            )
-        }
-    }
-
-    logoutUser = () => {
-        const { navigate } = this.props.navigation;
-        AsyncStorage.removeItem('user');
-        // navigate("Login");
-        navigate("Login");
-=======
   changeUserInfo = (attribute, text) => {
-    this.setState({ [attribute]: text });
-  };
+    const user = this.state.user
+    user[attribute] = text
+    this.setState({ user });
+  }
 
   getUserAttribute = (attribute) => {
     return this.state.user[attribute];
-  };
+  }
 
   saveUserInfo = async () => {
     if (this.state.password.length > 0 && this.state.password.length <= 8) {
-      frontendError("Passwords must be more than 8 characters long.");
+        frontendError("Passwords must be more than 8 characters long.")
     } else {
-      await LocalStorage.storeItem("user", JSON.stringify(this.state.user));
->>>>>>> master
+        // TODO @Johnathan, gracefully handle more complex updates and also 
+        // just change the state naming to not have to rename params.
+        const { userId, city, state, zipCode, preferredRegion, preferredLocation, 
+            preferredTimes, ...params } = this.state.user
+        await LocalStorage.storeItem('user', JSON.stringify(this.state.user));
+        putRequest(APIRoutes.updateUserPath(this.state.user.userId), (user => {
+            Alert.alert("Successfully updated!")
+        }),
+        (error) => console.error(error),
+        params
+        )
     }
-  };
+  }
 
   logoutUser = () => {
     const { navigate } = this.props.navigation;
-    AsyncStorage.clear();
-    // navigate("Login");
+    AsyncStorage.removeItem('user');
     navigate("Login");
-  };
+  }
 
   render() {
     if (!this.props.user) {
