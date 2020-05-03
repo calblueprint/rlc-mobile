@@ -59,6 +59,7 @@ class UpcomingEventsList extends React.Component {
         <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
           <ScrollView style={{ height: "100%" }}>
             {this.state.upcomingEvents.map((event) => {
+              console.log("upcoming",event);
               return (
                 <ActivityCard
                   key={event.id}

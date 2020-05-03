@@ -1,13 +1,15 @@
 //radio buttons based on @source: https://dev.to/saadbashar/create-your-own-radio-button-component-in-react-native-easily-59il
 
 import React, { Component } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage } from "react-native";
 import Header from "../../components/shift/Header"
 import NavigationFooter from "../../navigation/NavigationFooter";
 
 import Sizes from "../../constants/Sizes";
 import { normalize } from "../../utils/Normalize";
 import Colors from "../../constants/Colors";
+import { getRequest, postRequest } from "../../lib/requests";
+import LocalStorage from "../../helpers/LocalStorage";
 
 export default class ChangeConfirmScreen extends React.Component {
     constructor(props) {
@@ -17,10 +19,44 @@ export default class ChangeConfirmScreen extends React.Component {
         };
     }
 
+    async componentDidMount() {
+        let user = await LocalStorage.getItem("user");
+        this.setState({ user_id: user.userId });
+    }
 
     navigateToMain = () => {
+        console.log('sup');
         const { navigate } = this.props.navigation;
-        navigate("Main");
+        console.log('break');
+        const { navigation } = this.props;
+        const event_id = navigation.getParam('event_id','');
+        const change_type = navigation.getParam('change_type');
+        if (change_type == 'signup') {
+            getRequest(`events/attend/${event_id}/attend`, 
+            responseData => {
+                console.log("successful");
+                console.log(responseData);
+                navigate("Main");
+            },
+            error => {
+                console.log(error);
+                console.log("errrrrr");
+            });
+        }
+        if (change_type == 'withdraw') {
+            postRequest(`events/cancel/${event_id}/attend`, 
+            responseData => {
+                console.log("successful");
+                console.log(responseData);
+                navigate("Main");
+            },
+            error => {
+                console.log(error);
+                console.log("errrrrr");
+            },
+            {volunteer_id: this.state.user_id,
+            skip_volunteer_unassign_email: true});
+        }
     };
 
     navigateToShift = () => {
