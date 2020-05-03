@@ -4,7 +4,7 @@ import ProfileHeader from '../../components/profile/ProfileHeader.js';
 import ProfileForm from '../../components/profile/ProfileForm.js';
 import LocalStorage from '../../helpers/LocalStorage.js';
 import { frontendError } from '../../lib/alerts';
-import { putRequest } from "../../lib/requests.js";
+import { putRequest, getRequest } from "../../lib/requests.js";
 import { APIRoutes } from "../../config/routes";
 
 import Sizes from "../../constants/Sizes.js";
@@ -37,7 +37,6 @@ export default class Profile extends Component {
     async componentDidMount() {
         try {
             let user = await LocalStorage.getItem('user');
-            user = JSON.parse(user)
             this.setState({ user: user }, () => { this.render() });
         } catch (err) {
             console.error(err)
@@ -85,7 +84,7 @@ export default class Profile extends Component {
 
     logoutUser = () => {
         const { navigate } = this.props.navigation;
-        AsyncStorage.clear();
+        AsyncStorage.removeItem('user');
         navigate("Login");
     }
 
