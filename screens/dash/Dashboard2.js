@@ -57,7 +57,10 @@ export default class Dashboard extends Component {
             /> */}
           </View>
         </View>
-        <EventsList navigation={this.props.navigation} toSearch={this.navigateToSearch} />
+        <EventsList
+          navigation={this.props.navigation}
+          toSearch={this.navigateToSearch}
+        />
       </View>
     );
   }
@@ -104,7 +107,7 @@ const styles = StyleSheet.create({
   },
   slideStructure: {
     height: "100%",
-    marginTop: "13%",
+    marginTop: "5%",
     width: "100%",
   },
   inProgress: {
