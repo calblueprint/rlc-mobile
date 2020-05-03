@@ -14,7 +14,6 @@ async function get_event_details(event_id, shift_type) {
       event_details['shiftType'] = shift_type;
     },
     (error) => {
-      alert(error);
       console.log(error);
     }
   );
@@ -32,7 +31,6 @@ export async function get_dashboard_events_lists(user_id) {
       attended_events = fetchedAttended;
     },
     (error) => {
-      alert(error);
       console.log(error);
     }
   );
@@ -42,7 +40,6 @@ export async function get_dashboard_events_lists(user_id) {
       upcoming_events = fetchedUpcoming;
     },
     (error) => {
-      alert(error);
       console.log(error);
     }
   );

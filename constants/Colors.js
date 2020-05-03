@@ -13,8 +13,10 @@ export default {
   noticeText: '#fff',
 
   mainBlue: '#38A5DB',
+  primary: '#38A5DB',
   buttonText: '#FFFFFF',
   green: "#79B830",
   regularText: "#4A4A4A",
   white: '#FFFFFF',
+  black: "#333333"
 };

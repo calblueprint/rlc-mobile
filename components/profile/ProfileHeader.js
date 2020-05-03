@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Icon, Text, Image } from 'react-native';
 
+import Sizes from "../../constants/Sizes.js";
+
+
 export default class ProfileHeader extends Component {
     constructor(props) {
         super(props)
@@ -14,7 +17,7 @@ export default class ProfileHeader extends Component {
                         style={styles.profilePic}
                         source={require('../../assets/images/rlclogo.png')} />
 
-                    <Text style={styles.title}>{this.props.getUserAttribute('firstName') + " " + this.props.getUserAttribute('lastName')}</Text>
+                    <Text style={styles.title}>{this.props.getUserAttribute('firstname') + " " + this.props.getUserAttribute('lastname')}</Text>
                     <Text style={styles.subtext}>Member since September 2019</Text>
                 </View>
 
@@ -50,12 +53,11 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         justifyContent: 'flex-start',
         marginTop: 25,
-        maxHeight: 200 // change this to be dynamic
+        maxHeight: '75%'
     },
     profilePic: {
-        width: 125,
-        height: 125,
-        borderRadius: 125 / 2
+        width: '37%',
+        height: Sizes.height * 0.155
     },
     badgeContainer: {
         flex: 1,
@@ -63,6 +65,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         marginTop: 20,
         marginBottom: 25,
+        paddingHorizontal: "7%",
         alignItems: 'flex-start'
     },
     badge: {

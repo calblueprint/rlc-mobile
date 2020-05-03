@@ -2,13 +2,11 @@ import React from "react";
 import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
 
 import Sizes from "../constants/Sizes.js";
+import { Icon } from 'react-native-elements'
 
 class NavigationFooter extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      currentIndex : props.index
-    }
   }
 
   render() {
@@ -23,14 +21,14 @@ class NavigationFooter extends React.Component {
 
     return (
       <View style={{...styles.tabContainer,  ...{flexDirection: 'row'}}}>
-        <TouchableOpacity onPress={this.props.navigationHandler.bind(this, 0)}>
-          {this.state.currentIndex == 0? profile: profileFocused}
+        <TouchableOpacity onPress={this.props.navigationHandler(0)}>
+          {this.props.index == 0? profileFocused: profile}
         </TouchableOpacity>
-        <TouchableOpacity onPress={this.props.navigationHandler.bind(this, 1)}>
-          {this.state.currentIndex == 1? dashboard: dashboardFocused}
+        <TouchableOpacity onPress={this.props.navigationHandler(1)}>
+          {this.props.index == 1? dashboardFocused: dashboard}
         </TouchableOpacity>
-        <TouchableOpacity onPress={this.props.navigationHandler.bind(this, 2)}>
-          {this.state.currentIndex == 2? search: searchFocused}
+        <TouchableOpacity onPress={this.props.navigationHandler(2)}>
+          {this.props.index == 2? searchFocused: search}
         </TouchableOpacity>
       </View>
     )

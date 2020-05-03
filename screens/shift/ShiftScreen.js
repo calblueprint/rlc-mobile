@@ -1,48 +1,59 @@
-import * as React from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Text, TextInput, FlatList, Switch, Image, TouchableOpacity } from 'react-native';
-import Header from "../../components/shift/Header"
-import { CheckBox } from 'react-native-elements'
-import LocTimeline from '../../components/shift/LocTimeline'
-import MapView, { Marker } from 'react-native-maps';
+import * as React from "react";
+import {
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  ScrollView,
+  Text,
+  TextInput,
+  FlatList,
+  Switch,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+import Header from "../../components/shift/Header";
+import { CheckBox } from "react-native-elements";
+import LocTimeline from "../../components/shift/LocTimeline";
+import MapView, { Marker } from "react-native-maps";
 import ShiftType from "../../constants/ShiftType.js";
 
 import Colors from "../../constants/Colors";
 function instructionDetail(data) {
-     const step = data.item;
-     return (
-
-          <View>
-               <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
-                    <Text style={{ fontSize: 17 }}>{step.step}. </Text>
-                    <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>{step.description}</Text>
-               </View>
-               {step.photo_needed && <View style={styles.upload_box}></View>}
-          </View>
-     )
+  const step = data.item;
+  return (
+    <View>
+      <View style={{ flexDirection: "row", marginTop: 10, marginBottom: 10 }}>
+        <Text style={{ fontSize: 17 }}>{step.step}. </Text>
+        <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>
+          {step.description}
+        </Text>
+      </View>
+      {step.photo_needed && <View style={styles.upload_box}></View>}
+    </View>
+  );
 }
 
 const withdrawOptions = [
-     {
-          key: 'one',
-          text: 'Withdraw from this event only',
-     },
-     {
-          key: 'all',
-          text: 'Withdraw from this and all future events',
-     }
+  {
+    key: "one",
+    text: "Withdraw from this event only",
+  },
+  {
+    key: "all",
+    text: "Withdraw from this and all future events",
+  },
 ];
 
 const recurOptions = [
-     {
-          key: 'only',
-          text: 'This week only',
-     },
-     {
-          key: 'every',
-          text: 'Every week',
-     }
+  {
+    key: "only",
+    text: "This week only",
+  },
+  {
+    key: "every",
+    text: "Every week",
+  },
 ];
-
 
 export default class ShiftScreen extends React.Component {
      constructor(props) {
@@ -287,29 +298,37 @@ export default class ShiftScreen extends React.Component {
                                                             title={marker.title}
                                                             description={marker.description}
                                                        />
-                                                  )) }
-                                             </MapView>
-                                        </View>
 
-                                        <LocTimeline markers={pEvent.dropoff_locations} />
+                                                  ))} 
+                  </MapView>
+                </View>
 
-                                        <FlatList style={styles.list}
-                                             data={pEvent.details.attendees}
-                                             renderItem={this.participantCard}
-                                        />
+                {pEvent.dropoff_locations && (
+                  <LocTimeline markers={pEvent.dropoff_locations} />
+                )}
 
-                                        <Text style={styles.title}>
-                                             Shift Tasks
-                              </Text>
-                                        <Text style={{ fontSize: 17, paddingTop: 10, paddingBottom: 10 }}>
-                                             *Please take a cab only under extenuating circumstances (weight of food is heavy, harsh weather conditions, etc). Please keep the receipt so that we can reimburse you.
-                              </Text>
-                                        {pEvent.details.dropoff_locations && <FlatList
-                                             data={this.state.shiftInstructions}
-                                             renderItem={instructionDetail}
-                                        />}
+                <FlatList
+                  style={styles.list}
+                  data={pEvent.details.attendees}
+                  renderItem={this.participantCard}
+                />
 
-                                        {/* <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
+                <Text style={styles.title}>Shift Tasks</Text>
+                <Text
+                  style={{ fontSize: 17, paddingTop: 10, paddingBottom: 10 }}
+                >
+                  *Please take a cab only under extenuating circumstances
+                  (weight of food is heavy, harsh weather conditions, etc).
+                  Please keep the receipt so that we can reimburse you.
+                </Text>
+                {pEvent.details.dropoff_locations && (
+                  <FlatList
+                    data={this.state.shiftInstructions}
+                    renderItem={instructionDetail}
+                  />
+                )}
+
+                {/* <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
                                              <Text style={{ fontSize: 16 }}>9.</Text>
                                              <Text style={{ fontSize: 16, flex: 1, paddingLeft: 5 }}>Enter pounds of food saved:*</Text>
                                         </View>
@@ -324,185 +343,195 @@ export default class ShiftScreen extends React.Component {
                                              />
                                         </View> */}
 
-                                        {(pEvent.details.shiftType === ShiftType.upcoming || pEvent.shiftType === ShiftType.current) && <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
-                                             <Text style={{ fontSize: 17 }}>10.</Text>
-                                             <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>Tap "Complete" to confirm the completion of the event. The last three steps must be completed.</Text>
-                                        </View>}
+                {(pEvent.shiftType === ShiftType.upcoming ||
+                  pEvent.shiftType === ShiftType.current) && (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        marginTop: 10,
+                        marginBottom: 10,
+                      }}
+                    >
+                      <Text style={{ fontSize: 17 }}>10.</Text>
+                      <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>
+                        Tap "Complete" to confirm the completion of the event. The
+                        last three steps must be completed.
+                    </Text>
+                    </View>
+                  )}
 
-                                        {(pEvent.details.shiftType === ShiftType.upcoming || pEvent.shiftType === ShiftType.current) && <View style={styles.buttonContainer}>
-                                             <TouchableOpacity style={styles.button} onPress={this.navigateToMain}>
-                                                  <Text style={styles.buttonText}>Complete</Text>
-                                             </TouchableOpacity>
-                                        </View>}
-
-
-                                   </View>
-                              </ScrollView>
-                              {pEvent.details.shiftType == ShiftType.searched && <View style={styles.signUpButtonContainer}>
-                                   <TouchableOpacity style={styles.signUpButton} onPress={this.navigateToSignConfirm}
-                                   >
-                                        <Text style={styles.buttonText}>Sign Up</Text>
-                                   </TouchableOpacity>
-                              </View>}
-                         </View>
-                    </KeyboardAvoidingView>
-               </View>
-          )
-     }
-
+                {(pEvent.shiftType === ShiftType.upcoming ||
+                  pEvent.shiftType === ShiftType.current) && (
+                    <View style={styles.buttonContainer}>
+                      <TouchableOpacity
+                        style={styles.button}
+                        onPress={this.navigateToMain}
+                      >
+                        <Text style={styles.buttonText}>Complete</Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+              </View>
+            </ScrollView>
+            {pEvent.shiftType === ShiftType.searched && (
+              <View style={styles.signUpButtonContainer}>
+                <TouchableOpacity
+                  style={styles.signUpButton}
+                  onPress={this.navigateToSignConfirm}
+                >
+                  <Text style={styles.buttonText}>Sign Up</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+        </KeyboardAvoidingView>
+      </View>
+    );
+  }
 }
 
 ShiftScreen.navigationOptions = {
-     title: "In Progress"
-}
+  title: "In Progress",
+};
 
 const styles = StyleSheet.create({
-     container: {
-          flex: 1,
-          padding: 40,
-          paddingTop: 20,
-     },
-     guide_box: {
-          height: 200,
-          marginVertical: 25,
-          borderWidth: 2
-     },
-     upload_box: {
-          height: 200,
-          marginVertical: 25,
-          borderWidth: 2
-     },
-     status: {
-          textTransform: "uppercase",
-          color: Colors.green,
-          fontWeight: "500",
-          fontSize: 15,
-          paddingVertical: 5
-     },
-     title: {
-          color: Colors.regularText,
-          fontWeight: "600",
-          fontSize: 20,
-          paddingVertical: 5
-     },
-     overview: {
-          fontSize: 16,
-          lineHeight: 25,
-          letterSpacing: .5,
-          paddingTop: 5,
-     },
-     list: {
-          flex: 1,
-          padding: 10,
-          paddingBottom: 20,
-     },
-     instructions: {
-          padding: 10,
-     },
-     participant_card: {
-          flex: 1,
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          alignItems: 'flex-start',
-          padding: 40,
-          marginBottom: 20,
-          marginTop: 20,
-     },
-     participant_badge: {
-          flex: 1,
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          alignItems: 'flex-start',
-          borderBottomWidth: 1,
-          borderColor: "#CCCCCC",
-          paddingBottom: 10,
-          marginTop: 10
-     },
-     participant_detail: {
-          flexDirection: 'column',
-          marginHorizontal: 20
-     },
-     participant_name: {
-          fontSize: 17,
-          fontWeight: "700",
-     },
-     particpant_role: {
-          fontSize: 15,
-          fontWeight: "400",
-     },
-     profilePic: {
-          width: 50,
-          height: 50,
-          borderRadius: 50 / 2
-     },
-     input_box: {
-          height: 50,
-          borderWidth: 2,
-          paddingLeft: 8,
-          borderRadius: 5,
-          borderColor: "#ccc",
-          marginBottom: 10
-     },
-     weight_input: {
-          fontSize: 17
-     },
+  container: {
+    flex: 1,
+    padding: 40,
+    paddingTop: 20,
+  },
+  guide_box: {
+    height: 200,
+    marginVertical: 25,
+    borderWidth: 2,
+  },
+  upload_box: {
+    height: 200,
+    marginVertical: 25,
+    borderWidth: 2,
+  },
+  status: {
+    textTransform: "uppercase",
+    color: Colors.green,
+    fontWeight: "500",
+    fontSize: 15,
+    paddingVertical: 5,
+  },
+  title: {
+    color: Colors.regularText,
+    fontWeight: "600",
+    fontSize: 20,
+    paddingVertical: 5,
+  },
+  overview: {
+    fontSize: 16,
+    lineHeight: 25,
+    letterSpacing: 0.5,
+    paddingTop: 5,
+  },
+  list: {
+    flex: 1,
+    padding: 10,
+    paddingBottom: 20,
+  },
+  instructions: {
+    padding: 10,
+  },
+  participant_card: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "flex-start",
+    padding: 40,
+    marginBottom: 20,
+    marginTop: 20,
+  },
+  participant_badge: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "flex-start",
+    borderBottomWidth: 1,
+    borderColor: "#CCCCCC",
+    paddingBottom: 10,
+    marginTop: 10,
+  },
+  participant_detail: {
+    flexDirection: "column",
+    marginHorizontal: 20,
+  },
+  participant_name: {
+    fontSize: 17,
+    fontWeight: "700",
+  },
+  particpant_role: {
+    fontSize: 15,
+    fontWeight: "400",
+  },
+  profilePic: {
+    width: 50,
+    height: 50,
+    borderRadius: 50 / 2,
+  },
+  input_box: {
+    height: 50,
+    borderWidth: 2,
+    paddingLeft: 8,
+    borderRadius: 5,
+    borderColor: "#ccc",
+    marginBottom: 10,
+  },
+  weight_input: {
+    fontSize: 17,
+  },
 
+  buttonContainer: {
+    alignItems: "center",
+    marginTop: 20,
+    justifyContent: "center",
+    flex: 1,
+  },
+  signUpButtonContainer: {
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "flex-end",
+    height: 50,
+  },
+  button: {
+    backgroundColor: "#38A5DB",
+    justifyContent: "center",
+    paddingVertical: 15,
+    marginBottom: 20,
+    borderRadius: 5,
+    width: "100%",
+    height: 50,
+  },
+  signUpButton: {
+    backgroundColor: Colors.mainBlue,
+    paddingVertical: 15,
+    marginBottom: 30,
+    borderRadius: 5,
+    position: "absolute",
+    bottom: 0,
+    width: "80%",
+  },
+  buttonText: {
+    textAlign: "center",
+    color: "#FFFFFF",
+    fontWeight: "600",
+    fontSize: 16,
+    textTransform: "uppercase",
+  },
 
-
-
-
-     buttonContainer: {
-          alignItems: 'center',
-          marginTop: 20,
-          justifyContent: 'center',
-          flex: 1,
-     },
-     signUpButtonContainer: {
-          alignItems: 'center',
-          flex: 1,
-          justifyContent: 'flex-end',
-          height: 50,
-     },
-     button: {
-          backgroundColor: '#38A5DB',
-          justifyContent: 'center',
-          paddingVertical: 15,
-          marginBottom: 20,
-          borderRadius: 5,
-          width: '100%',
-          height: 50
-     },
-     signUpButton: {
-          backgroundColor: Colors.mainBlue,
-          paddingVertical: 15,
-          marginBottom: 30,
-          borderRadius: 5,
-          position: 'absolute',
-          bottom: 0,
-          width: "80%",
-     },
-     buttonText: {
-          textAlign: 'center',
-          color: '#FFFFFF',
-          fontWeight: '600',
-          fontSize: 16,
-          textTransform: "uppercase"
-     },
-
-
-
-     mapcontainer: {
-          //...StyleSheet.absoluteFillObject,
-          height: 200,
-          width: '100%',
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-          marginVertical: 30,
-     },
-     map: {
-          ...StyleSheet.absoluteFillObject,
-     },
-
-
-
-})
+  mapcontainer: {
+    //...StyleSheet.absoluteFillObject,
+    height: 200,
+    width: "100%",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginVertical: 30,
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+});

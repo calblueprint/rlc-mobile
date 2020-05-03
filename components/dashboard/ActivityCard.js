@@ -4,6 +4,7 @@ import { normalize } from "../../utils/Normalize";
 
 export default class ActivityCard extends React.Component {
   navigateToShift = (event) => {
+    console.log(this.props.navigation)
     const { navigate } = this.props.navigation;
     navigate("Shift", { event: event })
   };
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
     borderRadius: 5,
-    elevation: 1,
+    elevation: 5,
     marginBottom: "2.6%",
     marginLeft: "8%",
     width: "84%",

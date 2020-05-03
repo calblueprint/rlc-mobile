@@ -1,11 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   StyleSheet,
   View,
   TextInput,
   TouchableOpacity,
   Text,
-  AsyncStorage,
 } from "react-native";
 import { frontendError } from "../lib/alerts";
 import { postRequest } from "../lib/requests";
@@ -26,20 +25,22 @@ export default class LoginForm extends React.Component {
     return postRequest(
       APIRoutes.loginPath(),
       user => {
-        const userJSON = {'userId': user.id,
+        const userJSON = {
+          'userId': user.id,
           'firstName': user.firstname,
           'lastName': user.lastname,
           'occupation': user.occupation,
-          'phoneNumber': user.telephone,
+          'telephone': user.telephone,
           'address': user.address,
           'city': "",
           'state': "",
-          'zipCode': user.zip_code,
+          'zip_code': user.zip_code,
           'email': user.email,
-          'preferredRegion': user.preferred_region_id,
-          'preferredLocation': user.preferred_location_id,
-          'preferredTimes': ""
+          'preferred_region_id': user.preferred_region_id,
+          'preferred_location_id': user.preferred_location_id,
+          'availability': ""
         }
+        console.log(user)
         LocalStorage.storeItem('user', userJSON);
         this.props.navigateHandler();
       },
