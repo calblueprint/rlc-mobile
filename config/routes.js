@@ -25,8 +25,8 @@ export class APIRoutes {
   }
 
   // Availiability
-  static availabilityPath() {
-    return `/availabilities`;
+  static updateAvailabilityPath() {
+    return APIRoutes.createRoute(`users/update_availability`);
   }
 
   // Events

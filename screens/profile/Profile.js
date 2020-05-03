@@ -7,6 +7,9 @@ import { frontendError } from '../../lib/alerts';
 
 import Sizes from "../../constants/Sizes.js";
 
+import { create_availability_formData } from "../../helpers/AvailabilityHelpers.js"
+import { postRequest } from '../../lib/requests';
+
 export default class Profile extends Component {
     constructor(props) {
         super(props)
@@ -25,8 +28,9 @@ export default class Profile extends Component {
                 'email': "",
                 'preferred_region_id': [],
                 'preferred_location_id': [],
-                'availability': {}
+                'availability': ""
             },
+            new_availability: {},
             password: ""
         }
     }
@@ -50,16 +54,49 @@ export default class Profile extends Component {
     changeUserInfo = (attribute, text) => {
         this.setState({ [attribute]: text });
     }
+    
 
     getUserAttribute = (attribute) => {
         return this.state.user[attribute];
     }
 
+    changeAvailability = (new_availability) => {
+        this.setState({
+            new_availability: availability
+        })
+    } 
+
     saveUserInfo = async () => {
         if (this.state.password.length > 0 && this.state.password.length <= 8) {
             frontendError("Passwords must be more than 8 characters long.")
         } else {
+
+            // Create / Update Availability if needed.
+            if (Object.keys(this.state.new_availability).length != 0) {
+                let avail_params = JSON.stringify(this.state.new_availability)
+                await LocalStorage.storeItem('availability', avail_params);
+                postRequest(APIRoutes.createAvailabilityPath(), ((availability) => {
+                    this.changeUserInfo("availability", availability.id)
+                }),
+                (error) => console.error(error),
+                avail_params
+                )    
+            }
+
+            const { userId, firstName, lastName, phoneNumber, city, state, 
+                zipCode, preferredRegion, preferredLocation, 
+                availability, ...params } = this.state.user
+            params['firstname'] = firstName
+            params['lastname'] = lastName
+            params['telephone'] = phoneNumber
+
             await LocalStorage.storeItem('user', JSON.stringify(this.state.user));
+            putRequest(APIRoutes.updateUserPath(this.state.user.userId), (user => {
+                Alert.alert("Successfully updated!")
+            }),
+            (error) => console.error(error),
+            params
+            )
         }
     }
 
@@ -89,7 +126,7 @@ export default class Profile extends Component {
                         <TouchableOpacity
                             style={(this.state.disabled) ? { ...styles.disabledButton, ...styles.disabledButtonText } : { ...styles.buttonText, ...styles.enabledButton }}
                             disabled={this.state.disabled}
-                            onPress={this.saveUserInfo}
+                            onPress={() => {this.saveUserInfo;}
                         >
                             <Text style={styles.buttonText}>Save</Text>
                         </TouchableOpacity>

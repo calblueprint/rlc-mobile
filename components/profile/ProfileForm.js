@@ -17,83 +17,12 @@ import {
   fetch_locations,
 } from "../../helpers/LocationHelpers.js";
 
-const daysandtimes = [
-  {
-    name: "Select all times",
-    id: 0,
-    times: [],
-  },
-  {
-    name: "Monday",
-    id: 1,
-    times: [
-      { name: "9am to 12pm", id: 2 },
-      { name: "12pm to 4pm", id: 3 },
-      { name: "4pm to 8pm", id: 4 },
-      { name: "8pm to 12 am", id: 5 },
-    ],
-  },
-  {
-    name: "Tuesday",
-    id: 6,
-    times: [
-      { name: "9am to 12pm", id: 7 },
-      { name: "12pm to 4pm", id: 8 },
-      { name: "4pm to 8pm", id: 9 },
-      { name: "8pm to 12 am", id: 10 },
-    ],
-  },
-  {
-    name: "Wednesday",
-    id: 11,
-    times: [
-      { name: "9am to 12pm", id: 12 },
-      { name: "12pm to 4pm", id: 13 },
-      { name: "4pm to 8pm", id: 14 },
-      { name: "8pm to 12 am", id: 15 },
-    ],
-  },
-  {
-    name: "Thursday",
-    id: 16,
-    times: [
-      { name: "9am to 12pm", id: 17 },
-      { name: "12pm to 4pm", id: 18 },
-      { name: "4pm to 8pm", id: 19 },
-      { name: "8pm to 12 am", id: 20 },
-    ],
-  },
-  {
-    name: "Friday",
-    id: 21,
-    times: [
-      { name: "9am to 12pm", id: 22 },
-      { name: "12pm to 4pm", id: 23 },
-      { name: "4pm to 8pm", id: 24 },
-      { name: "8pm to 12 am", id: 25 },
-    ],
-  },
-  {
-    name: "Saturday",
-    id: 26,
-    times: [
-      { name: "9am to 12pm", id: 27 },
-      { name: "12pm to 4pm", id: 28 },
-      { name: "4pm to 8pm", id: 29 },
-      { name: "8pm to 12 am", id: 30 },
-    ],
-  },
-  {
-    name: "Sunday",
-    id: 31,
-    times: [
-      { name: "9am to 12pm", id: 32 },
-      { name: "12pm to 4pm", id: 33 },
-      { name: "4pm to 8pm", id: 34 },
-      { name: "8pm to 12 am", id: 35 },
-    ],
-  },
-];
+import {
+  availability_template, 
+  id_to_key, 
+  availability_selectors,
+  create_availability_static
+} from "../../helpers/AvailabilityHelpers.js"
 
 export default class ProfileForm extends Component {
   constructor(props) {
@@ -155,8 +84,10 @@ export default class ProfileForm extends Component {
     this.setState({ preferred_location_id: preferred_location_id });
   };
 
-  onPreferredTimesChange = (availability) => {
-    this.setState({ availability: availability });
+  onAvailabilityChange = async (availabilityArr) => {
+    let new_availability = create_availability_static(availabilityArr)
+    this.props.changeAvailability(new_availability);
+    this.setState({ new_availability: new_availability });
   };
 
   render() {
@@ -349,7 +280,7 @@ export default class ProfileForm extends Component {
           <Text style={styles.subHeading}>Preferred Region</Text>
           <SectionedMultiSelect
             single
-            colors={{ primary: Colors.mainBlue }}
+            colors={Colors}
             selectedItems={this.state.preferred_region_id}
             items={this.state.regions}
             uniqueKey="id"
@@ -381,7 +312,7 @@ export default class ProfileForm extends Component {
 
           <Text style={styles.subHeading}>Preferred Locations (Optional)</Text>
           <SectionedMultiSelect
-            colors={{ primary: Colors.mainBlue }}
+            colors={Colors}
             selectedItems={this.state.preferred_location_id}
             items={this.state.locations}
             uniqueKey="id"
@@ -418,14 +349,13 @@ export default class ProfileForm extends Component {
           <Text style={styles.subHeading}>Preferred Times (Optional)</Text>
           <SectionedMultiSelect
             hideSearch
-            colors={{ primary: Colors.mainBlue }}
+            colors={Colors}
             selectedItems={this.state.availability}
-            items={daysandtimes}
+            items={availability_selectors}
             uniqueKey="id"
             expandDropDowns={true}
-            onSelectedItemsChange={(availability) => {
-              this.onPreferredTimesChange(availability);
-              this.props.changeUserInfo("availability", availability);
+            onSelectedItemsChange={(availabilityArr) => {
+              this.onAvailabilityChange(availabilityArr);
               this.props.enableSaveButton();
             }}
             subKey="times"
