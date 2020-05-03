@@ -22,7 +22,7 @@ export default class Dashboard extends Component {
   }
 
   async componentDidMount() {
-    let user = await LocalStorage.getItem("user");
+    let user = await LocalStorage.getNonNullItem("user");
   }
 
   // _fetchCurrentEvent () {}
@@ -37,6 +37,10 @@ export default class Dashboard extends Component {
     navigate("Profile");
   };
 
+  navigateToSearch = () => {
+    this.props.navigation.jumpTo("Search");
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -49,7 +53,7 @@ export default class Dashboard extends Component {
             /> */}
           </View>
         </View>
-        <EventsList navigation={this.props.navigation} />
+        <EventsList navigation={this.props.navigation} toSearch={this.navigateToSearch} />
       </View>
     );
   }

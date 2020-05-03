@@ -311,9 +311,9 @@ export default class Search extends Component {
 
   //LOCATION FUNCTIONS
 
-  updateSearch = (val = () => {
+  updateSearch = (val) = () => {
     this.setState({ search: val });
-  });
+  };
 
   handleSelect = (val, id) => () => {
     val === true ? this.addLoc(-1) : this.addLoc(1);
@@ -353,7 +353,7 @@ export default class Search extends Component {
 
   selectAll = () => {
     const checked = !this.state.selectedAll; // get the value
-    checked ? this.countTime(totalTimes, true) : this.countTime(0, true);
+    checked ? this.setState({ numTimes: totalTimes }) : this.setState({ numTimes: 0 });
 
     this.setState((prevState) => ({ selectedAll: !prevState.selectedAll })); // set value
 
@@ -372,11 +372,13 @@ export default class Search extends Component {
   };
 
   flipState = (day, time) => () => {
+    var numToAdd = 0; //number to change the number of selected times
+
     this.setState((prevState) => {
       let selDay = { ...prevState[day] };
 
+      //if selecting all times in a day
       if (time == "all") {
-        //if selecting all
         const checked = !selDay[time].value;
         var alreadySame = 0;
         for (const timeObj of Object.keys(selDay)) {
@@ -384,53 +386,52 @@ export default class Search extends Component {
             alreadySame++;
           }
         }
+
         //safety check
         if (alreadySame > numOfTimes) {
           alreadySame = numOfTimes;
         }
-
+        //add on or subtract the remaining times
         if (checked) {
-          this.countTime(numOfTimes - alreadySame, false);
+          numToAdd = numOfTimes - alreadySame;
         } else {
-          this.countTime(alreadySame - numOfTimes, false);
+          numToAdd = alreadySame - numOfTimes;
         }
+        //update all times in that day
         Object.keys(selDay).map((timeObj) => (selDay[timeObj].value = checked));
+
+        //else only selecting one time 
       } else {
         selDay[time].value
-          ? this.countTime(-1, false)
-          : this.countTime(1, false);
+          ? numToAdd = -1
+          : numToAdd = 1;
         selDay[time].value = !selDay[time].value;
       }
       return selDay;
     });
+
+    this.setState((prevState) => ({
+      numTimes: prevState.numTimes + numToAdd,
+    }))
+
   };
 
-  countTime = (val, selAll) => {
-    if (selAll) {
-      this.setState({ numTimes: val });
-    } else {
-      this.setState((prevState) => ({
-        numTimes: prevState.numTimes + val,
-      }));
-    }
+  search = () => {
+    //props are the selected locations and selected times
+    // return getRequest(
+    //   "/get_events",
+    //   responseData => {
+    //     console.log("Got search events");
+    //     console.log(responseData);
+    //   },
+    //   error => {
+    //     console.log("error");
+    //     console.log(error);
+    //   },
+    //   { 'date': this.state., 'location': this.state.}
+    // )
+    this.setState({ hasCompletedPreferences: true }, () => { this.render() });
   };
-
-  // search = () => {
-  //   //props are the selected locations and selected times
-  //   return getRequest(
-  //     "/get_events",
-  //     responseData => {
-  //       console.log("Got search events");
-  //       console.log(responseData);
-  //     },
-  //     error => {
-  //       console.log("error");
-  //       console.log(error);
-  //     },
-  //     {'date': this.state., 'location': this.state.}
-  //   )
-  //   this.setState({ hasCompletedPreferences: true }, () => { this.render() });
-  // };
 
   render() {
     if (this.state.hasCompletedPreferences) {
@@ -496,10 +497,9 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#38A5DB",
     padding: 15,
-    marginBottom: 10,
     borderRadius: 5,
     position: "absolute",
-    bottom: 10,
+    bottom: 0,
     width: "100%",
   },
   buttonContainer: {

@@ -6,6 +6,7 @@ import LocalStorage from '../../helpers/LocalStorage.js';
 import { frontendError } from '../../lib/alerts';
 import { putRequest, getRequest } from "../../lib/requests.js";
 import { APIRoutes } from "../../config/routes";
+import { NavigationActions } from 'react-navigation'
 
 import Sizes from "../../constants/Sizes.js";
 
@@ -16,18 +17,18 @@ export default class Profile extends Component {
             disabled: true,
             user: {
                 'userId': "",
-                'firstName': "",
-                'lastName': "",
+                'firstname': "",
+                'lastname': "",
                 'occupation': "",
-                'phoneNumber': "",
+                'telephone': "",
                 'address': "",
                 'city': null,
                 'state': null,
-                'zipCode': "",
+                'zip_code': "",
                 'email': "",
-                'preferredRegion': [],
-                'preferredLocation': [],
-                'preferredTimes': []
+                'preferred_region_id': [],
+                'preferred_location_id': [],
+                'availability': {}
             },
             password: ""
         }
@@ -36,7 +37,7 @@ export default class Profile extends Component {
 
     async componentDidMount() {
         try {
-            let user = await LocalStorage.getItem('user');
+            let user = await LocalStorage.getNonNullItem('user');
             this.setState({ user: user }, () => { this.render() });
         } catch (err) {
             console.error(err)
@@ -66,12 +67,8 @@ export default class Profile extends Component {
         } else {
             // TODO @Johnathan, gracefully handle more complex updates and also 
             // just change the state naming to not have to rename params.
-            const { userId, firstName, lastName, phoneNumber, city, state, 
-                zipCode, preferredRegion, preferredLocation, 
+            const { city, state, zipCode, preferredRegion, preferredLocation, 
                 preferredTimes, ...params } = this.state.user
-            params['firstname'] = firstName
-            params['lastname'] = lastName
-            params['telephone'] = phoneNumber
             await LocalStorage.storeItem('user', JSON.stringify(this.state.user));
             putRequest(APIRoutes.updateUserPath(this.state.user.userId), (user => {
                 Alert.alert("Successfully updated!")
@@ -85,6 +82,7 @@ export default class Profile extends Component {
     logoutUser = () => {
         const { navigate } = this.props.navigation;
         AsyncStorage.removeItem('user');
+        // navigate("Login");
         navigate("Login");
     }
 
@@ -100,17 +98,17 @@ export default class Profile extends Component {
 
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity
-                            style={(this.state.disabled) ? { ...styles.disabledButton, ...styles.disabledButtonText } : { ...styles.button, ...styles.buttonText, ...styles.enabledButton }}
-                            disabled={this.state.disabled}
-                            onPress={this.saveUserInfo}
-                        >
-                            <Text style={styles.buttonText}>Save</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
                             style={{ ...styles.button, ...styles.buttonText }}
                             onPress={this.logoutUser}
                         >
                             <Text style={styles.buttonText}>Log Out</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={(this.state.disabled) ? { ...styles.disabledButton, ...styles.disabledButtonText } : { ...styles.buttonText, ...styles.enabledButton }}
+                            disabled={this.state.disabled}
+                            onPress={this.saveUserInfo}
+                        >
+                            <Text style={styles.buttonText}>Save</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -147,14 +145,14 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         position: 'absolute',
         bottom: 0,
-        right: 40,
-        width: 135,
+        left: '10.5%',
+        width: '36%',
     },
     buttonContainer: {
         alignItems: 'center',
         flex: 1,
         justifyContent: 'flex-end',
-        height: 50,
+        height: Sizes.height * 0.1,
     },
     buttonText: {
         textAlign: 'center',
@@ -170,8 +168,8 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         position: 'absolute',
         bottom: 0,
-        left: 40,
-        width: 135,
+        right: '10.5%',
+        width: '36%',
     },
     disabledButtonText: {
         textAlign: 'center',
@@ -180,6 +178,13 @@ const styles = StyleSheet.create({
         textTransform: "uppercase"
     },
     enabledButton: {
-        left: 40
+        backgroundColor: '#38A5DB',
+        paddingVertical: 15,
+        marginBottom: 10,
+        borderRadius: 5,
+        position: 'absolute',
+        bottom: 0,
+        width: '36%',
+        right: '10.5%'
     }
 });
