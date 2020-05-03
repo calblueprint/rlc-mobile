@@ -6,6 +6,7 @@ import LocalStorage from '../../helpers/LocalStorage.js';
 import { frontendError } from '../../lib/alerts';
 import { NavigationActions } from 'react-navigation'
 
+import Styles from "../../constants/Styles.js";
 import Sizes from "../../constants/Sizes.js";
 
 export default class Profile extends Component {
@@ -75,7 +76,9 @@ export default class Profile extends Component {
         if (!this.props.user) {
             return (
                 <KeyboardAvoidingView behavior="padding" style={styles.container}>
-
+                    <View style={styles.header}>
+                        <Text style={Styles.title}> My Profile </Text>
+                    </View>
                     <ScrollView>
                         <ProfileHeader getUserAttribute={this.getUserAttribute} />
                         <ProfileForm previousUserInfo={this.state.user} getUserAttribute={this.getUserAttribute} enableSaveButton={this.enableSaveButton} changeUserInfo={this.changeUserInfo} />
@@ -111,10 +114,12 @@ Profile.navigationOptions = {
 
 const styles = StyleSheet.create({
     container: {
+        paddingTop: "10%",
         flex: 1,
         width: Sizes.width
     },
     header: {
+        marginHorizontal: "10%",
         alignItems: 'center',
     },
     headerText: {

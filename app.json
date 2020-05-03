@@ -8,9 +8,10 @@
       "android",
       "web"
     ],
+    "primaryColor": "#38A5DB",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/newrlclogo.png",
     "sdkVersion": "37.0.0",
     "splash": {
       "image": "./assets/images/splash.png",
@@ -24,8 +25,9 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "org.rescuingleftovercuisine.rlc"
+      "supportsTablet": false,
+      "bundleIdentifier": "org.calblueprint.RescuingLeftoverCuisine",
+      "buildNumber": "1.0.0"
     },
     "hooks": {
       "postPublish": [
