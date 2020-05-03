@@ -14,6 +14,7 @@ import { CheckBox } from "react-native-elements";
 import { frontendError } from "../../lib/alerts";
 
 import Colors from "../../constants/Colors";
+import Sizes from "../../constants/Sizes";
 import { normalize } from "../../utils/Normalize";
 
 import {
@@ -100,10 +101,6 @@ const daysandtimes = [
     ],
   },
 ];
-
-const colors = {
-  primary: "#38A5DB",
-};
 
 export default class SignUp3Screen extends React.Component {
   constructor(props) {
@@ -264,7 +261,7 @@ export default class SignUp3Screen extends React.Component {
               <Text style={styles.regionsubHeading}>- or -</Text>
               <SectionedMultiSelect
                 single
-                colors={colors}
+                colors={Colors}
                 selectedItems={this.state.preferred_region_id}
                 items={this.state.regions}
                 uniqueKey="id"
@@ -291,7 +288,7 @@ export default class SignUp3Screen extends React.Component {
 
               <Text style={styles.subHeading}>Preferred Location(s)</Text>
               <SectionedMultiSelect
-                colors={colors}
+                colors={Colors}
                 selectedItems={this.state.preferred_location_id}
                 items={this.state.locations}
                 uniqueKey="id"
@@ -320,7 +317,7 @@ export default class SignUp3Screen extends React.Component {
               {/* <Text style={styles.subHeading}>Preferred Time(s)</Text>
               <SectionedMultiSelect
                 hideSearch
-                colors={colors}
+                colors={Colors}
                 selectedItems={this.state.availability}
                 items={daysandtimes}
                 uniqueKey="id"

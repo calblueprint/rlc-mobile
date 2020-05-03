@@ -24,6 +24,11 @@ export class APIRoutes {
     return APIRoutes.deviseRoute(`password`);
   }
 
+  // Availiability
+  static availabilityPath() {
+    return `/availabilities`;
+  }
+
   // Events
   static getEventsPath(id, type) {
     return APIRoutes.deviseRoute(`${id}/events/${type}`);
