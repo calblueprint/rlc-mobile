@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         marginTop: 20,
         marginBottom: 25,
+        paddingHorizontal: "7%",
         alignItems: 'flex-start'
     },
     badge: {

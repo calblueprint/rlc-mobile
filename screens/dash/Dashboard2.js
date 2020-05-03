@@ -9,6 +9,7 @@ import ActivityCard from "../../components/dashboard/ActivityCard";
 import { normalize } from "../../utils/Normalize.js";
 import LocalStorage from "../../helpers/LocalStorage";
 
+import Styles from "../../constants/Styles";
 import Sizes from "../../constants/Sizes.js";
 
 export default class Dashboard extends Component {
@@ -44,6 +45,9 @@ export default class Dashboard extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={Styles.title}> Home </Text>
+        </View>
         <View style={styles.currentEvent}>
           <View style={styles.slideStructure}>
             <Text style={styles.inProgress}>• In Progress</Text>
@@ -53,7 +57,10 @@ export default class Dashboard extends Component {
             /> */}
           </View>
         </View>
-        <EventsList navigation={this.props.navigation} toSearch={this.navigateToSearch} />
+        <EventsList
+          navigation={this.props.navigation}
+          toSearch={this.navigateToSearch}
+        />
       </View>
     );
   }
@@ -66,7 +73,12 @@ Dashboard.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#FFF",
     width: Sizes.width,
+    paddingTop: "10%",
+  },
+  header: {
+    marginHorizontal: "10%",
   },
   currentEvent: {
     backgroundColor: "#EEEEEE",
@@ -95,7 +107,7 @@ const styles = StyleSheet.create({
   },
   slideStructure: {
     height: "100%",
-    marginTop: "13%",
+    marginTop: "5%",
     width: "100%",
   },
   inProgress: {

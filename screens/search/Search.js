@@ -14,35 +14,44 @@ const dayOptions = [
   {
     key: "monday",
     text: "Monday",
+    offset: 1,
   },
   {
     key: "tuesday",
     text: "Tuesday",
+    offset: 2,
   },
   {
     key: "wednesday",
     text: "Wednesday",
+    offset: 3,
   },
   {
     key: "thursday",
     text: "Thursday",
+    offset: 4,
   },
   {
     key: "friday",
     text: "Friday",
+    offset: 5,
   },
   {
     key: "saturday",
     text: "Saturday",
+    offset: 6,
   },
   {
     key: "sunday",
     text: "Sunday",
+    offset: 0,
   },
 ];
 
 const numOfTimes = 4;
 const totalTimes = 28;
+const hour_ms = 60*60*1000;
+
 export default class Search extends Component {
   constructor(props) {
     super(props);
@@ -337,7 +346,43 @@ export default class Search extends Component {
     return loc_preferences;
   };
 
-  //TIME FUNCTIONS
+  //TIME FUNCTIONS 
+  format_api_times = () => {
+    const curr_date = new Date();
+    curr_date.setHours(0,0,0,0);
+    const curr_date_ms = curr_date.getTime();
+    const day_of_week = curr_date.getDay();
+    const intervals = []
+    dayOptions.map((day)=>{
+      const curr_day_periods = this.state[day.key];
+      // Calculate the number of days from now that this day of the week will occur
+      const adjusted_offset = (day.offset - day_of_week + 7) % 7
+      // Get beginning of current day 
+      adjusted_date_ms = curr_date_ms+24*hour_ms*adjusted_offset;
+      // Get time interval to search for on each day
+      if (curr_day_periods["all"]["value"] === true) {
+        const start_time = new Date(adjusted_date_ms+9*hour_ms);
+        const end_time = new Date(adjusted_date_ms+21*hour_ms);
+        intervals.push({'start': start_time, 'end': end_time})
+      }
+      else {
+        Object.keys(curr_day_periods).map((period)=>{
+          if (period !== "all") {
+            // Get ending time from current period
+            let curr_end_hours = curr_day_periods[period].text.split("-")[1].slice(0,-2);
+            // Parse number of hours
+            curr_end_hours = parseInt(curr_end_hours) % 12 + 12;
+            curr_start_hours = curr_end_hours - 3;
+            const start_time = new Date(adjusted_date_ms+curr_start_hours*hour_ms);
+            const end_time = new Date(adjusted_date_ms+curr_end_hours*hour_ms);
+            intervals.push({'start': start_time, 'end': end_time})
+          }
+        })
+      }
+    })
+    return intervals;
+  }
+
   compile_times = () => {
     const time_preferences = [
       this.state.monday,
@@ -418,18 +463,6 @@ export default class Search extends Component {
 
   search = () => {
     //props are the selected locations and selected times
-    // return getRequest(
-    //   "/get_events",
-    //   responseData => {
-    //     console.log("Got search events");
-    //     console.log(responseData);
-    //   },
-    //   error => {
-    //     console.log("error");
-    //     console.log(error);
-    //   },
-    //   { 'date': this.state., 'location': this.state.}
-    // )
     this.setState({ hasCompletedPreferences: true }, () => { this.render() });
   };
 
@@ -437,10 +470,9 @@ export default class Search extends Component {
     if (this.state.hasCompletedPreferences) {
       return (
         <View style={styles.container}>
-          <SuggestedEventsList
-            navigation={this.props.navigation}
-            preferredLocations={this.state.locations}
-          />
+          <SuggestedEventsList navigation={this.props.navigation} 
+                               preferredLocations={this.state.locations}
+                               preferredTimes={this.format_api_times()} />
         </View>
       );
     } else {
@@ -484,7 +516,8 @@ export default class Search extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: "5%",
+    paddingTop: "10%",
+    backgroundColor: "white",
     flex: 1,
     flexDirection: "column",
     alignContent: "space-around",
