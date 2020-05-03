@@ -311,9 +311,9 @@ export default class Search extends Component {
 
   //LOCATION FUNCTIONS
 
-  updateSearch = (val = () => {
+  updateSearch = (val) = () => {
     this.setState({ search: val });
-  });
+  };
 
   handleSelect = (val, id) => () => {
     val === true ? this.addLoc(-1) : this.addLoc(1);
@@ -416,22 +416,22 @@ export default class Search extends Component {
 
   };
 
-  // search = () => {
-  //   //props are the selected locations and selected times
-  //   return getRequest(
-  //     "/get_events",
-  //     responseData => {
-  //       console.log("Got search events");
-  //       console.log(responseData);
-  //     },
-  //     error => {
-  //       console.log("error");
-  //       console.log(error);
-  //     },
-  //     {'date': this.state., 'location': this.state.}
-  //   )
-  //   this.setState({ hasCompletedPreferences: true }, () => { this.render() });
-  // };
+  search = () => {
+    //props are the selected locations and selected times
+    // return getRequest(
+    //   "/get_events",
+    //   responseData => {
+    //     console.log("Got search events");
+    //     console.log(responseData);
+    //   },
+    //   error => {
+    //     console.log("error");
+    //     console.log(error);
+    //   },
+    //   { 'date': this.state., 'location': this.state.}
+    // )
+    this.setState({ hasCompletedPreferences: true }, () => { this.render() });
+  };
 
   render() {
     if (this.state.hasCompletedPreferences) {
@@ -439,7 +439,7 @@ export default class Search extends Component {
         <View style={styles.container}>
           <SuggestedEventsList
             navigation={this.props.navigation}
-            preferred_location_id={this.state.locations}
+            preferredLocations={this.state.locations}
           />
         </View>
       );
@@ -497,10 +497,9 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#38A5DB",
     padding: 15,
-    marginBottom: 10,
     borderRadius: 5,
     position: "absolute",
-    bottom: 10,
+    bottom: 0,
     width: "100%",
   },
   buttonContainer: {

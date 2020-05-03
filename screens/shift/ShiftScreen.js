@@ -58,7 +58,7 @@ const recurOptions = [
 export default class ShiftScreen extends React.Component {
   constructor(props) {
     super(props);
-    const pEvent = this.props.navigation.state.params.event;
+    const pEvent = this.props.route.params.event;
     this.state = {
       participantData: [
         {
@@ -192,7 +192,7 @@ export default class ShiftScreen extends React.Component {
   navigateToSignConfirm = () => {
     const { navigate } = this.props.navigation;
     navigate("ChangeConfirm", {
-      title: this.props.navigation.state.params.event.details.name,
+      title: this.props.params.event.details.name,
       description: "This is a recurring event.",
       hasQ: true,
       question: "How often do you want to attend?",
@@ -213,7 +213,7 @@ export default class ShiftScreen extends React.Component {
     }
   };
   render() {
-    const pEvent = this.props.navigation.state.params.event;
+    const pEvent = this.props.route.params.event;
     console.log(pEvent);
 
     //set latitude and longitude
@@ -230,7 +230,7 @@ export default class ShiftScreen extends React.Component {
             onPressBack={this.navigateToMain}
             rightSide={
               pEvent.shiftType === ShiftType.upcoming ||
-              pEvent.shiftType === ShiftType.current
+                pEvent.shiftType === ShiftType.current
                 ? true
                 : false
             }
@@ -326,32 +326,32 @@ export default class ShiftScreen extends React.Component {
 
                 {(pEvent.shiftType === ShiftType.upcoming ||
                   pEvent.shiftType === ShiftType.current) && (
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      marginTop: 10,
-                      marginBottom: 10,
-                    }}
-                  >
-                    <Text style={{ fontSize: 17 }}>10.</Text>
-                    <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>
-                      Tap "Complete" to confirm the completion of the event. The
-                      last three steps must be completed.
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        marginTop: 10,
+                        marginBottom: 10,
+                      }}
+                    >
+                      <Text style={{ fontSize: 17 }}>10.</Text>
+                      <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>
+                        Tap "Complete" to confirm the completion of the event. The
+                        last three steps must be completed.
                     </Text>
-                  </View>
-                )}
+                    </View>
+                  )}
 
                 {(pEvent.shiftType === ShiftType.upcoming ||
                   pEvent.shiftType === ShiftType.current) && (
-                  <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={this.navigateToMain}
-                    >
-                      <Text style={styles.buttonText}>Complete</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
+                    <View style={styles.buttonContainer}>
+                      <TouchableOpacity
+                        style={styles.button}
+                        onPress={this.navigateToMain}
+                      >
+                        <Text style={styles.buttonText}>Complete</Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
               </View>
             </ScrollView>
             {pEvent.shiftType === ShiftType.searched && (

@@ -25,9 +25,10 @@ export default class LoginForm extends React.Component {
     return postRequest(
       APIRoutes.loginPath(),
       user => {
-        const userJSON = {'userId': user.id,
-          'firstname': user.firstname,
-          'lastname': user.lastname,
+        const userJSON = {
+          'userId': user.id,
+          'firstName': user.firstname,
+          'lastName': user.lastname,
           'occupation': user.occupation,
           'telephone': user.telephone,
           'address': user.address,
@@ -39,6 +40,7 @@ export default class LoginForm extends React.Component {
           'preferred_location_id': user.preferred_location_id,
           'availability': ""
         }
+        console.log(user)
         LocalStorage.storeItem('user', userJSON);
         this.props.navigateHandler();
       },

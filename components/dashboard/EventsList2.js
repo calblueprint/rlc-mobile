@@ -46,7 +46,7 @@ class UpcomingEventsList extends React.Component {
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={styles.button}
-                onPress={this.props.navigation.navigate("Search")}
+                onPress={this.props.toSearch}
               >
                 <Text style={styles.buttonText}>Sign Up for Shift</Text>
               </TouchableOpacity>
@@ -100,7 +100,7 @@ class AttendedEventsList extends React.Component {
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={styles.button}
-                onPress={this.props.navigation.navigate("Search")}
+                onPress={this.props.toSearch}
               >
                 <Text style={styles.buttonText}>Sign Up for Shift</Text>
               </TouchableOpacity>
@@ -240,6 +240,7 @@ export default class EventsList2 extends Component {
             <UpcomingEventsList
               upcomingEvents={this.state.upcomingEvents}
               navigation={this.props.navigation}
+              toSearch={this.props.toSearch}
             />
           );
         case "second":
@@ -247,6 +248,7 @@ export default class EventsList2 extends Component {
             <AttendedEventsList
               attendedEvents={this.state.attendedEvents}
               navigation={this.props.navigation}
+              toSearch={this.props.toSearch}
             />
           );
         default:
