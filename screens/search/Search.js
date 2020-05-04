@@ -320,7 +320,7 @@ export default class Search extends Component {
   }
 
   componentWillMount() {
-    this.listener = EventRegister.addEventListener('reloadSearch', (data) => {
+    this.listener = EventRegister.addEventListener('reloadSearch', () => {
       this.setState({
         hasCompletedPreferences: false,
       })

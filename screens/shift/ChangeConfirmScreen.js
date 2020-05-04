@@ -27,11 +27,16 @@ export default class ChangeConfirmScreen extends React.Component {
 
     signupForEventHandler = () => {
         this.reloadSearch();
+        this.reloadEvents();
         this.navigateToMain();
     }
 
     reloadSearch = () => {
-        EventRegister.emit('reloadSearch', 'Reloading Search Now!')
+        EventRegister.emit('reloadSearch');
+    }
+
+    reloadEvents = () => {
+        EventRegister.emit('reloadEvents');
     }
 
     navigateToMain = () => {
@@ -118,7 +123,7 @@ export default class ChangeConfirmScreen extends React.Component {
                     </View>
                     <View style={{ flex: 5 }}></View>
                     <View style={styles.buttonContainer} >
-                        <TouchableOpacity style={styles.button} onPress={this.signupForEventHandler}>
+                        <TouchableOpacity style={styles.button} onPress={this.navigateToMain}>
                             <Text style={styles.buttonText}>Confirm</Text>
                         </TouchableOpacity>
                     </View>
