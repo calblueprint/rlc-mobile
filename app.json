@@ -30,7 +30,7 @@
       "buildNumber": "1.0.0"
     },
     "android": {
-      "package": "org.calblueprint.rescuingleftovercuisine",
+      "package": "org.calblueprint.RescuingLeftoverCuisine",
       "versionCode": 1,
       "permissions": []
     },
