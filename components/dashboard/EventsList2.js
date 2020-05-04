@@ -23,6 +23,7 @@ import { normalize } from "../../utils/Normalize.js";
 // Utils
 import LocalStorage from "../../helpers/LocalStorage.js";
 import { get_dashboard_events_lists } from "../../helpers/EventsHelper.js";
+import { EventRegister } from "react-native-event-listeners";
 
 class UpcomingEventsList extends React.Component {
   constructor(props) {
@@ -59,7 +60,7 @@ class UpcomingEventsList extends React.Component {
         <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
           <ScrollView style={{ height: "100%" }}>
             {this.state.upcomingEvents.map((event) => {
-              console.log("upcoming",event);
+              console.log("upcoming", event);
               return (
                 <ActivityCard
                   key={event.id}
@@ -153,6 +154,16 @@ export default class EventsList2 extends Component {
       console.error(err);
       this.props.navigation.navigate("Login");
     }
+  }
+
+  componentWillMount() {
+    this.listener = EventRegister.addEventListener('reloadEvents', () => {
+      this._fetchEvents()
+    });
+  }
+
+  componentWillUnmount() {
+    EventRegister.removeEventListener(this.listener);
   }
 
   // Fetch function

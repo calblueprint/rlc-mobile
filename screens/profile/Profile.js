@@ -7,13 +7,15 @@ import {
   ScrollView,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Alert
 } from "react-native";
 import ProfileHeader from "../../components/profile/ProfileHeader.js";
 import ProfileForm from "../../components/profile/ProfileForm.js";
 import LocalStorage from "../../helpers/LocalStorage.js";
 import { frontendError } from "../../lib/alerts";
 import { NavigationActions } from "react-navigation";
-
+import { putRequest } from '../../lib/requests'
+import { APIRoutes } from '../../config/routes'
 import Styles from "../../constants/Styles.js";
 import Sizes from "../../constants/Sizes.js";
 
@@ -23,29 +25,33 @@ export default class Profile extends Component {
     this.state = {
       disabled: true,
       user: {
-        userId: "",
-        firstname: "",
-        lastname: "",
-        occupation: "",
-        telephone: "",
-        address: "",
-        city: null,
-        state: null,
-        zip_code: "",
-        email: "",
-        preferred_region_id: [],
-        preferred_location_id: [],
-        availability: {},
+        'userId': "",
+        'firstname': "",
+        'lastname': "",
+        'occupation': "",
+        'telephone': "",
+        'address': "",
+        'city': null,
+        'state': null,
+        'zip_code': "",
+        'email': "",
+        'preferred_region_id': [],
+        'preferred_location_id': [],
+        'availability': {},
       },
       password: "",
+      isFetching: true
     };
   }
 
   async componentDidMount() {
     try {
       let user = await LocalStorage.getNonNullItem("user");
-      this.setState({ user: user }, () => {
-        this.render();
+      await this.setState({ 
+        user: user,
+      }, () => {
+        this.render(); 
+        this.setState({ isFetching: false})
       });
     } catch (err) {
       console.error(err);
@@ -60,27 +66,39 @@ export default class Profile extends Component {
   };
 
   changeUserInfo = (attribute, text) => {
-    this.setState({ [attribute]: text });
-  };
+    const user = this.state.user
+    user[attribute] = text
+    this.setState({ user });
+  }
 
   getUserAttribute = (attribute) => {
     return this.state.user[attribute];
-  };
+  }
 
   saveUserInfo = async () => {
     if (this.state.password.length > 0 && this.state.password.length <= 8) {
-      frontendError("Passwords must be more than 8 characters long.");
+        frontendError("Passwords must be more than 8 characters long.")
     } else {
-      await LocalStorage.storeItem("user", JSON.stringify(this.state.user));
+        // TODO @Johnathan, gracefully handle more complex updates and also 
+        // just change the state naming to not have to rename params.
+        const { userId, city, state, zipCode, preferredRegion_id, preferredLocation_id, 
+          availability, ...params } = this.state.user
+        await LocalStorage.storeItem('user', JSON.stringify(this.state.user));
+        putRequest(APIRoutes.updateUserPath(this.state.user.userId), (user => {
+            Alert.alert("Successfully updated!")
+        }),
+        (error) => console.error(error),
+        params
+        )
     }
-  };
+  }
 
   logoutUser = () => {
     const { navigate } = this.props.navigation;
-    AsyncStorage.clear();
-    // navigate("Login");
+    AsyncStorage.removeItem('user');
+    AsyncStorage.removeItem('cookie')
     navigate("Login");
-  };
+  }
 
   render() {
     if (!this.props.user) {
@@ -90,7 +108,10 @@ export default class Profile extends Component {
             <Text style={Styles.title}> My Profile </Text>
           </View>
           <ScrollView>
-            <ProfileHeader getUserAttribute={this.getUserAttribute} />
+            <ProfileHeader 
+              getUserAttribute={this.getUserAttribute} 
+              isFetching={this.state.isFetching}
+            />
             <ProfileForm
               previousUserInfo={this.state.user}
               getUserAttribute={this.getUserAttribute}

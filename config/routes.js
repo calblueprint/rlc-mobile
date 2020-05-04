@@ -24,11 +24,12 @@ export class APIRoutes {
     return APIRoutes.deviseRoute(`password`);
   }
 
-  // Events
+  // Upcoming, attended, etc events
   static getEventsPath(id, type) {
     return APIRoutes.createRoute(`users/${id}/events/${type}`);
   }
 
+  // Event Details
   static getEventDetailsPath(id) {
     return APIRoutes.createRoute(`show_event/${id}`);
   }
@@ -52,5 +53,10 @@ export class APIRoutes {
 
   static getLocationPath(id) {
     return APIRoutes.createRoute(`get_location/${id}`);
+  }
+
+  // Update User
+  static updateUserPath(id) {
+    return APIRoutes.createRoute(`users/${id}/update`)
   }
 }
