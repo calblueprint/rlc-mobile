@@ -27,8 +27,8 @@ export default class LoginForm extends React.Component {
       user => {
         const userJSON = {
           'userId': user.id,
-          'firstName': user.firstname,
-          'lastName': user.lastname,
+          'firstname': user.firstname,
+          'lastname': user.lastname,
           'occupation': user.occupation,
           'telephone': user.telephone,
           'address': user.address,

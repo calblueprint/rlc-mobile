@@ -13,7 +13,8 @@ import ProfileForm from "../../components/profile/ProfileForm.js";
 import LocalStorage from "../../helpers/LocalStorage.js";
 import { frontendError } from "../../lib/alerts";
 import { NavigationActions } from "react-navigation";
-
+import { putRequest } from '../../lib/requests'
+import { APIRoutes } from '../../config/routes'
 import Styles from "../../constants/Styles.js";
 import Sizes from "../../constants/Sizes.js";
 
@@ -23,19 +24,19 @@ export default class Profile extends Component {
     this.state = {
       disabled: true,
       user: {
-        userId: "",
-        firstname: "",
-        lastname: "",
-        occupation: "",
-        telephone: "",
-        address: "",
-        city: null,
-        state: null,
-        zip_code: "",
-        email: "",
-        preferred_region_id: [],
-        preferred_location_id: [],
-        availability: {},
+        'userId': "",
+        'firstname': "",
+        'lastname': "",
+        'occupation': "",
+        'telephone': "",
+        'address': "",
+        'city': null,
+        'state': null,
+        'zip_code': "",
+        'email': "",
+        'preferred_region_id': [],
+        'preferred_location_id': [],
+        'availability': {},
       },
       password: "",
     };
@@ -66,7 +67,7 @@ export default class Profile extends Component {
   }
 
   getUserAttribute = (attribute) => {
-    return this.state.user[attribute];
+      return this.state.user[attribute];
   }
 
   saveUserInfo = async () => {
@@ -90,6 +91,7 @@ export default class Profile extends Component {
   logoutUser = () => {
     const { navigate } = this.props.navigation;
     AsyncStorage.removeItem('user');
+    AsyncStorage.removeItem('cookie')
     navigate("Login");
   }
 
@@ -101,7 +103,9 @@ export default class Profile extends Component {
             <Text style={Styles.title}> My Profile </Text>
           </View>
           <ScrollView>
-            <ProfileHeader getUserAttribute={this.getUserAttribute} />
+            <ProfileHeader 
+              getUserAttribute={this.getUserAttribute} 
+            />
             <ProfileForm
               previousUserInfo={this.state.user}
               getUserAttribute={this.getUserAttribute}
