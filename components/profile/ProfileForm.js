@@ -7,22 +7,17 @@ import {
   Text,
 } from "react-native";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
+import { isTSTypeAliasDeclaration } from "@babel/types";
 
 import Colors from "../../constants/Colors.js";
 import { normalize } from "../../utils/Normalize.js";
 
 import {
-  fetch_locations_by_region,
-  fetch_regions,
-  fetch_locations,
-} from "../../helpers/LocationHelpers.js";
-
-import {
-  availability_template, 
-  id_to_key, 
+  availability_template,
+  id_to_key,
   availability_selectors,
-  create_availability_static
-} from "../../helpers/AvailabilityHelpers.js"
+  create_availability_static,
+} from "../../helpers/AvailabilityHelpers.js";
 
 export default class ProfileForm extends Component {
   constructor(props) {
@@ -30,7 +25,7 @@ export default class ProfileForm extends Component {
     this.state = {
       preferred_region_id: [],
       preferred_location_id: [],
-      availability: null, 
+      availability: null,
       regions: [],
       locations: [],
       isFetching: true,
@@ -43,49 +38,18 @@ export default class ProfileForm extends Component {
         preferred_region_id: this.props.getUserAttribute("preferred_region_id"),
       });
     }
-    if (this.props.getUserAttribute("preferred_location_id") != null) {
-      this.setState({
-        preferred_location_id: this.props.getUserAttribute("preferred_location_id"),
-      });
-    }
-    if (this.props.getUserAttribute("availability") != null) {
-      this.setState({
-        availability: this.props.getUserAttribute("availability"),
-      });
-    }
-    this._get_location_data();
   }
 
-  _get_location_data = async () => {
-    let regions = await fetch_regions();
-    let locations = await fetch_locations();
-    this.setState({
-      regions: regions,
-      locations: locations,
-      isFetching: false,
-    });
+  onPreferredRegionChange = (preferredRegion) => {
+    this.setState({ preferredRegion: preferredRegion });
   };
 
-  onPreferredRegionChange = async (preferred_region_id) => {
-    let included_locations = await fetch_locations_by_region(
-      preferred_region_id[0]
-    );
-    this.setState({
-      preferred_region_id: preferred_region_id,
-      preferred_location_id: [],
-      locations:
-        included_locations === undefined || included_locations.length == 0
-          ? []
-          : included_locations,
-    });
-  };
-
-  onPreferredLocationChange = (preferred_location_id) => {
-    this.setState({ preferred_location_id: preferred_location_id });
+  onPreferredLocationChange = (preferredLocation) => {
+    this.setState({ preferredLocation: preferredLocation });
   };
 
   onAvailabilityChange = async (availabilityArr) => {
-    let new_availability = create_availability_static(availabilityArr)
+    let new_availability = create_availability_static(availabilityArr);
     this.props.changeAvailability(new_availability);
     this.setState({ new_availability: new_availability });
   };
@@ -227,9 +191,9 @@ export default class ProfileForm extends Component {
           <Text style={styles.subHeading}>Zip Code</Text>
           <TextInput
             style={styles.input}
-            defaultValue={this.props.getUserAttribute("zip_code")}
+            defaultValue={this.props.getUserAttribute("zipCode")}
             onChangeText={(text) => {
-              this.props.changeUserInfo("zip_code", text);
+              this.props.changeUserInfo("zipCode", text);
               this.props.enableSaveButton();
             }}
             returnKeyType="done"
@@ -287,7 +251,10 @@ export default class ProfileForm extends Component {
             displayKey="name"
             onSelectedItemsChange={(preferred_region_id) => {
               this.onPreferredRegionChange(preferred_region_id);
-              this.props.changeUserInfo("preferred_region_id", preferred_region_id);
+              this.props.changeUserInfo(
+                "preferred_region_id",
+                preferred_region_id
+              );
               this.props.enableSaveButton();
             }}
             searchPlaceholderText="Search regions..."

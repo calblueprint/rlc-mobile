@@ -1,13 +1,16 @@
 //radio buttons based on @source: https://dev.to/saadbashar/create-your-own-radio-button-component-in-react-native-easily-59il
 
 import React, { Component } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage } from "react-native";
 import Header from "../../components/shift/Header"
 import NavigationFooter from "../../navigation/NavigationFooter";
+import { EventRegister } from "react-native-event-listeners";
 
 import Sizes from "../../constants/Sizes";
 import { normalize } from "../../utils/Normalize";
 import Colors from "../../constants/Colors";
+import { getRequest, postRequest } from "../../lib/requests";
+import LocalStorage from "../../helpers/LocalStorage";
 
 export default class ChangeConfirmScreen extends React.Component {
     constructor(props) {
@@ -17,10 +20,60 @@ export default class ChangeConfirmScreen extends React.Component {
         };
     }
 
+    async componentDidMount() {
+        let user = await LocalStorage.getItem("user");
+        this.setState({ user_id: user.userId });
+    }
+
+    signupForEventHandler = () => {
+        this.reloadSearch();
+        this.reloadEvents();
+        this.navigateToMain();
+    }
+
+    reloadSearch = () => {
+        EventRegister.emit('reloadSearch');
+    }
+
+    reloadEvents = () => {
+        EventRegister.emit('reloadEvents');
+    }
 
     navigateToMain = () => {
+        console.log('sup');
         const { navigate } = this.props.navigation;
-        navigate("Main");
+        console.log('break');
+        const { navigation } = this.props;
+        const event_id = this.props.route.params.event_id ?? '';
+        const change_type = this.props.route.params.change_type ?? '';
+        if (change_type == 'signup') {
+            getRequest(`events/attend/${event_id}/attend`,
+                responseData => {
+                    console.log("successful");
+                    console.log(responseData);
+                    navigate("Main");
+                },
+                error => {
+                    console.log(error);
+                    console.log("errrrrr");
+                });
+        }
+        if (change_type == 'withdraw') {
+            postRequest(`events/cancel/${event_id}/attend`,
+                responseData => {
+                    console.log("successful");
+                    console.log(responseData);
+                    navigate("Main");
+                },
+                error => {
+                    console.log(error);
+                    console.log("errrrrr");
+                },
+                {
+                    volunteer_id: this.state.user_id,
+                    skip_volunteer_unassign_email: true
+                });
+        }
     };
 
     navigateToShift = () => {
@@ -29,12 +82,12 @@ export default class ChangeConfirmScreen extends React.Component {
     };
 
     render() {
-        const { navigation } = this.props;
+        const route = this.props.route;
         return (
             <View style={{ flex: 1, flexDirection: "column" }}>
                 <View style={{ flex: 1 }}>
                     <Header
-                        centerTitle={navigation.getParam('title', 'No Title')}
+                        centerTitle={route.params.title ?? 'No Title'}
                         onPressBack={this.navigateToShift}
                         rightSide={false}
                         actionTitle="Withdraw"
@@ -44,15 +97,15 @@ export default class ChangeConfirmScreen extends React.Component {
 
                 <View style={styles.container}>
                     <Text style={styles.overview}>
-                        {navigation.getParam('description', '')}
+                        {route.params.description ?? ''}
                     </Text>
-                    {navigation.getParam('hasQ', 'false') && <Text style={{ ...styles.overview, fontWeight: "400", }}>
-                        {navigation.getParam('question', '')}
+                    {(route.params.hasQ ?? false) && <Text style={{ ...styles.overview, fontWeight: "400", }}>
+                        {route.params.question ?? ''}
                     </Text>}
                     <View style={{ flex: 1 }}>
                         <View style={{ flex: 1 }}>
                             {
-                                navigation.getParam('options', '').map(item => (
+                                (route.params.options ?? '').map(item => (
                                     <View key={item.key} style={styles.radioButtonContainer}>
 
                                         <TouchableOpacity
@@ -70,7 +123,7 @@ export default class ChangeConfirmScreen extends React.Component {
                     </View>
                     <View style={{ flex: 5 }}></View>
                     <View style={styles.buttonContainer} >
-                        <TouchableOpacity style={styles.button} onPress={this.navigateToMain}>
+                        <TouchableOpacity style={styles.button} onPress={this.signupForEventHandler}>
                             <Text style={styles.buttonText}>Confirm</Text>
                         </TouchableOpacity>
                     </View>

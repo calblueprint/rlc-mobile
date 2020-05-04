@@ -43,12 +43,15 @@ export default class TimeTab extends React.Component {
         <View
           style={{
             flex: 1,
+            alignContent: "center",
+            alignItems: "center",
+            alignSelf: "center",
             borderBottomColor: "#CCCCCC",
             borderBottomWidth: 2,
             width: "100%",
           }}
         >
-          <ScrollView horizontal={true}>
+          <ScrollView horizontal={true} >
             <View
               style={{
                 flex: 1,
@@ -78,10 +81,16 @@ export default class TimeTab extends React.Component {
                   );
               })}
             </View>
+            <View
+              style={{
+                width: Sizes.width * 0.1,
+                padding: "2%",
+              }}
+            />
           </ScrollView>
         </View>
 
-        <View style={{ flex: 5 }}>
+        <View style={{ flex: 4 }}>
           <ScrollView>
             <View style={styles.timecontainer}>
               {Object.keys(this.props.timeops).map((time) => (

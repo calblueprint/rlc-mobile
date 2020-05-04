@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
 
 import Sizes from "../constants/Sizes.js";
+import { Icon } from 'react-native-elements'
 
 class NavigationFooter extends React.Component {
   constructor(props) {

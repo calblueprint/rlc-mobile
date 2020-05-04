@@ -167,6 +167,8 @@ async function create_availability_static(availabilityArr) {
   availabilityArr.map((id) => {
     new_availability[id_to_key[id]] = 1;
   });
+
+  return new_availability
 }
 
 export {

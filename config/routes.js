@@ -4,16 +4,16 @@
 export class APIRoutes {
   // Use to build api routes
   static createRoute(route) {
-    return `/api/${route}`;
+    return `api/${route}`;
   }
 
   static deviseRoute(route) {
-    return `/users/${route}`;
+    return `users/${route}`;
   }
 
   // Signup and Login
   static signupPath() {
-    return `/users`;
+    return `users`;
   }
   static loginPath() {
     return APIRoutes.deviseRoute(`sign_in`);
@@ -30,10 +30,12 @@ export class APIRoutes {
   }
 
   // Events
+  // Upcoming, attended, etc events
   static getEventsPath(id, type) {
-    return APIRoutes.deviseRoute(`${id}/events/${type}`);
+    return APIRoutes.createRoute(`users/${id}/events/${type}`);
   }
 
+  // Event Details
   static getEventDetailsPath(id) {
     return APIRoutes.createRoute(`show_event/${id}`);
   }
@@ -57,5 +59,10 @@ export class APIRoutes {
 
   static getLocationPath(id) {
     return APIRoutes.createRoute(`get_location/${id}`);
+  }
+
+  // Update User
+  static updateUserPath(id) {
+    return APIRoutes.createRoute(`users/${id}/update`)
   }
 }
