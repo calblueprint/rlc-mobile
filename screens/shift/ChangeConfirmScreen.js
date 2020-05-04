@@ -29,8 +29,8 @@ export default class ChangeConfirmScreen extends React.Component {
         const { navigate } = this.props.navigation;
         console.log('break');
         const { navigation } = this.props;
-        const event_id = navigation.getParam('event_id','');
-        const change_type = navigation.getParam('change_type');
+        const event_id = this.props.route.params.event_id ?? '';
+        const change_type = this.props.route.params.change_type ?? '';
         if (change_type == 'signup') {
             getRequest(`events/attend/${event_id}/attend`, 
             responseData => {
@@ -65,12 +65,12 @@ export default class ChangeConfirmScreen extends React.Component {
     };
 
     render() {
-        const { navigation } = this.props;
+        const route = this.props.route;
         return (
             <View style={{ flex: 1, flexDirection: "column" }}>
                 <View style={{ flex: 1 }}>
                     <Header
-                        centerTitle={navigation.getParam('title', 'No Title')}
+                        centerTitle={route.params.title ?? 'No Title'}
                         onPressBack={this.navigateToShift}
                         rightSide={false}
                         actionTitle="Withdraw"
@@ -80,15 +80,15 @@ export default class ChangeConfirmScreen extends React.Component {
 
                 <View style={styles.container}>
                     <Text style={styles.overview}>
-                        {navigation.getParam('description', '')}
+                        {route.params.description ?? ''}
                     </Text>
-                    {navigation.getParam('hasQ', 'false') && <Text style={{ ...styles.overview, fontWeight: "400", }}>
-                        {navigation.getParam('question', '')}
+                    {(route.params.hasQ ?? false) && <Text style={{ ...styles.overview, fontWeight: "400", }}>
+                        {route.params.question ?? ''}
                     </Text>}
                     <View style={{ flex: 1 }}>
                         <View style={{ flex: 1 }}>
                             {
-                                navigation.getParam('options', '').map(item => (
+                                (route.params.options ?? '').map(item => (
                                     <View key={item.key} style={styles.radioButtonContainer}>
 
                                         <TouchableOpacity
