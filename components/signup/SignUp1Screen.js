@@ -1,16 +1,8 @@
 import React from "react";
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { frontendError } from "../../lib/alerts";
 import StepsTimeline from "../../components/StepsTimeline";
-import DatePicker from "react-native-datepicker";
+import DatePicker from "react-native-datepicker"
 
 import Colors from "../../constants/Colors";
 import { normalize } from "../../utils/Normalize";
@@ -22,63 +14,65 @@ export default class SignUp1Screen extends React.Component {
       firstname: "",
       lastname: "",
       birthday: "",
-      birth_month: "",
       telephone: "",
       user: {},
-    };
+    }
   }
 
+  //Setup User Payload
+  setupParams = () => {
+    this.setState({ user: this.props.user });
+    this.state.user.firstname = this.state.firstname;
+    this.state.user.lastname = this.state.lastname;
+    this.state.user.birth_month = this.state.birth_month;
+    this.state.user.telephone = this.state.telephone;
+  }
 
   /*Checks conditions before transitioning to next screen:
    * 1. all fields are filled out and not empty.
    */
   checkValidNext = () => {
-    if (
-      this.state.firstname == "" ||
-      this.state.lastname == "" ||
-      this.state.birthday == "" ||
-      this.state.telephone == ""
-    ) {
-      frontendError("Please fill out all fields.");
+    if (this.state.firstname == "" || this.state.lastname == "" || this.state.birthday == "" || this.state.telephone == "") {
+      frontendError("Please fill out all fields.")
     } else if (this.state.telephone.match(/[a-z]/i)) {
-      frontendError("Invalid telephone number.");
+      frontendError("Invalid telephone number.")
     } else if (!this.isOverEighteen()) {
-      frontendError("You must at least 18 years old to be a RLC volunteer.");
+      frontendError("You must at least 18 years old to be a RLC volunteer.")
     } else {
-      const { firstname, lastname, birth_month, telephone } = this.state;
-      this.props.setScreenForward( { ...this.props.user, firstname, lastname, birth_month, telephone, is_under_eighteen: false} );
+      this.setupParams()
+      this.props.setScreenForward(this.state.user)
     }
-  };
+  }
 
   isOverEighteen = () => {
     var today = new Date();
     var birthdayDate = new Date(this.state.birthday);
-    return (today - birthdayDate) / (1000 * 60 * 60 * 24) >= 6570;
-  };
+    return ((today - birthdayDate) / (1000 * 60 * 60 * 24)) >= 6570;
+  }
 
   gotoPrevStep = () => {
-    this.props.setScreenBackward(this.state.user);
-  };
+    this.props.setScreenBackward(this.state.user)
+  }
 
   //Set state var birthday as today"s date.
   componentDidMount = () => {
-    this.getToday();
+    this.getToday()
     if (this.props.previousUserInfo.firstname != null) {
-      this.setState({ firstname: this.props.previousUserInfo.firstname });
+      this.setState({ firstname: this.props.previousUserInfo.firstname })
     }
     if (this.props.previousUserInfo.lastname != null) {
-      this.setState({ lastname: this.props.previousUserInfo.lastname });
+      this.setState({ lastname: this.props.previousUserInfo.lastname })
     }
     if (this.props.previousUserInfo.birthday != null) {
-      this.setState({ birthday: this.props.previousUserInfo.birthday });
+      this.setState({ birthday: this.props.previousUserInfo.birthday })
     }
     if (this.props.previousUserInfo.birth_month != null) {
-      this.setState({ birth_month: this.props.previousUserInfo.birth_month });
+      this.setState({ birth_month: this.props.previousUserInfo.birth_month })
     }
     if (this.props.previousUserInfo.telephone != null) {
-      this.setState({ telephone: this.props.previousUserInfo.telephone });
+      this.setState({ telephone: this.props.previousUserInfo.telephone })
     }
-  };
+  }
 
   //Sets state var birthday as today"s date.
   getToday = () => {
@@ -88,24 +82,22 @@ export default class SignUp1Screen extends React.Component {
     var yyyy = today.getFullYear();
     today = yyyy + "/" + mm + "/" + dd;
     this.setState({ birthday: today });
-    this.setState({ birth_month: monthNames[mm - 1] });
-  };
+    this.setState({ birth_month: monthNames[mm - 1] })
+  }
 
   render() {
     return (
       <SafeAreaView style={styles.container}>
         <StepsTimeline currentPosition={0} />
-        <ScrollView contentContainerStyle={styles.contentContainer}>
-          <Text style={styles.heading}>
-            We're excited to have you join the team! First off, tell us a little
-            bit about yourself!
-          </Text>
+        <ScrollView
+          contentContainerStyle={styles.contentContainer}>
+          <Text style={styles.heading}>We're excited to have you join the team! First off, tell us a little bit about yourself!</Text>
           <View style={styles.inputContainer}>
             <Text style={styles.subHeading}>First Name</Text>
             <TextInput
               style={styles.input}
               placeholder={"Jane"}
-              onChangeText={(text) => this.setState({ firstname: text })}
+              onChangeText={text => this.setState({ firstname: text })}
               returnKeyType={"next"}
               onSubmitEditing={() => this.lastNameInput.focus()}
               value={this.state.firstname}
@@ -114,37 +106,26 @@ export default class SignUp1Screen extends React.Component {
             <TextInput
               style={styles.input}
               placeholder={"Doe"}
-              onChangeText={(text) => this.setState({ lastname: text })}
+              onChangeText={text => this.setState({ lastname: text })}
               returnKeyType={"next"}
-              ref={(input) => {
-                this.lastNameInput = input;
-              }}
+              ref={(input) => { this.lastNameInput = input; }}
               value={this.state.lastname}
             ></TextInput>
             <Text style={styles.subHeading}>Birthday</Text>
-            <DatePicker
-              format="YYYY-MM-DD"
-              date={this.state.birthday}
-              style={styles.datePicker}
-              onDateChange={(date) => {
-                this.setState({ birthday: date });
-                this.setState({
-                  birth_month: monthNames[parseInt(date.substr(5, 2)) - 1],
-                });
-              }}
-              confirmBtnText={"Confirm"}
-              cancelBtnText={"Cancel"}
-              value={this.state.birthday}
-            />
+            <DatePicker format="YYYY-MM-DD" date={this.state.birthday} style={styles.datePicker} onDateChange={
+              (date) => {
+                this.setState({ birthday: date })
+                this.setState({ birth_month: monthNames[parseInt(date.substr(5, 2)) - 1] })
+              }
+            } confirmBtnText={"Confirm"} cancelBtnText={"Cancel"} value={this.state.birthday} />
             <Text style={styles.subHeading}>Mobile Phone Number</Text>
             <TextInput
               style={styles.input}
               keyboardType="phone-pad"
               placeholder={"(123)-456-7890"}
-              onChangeText={(text) => this.setState({ telephone: text })}
+              onChangeText={text => this.setState({ telephone: text })}
               returnKeyType={"next"}
-              value={this.state.telephone}
-            ></TextInput>
+              value={this.state.telephone}></TextInput>
           </View>
         </ScrollView>
         <View style={styles.buttonContainer}>
@@ -153,24 +134,11 @@ export default class SignUp1Screen extends React.Component {
           </TouchableOpacity>
         </View>
       </SafeAreaView>
-    );
+    )
   }
 }
 
-const monthNames = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
+const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 const styles = StyleSheet.create({
   container: {

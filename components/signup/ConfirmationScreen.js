@@ -16,8 +16,8 @@ export default class ConfirmationScreen extends React.Component {
     super(props);
   }
 
-  _navigateToMain = () => {
-    this.props.navigateToMain();
+  _navigateToLogin = () => {
+    this.props.navigateToLogin();
   };
 
   render() {
@@ -31,12 +31,13 @@ export default class ConfirmationScreen extends React.Component {
               source={require("../../assets/images/rlclogo.png")}
             />
             <Text style={styles.text}>
-              Thanks for signing up!
+              Thanks for signing up! Please check your email to confirm your
+              account.
             </Text>
           </View>
         </ScrollView>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={this._navigateToMain}>
+          <TouchableOpacity style={styles.button} onPress={this._navigateToLogin}>
             <Text style={styles.buttonText}>Sign In</Text>
           </TouchableOpacity>
         </View>

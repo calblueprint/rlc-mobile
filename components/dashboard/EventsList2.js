@@ -149,7 +149,7 @@ export default class EventsList2 extends Component {
   async componentDidMount() {
     try {
       let user = await LocalStorage.getNonNullItem("user");
-      this.setState({ user_id: user.id }, this._fetchEvents);
+      this.setState({ user_id: user.userId }, this._fetchEvents);
     } catch (err) {
       console.error(err);
       this.props.navigation.navigate("Login");

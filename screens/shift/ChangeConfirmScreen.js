@@ -22,7 +22,7 @@ export default class ChangeConfirmScreen extends React.Component {
 
     async componentDidMount() {
         let user = await LocalStorage.getItem("user");
-        this.setState({ user_id: user.id });
+        this.setState({ user_id: user.userId });
     }
 
     signupForEventHandler = () => {
