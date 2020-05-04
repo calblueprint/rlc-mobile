@@ -7,9 +7,6 @@ import {
   Text,
 } from "react-native";
 import { frontendError } from "../lib/alerts";
-import { postRequest } from "../lib/requests";
-import { APIRoutes } from "../config/routes";
-import LocalStorage from "../helpers/LocalStorage";
 
 import {fetchUser} from "../helpers/UserHelpers.js";
 

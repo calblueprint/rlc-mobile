@@ -25,18 +25,6 @@ export default class SignUp2Screen extends React.Component {
     };
   }
 
-  //Setup User Payload
-  // setupParams = () => {
-  //   this.setState({
-  //     user: {
-  //       ...this.props.user,
-  //       email: this.state.email,
-  //       password: this.state.password,
-  //       password_confirmation: this.state.confirmPassword,
-  //     },
-  //   });
-  // };
-
   componentDidMount = () => {
     if (this.props.previousUserInfo.email != null) {
       this.setState({ email: this.props.previousUserInfo.email });
@@ -74,7 +62,6 @@ export default class SignUp2Screen extends React.Component {
     } else if (!this.state.email.match(/@/)) {
       frontendError("Invalid Email.");
     } else {
-      // this.setupParams();
       const { email, password } = this.state;
       this.props.setScreenForward( { ...this.props.user, email, password } );
     }

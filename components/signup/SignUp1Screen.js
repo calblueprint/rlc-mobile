@@ -28,18 +28,6 @@ export default class SignUp1Screen extends React.Component {
     };
   }
 
-  // //Setup User Payload
-  // setupParams = () => {
-  //   this.setState({
-  //     user: { 
-  //       ...this.props.user, 
-  //       firstname: this.state.firstname ,
-  //       lastname: this.state.lastname,
-  //       birth_month: this.state.birth_month,
-  //       telephone: this.state.telephone,
-  //     },
-  //   });
-  // };
 
   /*Checks conditions before transitioning to next screen:
    * 1. all fields are filled out and not empty.
@@ -57,9 +45,8 @@ export default class SignUp1Screen extends React.Component {
     } else if (!this.isOverEighteen()) {
       frontendError("You must at least 18 years old to be a RLC volunteer.");
     } else {
-      // this.setupParams();
       const { firstname, lastname, birth_month, telephone } = this.state;
-      this.props.setScreenForward( { ...this.props.user, firstname, lastname, birth_month, telephone} );
+      this.props.setScreenForward( { ...this.props.user, firstname, lastname, birth_month, telephone, is_under_eighteen: false} );
     }
   };
 

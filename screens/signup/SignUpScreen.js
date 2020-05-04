@@ -84,16 +84,7 @@ export default class SignUpScreen extends Component {
   createUserForStorage = async (userValues) => {
     const user = {
       ...userValues,
-      //Lots of changes we need to update these everywhere
-      // firstname: this.state.user.firstname,
-      // lastname: this.state.user.lastname,
-      // email: this.state.user.email,
-      // password: this.state.user.password,
-      // birth_month: this.state.user.birth_month,
-      // telephone: this.state.user.telephone,
       address: "",
-      // preferred_region_id: this.state.user.preferred_region_id,
-      // preferred_location_id: this.state.user.preferred_location_id,
       availability: null, // Temporarily moving out of signup flow
       zip_code: "",
       city: "",
