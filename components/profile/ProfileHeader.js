@@ -16,8 +16,14 @@ export default class ProfileHeader extends Component {
                     <Image
                         style={styles.profilePic}
                         source={require('../../assets/images/rlclogo.png')} />
-        
-                    <Text style={styles.title}>{this.props.getUserAttribute('firstname') + " " + this.props.getUserAttribute('lastname')}</Text>
+                    {
+                        this.props.isFetching 
+                        ?
+                        <Text></Text>
+                        :
+                        <Text style={styles.title}>{this.props.getUserAttribute('firstname') + " " + this.props.getUserAttribute('lastname')}</Text>
+                    }
+                    
                     <Text style={styles.subtext}>Member since September 2019</Text>
                 </View>
 

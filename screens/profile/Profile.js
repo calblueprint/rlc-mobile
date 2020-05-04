@@ -40,14 +40,18 @@ export default class Profile extends Component {
         'availability': {},
       },
       password: "",
+      isFetching: true
     };
   }
 
   async componentDidMount() {
     try {
       let user = await LocalStorage.getNonNullItem("user");
-      this.setState({ user: user }, () => {
-        this.render();
+      await this.setState({ 
+        user: user,
+      }, () => {
+        this.render(); 
+        this.setState({ isFetching: false})
       });
     } catch (err) {
       console.error(err);
@@ -106,6 +110,7 @@ export default class Profile extends Component {
           <ScrollView>
             <ProfileHeader 
               getUserAttribute={this.getUserAttribute} 
+              isFetching={this.state.isFetching}
             />
             <ProfileForm
               previousUserInfo={this.state.user}
