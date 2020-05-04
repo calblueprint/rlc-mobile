@@ -1,6 +1,7 @@
 // Place Holder for Search Feature
 import React, { Component } from "../../node_modules/react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { EventRegister } from "react-native-event-listeners";
 
 import Sizes from "../../constants/Sizes.js";
 import Styles from "../../constants/Styles";
@@ -50,7 +51,7 @@ const dayOptions = [
 
 const numOfTimes = 4;
 const totalTimes = 28;
-const hour_ms = 60*60*1000;
+const hour_ms = 60 * 60 * 1000;
 
 export default class Search extends Component {
   constructor(props) {
@@ -318,6 +319,18 @@ export default class Search extends Component {
     };
   }
 
+  componentWillMount() {
+    this.listener = EventRegister.addEventListener('reloadSearch', (data) => {
+      this.setState({
+        hasCompletedPreferences: false,
+      })
+    })
+  }
+
+  componentWillUnmount() {
+    EventRegister.removeEventListener(this.listener);
+  }
+
   //LOCATION FUNCTIONS
 
   updateSearch = (val) = () => {
@@ -349,33 +362,33 @@ export default class Search extends Component {
   //TIME FUNCTIONS 
   format_api_times = () => {
     const curr_date = new Date();
-    curr_date.setHours(0,0,0,0);
+    curr_date.setHours(0, 0, 0, 0);
     const curr_date_ms = curr_date.getTime();
     const day_of_week = curr_date.getDay();
     const intervals = []
-    dayOptions.map((day)=>{
+    dayOptions.map((day) => {
       const curr_day_periods = this.state[day.key];
       // Calculate the number of days from now that this day of the week will occur
       const adjusted_offset = (day.offset - day_of_week + 7) % 7
       // Get beginning of current day 
-      adjusted_date_ms = curr_date_ms+24*hour_ms*adjusted_offset;
+      adjusted_date_ms = curr_date_ms + 24 * hour_ms * adjusted_offset;
       // Get time interval to search for on each day
       if (curr_day_periods["all"]["value"] === true) {
-        const start_time = new Date(adjusted_date_ms+9*hour_ms);
-        const end_time = new Date(adjusted_date_ms+21*hour_ms);
-        intervals.push({'start': start_time, 'end': end_time})
+        const start_time = new Date(adjusted_date_ms + 9 * hour_ms);
+        const end_time = new Date(adjusted_date_ms + 21 * hour_ms);
+        intervals.push({ 'start': start_time, 'end': end_time })
       }
       else {
-        Object.keys(curr_day_periods).map((period)=>{
+        Object.keys(curr_day_periods).map((period) => {
           if (period !== "all") {
             // Get ending time from current period
-            let curr_end_hours = curr_day_periods[period].text.split("-")[1].slice(0,-2);
+            let curr_end_hours = curr_day_periods[period].text.split("-")[1].slice(0, -2);
             // Parse number of hours
             curr_end_hours = parseInt(curr_end_hours) % 12 + 12;
             curr_start_hours = curr_end_hours - 3;
-            const start_time = new Date(adjusted_date_ms+curr_start_hours*hour_ms);
-            const end_time = new Date(adjusted_date_ms+curr_end_hours*hour_ms);
-            intervals.push({'start': start_time, 'end': end_time})
+            const start_time = new Date(adjusted_date_ms + curr_start_hours * hour_ms);
+            const end_time = new Date(adjusted_date_ms + curr_end_hours * hour_ms);
+            intervals.push({ 'start': start_time, 'end': end_time })
           }
         })
       }
@@ -470,9 +483,9 @@ export default class Search extends Component {
     if (this.state.hasCompletedPreferences) {
       return (
         <View style={styles.container}>
-          <SuggestedEventsList navigation={this.props.navigation} 
-                               preferredLocations={this.state.locations}
-                               preferredTimes={this.format_api_times()} />
+          <SuggestedEventsList navigation={this.props.navigation}
+            preferredLocations={this.state.locations}
+            preferredTimes={this.format_api_times()} />
         </View>
       );
     } else {
