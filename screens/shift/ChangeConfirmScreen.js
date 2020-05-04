@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage } from "react-native";
 import Header from "../../components/shift/Header"
 import NavigationFooter from "../../navigation/NavigationFooter";
+import { EventRegister } from "react-native-event-listeners";
 
 import Sizes from "../../constants/Sizes";
 import { normalize } from "../../utils/Normalize";
@@ -24,6 +25,20 @@ export default class ChangeConfirmScreen extends React.Component {
         this.setState({ user_id: user.userId });
     }
 
+    signupForEventHandler = () => {
+        this.reloadSearch();
+        this.reloadEvents();
+        this.navigateToMain();
+    }
+
+    reloadSearch = () => {
+        EventRegister.emit('reloadSearch');
+    }
+
+    reloadEvents = () => {
+        EventRegister.emit('reloadEvents');
+    }
+
     navigateToMain = () => {
         console.log('sup');
         const { navigate } = this.props.navigation;
@@ -32,30 +47,32 @@ export default class ChangeConfirmScreen extends React.Component {
         const event_id = this.props.route.params.event_id ?? '';
         const change_type = this.props.route.params.change_type ?? '';
         if (change_type == 'signup') {
-            getRequest(`events/attend/${event_id}/attend`, 
-            responseData => {
-                console.log("successful");
-                console.log(responseData);
-                navigate("Main");
-            },
-            error => {
-                console.log(error);
-                console.log("errrrrr");
-            });
+            getRequest(`events/attend/${event_id}/attend`,
+                responseData => {
+                    console.log("successful");
+                    console.log(responseData);
+                    navigate("Main");
+                },
+                error => {
+                    console.log(error);
+                    console.log("errrrrr");
+                });
         }
         if (change_type == 'withdraw') {
-            postRequest(`events/cancel/${event_id}/attend`, 
-            responseData => {
-                console.log("successful");
-                console.log(responseData);
-                navigate("Main");
-            },
-            error => {
-                console.log(error);
-                console.log("errrrrr");
-            },
-            {volunteer_id: this.state.user_id,
-            skip_volunteer_unassign_email: true});
+            postRequest(`events/cancel/${event_id}/attend`,
+                responseData => {
+                    console.log("successful");
+                    console.log(responseData);
+                    navigate("Main");
+                },
+                error => {
+                    console.log(error);
+                    console.log("errrrrr");
+                },
+                {
+                    volunteer_id: this.state.user_id,
+                    skip_volunteer_unassign_email: true
+                });
         }
     };
 
@@ -106,7 +123,7 @@ export default class ChangeConfirmScreen extends React.Component {
                     </View>
                     <View style={{ flex: 5 }}></View>
                     <View style={styles.buttonContainer} >
-                        <TouchableOpacity style={styles.button} onPress={this.navigateToMain}>
+                        <TouchableOpacity style={styles.button} onPress={this.signupForEventHandler}>
                             <Text style={styles.buttonText}>Confirm</Text>
                         </TouchableOpacity>
                     </View>
