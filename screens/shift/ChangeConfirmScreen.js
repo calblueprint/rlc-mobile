@@ -123,7 +123,7 @@ export default class ChangeConfirmScreen extends React.Component {
                     </View>
                     <View style={{ flex: 5 }}></View>
                     <View style={styles.buttonContainer} >
-                        <TouchableOpacity style={styles.button} onPress={this.navigateToMain}>
+                        <TouchableOpacity style={styles.button} onPress={this.signupForEventHandler}>
                             <Text style={styles.buttonText}>Confirm</Text>
                         </TouchableOpacity>
                     </View>
