@@ -59,11 +59,7 @@ export default class ShiftScreen extends React.Component {
      constructor(props) {
           super(props)
           const pEvent = this.props.route.params.event;
-<<<<<<< HEAD
           console.log("pevent in constructor");
-=======
-          console.log("hrre's pevent");
->>>>>>> 3f90a778ef02a47cef5265a5dd10d539dcabbd16
           console.log(pEvent);
 
           const shiftInstructions = this.createShiftInstructions(pEvent.details.pickup_locations, pEvent.details.dropoff_locations);
