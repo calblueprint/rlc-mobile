@@ -140,6 +140,7 @@ export default class SuggestedEventsList extends Component {
           });
           eventDetails["recurring"] = responseData[i]["recurring"];
           eventDetails["id"] = responseData[i]["id"];
+          eventDetails["latlng"] = {"latitude":responseData[i]["latitude"], "longitude":responseData[i]["longitude"]};
           if (responseData[i]["location_id"] != null) {
             const locationIdString = responseData[i]["location_id"].toString();
             if (this.state.locations[locationIdString] != null) {
@@ -177,6 +178,8 @@ export default class SuggestedEventsList extends Component {
           eventDetails["numPickups"] = responseData[i]["numPickups"];
           startingTime = new Date(responseData[i]["starting_time"]);
           endingTime = new Date(responseData[i]["ending_time"]);
+          eventDetails["latlng"] = {"latitude":responseData[i]["latitude"], "longitude":responseData[i]["longitude"]};
+
           eventDetails["start_time"] =
             startingTime.toLocaleTimeString("en-US", {
               hour: "2-digit",
