@@ -59,7 +59,11 @@ export default class ShiftScreen extends React.Component {
      constructor(props) {
           super(props)
           const pEvent = this.props.route.params.event;
+<<<<<<< HEAD
           console.log("pevent in constructor");
+=======
+          console.log("hrre's pevent");
+>>>>>>> 3f90a778ef02a47cef5265a5dd10d539dcabbd16
           console.log(pEvent);
 
           const shiftInstructions = this.createShiftInstructions(pEvent.details.pickup_locations, pEvent.details.dropoff_locations);
@@ -274,7 +278,7 @@ export default class ShiftScreen extends React.Component {
                          <Header
                               centerTitle={this.selectShiftTitle(pEvent.details.shiftType)}
                               onPressBack={this.navigateToMain}
-                              rightSide={(pEvent.details.shiftType === ShiftType.upcoming || pEvent.shiftType === ShiftType.current) ? true : false}
+                              rightSide={(pEvent.details.shiftType === ShiftType.upcoming || pEvent.details.shiftType === ShiftType.current) ? true : false}
                               actionTitle="Withdraw"
                               onPressHandler={this.navigateToWithdraw}
                          />
@@ -368,8 +372,8 @@ export default class ShiftScreen extends React.Component {
                                              />
                                         </View> */}
 
-                {(pEvent.shiftType === ShiftType.upcoming ||
-                  pEvent.shiftType === ShiftType.current) && (
+                {(pEvent.details.shiftType === ShiftType.upcoming ||
+                  pEvent.details.shiftType === ShiftType.current) && (
                     <View
                       style={{
                         flexDirection: "row",
@@ -385,8 +389,8 @@ export default class ShiftScreen extends React.Component {
                     </View>
                   )}
 
-                {(pEvent.shiftType === ShiftType.upcoming ||
-                  pEvent.shiftType === ShiftType.current) && (
+                {(pEvent.details.shiftType === ShiftType.upcoming ||
+                  pEvent.details.shiftType === ShiftType.current) && (
                     <View style={styles.buttonContainer}>
                       <TouchableOpacity
                         style={styles.button}
@@ -398,7 +402,7 @@ export default class ShiftScreen extends React.Component {
                   )}
               </View>
             </ScrollView>
-            {pEvent.shiftType === ShiftType.searched && (
+            {pEvent.details.shiftType == ShiftType.searched && (
               <View style={styles.signUpButtonContainer}>
                 <TouchableOpacity
                   style={styles.signUpButton}
