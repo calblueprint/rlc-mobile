@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Alert
 } from "react-native";
 import ProfileHeader from "../../components/profile/ProfileHeader.js";
 import ProfileForm from "../../components/profile/ProfileForm.js";
@@ -67,7 +68,7 @@ export default class Profile extends Component {
   }
 
   getUserAttribute = (attribute) => {
-      return this.state.user[attribute];
+    return this.state.user[attribute];
   }
 
   saveUserInfo = async () => {
@@ -76,8 +77,8 @@ export default class Profile extends Component {
     } else {
         // TODO @Johnathan, gracefully handle more complex updates and also 
         // just change the state naming to not have to rename params.
-        const { userId, city, state, zipCode, preferredRegion, preferredLocation, 
-            preferredTimes, ...params } = this.state.user
+        const { userId, city, state, zipCode, preferredRegion_id, preferredLocation_id, 
+          availability, ...params } = this.state.user
         await LocalStorage.storeItem('user', JSON.stringify(this.state.user));
         putRequest(APIRoutes.updateUserPath(this.state.user.userId), (user => {
             Alert.alert("Successfully updated!")
