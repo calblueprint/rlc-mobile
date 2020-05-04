@@ -19,7 +19,7 @@ export default class ProfileForm extends Component {
         this.state = {
             preferredRegion: [],
             preferredLocation: [],
-            preferredTimes: [],
+            availability: {},
         }
     }
 
@@ -30,8 +30,8 @@ export default class ProfileForm extends Component {
         if (this.props.getUserAttribute("preferredLocation") != null) {
             this.setState({ preferredLocation: this.props.getUserAttribute("preferredLocation") });
         }
-        if (this.props.getUserAttribute("preferredTimes") != null) {
-            this.setState({ preferredTimes: this.props.getUserAttribute("preferredTimes") });
+        if (this.props.getUserAttribute("availability") != null) {
+            this.setState({ availability: this.props.getUserAttribute("availability") });
         }
     }
 

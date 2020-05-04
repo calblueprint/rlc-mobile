@@ -3,7 +3,6 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage } from "react-native";
 import Header from "../../components/shift/Header"
-import NavigationFooter from "../../navigation/NavigationFooter";
 import { EventRegister } from "react-native-event-listeners";
 
 import Sizes from "../../constants/Sizes";

@@ -99,8 +99,6 @@ export default class Profile extends Component {
       if (this.state.password.length > 0 && this.state.password.length <= 8) {
           frontendError("Passwords must be more than 8 characters long.")
       } else {
-          // TODO @Johnathan, gracefully handle more complex updates and also 
-          // just change the state naming to not have to rename params.
           // Create / Update Availability if needed.
           if (Object.keys(this.state.new_availability).length != 0) {
             let avail_params = JSON.stringify(this.state.new_availability);
@@ -115,7 +113,6 @@ export default class Profile extends Component {
             );
           }
 
-
           const { id, city, state, zipCode, preferredRegion_id, preferredLocation_id, 
             availability, ...params } = this.state.user
           await LocalStorage.storeItem('user', JSON.stringify(this.state.user));
@@ -126,6 +123,7 @@ export default class Profile extends Component {
           params
           )
       }
+    }
 
   logoutUser = () => {
     const { navigate } = this.props.navigation;
