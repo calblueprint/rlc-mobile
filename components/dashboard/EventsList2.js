@@ -149,14 +149,7 @@ export default class EventsList2 extends Component {
   async componentDidMount() {
     try {
       let user = await LocalStorage.getNonNullItem("user");
-<<<<<<< HEAD
-      this.setState({ user_id: user.userId }, this._fetchEvents);
-      this.listener = EventRegister.addEventListener("reloadEvents", () => {
-        this._fetchEvents();
-      });
-=======
       this.setState({ user_id: user.id }, this._fetchEvents);
->>>>>>> 2764aa1f7d403878e28f8d3f0c68721c8ab03fb7
     } catch (err) {
       console.error(err);
       this.props.navigation.navigate("Login");
