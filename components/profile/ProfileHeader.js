@@ -1,12 +1,31 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Icon, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
+import { EventRegister } from "react-native-event-listeners";
 
 import Sizes from "../../constants/Sizes.js";
 
 
 export default class ProfileHeader extends Component {
     constructor(props) {
-        super(props)
+        super(props);
+        this.state = {
+            numOfAttendedEvents: 0
+        }
+    }
+    // when fetch finishes, compute length of attended events for shifts
+    // when fetch eventslist2.js finishes, make function call send into to profile to call event listener and update profile with proper amount of events or shifts completed
+    // figure out pounds created; grab weight of events
+
+    componentDidMount() {
+        this.listener = EventRegister.addEventListener('reloadProfile', (numOfAttendedEvents) => {
+            this.setState({
+                numOfAttendedEvents
+            })
+        });
+    }
+
+    componentWillUnmount() {
+        EventRegister.removeEventListener(this.listener);
     }
 
     render() {
@@ -17,19 +36,19 @@ export default class ProfileHeader extends Component {
                         style={styles.profilePic}
                         source={require('../../assets/images/rlclogo.png')} />
                     {
-                        this.props.isFetching 
-                        ?
-                        <Text></Text>
-                        :
-                        <Text style={styles.title}>{this.props.getUserAttribute('firstname') + " " + this.props.getUserAttribute('lastname')}</Text>
+                        this.props.isFetching
+                            ?
+                            <Text></Text>
+                            :
+                            <Text style={styles.title}>{this.props.getUserAttribute('firstname') + " " + this.props.getUserAttribute('lastname')}</Text>
                     }
-                    
+
                     <Text style={styles.subtext}>Member since September 2019</Text>
                 </View>
 
                 <View style={styles.badgeContainer}>
                     <View style={styles.badge}>
-                        <Text style={styles.badgeHeading}>8</Text>
+                        <Text style={styles.badgeHeading}>{this.state.numOfAttendedEvents}</Text>
                         <Text style={styles.badgeText}>Shifts Completed</Text>
                     </View>
                     <View style={styles.badge}>
