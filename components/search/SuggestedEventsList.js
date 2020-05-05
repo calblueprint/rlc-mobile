@@ -83,8 +83,8 @@ export default class SuggestedEventsList extends Component {
             hour: "2-digit",
             minute: "2-digit",
           });
-          eventDetails["dropoff_locations"] =
-            responseData[i]["dropoff_locations"];
+          eventDetails["dropoff_locations"] = responseData[i]["dropoff_locations"];
+          eventDetails["pickup_locations"] = responseData[i]["pickup_locations"];
           eventDetails["location"] = responseData[i]["location"];
           eventDetails["recurring"] = responseData[i]["recurring"];
           eventDetails["id"] = responseData[i]["id"];
@@ -112,6 +112,7 @@ export default class SuggestedEventsList extends Component {
   }
 
   renderNewEvents(chosenDate) {
+    console.log('rendering new events');
     postRequest(
       `api/search_events`,
       (responseData) => {
@@ -123,8 +124,8 @@ export default class SuggestedEventsList extends Component {
           eventDetails["spotsOpen"] = responseData[i]["slot"];
           eventDetails["weight"] = responseData[i]["pound"] + " lbs";
           eventDetails["numPickups"] = responseData[i]["numPickups"];
-          eventDetails["dropoff_locations"] =
-            responseData[i]["dropoff_locations"];
+          eventDetails["dropoff_locations"] = responseData[i]["dropoff_locations"];
+          eventDetails["pickup_locations"] = responseData[i]["pickup_locations"];
           eventDetails["location"] = responseData[i]["location"];
           const startingTime = new Date(responseData[i]["starting_time"]);
           const endingTime = new Date(responseData[i]["ending_time"]);
@@ -160,57 +161,6 @@ export default class SuggestedEventsList extends Component {
         console.log(error);
       },
       { date: chosenDate, location_ids: this.state.location_ids }
-    );
-  }
-
-  renderNewEvents(chosenDate) {
-    getRequest(
-      `api/get_events/${chosenDate.toString()}`,
-      (responseData) => {
-        selectedEventsInDay = [];
-        for (i = 0; i < responseData.length; i++) {
-          currentEvent = {};
-          eventDetails = {};
-          currentEvent["shiftType"] = ShiftType.searched;
-          eventDetails["name"] = responseData[i]["title"];
-          eventDetails["spotsOpen"] = responseData[i]["slot"];
-          eventDetails["weight"] = responseData[i]["pound"] + " lbs";
-          eventDetails["numPickups"] = responseData[i]["numPickups"];
-          startingTime = new Date(responseData[i]["starting_time"]);
-          endingTime = new Date(responseData[i]["ending_time"]);
-          eventDetails["latlng"] = {"latitude":responseData[i]["latitude"], "longitude":responseData[i]["longitude"]};
-
-          eventDetails["start_time"] =
-            startingTime.toLocaleTimeString("en-US", {
-              hour: "2-digit",
-              minute: "2-digit",
-            }) +
-            " to " +
-            endingTime.toLocaleTimeString("en-US", {
-              hour: "2-digit",
-              minute: "2-digit",
-            });
-          if (responseData[i]["location_id"] != null) {
-            locationIdString = responseData[i]["location_id"].toString();
-            if (this.state.locations[locationIdString] != null) {
-              currentEvent["address"] = this.state.locations[locationIdString];
-              currentEvent["details"] = eventDetails;
-              selectedEventsInDay.push(currentEvent);
-            }
-          }
-        }
-        this.setState(
-          {
-            selectedEventsInDay: selectedEventsInDay,
-          },
-          () => {
-            this.render();
-          }
-        );
-      },
-      (error) => {
-        console.log(error);
-      }
     );
   }
 
