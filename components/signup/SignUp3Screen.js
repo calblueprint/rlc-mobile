@@ -118,15 +118,6 @@ export default class SignUp3Screen extends React.Component {
     };
   }
 
-  //Setup User Payload
-  setupParams = () => {
-    this.setState({ user: this.props.user });
-    this.state.user.preferred_region_id = this.state.preferred_region_id;
-    this.state.user.preferred_location_id = this.state.preferred_location_id;
-    // this.state.user.availability = this.state.availability;
-    this.state.user.agreementChecked = this.state.agreementChecked;
-  };
-
   componentDidMount = () => {
     if (this.props.previousUserInfo.preferred_region_id != null) {
       this.setState({
@@ -178,9 +169,9 @@ export default class SignUp3Screen extends React.Component {
         "Please agree to the Terms and Conditions and RLC Rescuer Policy."
       );
     } else {
-      this.setupParams();
-      this.props.setScreenForward(this.state.user);
-      this.props.createUserForStorage();
+      const { preferred_location_id, preferred_region_id } = this.state;
+      this.props.setScreenForward( {...this.props.user, preferred_location_id, preferred_region_id }); 
+      this.props.createUserForStorage({...this.props.user, preferred_location_id, preferred_region_id });
     }
   };
 
