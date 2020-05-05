@@ -12,7 +12,6 @@ export default class ProfileHeader extends Component {
             numOfAttendedEvents: 1
         }
     }
-    // figure out pounds created; grab weight of events
 
     componentDidMount() {
         this.listener = EventRegister.addEventListener('reloadProfile', (numOfAttendedEvents) => {
@@ -54,7 +53,7 @@ export default class ProfileHeader extends Component {
                         <Text style={styles.badgeText}>Missions Completed</Text>
                     </View>
                     <View style={styles.badge}>
-                        <Text style={styles.badgeHeading}>34</Text>
+                        <Text style={styles.badgeHeading}>{this.state.numOfAttendedEvents * 17}</Text>
                         <Text style={styles.badgeText}>Pounds Rescued</Text>
                     </View>
                 </View>
