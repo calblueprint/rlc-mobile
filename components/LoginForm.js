@@ -7,8 +7,9 @@ import {
   Text,
 } from "react-native";
 import { frontendError } from "../lib/alerts";
-
-import {fetchUser} from "../helpers/UserHelpers.js";
+import { postRequest } from "../lib/requests";
+import { APIRoutes } from "../config/routes";
+import LocalStorage from "../helpers/LocalStorage";
 
 export default class LoginForm extends React.Component {
   constructor(props) {
@@ -19,8 +20,44 @@ export default class LoginForm extends React.Component {
     };
   }
 
+  // User Login
+  fetchUser = params => {
+    return postRequest(
+      APIRoutes.loginPath(),
+      user => {
+        const userJSON = {
+          'userId': user.id,
+          'firstname': user.firstname,
+          'lastname': user.lastname,
+          'occupation': user.occupation,
+          'telephone': user.telephone,
+          'address': user.address,
+          'city': "",
+          'state': "",
+          'zip_code': user.zip_code,
+          'email': user.email,
+          'preferred_region_id': user.preferred_region_id,
+          'preferred_location_id': user.preferred_location_id,
+          'availability': ""
+        }
+        console.log(user)
+        LocalStorage.storeItem('user', userJSON);
+        this.props.navigateHandler();
+      },
+      error => {
+        if (this.state.email == "" || this.state.password == "") {
+          frontendError("There are empty fields.");
+        } else {
+          this.props.setInvalidText();
+        }
+        console.log(error);
+      },
+      params
+    );
+  };
+
   // Login Handler
-  _onPressLogin = async () => {
+  _onPressLogin = () => {
     const params = {
       user: {
         email: this.state.email,
@@ -28,12 +65,7 @@ export default class LoginForm extends React.Component {
         remember_me: 1
       }
     };
-    try {
-      await fetchUser(params, (error) => {throw error});
-      this.props.navigateHandler();
-    } catch(error) {
-      frontendError("Unable to login")
-    }
+    this.fetchUser(params);
   };
 
   // Handler to Navigate to Signup
