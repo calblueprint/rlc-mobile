@@ -157,7 +157,7 @@ export default class ShiftScreen extends React.Component {
               }
             />
           )}
-          <Image
+          <Image // replace with RN Avatar
             style={styles.profilePic}
             source={require("../../assets/images/rlcprofilepic.png")}
           />
