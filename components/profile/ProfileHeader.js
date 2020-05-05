@@ -9,11 +9,9 @@ export default class ProfileHeader extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            numOfAttendedEvents: 0
+            numOfAttendedEvents: 1
         }
     }
-    // when fetch finishes, compute length of attended events for shifts
-    // when fetch eventslist2.js finishes, make function call send into to profile to call event listener and update profile with proper amount of events or shifts completed
     // figure out pounds created; grab weight of events
 
     componentDidMount() {
