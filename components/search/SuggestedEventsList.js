@@ -4,7 +4,7 @@ import {
   StyleSheet,
   View,
   Text,
-  ScrollView,
+  ActivityIndicator,
   SafeAreaView,
 } from "react-native";
 import ActivityCard from "../dashboard/ActivityCard.js";
@@ -25,6 +25,7 @@ export default class SuggestedEventsList extends Component {
       date: new Date(),
       selectedEventsInDay: [],
       locations: {},
+      isFetching: true,
     };
   }
 
@@ -47,15 +48,6 @@ export default class SuggestedEventsList extends Component {
       }
     );
   }
-  //   this.setState(
-  //     {
-  //       locations: locations,
-  //     },
-  //     () => {
-  //       this.processEventData();
-  //     }
-  //   );
-  // }
 
   processEventData() {
     console.log("processing Search");
@@ -100,9 +92,12 @@ export default class SuggestedEventsList extends Component {
         }
         console.log("finsihed?");
         console.log(selectedEventsInDay);
-        this.setState({ selectedEventsInDay: selectedEventsInDay }, () => {
-          this.render();
-        });
+        this.setState(
+          { selectedEventsInDay: selectedEventsInDay, isFetching: false },
+          () => {
+            this.render();
+          }
+        );
       },
       (error) => {
         console.log(error);
@@ -111,7 +106,7 @@ export default class SuggestedEventsList extends Component {
     );
   }
 
-  renderNewEvents(chosenDate) {
+  fetchNewEvents(chosenDate) {
     postRequest(
       `api/search_events`,
       (responseData) => {
@@ -151,9 +146,12 @@ export default class SuggestedEventsList extends Component {
         }
         console.log(responseData);
         console.log("done?");
-        this.setState({ selectedEventsInDay: selectedEventsInDay }, () => {
-          this.render();
-        });
+        this.setState(
+          { selectedEventsInDay: selectedEventsInDay, isFetching: false },
+          () => {
+            this.render();
+          }
+        );
       },
       (error) => {
         console.log(error);
@@ -162,7 +160,7 @@ export default class SuggestedEventsList extends Component {
     );
   }
 
-  renderNewEvents(chosenDate) {
+  fetchNewEvents(chosenDate) {
     getRequest(
       `api/get_events/${chosenDate.toString()}`,
       (responseData) => {
@@ -199,6 +197,7 @@ export default class SuggestedEventsList extends Component {
         this.setState(
           {
             selectedEventsInDay: selectedEventsInDay,
+            isFetching: false,
           },
           () => {
             this.render();
@@ -211,87 +210,24 @@ export default class SuggestedEventsList extends Component {
     );
   }
 
-  render() {
-    if (this.state.selectedEventsInDay.length == 0) {
+  renderEvents = () => {
+    if (this.state.isFetching == true) {
       return (
-        <SafeAreaView style={styles.container}>
-          <View style={styles.header}>
-            <Text style={Styles.title}> Suggested Events </Text>
-            <View
-              style={{
-                boderBottomColor: "black",
-                borderBottomWidth: StyleSheet.hairlineWidth,
-                width: "100%",
-              }}
-            ></View>
-            <DatePicker
-              style={{ marginTop: "2%", marginBottom: "2%" }}
-              date={this.state.date}
-              mode="date"
-              onDateChange={(date) =>
-                this.setState(
-                  {
-                    date: date,
-                  },
-                  () => {
-                    this.renderNewEvents(date);
-                  }
-                )
-              }
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              customStyles={{
-                btnTextConfirm: {
-                  color: Colors.mainBlue,
-                },
-              }}
-            />
-          </View>
+        <View style={styles.textContainer}>
+          <ActivityIndicator size="large" color={Colors.mainBlue} />
+        </View>
+      );
+    } else {
+      if (this.state.selectedEventsInDay.length == 0) {
+        return (
           <View style={styles.textContainer}>
             <Text style={styles.subText}>
               There are no events on this date.
             </Text>
           </View>
-        </SafeAreaView>
-      );
-    } else {
-      return (
-        <SafeAreaView style={styles.container}>
-          <View style={styles.header}>
-            <Text style={Styles.title}> Suggested Events </Text>
-            <View
-              style={{
-                boderBottomColor: "black",
-                borderBottomWidth: StyleSheet.hairlineWidth,
-                width: "100%",
-              }}
-            ></View>
-            <DatePicker
-              style={{
-                marginTop: "2%",
-                marginBottom: "2%",
-              }}
-              date={this.state.date}
-              mode="date"
-              onDateChange={(date) =>
-                this.setState(
-                  {
-                    date: date,
-                  },
-                  () => {
-                    this.renderNewEvents(date);
-                  }
-                )
-              }
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              customStyles={{
-                btnTextConfirm: {
-                  color: Colors.mainBlue,
-                },
-              }}
-            />
-          </View>
+        );
+      } else {
+        return (
           <FlatList
             data={this.state.selectedEventsInDay}
             renderItem={({ item }) => (
@@ -299,16 +235,60 @@ export default class SuggestedEventsList extends Component {
             )}
             keyExtractor={(item) => item["id"]}
           />
-        </SafeAreaView>
-      );
+        );
+      }
     }
+  };
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={Styles.title}> Suggested Events </Text>
+          <View
+            style={{
+              boderBottomColor: "black",
+              borderBottomWidth: StyleSheet.hairlineWidth,
+              width: "100%",
+            }}
+          ></View>
+          <DatePicker
+            style={{
+              marginTop: "2%",
+              marginBottom: "2%",
+            }}
+            date={this.state.date}
+            mode="date"
+            onDateChange={(date) =>
+              this.setState(
+                {
+                  date: date,
+                },
+                () => {
+                  this.fetchNewEvents(date);
+                }
+              )
+            }
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            customStyles={{
+              btnTextConfirm: {
+                color: Colors.mainBlue,
+              },
+            }}
+          />
+        </View>
+        {this.renderEvents()}
+      </View>
+    );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: Sizes.width,
+    width: "100%",
+    height: "100%",
   },
   header: {
     alignItems: "center",
