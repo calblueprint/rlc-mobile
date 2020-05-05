@@ -101,7 +101,7 @@ export default class Profile extends Component {
       } else {
           // Create / Update Availability if needed.
           if (Object.keys(this.state.new_availability).length != 0) {
-            let avail_params = JSON.stringify(this.state.new_availability);
+            let avail_params = JSON.stringify({ availability: this.state.new_availability });
             await LocalStorage.storeItem("availability", avail_params);
             postRequest(
               APIRoutes.createAvailabilityPath(),
