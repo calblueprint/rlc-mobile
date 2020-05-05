@@ -25,7 +25,7 @@ export default class Profile extends Component {
     this.state = {
       disabled: true,
       user: {
-        'userId': "",
+        'id': "",
         'firstname': "",
         'lastname': "",
         'occupation': "",
@@ -81,10 +81,10 @@ export default class Profile extends Component {
     } else {
         // TODO @Johnathan, gracefully handle more complex updates and also 
         // just change the state naming to not have to rename params.
-        const { userId, city, state, zipCode, preferredRegion_id, preferredLocation_id, 
+        const { id, city, state, zip_code, preferred_region_id, preferred_location_id, 
           availability, ...params } = this.state.user
         await LocalStorage.storeItem('user', JSON.stringify(this.state.user));
-        putRequest(APIRoutes.updateUserPath(this.state.user.userId), (user => {
+        putRequest(APIRoutes.updateUserPath(this.state.user.id), (user => {
             Alert.alert("Successfully updated!")
         }),
         (error) => console.error(error),
