@@ -532,13 +532,19 @@ export default class Search extends Component {
     this.setState({ hasCompletedPreferences: true }, () => { this.render() });
   };
 
+  goBackToSearch = () => {
+    this.setState({ hasCompletedPreferences: false }, () => { this.render() });
+  }
+
   render() {
     if (this.state.hasCompletedPreferences) {
       return (
         <View style={styles.container}>
           <SuggestedEventsList navigation={this.props.navigation}
             preferredLocations={this.state.locations}
-            preferredTimes={this.format_api_times()} />
+            preferredTimes={this.format_api_times()} 
+            goBack={this.goBackToSearch}
+            />
         </View>
       );
     } else {
