@@ -114,9 +114,39 @@ function create_availability_static(slotIds) {
   return new_availability
 }
 
+async function fetch_availability() {
+  let fetched_availability = await LocalStorage.getItem("availability");
+  if (fetched_availability == null) {
+    await getRequest(
+      APIRoutes.getAvailabilityPath(),
+      (availability) => {
+        fetched_availability = availability;
+        LocalStorage.storeItem("availability", availability);
+      },
+      (error) => {
+        alert(error);
+        console.log(error);
+      }
+    );
+  } else {
+    getRequest(
+      APIRoutes.getAvailabilityPath(),
+      (availability) => {
+        LocalStorage.storeItem("availability", availability);
+      },
+      (error) => {
+        alert(error);
+        console.log(error);
+      }
+    );
+  }
+  return fetched_availability;
+}
+
 export {
   availability_template,
   availability_selectors,
   create_availability_static,
+  fetch_availability,
 };
 
