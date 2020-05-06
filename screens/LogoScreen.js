@@ -41,7 +41,10 @@ class LogoScreen extends React.Component {
         <View style={{ flex: 8 }}></View>
         <View style={styles.textContainer}>
           <Text style={styles.smallText}>from</Text>
-          <Text style={styles.largeText}>CAL BLUEPRINT</Text>
+          <Image
+            style={styles.smallLogo}
+            source={require("../assets/images/blueprint.png")}
+          />
         </View>
       </View>
     );
@@ -74,12 +77,18 @@ const styles = StyleSheet.create({
   largeText: {
     fontSize: 16,
     fontWeight: "700",
-    color: Colors.mainBlue,
+    color: "#0078e8",
   },
   smallText: {
     fontSize: 14,
     fontWeight: "400",
   },
+  smallLogo: {
+    width: "100%",
+    height: Sizes.width * 0.1,
+    resizeMode: "contain"
+  },
+
 
 });
 

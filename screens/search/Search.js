@@ -10,6 +10,8 @@ import { getRequest } from "../../lib/requests";
 
 import TimeOrLoc from "../../components/search/timeOrLoc.js";
 import SuggestedEventsList from "../../components/search/SuggestedEventsList.js";
+import LocalStorage from "../../helpers/LocalStorage";
+import { fetch_availability } from "../../helpers/AvailabilityHelpers.js";
 
 const dayOptions = [
   {
@@ -316,14 +318,24 @@ export default class Search extends Component {
           value: false,
         },
       },
+
+      availability: {},
+      user: {}
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.listener = EventRegister.addEventListener('reloadSearch', () => {
       this.setState({
         hasCompletedPreferences: false,
       })
+    })
+
+    let availability = await fetch_availability();
+
+    this.setState({
+      user: await LocalStorage.getItem('user'),
+      availability: availability
     })
   }
 
