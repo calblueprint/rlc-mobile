@@ -19,7 +19,6 @@ import { getRequest, postRequest } from "../../lib/requests";
 import LocalStorage from "../../helpers/LocalStorage";
 
 export default class ChangeConfirmScreen extends React.Component {
-<<<<<<< HEAD
     constructor(props) {
         super(props);
         this.state = {
@@ -137,135 +136,10 @@ export default class ChangeConfirmScreen extends React.Component {
             </View>
 
         );
-=======
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: null,
-    };
-  }
-
-  async componentDidMount() {
-    let user = await LocalStorage.getItem("user");
-    this.setState({ user_id: user.id });
-  }
-
-  signupForEventHandler = () => {
-    this.reloadSearch();
-    this.reloadEvents();
-    this.navigateToMain();
-  };
-
-  reloadSearch = () => {
-    EventRegister.emit("reloadSearch");
-  };
-
-  reloadEvents = () => {
-    EventRegister.emit("reloadEvents");
-  };
-
-  navigateToMain = () => {
-    console.log("sup");
-    const { navigate } = this.props.navigation;
-    console.log("break");
-    const { navigation } = this.props;
-    const event_id = this.props.route.params.event_id ?? "";
-    const change_type = this.props.route.params.change_type ?? "";
-    if (change_type == "signup") {
-      getRequest(
-        `events/attend/${event_id}/attend`,
-        (responseData) => {
-          console.log("successful");
-          console.log(responseData);
-          navigate("Main");
-        },
-        (error) => {
-          console.log(error);
-          console.log("errrrrr");
-        }
-      );
-    }
-    if (change_type == "withdraw") {
-      postRequest(
-        `events/cancel/${event_id}/attend`,
-        (responseData) => {
-          console.log("successful");
-          console.log(responseData);
-          navigate("Main");
-        },
-        (error) => {
-          console.log(error);
-          console.log("errrrrr");
-        },
-        {
-          volunteer_id: this.state.user_id,
-          skip_volunteer_unassign_email: true,
-        }
-      );
->>>>>>> master
     }
   };
 
-  navigateToShift = () => {
-    const { navigate } = this.props.navigation;
-    navigate("Shift");
-  };
-
-  render() {
-    const route = this.props.route;
-    return (
-      <View
-        style={{ flex: 1, flexDirection: "column", backgroundColor: "white" }}
-      >
-        <View style={{ flex: 1 }}>
-          <Header
-            centerTitle={route.params.title ?? "No Title"}
-            onPressBack={this.navigateToShift}
-            rightSide={false}
-            actionTitle="Withdraw"
-            onPressHandler={this.navigateToMain}
-          />
-        </View>
-
-        <View style={styles.container}>
-          <Text style={styles.overview}>
-            {route.params.description ?? ""}
-            {"\n"}
-            {(route.params.hasQ ?? false) && (
-              <Text style={{ ...styles.overview, fontWeight: "400" }}>
-                {route.params.question ?? ""}
-              </Text>
-            )}
-          </Text>
-          <View style={{ flex: 1 }}>
-            {(route.params.options ?? "").map((item) => (
-              <View key={item.key} style={styles.radioButtonContainer}>
-                <TouchableOpacity
-                  style={styles.circle}
-                  onPress={() => this.setState({ value: item.key })} // we set our value state to key
-                >
-                  {this.state.value === item.key && (
-                    <View style={styles.checkedCircle} />
-                  )}
-                </TouchableOpacity>
-                <Text style={styles.radioText}>{item.text}</Text>
-              </View>
-            ))}
-          </View>
-          <View style={{ flex: 5 }}></View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={this.signupForEventHandler}
-            >
-              <Text style={styles.buttonText}>Confirm</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    );
-  }
-}
+  
 
 const styles = StyleSheet.create({
   container: {
