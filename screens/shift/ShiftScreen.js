@@ -263,10 +263,8 @@ export default class ShiftScreen extends React.Component {
           console.log(pEvent);
 
           //set latitude and longitude
-          let lat = 37.78825
-          let lon = -122.4324
-          pEvent.latitude ? lat = pEvent.latitude : null
-          pEvent.longitude ? lon = pEvent.longitude : null
+          let lat = pEvent.details.pickup_locations[0].latlng.latitude;
+          let lon = pEvent.details.pickup_locations[0].latlng.longitude;
 
           return (
                <View style={{ flex: 1 }}>
