@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   ActivityIndicator,
+  AsyncStorage,
 } from "react-native";
 
 // Animation Libraries
@@ -147,6 +148,9 @@ export default class EventsList2 extends Component {
   }
 
   async componentDidMount() {
+    this.listener = EventRegister.addEventListener('reloadEvents', () => {
+      this._fetchEvents()
+    });
     try {
       let user = await LocalStorage.getNonNullItem("user");
       this.setState({ user_id: user.id }, this._fetchEvents);
