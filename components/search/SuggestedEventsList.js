@@ -5,7 +5,6 @@ import {
   View,
   Text,
   ActivityIndicator,
-  SafeAreaView,
 } from "react-native";
 import ActivityCard from "../dashboard/ActivityCard.js";
 import DatePicker from "react-native-datepicker";
@@ -15,6 +14,7 @@ import Styles from "../../constants/Styles.js";
 import Sizes from "../../constants/Sizes.js";
 import { normalize } from "../../utils/Normalize.js";
 import Colors from "../../constants/Colors";
+import Header from "../../components/shift/Header";
 
 import ShiftType from "../../constants/ShiftType.js";
 
@@ -244,14 +244,14 @@ export default class SuggestedEventsList extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={Styles.title}> Suggested Events </Text>
-          <View
-            style={{
-              boderBottomColor: "black",
-              borderBottomWidth: StyleSheet.hairlineWidth,
-              width: "100%",
-            }}
-          ></View>
+          <Header
+            centerTitle="Suggested Events"
+            onPressBack={this.props.goBack}
+            rightSide={false}
+            actionTitle=""
+            onPressHandler={null}
+            style={{ paddingTop: "1%" }}
+          />
           <DatePicker
             style={{
               marginTop: "2%",
