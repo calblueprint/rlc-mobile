@@ -24,85 +24,6 @@ import {
   parseCurrentLocation,
 } from "../../helpers/LocationHelpers.js";
 
-const daysandtimes = [
-  {
-    name: "Select all times",
-    id: 0,
-    times: [],
-  },
-  {
-    name: "Monday",
-    id: 1,
-    times: [
-      { name: "9am to 12pm", id: 2 },
-      { name: "12pm to 4pm", id: 3 },
-      { name: "4pm to 8pm", id: 4 },
-      { name: "8pm to 12 am", id: 5 },
-    ],
-  },
-  {
-    name: "Tuesday",
-    id: 6,
-    times: [
-      { name: "9am to 12pm", id: 7 },
-      { name: "12pm to 4pm", id: 8 },
-      { name: "4pm to 8pm", id: 9 },
-      { name: "8pm to 12 am", id: 10 },
-    ],
-  },
-  {
-    name: "Wednesday",
-    id: 11,
-    times: [
-      { name: "9am to 12pm", id: 12 },
-      { name: "12pm to 4pm", id: 13 },
-      { name: "4pm to 8pm", id: 14 },
-      { name: "8pm to 12 am", id: 15 },
-    ],
-  },
-  {
-    name: "Thursday",
-    id: 16,
-    times: [
-      { name: "9am to 12pm", id: 17 },
-      { name: "12pm to 4pm", id: 18 },
-      { name: "4pm to 8pm", id: 19 },
-      { name: "8pm to 12 am", id: 20 },
-    ],
-  },
-  {
-    name: "Friday",
-    id: 21,
-    times: [
-      { name: "9am to 12pm", id: 22 },
-      { name: "12pm to 4pm", id: 23 },
-      { name: "4pm to 8pm", id: 24 },
-      { name: "8pm to 12 am", id: 25 },
-    ],
-  },
-  {
-    name: "Saturday",
-    id: 26,
-    times: [
-      { name: "9am to 12pm", id: 27 },
-      { name: "12pm to 4pm", id: 28 },
-      { name: "4pm to 8pm", id: 29 },
-      { name: "8pm to 12 am", id: 30 },
-    ],
-  },
-  {
-    name: "Sunday",
-    id: 31,
-    times: [
-      { name: "9am to 12pm", id: 32 },
-      { name: "12pm to 4pm", id: 33 },
-      { name: "4pm to 8pm", id: 34 },
-      { name: "8pm to 12 am", id: 35 },
-    ],
-  },
-];
-
-
 export default class SignUp3Screen extends React.Component {
   constructor(props) {
     super(props);
@@ -130,11 +51,8 @@ export default class SignUp3Screen extends React.Component {
           .preferred_location_id,
       });
     }
-    // if (this.props.previousUserInfo.availability != null) {
-    //   this.setState({
-    //     availability: this.props.previousUserInfo.availability,
-    //   });
-    // }
+
+
     if (this.props.previousUserInfo.agreementChecked) {
       this.setState({
         agreementChecked: this.props.previousUserInfo.agreementChecked,
@@ -159,11 +77,7 @@ export default class SignUp3Screen extends React.Component {
    */
   checkValidNext = () => {
     if (this.state.preferred_region_id.length == 0) {
-      //   this.state.preferred_region_id.length == 0 ||
-      //   this.state.preferred_location_id.length == 0 || // I think this field is labeled as optional so shouldn't be checked.
-      //   this.state.availability == ""
-      // ) {
-      frontendError("Please fill out all fields.");
+      frontendError("Please fill out the required fields.");
     } else if (this.state.agreementChecked == false) {
       frontendError(
         "Please agree to the Terms and Conditions and RLC Rescuer Policy."
@@ -193,10 +107,6 @@ export default class SignUp3Screen extends React.Component {
   onPreferredLocationChange = (preferred_location_id) => {
     this.setState({ preferred_location_id: preferred_location_id });
   };
-
-  // onPreferredTimesChange = (availability) => {
-  //   this.setState({ availability });
-  // };
 
   // Check user's current location and find corresponding regions, restrict choices in form for locations to those within region.
   setCurrentRegion = async () => {
@@ -305,34 +215,6 @@ export default class SignUp3Screen extends React.Component {
                 }}
               />
 
-              {/* <Text style={styles.subHeading}>Preferred Time(s)</Text>
-              <SectionedMultiSelect
-                hideSearch
-                colors={Colors}
-                selectedItems={this.state.availability}
-                items={daysandtimes}
-                uniqueKey="id"
-                expandDropDowns={true}
-                onSelectedItemsChange={this.onPreferredTimesChange}
-                subKey="times"
-                showChips={false}
-                searchInputStyle={styles.input}
-                modalWithSafeAreaView={true}
-                submitButtonText="Select"
-                confirmText="SAVE"
-                value={this.state.availability}
-                styles={{
-                  selectToggle: {
-                    borderBottomWidth: 1,
-                    marginBottom: 20,
-                    height: 40,
-                  },
-                  selectToggleText: {
-                    fontSize: normalize(14),
-                    color: Colors.black,
-                  },
-                }}
-              /> */}
               <CheckBox
                 wrapperStyle= {styles.checkBox}
                 title="By creating an account, you agree to the Terms and Conditions and RLC Rescuer Policy."

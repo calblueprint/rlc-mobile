@@ -11,13 +11,19 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import Header from "../../components/shift/Header";
 import { CheckBox } from "react-native-elements";
-import LocTimeline from "../../components/shift/LocTimeline";
 import MapView, { Marker } from "react-native-maps";
+import { Avatar } from "react-native-elements";
+
+// Components
+import Header from "../../components/shift/Header";
+import LocTimeline from "../../components/shift/LocTimeline";
+
+// Constants and Utils
+import Colors from "../../constants/Colors";
+import { getInitials } from "../../utils/Initials.js";
 import ShiftType from "../../constants/ShiftType.js";
 
-import Colors from "../../constants/Colors";
 function instructionDetail(data) {
   const step = data.item;
   return (
@@ -57,23 +63,26 @@ const recurOptions = [
 
 export default class ShiftScreen extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     const pEvent = this.props.route.params.event;
     console.log("pevent in constructor");
     console.log(pEvent);
-    console.log(pEvent.details.attendees);
-    const shiftInstructions = this.createShiftInstructions(pEvent.details.pickup_locations, pEvent.details.dropoff_locations);
-    const markers = []
+
+    const shiftInstructions = this.createShiftInstructions(
+      pEvent.details.pickup_locations,
+      pEvent.details.dropoff_locations
+    );
+    const markers = [];
     markers.push(...pEvent.details.pickup_locations);
     pEvent.details.dropoff_locations.map((dropoff) => {
       markers.push({
-        'latlng': {
-          'latitude': dropoff.latitude,
-          'longitude': dropoff.longitude,
+        latlng: {
+          latitude: dropoff.latitude,
+          longitude: dropoff.longitude,
         },
-        'title': dropoff.name,
-        'description': dropoff.address
-      })
+        title: dropoff.name,
+        description: dropoff.address,
+      });
     });
     console.log("here are the markers", markers);
     console.log("and dropoffs", pEvent.details.dropoff_locations);
@@ -84,13 +93,13 @@ export default class ShiftScreen extends React.Component {
           name: "Alice Russel (You)",
           role: "Lead Rescuer",
           profilePic: "../../assets/images/rlcprofilepic.png",
-          verified: false
+          verified: false,
         },
         {
           name: "Dan Schneider",
           role: "Volunteer",
           profilePic: "../../assets/images/rlcprofilepic.png",
-          verified: true
+          verified: true,
         }
       ],
       shiftInstructions: shiftInstructions,
@@ -107,19 +116,19 @@ export default class ShiftScreen extends React.Component {
       {
         step: 1,
         description: "Meet your group at " + pickUp[0].title,
-        photo_needed: false
+        photo_needed: false,
       },
       {
         step: 2,
         description: "Check in all volunteers.",
-        photo_needed: false
+        photo_needed: false,
       },
       {
         step: 3,
         description: "Collect food from vendor.",
-        photo_needed: false
-      }
-    ]
+        photo_needed: false,
+      },
+    ];
 
     let nextStep = 4;
     //add pickup locations
@@ -128,64 +137,69 @@ export default class ShiftScreen extends React.Component {
         shiftInstructions.push({
           step: nextStep,
           description: "Walk to " + pickUp[1].title,
-          photo_needed: false
+          photo_needed: false,
         });
         shiftInstructions.push({
           step: nextStep + 1,
           description: "Collect food from vendor.",
-          photo_needed: false
+          photo_needed: false,
         });
         nextStep += 2;
         break;
       default:
-
     }
 
     //add dropoff locations
     if (dropOff.length == 1) {
-
       shiftInstructions.push({
         step: nextStep,
-        description: "Take a photo of the food once it is delivered to " + dropOff[0].title,
-        photo_needed: true
+        description:
+          "Take a photo of the food once it is delivered to " +
+          dropOff[0].title,
+        photo_needed: true,
       });
       shiftInstructions.push({
         step: nextStep + 1,
-        description: "Request a receipt from " + dropOff[0].title + " and take a photo of the receipt*",
-        photo_needed: true
+        description:
+          "Request a receipt from " +
+          dropOff[0].title +
+          " and take a photo of the receipt*",
+        photo_needed: true,
       });
       nextStep += 2;
     }
 
     return shiftInstructions;
-  }
+  };
 
   participantCard = (data) => {
     const participant = data.item;
     return (
-      <View styles={styles.participant_card}>
-
-        <View style={styles.participant_badge}>
-
-          {participant.role == "normal" && <CheckBox
+      <View style={styles.participant_badge}>
+        {participant.role == "normal" && (
+          <CheckBox
             checked={this.isChecked(participant)}
             onPress={this.modifyAttendedParticipants(participant)}
-          />}
-          <Image
-            style={styles.profilePic}
-            source={require("../../assets/images/rlcprofilepic.png")} />
-          <View style={styles.participant_detail}>
-            <Text styles={styles.participant_name}>
-              {participant.firstname} {participant.lastname}
-            </Text>
-            <Text styles={styles.particpant_role}>
-              {participant.role === 'normal' ? "Rescuer" : null}
-            </Text>
-          </View>
+          />
+        )}
+        <Avatar
+          rounded
+          title={getInitials(
+            participant.firstname + " " + participant.lastname
+          )}
+          size="medium"
+        />
+        <View style={styles.participant_detail}>
+          <Text styles={styles.participant_name}>
+            {participant.firstname} {participant.lastname}
+          </Text>
+          <Text styles={styles.particpant_role}>
+            {participant.role === "normal" ? "Rescuer" : null}
+          </Text>
         </View>
       </View>
-    )
-  }
+    );
+  };
 
   isChecked = (participant) => {
     console.log("this is the participant");
@@ -229,22 +243,22 @@ export default class ShiftScreen extends React.Component {
     if (pEvent.details.recurring) {
       navigate("ChangeConfirm", {
         title: "Withdraw Your Spot",
-        description: "You are about to withdraw your spot from a recurring event.",
+        description:
+          "You are about to withdraw your spot from a recurring event.",
         hasQ: false,
         question: "",
         options: withdrawOptions,
         event_id: pEvent.id,
-        change_type: 'withdraw'
+        change_type: "withdraw",
       });
-    }
-    else {
+    } else {
       navigate("ChangeConfirm", {
         title: pEvent.details.name,
         description: "Are you sure you want to withdraw?",
         hasQ: false,
         options: [],
         event_id: pEvent.id,
-        change_type: 'withdraw'
+        change_type: "withdraw",
       });
     }
   };
@@ -260,17 +274,16 @@ export default class ShiftScreen extends React.Component {
         question: "How often do you want to attend?",
         options: recurOptions,
         event_id: pEvent.details.id,
-        change_type: 'signup'
+        change_type: "signup",
       });
-    }
-    else {
+    } else {
       navigate("ChangeConfirm", {
         title: pEvent.details.name,
         description: "Are you sure you want to attend?",
         hasQ: false,
         options: [],
         event_id: pEvent.details.id,
-        change_type: 'signup'
+        change_type: "signup",
       });
     }
   };
@@ -280,15 +293,14 @@ export default class ShiftScreen extends React.Component {
       case ShiftType.searched:
         return "Event";
       case ShiftType.upcoming:
-        return "Upcoming"
+        return "Upcoming";
       case ShiftType.attended:
-        return "Attended"
+        return "Attended";
       case ShiftType.current:
-        return "In Progress"
+        return "In Progress";
     }
-  }
+  };
   render() {
-
     const pEvent = this.props.route.params.event;
     console.log("here's pevent");
     console.log(pEvent);
@@ -298,12 +310,17 @@ export default class ShiftScreen extends React.Component {
     let lon = pEvent.details.pickup_locations[0].latlng.longitude;
 
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: "white" }}>
         <View style={{ flex: 1 }}>
           <Header
             centerTitle={this.selectShiftTitle(pEvent.details.shiftType)}
             onPressBack={this.navigateToMain}
-            rightSide={(pEvent.details.shiftType === ShiftType.upcoming || pEvent.details.shiftType === ShiftType.current) ? true : false}
+            rightSide={
+              pEvent.details.shiftType === ShiftType.upcoming ||
+                pEvent.details.shiftType === ShiftType.current
+                ? true
+                : false
+            }
             actionTitle="Withdraw"
             onPressHandler={this.navigateToWithdraw}
           />
@@ -311,35 +328,32 @@ export default class ShiftScreen extends React.Component {
 
         <KeyboardAvoidingView behavior="position" style={{ flex: 5 }}>
           <View>
-
             <ScrollView>
               <View style={styles.container}>
-
-                {pEvent.details.shiftType === ShiftType.current &&
-                  <Text style={styles.status}>
-                    happening now
-                                        </Text>}
-                <Text style={styles.title}>
-                  {pEvent.details.name}
+                {pEvent.details.shiftType === ShiftType.current && (
+                  <Text style={styles.status}>happening now</Text>
+                )}
+                <Text style={styles.title}>{pEvent.details.name}</Text>
+                <Text style={styles.overview}>
+                  📍 {pEvent.details.location}
                 </Text>
                 <Text style={styles.overview}>
-                  📍  {pEvent.details.location}
+                  ⏰ {pEvent.details.date}, {pEvent.details.start_time} to{" "}
+                  {pEvent.details.end_time}
                 </Text>
                 <Text style={styles.overview}>
-                  ⏰  {pEvent.details.date}, {pEvent.details.start_time} to {pEvent.details.end_time}
+                  ⚖️ {pEvent.details.weight} lbs
                 </Text>
                 <Text style={styles.overview}>
-                  ⚖️  {pEvent.details.weight} lbs
-                                        </Text>
-                <Text style={styles.overview}>
-                  👥  {pEvent.details.spotsOpen}
+                  👥 {pEvent.details.spotsOpen}
                 </Text>
                 <Text style={styles.overview}>
-                  💪  {pEvent.details.numPickups} Pickup(s)
-                                        </Text>
+                  💪 {pEvent.details.numPickups} Pickup(s)
+                </Text>
 
                 <View style={styles.mapcontainer}>
-                  <MapView style={styles.map}
+                  <MapView
+                    style={styles.map}
                     initialRegion={{
                       latitude: lat,
                       longitude: lon,
@@ -347,14 +361,14 @@ export default class ShiftScreen extends React.Component {
                       longitudeDelta: 0.0421,
                     }}
                   >
-                    {this.state.markers && this.state.markers.map(marker => (
-                      <Marker
-                        coordinate={marker.latlng}
-                        title={marker.title}
-                        description={marker.description}
-                      />
-
-                    ))}
+                    {this.state.markers &&
+                      this.state.markers.map((marker) => (
+                        <Marker
+                          coordinate={marker.latlng}
+                          title={marker.title}
+                          description={marker.description}
+                        />
+                      ))}
                   </MapView>
                 </View>
 
@@ -381,10 +395,17 @@ export default class ShiftScreen extends React.Component {
                   renderItem={instructionDetail}
                 />
 
-
-                <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginTop: 10,
+                    marginBottom: 10,
+                  }}
+                >
                   <Text style={{ fontSize: 16 }}>9.</Text>
-                  <Text style={{ fontSize: 16, flex: 1, paddingLeft: 5 }}>Enter pounds of food saved:*</Text>
+                  <Text style={{ fontSize: 16, flex: 1, paddingLeft: 5 }}>
+                    Enter pounds of food saved:*
+                  </Text>
                 </View>
 
                 <View style={styles.input_box}>
@@ -407,7 +428,9 @@ export default class ShiftScreen extends React.Component {
                         marginBottom: 10,
                       }}
                     >
-                      <Text style={{ fontSize: 17 }}>{this.state.shiftInstructions.length}</Text>
+                      <Text style={{ fontSize: 17 }}>
+                        {this.state.shiftInstructions.length}
+                      </Text>
                       <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>
                         Tap "Complete" to confirm the completion of the event. The
                         last three steps must be completed.
@@ -486,30 +509,21 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
-    padding: 10,
-    paddingBottom: 20,
+    paddingVertical: 15,
+    borderColor: "#CCCCCC",
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
+    marginBottom: 10,
   },
   instructions: {
     padding: 10,
-  },
-  participant_card: {
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "flex-start",
-    padding: 40,
-    marginBottom: 20,
-    marginTop: 20,
   },
   participant_badge: {
     flex: 1,
     flexDirection: "row",
     flexWrap: "wrap",
     alignItems: "flex-start",
-    borderBottomWidth: 1,
-    borderColor: "#CCCCCC",
-    paddingBottom: 10,
-    marginTop: 10,
+    marginVertical: 5,
   },
   participant_detail: {
     flexDirection: "column",
