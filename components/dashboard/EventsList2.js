@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   ActivityIndicator,
+  AsyncStorage,
 } from "react-native";
 
 // Animation Libraries
@@ -171,12 +172,8 @@ export default class EventsList2 extends Component {
       upcomingEvents: event_lists.upcoming,
       attendedEvents: event_lists.attended,
       isFetching: false,
-    }, EventRegister.emit('reloadProfile', this._calculateLengthOfAttendedEvents()));
+    });
   };
-
-  _calculateLengthOfAttendedEvents = () => {
-    return this.state.attendedEvents.length;
-  }
 
   _handleIndexChange = (index) => this.setState({ index });
 

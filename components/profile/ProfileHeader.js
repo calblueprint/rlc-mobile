@@ -1,32 +1,33 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Icon, Text, Image } from "react-native";
 import { Avatar } from "react-native-elements";
-import { EventRegister } from "react-native-event-listeners";
 
 // Constants
 import Sizes from "../../constants/Sizes.js";
 
 // Utils
 import { getInitials } from "../../utils/Initials.js";
+import LocalStorage from "../../helpers/LocalStorage.js";
 
 export default class ProfileHeader extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            numOfAttendedEvents: 1
+            numOfAttendedEvents: "-"
         }
     }
 
     componentDidMount() {
-        this.listener = EventRegister.addEventListener('reloadProfile', (numOfAttendedEvents) => {
-            this.setState({
-                numOfAttendedEvents
-            })
-        });
+        this.retrieveAttendedEvents();
     }
 
-    componentWillUnmount() {
-        EventRegister.removeEventListener(this.listener);
+    async retrieveAttendedEvents() {
+        try {
+            let attendedEvents = await LocalStorage.getItem("attended_events");
+            this.setState({ numOfAttendedEvents: attendedEvents.length }, this.render);
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     render() {
@@ -62,7 +63,7 @@ export default class ProfileHeader extends Component {
                         <Text style={styles.badgeText}>Missions Completed</Text>
                     </View>
                     <View style={styles.badge}>
-                        <Text style={styles.badgeHeading}>{this.state.numOfAttendedEvents * 17}</Text>
+                        <Text style={styles.badgeHeading}>{this.state.numOfAttendedEvents == "-" ? "-" : this.state.numOfAttendedEvents * 17}</Text>
                         <Text style={styles.badgeText}>Pounds Rescued</Text>
                     </View>
                 </View>
