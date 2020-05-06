@@ -382,20 +382,20 @@ export default class ShiftScreen extends React.Component {
                         Tap "Complete" to confirm the completion of the event. The
                         last three steps must be completed.
                     </Text>
-                    </View>
-                  )}
+                  </View>
+                )}
 
                 {(pEvent.details.shiftType === ShiftType.upcoming ||
                   pEvent.details.shiftType === ShiftType.current) && (
-                    <View style={styles.buttonContainer}>
-                      <TouchableOpacity
-                        style={styles.button}
-                        onPress={this.navigateToMain}
-                      >
-                        <Text style={styles.buttonText}>Complete</Text>
-                      </TouchableOpacity>
-                    </View>
-                  )}
+                  <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={this.navigateToMain}
+                    >
+                      <Text style={styles.buttonText}>Complete</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
               </View>
             </ScrollView>
             {pEvent.details.shiftType == ShiftType.searched && (
