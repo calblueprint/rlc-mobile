@@ -1,5 +1,5 @@
 import React, { Component } from "../../node_modules/react";
-import { AsyncStorage, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import SignUp1Screen from "../../components/signup/SignUp1Screen";
 import SignUp2Screen from "../../components/signup/SignUp2Screen";
 import SignUp3Screen from "../../components/signup/SignUp3Screen";
