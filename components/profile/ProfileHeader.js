@@ -21,7 +21,7 @@ export default class ProfileHeader extends Component {
                         ?
                         <Text></Text>
                         :
-                        <Text style={styles.title}>{this.props.getUserAttribute('firstname') + " " + this.props.getUserAttribute('lastname')}</Text>
+                        <Text style={styles.title}>{this.props.getUserAttribute('firstname')} {this.props.getUserAttribute('lastname')}</Text>
                     }
                     
                     <Text style={styles.subtext}>Member since September 2019</Text>

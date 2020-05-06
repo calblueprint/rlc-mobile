@@ -23,10 +23,8 @@ export default class Dashboard extends Component {
   }
 
   async componentDidMount() {
-    let user = await LocalStorage.getNonNullItem("user");
+    let user = await LocalStorage.getNonNullItem("user");    
   }
-
-  // _fetchCurrentEvent () {}
 
   navigateToShift = (eventData) => {
     const { navigate } = this.props.navigation;
@@ -42,6 +40,10 @@ export default class Dashboard extends Component {
     this.props.navigation.jumpTo("Search");
   };
 
+  setCurrentEvent = (event) => {
+    this.setState({currentEvent: event})
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -51,15 +53,20 @@ export default class Dashboard extends Component {
         <View style={styles.currentEvent}>
           <View style={styles.slideStructure}>
             <Text style={styles.inProgress}>• In Progress</Text>
-            {/* <ActivityCard 
+            {Object.keys(this.state.currentEvent).length === 0
+            ?<Text></Text>
+            :<ActivityCard 
+              key = {this.state.currentEvent.id}
               event = {this.state.currentEvent}
-              onPressHandler={this.navigateToShift}
-            /> */}
+              navigation={this.props.navigation}
+            />
+            }
           </View>
         </View>
         <EventsList
           navigation={this.props.navigation}
           toSearch={this.navigateToSearch}
+          setCurrentEvent={this.setCurrentEvent}
         />
       </View>
     );
@@ -82,7 +89,7 @@ const styles = StyleSheet.create({
   },
   currentEvent: {
     backgroundColor: "#EEEEEE",
-    height: "30%",
+    height: "35%",
   },
   subText: {
     color: "#000000",

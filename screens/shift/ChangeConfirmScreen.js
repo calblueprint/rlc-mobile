@@ -27,8 +27,9 @@ export default class ChangeConfirmScreen extends React.Component {
 
     signupForEventHandler = () => {
         this.reloadSearch();
-        this.reloadEvents();
-        this.navigateToMain();
+        this.navigateToMain(() => {
+            this.reloadEvents();
+        });
     }
 
     reloadSearch = () => {
@@ -39,19 +40,16 @@ export default class ChangeConfirmScreen extends React.Component {
         EventRegister.emit('reloadEvents');
     }
 
-    navigateToMain = () => {
-        console.log('sup');
+    navigateToMain = (callback) => {
         const { navigate } = this.props.navigation;
-        console.log('break');
-        const { navigation } = this.props;
         const event_id = this.props.route.params.event_id ?? '';
         const change_type = this.props.route.params.change_type ?? '';
         if (change_type == 'signup') {
             getRequest(`events/attend/${event_id}/attend`,
                 responseData => {
-                    console.log("successful");
                     console.log(responseData);
-                    navigate("Main");
+                    navigate("Dashboard");
+                    callback()
                 },
                 error => {
                     console.log(error);
@@ -61,9 +59,9 @@ export default class ChangeConfirmScreen extends React.Component {
         if (change_type == 'withdraw') {
             postRequest(`events/cancel/${event_id}/attend`,
                 responseData => {
-                    console.log("successful");
                     console.log(responseData);
-                    navigate("Main");
+                    navigate("Dashboard");
+                    callback()
                 },
                 error => {
                     console.log(error);
@@ -74,6 +72,7 @@ export default class ChangeConfirmScreen extends React.Component {
                     skip_volunteer_unassign_email: true
                 });
         }
+        navigate("Dashboard");
     };
 
     navigateToShift = () => {
@@ -88,7 +87,7 @@ export default class ChangeConfirmScreen extends React.Component {
                 <View style={{ flex: 1 }}>
                     <Header
                         centerTitle={route.params.title ?? 'No Title'}
-                        onPressBack={this.navigateToShift}
+                        onPressBack={this.signupForEventHandler}
                         rightSide={false}
                         actionTitle="Withdraw"
                         onPressHandler={this.navigateToMain}
