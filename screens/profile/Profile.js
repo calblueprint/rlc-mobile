@@ -83,7 +83,7 @@ export default class Profile extends Component {
         // just change the state naming to not have to rename params.
         const { id, city, state, zip_code, preferred_region_id, preferred_location_id, 
           availability, ...params } = this.state.user
-        await LocalStorage.storeItem('user', JSON.stringify(this.state.user));
+        await LocalStorage.storeItem('user', this.state.user);
         putRequest(APIRoutes.updateUserPath(this.state.user.id), (user => {
             Alert.alert("Successfully updated!")
         }),
