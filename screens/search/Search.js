@@ -1,4 +1,4 @@
-// Place Holder for Search Feature
+
 import React, { Component } from "../../node_modules/react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
@@ -7,6 +7,15 @@ import Sizes from "../../constants/Sizes.js";
 import Styles from "../../constants/Styles";
 import Colors from "../../constants/Colors";
 import { getRequest } from "../../lib/requests";
+
+//curr location
+import * as Location from "expo-location";
+import {
+  fetch_regions,
+  fetch_locations,
+  fetch_locations_by_region,
+  parseCurrentLocation,
+} from "../../helpers/LocationHelpers.js";
 
 import TimeOrLoc from "../../components/search/timeOrLoc.js";
 import SuggestedEventsList from "../../components/search/SuggestedEventsList.js";
@@ -69,6 +78,7 @@ export default class Search extends Component {
 
       numLocs: 0,
       search: "",
+      fetchingLoc: false,
       locations: [
         {
           id: 27,
@@ -333,6 +343,49 @@ export default class Search extends Component {
 
   //LOCATION FUNCTIONS
 
+  getCurrLocation = () => {
+    this.setState({ fetchingLoc: true });
+    this.setCurrentRegion();
+    console.log("current location indeed");
+  }
+
+  //helpers for current location
+
+  setCurrentRegion = async () => {
+    let Locpermissions = await Location.requestPermissionsAsync();
+    if (Locpermissions.status != "granted") {
+      await Location.requestPermissionsAsync();
+    } else {
+      let user_coordinates = await Location.getCurrentPositionAsync({
+        accuracy: 4,
+      });
+
+      let preferred_region = await parseCurrentLocation(
+        user_coordinates.coords
+      );
+
+      await this.onPreferredRegionChange([preferred_region.id]);
+    }
+  };
+
+  onPreferredRegionChange = async (preferred_region_id) => {
+    let included_locations = await fetch_locations_by_region(
+      preferred_region_id[0]
+    );
+    console.log(included_locations);
+    this.setState({
+      preferred_region_id: preferred_region_id,
+      preferred_location_id: [],
+      locations:
+        included_locations === undefined || included_locations.length == 0
+          ? []
+          : included_locations.map((item) => ({ ...item, selected: false })),
+
+      fetchingLoc: false,
+    });
+  };
+
+
   updateSearch = (val) = () => {
     this.setState({ search: val });
   };
@@ -509,6 +562,8 @@ export default class Search extends Component {
               searchVal={this.state.search}
               updateSearch={this.updateSearch}
               numLocs={this.state.numLocs}
+              getCurrLoc={this.getCurrLocation}
+              fetchingLoc={this.state.fetchingLoc}
             />
           </View>
           <View
