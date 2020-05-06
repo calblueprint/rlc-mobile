@@ -11,13 +11,19 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import Header from "../../components/shift/Header";
 import { CheckBox } from "react-native-elements";
-import LocTimeline from "../../components/shift/LocTimeline";
 import MapView, { Marker } from "react-native-maps";
+import { Avatar } from "react-native-elements";
+
+// Components
+import Header from "../../components/shift/Header";
+import LocTimeline from "../../components/shift/LocTimeline";
+
+// Constants and Utils
+import Colors from "../../constants/Colors";
+import { getInitials } from "../../utils/Initials.js";
 import ShiftType from "../../constants/ShiftType.js";
 
-import Colors from "../../constants/Colors";
 function instructionDetail(data) {
   const step = data.item;
   return (
@@ -56,276 +62,286 @@ const recurOptions = [
 ];
 
 export default class ShiftScreen extends React.Component {
-     constructor(props) {
-          super(props)
-          const pEvent = this.props.route.params.event;
-          console.log("pevent in constructor");
-          console.log(pEvent);
+  constructor(props) {
+    super(props);
+    const pEvent = this.props.route.params.event;
+    console.log("pevent in constructor");
+    console.log(pEvent);
 
-          const shiftInstructions = this.createShiftInstructions(pEvent.details.pickup_locations, pEvent.details.dropoff_locations);
-          const markers = []
-          markers.push(...pEvent.details.pickup_locations);
-          pEvent.details.dropoff_locations.map((dropoff) => {
-               markers.push({
-                    'latlng': {
-                         'latitude': dropoff.latitude,
-                         'longitude': dropoff.longitude,
-                    },
-                    'title': dropoff.name,
-                    'description': dropoff.address
-               })
-          });
-          console.log("here are the markers", markers);
-          console.log("and dropoffs", pEvent.details.dropoff_locations);
+    const shiftInstructions = this.createShiftInstructions(
+      pEvent.details.pickup_locations,
+      pEvent.details.dropoff_locations
+    );
+    const markers = [];
+    markers.push(...pEvent.details.pickup_locations);
+    pEvent.details.dropoff_locations.map((dropoff) => {
+      markers.push({
+        latlng: {
+          latitude: dropoff.latitude,
+          longitude: dropoff.longitude,
+        },
+        title: dropoff.name,
+        description: dropoff.address,
+      });
+    });
+    console.log("here are the markers", markers);
+    console.log("and dropoffs", pEvent.details.dropoff_locations);
 
-          this.state = {
-               participantData: [
-                    {
-                         name: "Alice Russel (You)",
-                         role: "Lead Rescuer",
-                         profilePic: "../../assets/images/rlcprofilepic.png",
-                         verified: false
-                    },
-                    {
-                         name: "Dan Schneider",
-                         role: "Volunteer",
-                         profilePic: "../../assets/images/rlcprofilepic.png",
-                         verified: true
-                    }
-               ],
-               shiftInstructions: shiftInstructions,
-               markers: markers
-          }
-     }
-
-
-     createShiftInstructions = (pickUp, dropOff) => {
-      //add meetup locations
-      let shiftInstructions = [
+    this.state = {
+      participantData: [
         {
-             step: 1,
-             description: "Meet your group at " + pickUp[0].title, 
-             photo_needed: false
+          name: "Alice Russel (You)",
+          role: "Lead Rescuer",
+          profilePic: "../../assets/images/rlcprofilepic.png",
+          verified: false,
         },
         {
-             step: 2,
-             description: "Check in all volunteers.",
-             photo_needed: false
+          name: "Dan Schneider",
+          role: "Volunteer",
+          profilePic: "../../assets/images/rlcprofilepic.png",
+          verified: true,
         },
-        {
-          step: 3,
+      ],
+      shiftInstructions: shiftInstructions,
+      markers: markers,
+    };
+  }
+
+  createShiftInstructions = (pickUp, dropOff) => {
+    //add meetup locations
+    let shiftInstructions = [
+      {
+        step: 1,
+        description: "Meet your group at " + pickUp[0].title,
+        photo_needed: false,
+      },
+      {
+        step: 2,
+        description: "Check in all volunteers.",
+        photo_needed: false,
+      },
+      {
+        step: 3,
+        description: "Collect food from vendor.",
+        photo_needed: false,
+      },
+    ];
+
+    let nextStep = 4;
+    //add pickup locations
+    switch (pickUp.length) {
+      case 2:
+        shiftInstructions.push({
+          step: nextStep,
+          description: "Walk to " + pickUp[1].title,
+          photo_needed: false,
+        });
+        shiftInstructions.push({
+          step: nextStep + 1,
           description: "Collect food from vendor.",
-          photo_needed: false
-        }
-        ]
+          photo_needed: false,
+        });
+        nextStep += 2;
+        break;
+      default:
+    }
 
-      let nextStep = 4;
-      //add pickup locations
-        switch (pickUp.length) {
-          case 2:
-            shiftInstructions.push({
-              step: nextStep,
-              description: "Walk to " + pickUp[1].title,
-              photo_needed: false
-            });
-            shiftInstructions.push({
-              step: nextStep + 1,
-              description: "Collect food from vendor.",
-              photo_needed: false
-            });
-            nextStep+=2;
-            break;
-          default:
+    //add dropoff locations
+    if (dropOff.length == 1) {
+      shiftInstructions.push({
+        step: nextStep,
+        description:
+          "Take a photo of the food once it is delivered to " +
+          dropOff[0].title,
+        photo_needed: true,
+      });
+      shiftInstructions.push({
+        step: nextStep + 1,
+        description:
+          "Request a receipt from " +
+          dropOff[0].title +
+          " and take a photo of the receipt*",
+        photo_needed: true,
+      });
+      nextStep += 2;
+    }
 
-        }
+    return shiftInstructions;
+  };
 
-        //add dropoff locations
-        if (dropOff.length == 1) {
+  participantCard = (data) => {
+    const participant = data.item;
+    return (
+      <View style={styles.participant_badge}>
+        {participant.role == "Volunteer" && (
+          <CheckBox
+            checked={participant.verified}
+            onPress={() =>
+              this.setState((prevState) => {
+                participant.verified != prevState.participant.verified;
+              })
+            }
+          />
+        )}
+        <Avatar
+          rounded
+          title={getInitials(
+            participant.firstname + " " + participant.lastname
+          )}
+          size="medium"
+        />
+        <View style={styles.participant_detail}>
+          <Text styles={styles.participant_name}>
+            {participant.firstname} {participant.lastname}
+          </Text>
+          <Text styles={styles.particpant_role}>
+            {participant.role === "normal" ? "Rescuer" : null}
+          </Text>
+        </View>
+      </View>
+    );
+  };
 
-          shiftInstructions.push({
-                   step: nextStep,
-                   description: "Take a photo of the food once it is delivered to " + dropOff[0].title,
-                   photo_needed: true
-              });
-          shiftInstructions.push({
-                   step: nextStep + 1,
-                   description: "Request a receipt from " + dropOff[0].title + " and take a photo of the receipt*",
-                   photo_needed: true
-              }); 
-          nextStep += 2;
-        }
+  navigateToMain = () => {
+    const { navigate } = this.props.navigation;
+    navigate("Main");
+  };
 
-     return shiftInstructions;
-     }
+  navigateToWithdraw = () => {
+    const { navigate } = this.props.navigation;
+    const pEvent = this.props.route.params.event;
+    console.log(pEvent);
+    if (pEvent.details.recurring) {
+      navigate("ChangeConfirm", {
+        title: "Withdraw Your Spot",
+        description:
+          "You are about to withdraw your spot from a recurring event.",
+        hasQ: false,
+        question: "",
+        options: withdrawOptions,
+        event_id: pEvent.id,
+        change_type: "withdraw",
+      });
+    } else {
+      navigate("ChangeConfirm", {
+        title: pEvent.details.name,
+        description: "Are you sure you want to withdraw?",
+        hasQ: false,
+        options: [],
+        event_id: pEvent.id,
+        change_type: "withdraw",
+      });
+    }
+  };
 
-     
-     participantCard = (data) => {
-          const participant = data.item;
-          return (
-               <View styles={styles.participant_card}>
+  navigateToSignConfirm = () => {
+    const { navigate } = this.props.navigation;
+    const pEvent = this.props.route.params.event;
+    if (pEvent.details.recurring) {
+      navigate("ChangeConfirm", {
+        title: pEvent.details.name,
+        description: "This is a recurring event.",
+        hasQ: true,
+        question: "How often do you want to attend?",
+        options: recurOptions,
+        event_id: pEvent.details.id,
+        change_type: "signup",
+      });
+    } else {
+      navigate("ChangeConfirm", {
+        title: pEvent.details.name,
+        description: "Are you sure you want to attend?",
+        hasQ: false,
+        options: [],
+        event_id: pEvent.details.id,
+        change_type: "signup",
+      });
+    }
+  };
 
-                    <View style={styles.participant_badge}>
+  selectShiftTitle = (sType) => {
+    switch (sType) {
+      case ShiftType.searched:
+        return "Event";
+      case ShiftType.upcoming:
+        return "Upcoming";
+      case ShiftType.attended:
+        return "Attended";
+      case ShiftType.current:
+        return "In Progress";
+    }
+  };
+  render() {
+    const pEvent = this.props.route.params.event;
+    console.log("here's pevent");
+    console.log(pEvent);
 
-                         {participant.role == "Volunteer" && <CheckBox
-                              checked={participant.verified}
-                              onPress={() => this.setState(prevState => { participant.verified != prevState.participant.verified })}
-                         />}
-                         <Image
-                              style={styles.profilePic}
-                              source={require("../../assets/images/rlcprofilepic.png")} />
-                         <View style={styles.participant_detail}>
-                              <Text styles={styles.participant_name}>
-                                   {participant.firstname} {participant.lastname}
-                              </Text>
-                              <Text styles={styles.particpant_role}>
-                                   {participant.role === 'normal' ? "Rescuer" : null}
-                              </Text>
-                         </View>
-                    </View>
-               </View>
-          )
-     }
+    //set latitude and longitude
+    let lat = pEvent.details.pickup_locations[0].latlng.latitude;
+    let lon = pEvent.details.pickup_locations[0].latlng.longitude;
 
-     navigateToMain = () => {
-          const { navigate } = this.props.navigation;
-          navigate("Main");
-     };
+    return (
+      <View style={{ flex: 1, backgroundColor: "white" }}>
+        <View style={{ flex: 1 }}>
+          <Header
+            centerTitle={this.selectShiftTitle(pEvent.details.shiftType)}
+            onPressBack={this.navigateToMain}
+            rightSide={
+              pEvent.details.shiftType === ShiftType.upcoming ||
+              pEvent.details.shiftType === ShiftType.current
+                ? true
+                : false
+            }
+            actionTitle="Withdraw"
+            onPressHandler={this.navigateToWithdraw}
+          />
+        </View>
 
-     navigateToWithdraw = () => {
-          const { navigate } = this.props.navigation;
-          const pEvent = this.props.route.params.event;
-          console.log(pEvent);
-          if (pEvent.details.recurring) {
-               navigate("ChangeConfirm", {
-                    title: "Withdraw Your Spot",
-                    description: "You are about to withdraw your spot from a recurring event.",
-                    hasQ: false,
-                    question: "",
-                    options: withdrawOptions,
-                    event_id: pEvent.id,
-                    change_type: 'withdraw'
-               });
-          }
-          else {
-               navigate("ChangeConfirm", {
-                    title: pEvent.details.name,
-                    description: "Are you sure you want to withdraw?",
-                    hasQ: false,
-                    options: [],
-                    event_id: pEvent.id,
-                    change_type: 'withdraw'
-               });
-          }
-     };
+        <KeyboardAvoidingView behavior="position" style={{ flex: 5 }}>
+          <View>
+            <ScrollView>
+              <View style={styles.container}>
+                {pEvent.details.shiftType === ShiftType.current && (
+                  <Text style={styles.status}>happening now</Text>
+                )}
+                <Text style={styles.title}>{pEvent.details.name}</Text>
+                <Text style={styles.overview}>
+                  📍 {pEvent.details.location}
+                </Text>
+                <Text style={styles.overview}>
+                  ⏰ {pEvent.details.date}, {pEvent.details.start_time} to{" "}
+                  {pEvent.details.end_time}
+                </Text>
+                <Text style={styles.overview}>
+                  ⚖️ {pEvent.details.weight} lbs
+                </Text>
+                <Text style={styles.overview}>
+                  👥 {pEvent.details.spotsOpen}
+                </Text>
+                <Text style={styles.overview}>
+                  💪 {pEvent.details.numPickups} Pickup(s)
+                </Text>
 
-     navigateToSignConfirm = () => {
-          const { navigate } = this.props.navigation;
-          const pEvent = this.props.route.params.event;
-          if (pEvent.details.recurring) {
-               navigate("ChangeConfirm", {
-                    title: pEvent.details.name,
-                    description: "This is a recurring event.",
-                    hasQ: true,
-                    question: "How often do you want to attend?",
-                    options: recurOptions,
-                    event_id: pEvent.details.id,
-                    change_type: 'signup'
-               });
-          }
-          else {
-               navigate("ChangeConfirm", {
-                    title: pEvent.details.name,
-                    description: "Are you sure you want to attend?",
-                    hasQ: false,
-                    options: [],
-                    event_id: pEvent.details.id,
-                    change_type: 'signup'
-               });
-          }
-     };
-
-     selectShiftTitle = (sType) => {
-          switch (sType) {
-               case ShiftType.searched:
-                    return "Event";
-               case ShiftType.upcoming:
-                    return "Upcoming"
-               case ShiftType.attended:
-                    return "Attended"
-               case ShiftType.current:
-                    return "In Progress"
-          }
-     }
-     render() {
-
-          const pEvent = this.props.route.params.event;
-          console.log("here's pevent");
-          console.log(pEvent);
-
-          //set latitude and longitude
-          let lat = pEvent.details.pickup_locations[0].latlng.latitude;
-          let lon = pEvent.details.pickup_locations[0].latlng.longitude;
-
-          return (
-               <View style={{ flex: 1 }}>
-                    <View style={{ flex: 1 }}>
-                         <Header
-                              centerTitle={this.selectShiftTitle(pEvent.details.shiftType)}
-                              onPressBack={this.navigateToMain}
-                              rightSide={(pEvent.details.shiftType === ShiftType.upcoming || pEvent.details.shiftType === ShiftType.current) ? true : false}
-                              actionTitle="Withdraw"
-                              onPressHandler={this.navigateToWithdraw}
-                         />
-                    </View>
-
-                    <KeyboardAvoidingView behavior="position" style={{ flex: 5 }}>
-                         <View>
-
-                              <ScrollView>
-                                   <View style={styles.container}>
-
-                                        {pEvent.details.shiftType === ShiftType.current && 
-                                        <Text style={styles.status}>
-                                             happening now
-                                        </Text>}
-                                        <Text style={styles.title}>
-                                             {pEvent.details.name}
-                                        </Text>
-                                        <Text style={styles.overview}>
-                                             📍  {pEvent.details.location}
-                                        </Text>
-                                        <Text style={styles.overview}>
-                                             ⏰  {pEvent.details.date}, {pEvent.details.start_time} to {pEvent.details.end_time}
-                                        </Text>
-                                        <Text style={styles.overview}>
-                                             ⚖️  {pEvent.details.weight} lbs
-                                        </Text>
-                                        <Text style={styles.overview}>
-                                             👥  {pEvent.details.spotsOpen}
-                                        </Text>
-                                        <Text style={styles.overview}>
-                                             💪  {pEvent.details.numPickups} Pickup(s)
-                                        </Text>
-
-                                        <View style={styles.mapcontainer}>
-                                             <MapView style={styles.map}
-                                                  initialRegion={{
-                                                       latitude: lat,
-                                                       longitude: lon,
-                                                       latitudeDelta: 0.0922,
-                                                       longitudeDelta: 0.0421,
-                                                  }}
-                                             >
-                                                  { this.state.markers && this.state.markers.map(marker => (
-                                                       <Marker
-                                                            coordinate={marker.latlng}
-                                                            title={marker.title}
-                                                            description={marker.description}
-                                                       />
-
-                                                  ))} 
-                                     </MapView>
-                               </View>
+                <View style={styles.mapcontainer}>
+                  <MapView
+                    style={styles.map}
+                    initialRegion={{
+                      latitude: lat,
+                      longitude: lon,
+                      latitudeDelta: 0.0922,
+                      longitudeDelta: 0.0421,
+                    }}
+                  >
+                    {this.state.markers &&
+                      this.state.markers.map((marker) => (
+                        <Marker
+                          coordinate={marker.latlng}
+                          title={marker.title}
+                          description={marker.description}
+                        />
+                      ))}
+                  </MapView>
+                </View>
 
                 {this.state.markers && (
                   <LocTimeline markers={this.state.markers} />
@@ -345,40 +361,49 @@ export default class ShiftScreen extends React.Component {
                   (weight of food is heavy, harsh weather conditions, etc).
                   Please keep the receipt so that we can reimburse you.
                 </Text>
-                  <FlatList
-                    data={this.state.shiftInstructions}
-                    renderItem={instructionDetail}
+                <FlatList
+                  data={this.state.shiftInstructions}
+                  renderItem={instructionDetail}
+                />
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginTop: 10,
+                    marginBottom: 10,
+                  }}
+                >
+                  <Text style={{ fontSize: 16 }}>9.</Text>
+                  <Text style={{ fontSize: 16, flex: 1, paddingLeft: 5 }}>
+                    Enter pounds of food saved:*
+                  </Text>
+                </View>
+
+                <View style={styles.input_box}>
+                  <TextInput
+                    style={styles.weight_input}
+                    returnKeyType="next"
+                    onSubmitEditing={() => this.submit.focus()}
+                    keyboardType="number-pad"
+                    style={styles.input}
                   />
-                
-
-                {/* <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
-                                             <Text style={{ fontSize: 16 }}>9.</Text>
-                                             <Text style={{ fontSize: 16, flex: 1, paddingLeft: 5 }}>Enter pounds of food saved:*</Text>
-                                        </View>
-
-                                        <View style={styles.input_box}>
-                                             <TextInput
-                                                  style={styles.weight_input}
-                                                  returnKeyType="next"
-                                                  onSubmitEditing={() => this.submit.focus()}
-                                                  keyboardType="number-pad"
-                                                  style={styles.input}
-                                             />
-                                        </View> */}
+                </View>
 
                 {(pEvent.details.shiftType === ShiftType.upcoming ||
                   pEvent.details.shiftType === ShiftType.current) && (
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        marginTop: 10,
-                        marginBottom: 10,
-                      }}
-                    >
-                      <Text style={{ fontSize: 17 }}>{this.state.shiftInstructions.length}</Text>
-                      <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>
-                        Tap "Complete" to confirm the completion of the event. The
-                        last three steps must be completed.
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      marginTop: 10,
+                      marginBottom: 10,
+                    }}
+                  >
+                    <Text style={{ fontSize: 17 }}>
+                      {this.state.shiftInstructions.length}
+                    </Text>
+                    <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>
+                      Tap "Complete" to confirm the completion of the event. The
+                      last three steps must be completed.
                     </Text>
                   </View>
                 )}
@@ -454,30 +479,20 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
-    padding: 10,
-    paddingBottom: 20,
+    paddingVertical: 15,
+    borderColor: "#CCCCCC",
+    borderBottomWidth: 1,
+    borderTopWidth: 1,
   },
   instructions: {
     padding: 10,
-  },
-  participant_card: {
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "flex-start",
-    padding: 40,
-    marginBottom: 20,
-    marginTop: 20,
   },
   participant_badge: {
     flex: 1,
     flexDirection: "row",
     flexWrap: "wrap",
     alignItems: "flex-start",
-    borderBottomWidth: 1,
-    borderColor: "#CCCCCC",
-    paddingBottom: 10,
-    marginTop: 10,
+    marginVertical: 5,
   },
   participant_detail: {
     flexDirection: "column",

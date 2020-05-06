@@ -23,10 +23,6 @@ export default class ProfileHeader extends Component {
       <View>
         <View style={styles.profileContainer}>
           <Avatar rounded title={getInitials(fullName)} size="large" />
-
-          {/* <Image
-                        style={styles.profilePic}
-                        source={require('../../assets/images/rlclogo.png')} /> */}
           {this.props.isFetching ? (
             <Text></Text>
           ) : (
