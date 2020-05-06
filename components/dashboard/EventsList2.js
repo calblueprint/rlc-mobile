@@ -156,12 +156,6 @@ export default class EventsList2 extends Component {
     }
   }
 
-  componentWillMount() {
-    this.listener = EventRegister.addEventListener('reloadEvents', () => {
-      this._fetchEvents()
-    });
-  }
-
   componentWillUnmount() {
     EventRegister.removeEventListener(this.listener);
   }
