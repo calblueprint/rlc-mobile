@@ -483,6 +483,7 @@ const styles = StyleSheet.create({
     borderColor: "#CCCCCC",
     borderBottomWidth: 1,
     borderTopWidth: 1,
+    marginBottom: 10,
   },
   instructions: {
     padding: 10,
