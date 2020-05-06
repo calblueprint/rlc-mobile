@@ -27,7 +27,7 @@ class LogoScreen extends React.Component {
   };
 
   render() {
-    setTimeout(this.autoNavigate, 1500);
+    // setTimeout(this.autoNavigate, 1500);
 
     return (
       <View style={{ ...Styles.container, ...styles.container }}>
@@ -41,7 +41,17 @@ class LogoScreen extends React.Component {
         <View style={{ flex: 8 }}></View>
         <View style={styles.textContainer}>
           <Text style={styles.smallText}>from</Text>
-          <Text style={styles.largeText}>CAL BLUEPRINT</Text>
+          <View style={{
+            flexDirection: "row",
+            alignContent: "center",
+            alignItems: "center",
+          }}>
+            <Image
+              style={styles.smallLogo}
+              source={require("../assets/images/bplogo.png")}
+            />
+            <Text style={styles.largeText}>BLUEPRINT</Text>
+          </View>
         </View>
       </View>
     );
@@ -74,12 +84,18 @@ const styles = StyleSheet.create({
   largeText: {
     fontSize: 16,
     fontWeight: "700",
-    color: Colors.mainBlue,
+    color: "#0078e8",
   },
   smallText: {
     fontSize: 14,
     fontWeight: "400",
   },
+  smallLogo: {
+    width: "7%",
+    height: Sizes.width * 0.1,
+    resizeMode: "contain"
+  },
+
 
 });
 
