@@ -59,8 +59,25 @@ export default class ShiftScreen extends React.Component {
      constructor(props) {
           super(props)
           const pEvent = this.props.route.params.event;
-          console.log("hrre's pevent");
+          console.log("pevent in constructor");
           console.log(pEvent);
+
+          const shiftInstructions = this.createShiftInstructions(pEvent.details.pickup_locations, pEvent.details.dropoff_locations);
+          const markers = []
+          markers.push(...pEvent.details.pickup_locations);
+          pEvent.details.dropoff_locations.map((dropoff) => {
+               markers.push({
+                    'latlng': {
+                         'latitude': dropoff.latitude,
+                         'longitude': dropoff.longitude,
+                    },
+                    'title': dropoff.name,
+                    'description': dropoff.address
+               })
+          });
+          console.log("here are the markers", markers);
+          console.log("and dropoffs", pEvent.details.dropoff_locations);
+
           this.state = {
                participantData: [
                     {
@@ -76,64 +93,72 @@ export default class ShiftScreen extends React.Component {
                          verified: true
                     }
                ],
-               shiftInstructions: [
-                    {
-                         step: 1,
-                         description: "Meet your group at " + pEvent.details.location,
-                         photo_needed: false
-                    },
-                    {
-                         step: 2,
-                         description: "Check in all volunteers.",
-                         photo_needed: false
-                    },
-                    {
-                         step: 3,
-                         description: "Collect food from vendor.",
-                         photo_needed: false
-                    },
-                    // {
-                    //      step: 4,
-                    //      description: "Walk to " + pEvent.details.dropoff_locations[0].title,
-                    //      photo_needed: false
-                    // },
-                    // {
-                    //      step: 5,
-                    //      description: "Collect food from vendor.",
-                    //      photo_needed: false
-                    // },
-                    // {
-                    //      step: 6,
-                    //      description: "Walk to " + pEvent.details.dropoff_locations[0].title,
-                    //      photo_needed: false
-
-                    // },
-                    // {
-                    //      step: 7,
-                    //      description: "Take a photo of the food once it is delivered to " + pEvent.details.dropoff_locations[0].title,
-                    //      photo_needed: true
-                    // },
-                    // {
-                    //      step: 8,
-                    //      description: "Request a receipt from " + pEvent.details.dropoff_locations[0].title + " and take a photo of the receipt*",
-                    //      photo_needed: true
-                    // },
-               ],
-               markers: [
-                    {
-                         latlng: '1', title: 'Latin Beet (Meet here) ', description: '18 East 16th Street, New York, NY 10003 \n', arrived: true
-                    },
-                    {
-                         latlng: '2', title: 'Digg Inn', description: '364 Bleecker St., New York, NY 10002 \n', arrived: false
-                    },
-                    {
-                         latlng: '3', title: 'Bowery Mission', description: '227 Bower, New York, NY 10002 \n', arrived: false
-                    }
-
-               ]
+               shiftInstructions: shiftInstructions,
+               markers: markers
           }
      }
 
+
+     createShiftInstructions = (pickUp, dropOff) => {
+      //add meetup locations
+      let shiftInstructions = [
+        {
+             step: 1,
+             description: "Meet your group at " + pickUp[0].title, 
+             photo_needed: false
+        },
+        {
+             step: 2,
+             description: "Check in all volunteers.",
+             photo_needed: false
+        },
+        {
+          step: 3,
+          description: "Collect food from vendor.",
+          photo_needed: false
+        }
+        ]
+
+      let nextStep = 4;
+      //add pickup locations
+        switch (pickUp.length) {
+          case 2:
+            shiftInstructions.push({
+              step: nextStep,
+              description: "Walk to " + pickUp[1].title,
+              photo_needed: false
+            });
+            shiftInstructions.push({
+              step: nextStep + 1,
+              description: "Collect food from vendor.",
+              photo_needed: false
+            });
+            nextStep+=2;
+            break;
+          default:
+
+        }
+
+        //add dropoff locations
+        if (dropOff.length == 1) {
+
+          shiftInstructions.push({
+                   step: nextStep,
+                   description: "Take a photo of the food once it is delivered to " + dropOff[0].title,
+                   photo_needed: true
+              });
+          shiftInstructions.push({
+                   step: nextStep + 1,
+                   description: "Request a receipt from " + dropOff[0].title + " and take a photo of the receipt*",
+                   photo_needed: true
+              }); 
+          nextStep += 2;
+        }
+
+     return shiftInstructions;
+     }
+
+     
      participantCard = (data) => {
           const participant = data.item;
           return (
@@ -238,10 +263,8 @@ export default class ShiftScreen extends React.Component {
           console.log(pEvent);
 
           //set latitude and longitude
-          let lat = 37.78825
-          let lon = -122.4324
-          pEvent.latitude ? lat = pEvent.latitude : null
-          pEvent.longitude ? lon = pEvent.longitude : null
+          let lat = pEvent.details.pickup_locations[0].latlng.latitude;
+          let lon = pEvent.details.pickup_locations[0].latlng.longitude;
 
           return (
                <View style={{ flex: 1 }}>
@@ -261,9 +284,10 @@ export default class ShiftScreen extends React.Component {
                               <ScrollView>
                                    <View style={styles.container}>
 
-                                        {pEvent.details.shiftType === ShiftType.current && <Text style={styles.status}>
+                                        {pEvent.details.shiftType === ShiftType.current && 
+                                        <Text style={styles.status}>
                                              happening now
-                              </Text>}
+                                        </Text>}
                                         <Text style={styles.title}>
                                              {pEvent.details.name}
                                         </Text>
@@ -281,7 +305,7 @@ export default class ShiftScreen extends React.Component {
                                         </Text>
                                         <Text style={styles.overview}>
                                              💪  {pEvent.details.numPickups} Pickup(s)
-                              </Text>
+                                        </Text>
 
                                         <View style={styles.mapcontainer}>
                                              <MapView style={styles.map}
@@ -292,7 +316,7 @@ export default class ShiftScreen extends React.Component {
                                                        longitudeDelta: 0.0421,
                                                   }}
                                              >
-                                                  { pEvent.dropoff_locations && pEvent.dropoff_locations.map(marker => (
+                                                  { this.state.markers && this.state.markers.map(marker => (
                                                        <Marker
                                                             coordinate={marker.latlng}
                                                             title={marker.title}
@@ -300,11 +324,11 @@ export default class ShiftScreen extends React.Component {
                                                        />
 
                                                   ))} 
-                  </MapView>
-                </View>
+                                     </MapView>
+                               </View>
 
-                {pEvent.dropoff_locations && (
-                  <LocTimeline markers={pEvent.dropoff_locations} />
+                {this.state.markers && (
+                  <LocTimeline markers={this.state.markers} />
                 )}
 
                 <FlatList
@@ -321,12 +345,11 @@ export default class ShiftScreen extends React.Component {
                   (weight of food is heavy, harsh weather conditions, etc).
                   Please keep the receipt so that we can reimburse you.
                 </Text>
-                {pEvent.details.dropoff_locations && (
                   <FlatList
                     data={this.state.shiftInstructions}
                     renderItem={instructionDetail}
                   />
-                )}
+                
 
                 {/* <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 10 }}>
                                              <Text style={{ fontSize: 16 }}>9.</Text>
@@ -352,25 +375,25 @@ export default class ShiftScreen extends React.Component {
                         marginBottom: 10,
                       }}
                     >
-                      <Text style={{ fontSize: 17 }}>10.</Text>
+                      <Text style={{ fontSize: 17 }}>{this.state.shiftInstructions.length}</Text>
                       <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>
                         Tap "Complete" to confirm the completion of the event. The
                         last three steps must be completed.
                     </Text>
-                    </View>
-                  )}
+                  </View>
+                )}
 
                 {(pEvent.details.shiftType === ShiftType.upcoming ||
                   pEvent.details.shiftType === ShiftType.current) && (
-                    <View style={styles.buttonContainer}>
-                      <TouchableOpacity
-                        style={styles.button}
-                        onPress={this.navigateToMain}
-                      >
-                        <Text style={styles.buttonText}>Complete</Text>
-                      </TouchableOpacity>
-                    </View>
-                  )}
+                  <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={this.navigateToMain}
+                    >
+                      <Text style={styles.buttonText}>Complete</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
               </View>
             </ScrollView>
             {pEvent.details.shiftType == ShiftType.searched && (

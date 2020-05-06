@@ -45,6 +45,7 @@ export default class Dashboard extends Component {
   }
 
   render() {
+    console.log(this.props.route);
     return (
       <View style={styles.container}>
         <View style={styles.header}>
