@@ -51,11 +51,8 @@ export default class SignUp3Screen extends React.Component {
           .preferred_location_id,
       });
     }
-    // if (this.props.previousUserInfo.availability != null) {
-    //   this.setState({
-    //     availability: this.props.previousUserInfo.availability,
-    //   });
-    // }
+
+
     if (this.props.previousUserInfo.agreementChecked) {
       this.setState({
         agreementChecked: this.props.previousUserInfo.agreementChecked,
@@ -80,11 +77,7 @@ export default class SignUp3Screen extends React.Component {
    */
   checkValidNext = () => {
     if (this.state.preferred_region_id.length == 0) {
-      //   this.state.preferred_region_id.length == 0 ||
-      //   this.state.preferred_location_id.length == 0 || // I think this field is labeled as optional so shouldn't be checked.
-      //   this.state.availability == ""
-      // ) {
-      frontendError("Please fill out all fields.");
+      frontendError("Please fill out the required fields.");
     } else if (this.state.agreementChecked == false) {
       frontendError(
         "Please agree to the Terms and Conditions and RLC Rescuer Policy."
@@ -114,10 +107,6 @@ export default class SignUp3Screen extends React.Component {
   onPreferredLocationChange = (preferred_location_id) => {
     this.setState({ preferred_location_id: preferred_location_id });
   };
-
-  // onPreferredTimesChange = (availability) => {
-  //   this.setState({ availability });
-  // };
 
   // Check user's current location and find corresponding regions, restrict choices in form for locations to those within region.
   setCurrentRegion = async () => {
@@ -226,34 +215,6 @@ export default class SignUp3Screen extends React.Component {
                 }}
               />
 
-              {/* <Text style={styles.subHeading}>Preferred Time(s)</Text>
-              <SectionedMultiSelect
-                hideSearch
-                colors={Colors}
-                selectedItems={this.state.availability}
-                items={daysandtimes}
-                uniqueKey="id"
-                expandDropDowns={true}
-                onSelectedItemsChange={this.onPreferredTimesChange}
-                subKey="times"
-                showChips={false}
-                searchInputStyle={styles.input}
-                modalWithSafeAreaView={true}
-                submitButtonText="Select"
-                confirmText="SAVE"
-                value={this.state.availability}
-                styles={{
-                  selectToggle: {
-                    borderBottomWidth: 1,
-                    marginBottom: 20,
-                    height: 40,
-                  },
-                  selectToggleText: {
-                    fontSize: normalize(14),
-                    color: Colors.black,
-                  },
-                }}
-              /> */}
               <CheckBox
                 wrapperStyle= {styles.checkBox}
                 title="By creating an account, you agree to the Terms and Conditions and RLC Rescuer Policy."

@@ -40,7 +40,7 @@ export default class Profile extends Component {
         'email': "",
         'preferred_region_id': [],
         'preferred_location_id': [],
-        'availability': {},
+        'availability': "",
       },
       password: "",
       isFetching: true,
@@ -91,7 +91,7 @@ export default class Profile extends Component {
 
   changeAvailability = (new_availability) => {
     this.setState({
-      new_availability: availability,
+      new_availability: new_availability,
     });
   };
 
@@ -101,21 +101,21 @@ export default class Profile extends Component {
       } else {
           // Create / Update Availability if needed.
           if (Object.keys(this.state.new_availability).length != 0) {
-            let avail_params = JSON.stringify({ availability: this.state.new_availability });
-            await LocalStorage.storeItem("availability", avail_params);
+            let availability = { availability: this.state.new_availability };
             postRequest(
-              APIRoutes.createAvailabilityPath(),
+              APIRoutes.updateAvailabilityPath(), //We don't need to pass in user.id, uses current user session.
               (availability) => {
                 this.changeUserInfo("availability", availability.id);
+                LocalStorage.storeItem("availability", this.state.new_availability);
+
               },
               (error) => console.error(error),
-              avail_params
+              availability
             );
           }
 
-          const { id, city, state, zip_code, preferred_region_id, preferred_location_id, 
-            availability, ...params } = this.state.user
-          await LocalStorage.storeItem('user', JSON.stringify(this.state.user));
+          const { id, city, state, zip_code, availability, ...params } = this.state.user
+          await LocalStorage.storeItem('user', this.state.user);
           putRequest(APIRoutes.updateUserPath(this.state.user.id), (user => {
               Alert.alert("Successfully updated!")
           }),
@@ -149,6 +149,7 @@ export default class Profile extends Component {
               getUserAttribute={this.getUserAttribute}
               enableSaveButton={this.enableSaveButton}
               changeUserInfo={this.changeUserInfo}
+              changeAvailability={this.changeAvailability}
             />
           </ScrollView>
 

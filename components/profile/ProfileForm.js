@@ -13,8 +13,6 @@ import Colors from "../../constants/Colors.js";
 import { normalize } from "../../utils/Normalize.js";
 
 import {
-  availability_template,
-  id_to_key,
   availability_selectors,
   create_availability_static,
 } from "../../helpers/AvailabilityHelpers.js";
@@ -31,7 +29,7 @@ export default class ProfileForm extends Component {
     this.state = {
       preferred_region_id: [],
       preferred_location_id: [],
-      availability: {},
+      selected_availabilities: [],
       regions: [],
       locations: [],
       isFetching: true,
@@ -59,10 +57,21 @@ export default class ProfileForm extends Component {
     this._get_location_data();
   }
 
+  _get_location_data = async () => {
+    let regions = await fetch_regions();
+    let locations = await fetch_locations();
+    this.setState({
+      regions: regions,
+      locations: locations,
+      isFetching: false,
+    });
+  };
+
   onPreferredRegionChange = async (preferred_region_id) => {
     let included_locations = await fetch_locations_by_region(
       preferred_region_id[0]
     );
+    console.log(preferred_region_id)
     this.setState({
       preferred_region_id: preferred_region_id,
       preferred_location_id: [],
@@ -77,20 +86,17 @@ export default class ProfileForm extends Component {
     this.setState({ preferred_location_id: preferred_location_id });
   };
 
-  onPreferredTimesChange = (preferredTimes) => {
-    this.setState({ preferredTimes: preferredTimes });
-  };
-
-  onAvailabilityChange = async (availabilityArr) => {
-    let new_availability = create_availability_static(availabilityArr);
+  onAvailabilityChange = (slotIds) => {
+    let new_availability = create_availability_static(slotIds);
     this.props.changeAvailability(new_availability);
-    this.setState({ new_availability: new_availability });
+    this.setState({ selected_availabilities: slotIds, new_availability: new_availability });
   };
 
   render() {
     return (
       <View behavior="padding" style={styles.container}>
         <Text style={styles.heading}>Basic Information 🤓</Text>
+
         <Text style={styles.subHeading}>First Name</Text>
         <TextInput
           style={styles.input}
@@ -105,6 +111,7 @@ export default class ProfileForm extends Component {
           style={styles.input}
           autoCorrect={false}
         ></TextInput>
+
         <Text style={styles.subHeading}>Last Name</Text>
         <TextInput
           style={styles.input}
@@ -120,6 +127,7 @@ export default class ProfileForm extends Component {
           style={styles.input}
           autoCorrect={false}
         ></TextInput>
+
         <Text style={styles.subHeading}>Occupation</Text>
         <TextInput
           style={styles.input}
@@ -134,12 +142,14 @@ export default class ProfileForm extends Component {
           style={styles.input}
           autoCorrect={false}
         ></TextInput>
+
         <Text style={styles.heading}>Contact Information 📱</Text>
         {/* I suggest we embed this in some sort of interactive info button; like a question mark icon  */}
         <Text style={styles.subtext}>
           RLC needs your complete address in order to successfully place you in
           the right area.
         </Text>
+
         <Text style={styles.subHeading}>Phone Number</Text>
         <TextInput
           style={styles.input}
@@ -154,6 +164,7 @@ export default class ProfileForm extends Component {
           style={styles.input}
           autoCorrect={false}
         ></TextInput>
+
         <Text style={styles.subHeading}>Address (Line 1)</Text>
         <TextInput
           style={styles.input}
@@ -169,6 +180,7 @@ export default class ProfileForm extends Component {
           style={styles.input}
           autoCorrect={false}
         ></TextInput>
+
         <Text style={styles.subHeading}>Address (Line 2)</Text>
         <TextInput
           style={styles.input}
@@ -180,6 +192,7 @@ export default class ProfileForm extends Component {
           style={styles.input}
           autoCorrect={false}
         ></TextInput>
+
         <Text style={styles.subHeading}>City</Text>
         <TextInput
           style={styles.input}
@@ -195,6 +208,7 @@ export default class ProfileForm extends Component {
           style={styles.input}
           autoCorrect={false}
         ></TextInput>
+
         <Text style={styles.subHeading}>State</Text>
         <TextInput
           style={styles.input}
@@ -210,12 +224,13 @@ export default class ProfileForm extends Component {
           style={styles.input}
           autoCorrect={false}
         ></TextInput>
+
         <Text style={styles.subHeading}>Zip Code</Text>
         <TextInput
           style={styles.input}
-          defaultValue={this.props.getUserAttribute("zip_code")}
+          defaultValue={this.props.getUserAttribute("zipCode")}
           onChangeText={(text) => {
-            this.props.changeUserInfo("zip_code", text);
+            this.props.changeUserInfo("zipCode", text);
             this.props.enableSaveButton();
           }}
           returnKeyType="done"
@@ -224,8 +239,10 @@ export default class ProfileForm extends Component {
           style={styles.input}
           autoCorrect={false}
         ></TextInput>
+
         {/* Account Details */}
         <Text style={styles.heading}>Account Details ⚙️</Text>
+
         <Text style={styles.subHeading}>Email</Text>
         <TextInput
           defaultValue={this.props.getUserAttribute("email")}
@@ -240,6 +257,7 @@ export default class ProfileForm extends Component {
           style={styles.input}
           autoCorrect={false}
         ></TextInput>
+
         <Text style={styles.subHeading}>Password</Text>
         <TextInput
           inlineImageLeft="lock"
@@ -251,92 +269,94 @@ export default class ProfileForm extends Component {
           style={styles.input}
           returnKeyType="go"
         ></TextInput>
+
         <View style={{ width: 150, height: 50 }}>
           <TouchableOpacity style={styles.helpLink}>
             <Text style={styles.helpLinkText}>Reset password</Text>
           </TouchableOpacity>
         </View>
+
         <Text style={styles.heading}>Event Preferences 🍎</Text>
+
         <Text style={styles.subHeading}>Preferred Region</Text>
-        <SectionedMultiSelect
-          single
-          colors={{ primary: Colors.mainBlue }}
-          selectedItems={this.state.preferred_region_id}
-          items={this.state.regions}
-          uniqueKey="id"
-          displayKey="name"
-          onSelectedItemsChange={(preferred_region_id) => {
-            this.onPreferredRegionChange(preferred_region_id);
-            this.props.changeUserInfo(
-              "preferred_region_id",
-              preferred_region_id
-            );
-            this.props.enableSaveButton();
-          }}
-          searchPlaceholderText="Search regions..."
-          searchInputStyle={styles.input}
-          modalWithSafeAreaView={true}
-          submitButtonText="Select"
-          confirmText="SAVE"
-          value={this.state.preferred_region_id}
-          styles={{
-            selectToggle: {
-              borderBottomWidth: 1,
-              marginBottom: 20,
-              height: 40,
-            },
-            selectToggleText: {
-              fontSize: normalize(14),
-              color: "#333333",
-              marginTop: 20,
-            },
-          }}
-        />
-        <Text style={styles.subHeading}>Preferred Locations (Optional)</Text>
-        <SectionedMultiSelect
-          colors={{ primary: Colors.mainBlue }}
-          selectedItems={this.state.preferred_location_id}
-          items={this.state.locations}
-          uniqueKey="id"
-          displayKey="name"
-          onSelectedItemsChange={(preferred_location_id) => {
-            this.onPreferredLocationChange(preferred_location_id);
-            this.props.changeUserInfo(
-              "preferred_location_id",
-              preferred_location_id
-            );
-            this.props.enableSaveButton();
-          }}
-          showChips={false}
-          searchPlaceholderText="Search locations..."
-          searchInputStyle={styles.input}
-          modalWithSafeAreaView={true}
-          submitButtonText="Select"
-          confirmText="SAVE"
-          value={this.state.preferred_location_id}
-          styles={{
-            selectToggle: {
-              borderBottomWidth: 1,
-              marginBottom: 20,
-              height: 40,
-            },
-            selectToggleText: {
-              fontSize: normalize(14),
-              color: "#333333",
-              marginTop: 20,
-            },
-          }}
-        />{" "}
+          <SectionedMultiSelect
+            single
+            colors={{ primary: Colors.mainBlue }}
+            selectedItems={this.state.preferred_region_id}
+            items={this.state.regions}
+            uniqueKey="id"
+            displayKey="name"
+            onSelectedItemsChange={(preferred_region_id) => {
+              this.onPreferredRegionChange(preferred_region_id);
+              this.props.changeUserInfo("preferred_region_id", preferred_region_id);
+              this.props.enableSaveButton();
+            }}
+            searchPlaceholderText="Search regions..."
+            searchInputStyle={styles.input}
+            modalWithSafeAreaView={true}
+            submitButtonText="Select"
+            confirmText="SAVE"
+            value={this.state.preferred_region_id}
+            styles={{
+              selectToggle: {
+                borderBottomWidth: 1,
+                marginBottom: 20,
+                height: 40,
+              },
+              selectToggleText: {
+                fontSize: normalize(14),
+                color: "#333333",
+                marginTop: 20,
+              },
+            }}
+          />
+
+          <Text style={styles.subHeading}>Preferred Locations (Optional)</Text>
+          <SectionedMultiSelect
+            colors={{ primary: Colors.mainBlue }}
+            selectedItems={this.state.preferred_location_id}
+            items={this.state.locations}
+            uniqueKey="id"
+            displayKey="name"
+            onSelectedItemsChange={(preferred_location_id) => {
+              this.onPreferredLocationChange(preferred_location_id);
+              this.props.changeUserInfo(
+                "preferred_location_id",
+                preferred_location_id
+              );
+              this.props.enableSaveButton();
+            }}
+            showChips={false}
+            searchPlaceholderText="Search locations..."
+            searchInputStyle={styles.input}
+            modalWithSafeAreaView={true}
+            submitButtonText="Select"
+            confirmText="SAVE"
+            value={this.state.preferred_location_id}
+            styles={{
+              selectToggle: {
+                borderBottomWidth: 1,
+                marginBottom: 20,
+                height: 40,
+              },
+              selectToggleText: {
+                fontSize: normalize(14),
+                color: "#333333",
+                marginTop: 20,
+              },
+            }}
+          />
+
         <Text style={styles.subHeading}>Preferred Times (Optional)</Text>
         <SectionedMultiSelect
           hideSearch
           colors={Colors}
-          selectedItems={this.state.availability}
+          selectedItems={this.state.selected_availabilities}
           items={availability_selectors}
           uniqueKey="id"
           expandDropDowns={true}
-          onSelectedItemsChange={(availabilityArr) => {
-            this.onAvailabilityChange(availabilityArr);
+          onSelectedItemsChange={(slotIds) => {
+            this.onAvailabilityChange(slotIds);
             this.props.enableSaveButton();
           }}
           subKey="times"

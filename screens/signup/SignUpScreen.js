@@ -85,7 +85,7 @@ export default class SignUpScreen extends Component {
     const user = {
       ...userValues,
       address: "",
-      availability: null, // Temporarily moving out of signup flow
+      availability: "", 
       zip_code: "",
       city: "",
       state: "",
