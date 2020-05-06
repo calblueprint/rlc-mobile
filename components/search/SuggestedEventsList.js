@@ -5,7 +5,6 @@ import {
   View,
   Text,
   ActivityIndicator,
-  SafeAreaView,
 } from "react-native";
 import ActivityCard from "../dashboard/ActivityCard.js";
 import DatePicker from "react-native-datepicker";
@@ -15,6 +14,7 @@ import Styles from "../../constants/Styles.js";
 import Sizes from "../../constants/Sizes.js";
 import { normalize } from "../../utils/Normalize.js";
 import Colors from "../../constants/Colors";
+import Header from "../../components/shift/Header";
 
 import ShiftType from "../../constants/ShiftType.js";
 
@@ -75,8 +75,8 @@ export default class SuggestedEventsList extends Component {
             hour: "2-digit",
             minute: "2-digit",
           });
-          eventDetails["dropoff_locations"] =
-            responseData[i]["dropoff_locations"];
+          eventDetails["dropoff_locations"] = responseData[i]["dropoff_locations"];
+          eventDetails["pickup_locations"] = responseData[i]["pickup_locations"];
           eventDetails["location"] = responseData[i]["location"];
           eventDetails["recurring"] = responseData[i]["recurring"];
           eventDetails["id"] = responseData[i]["id"];
@@ -118,8 +118,8 @@ export default class SuggestedEventsList extends Component {
           eventDetails["spotsOpen"] = responseData[i]["slot"];
           eventDetails["weight"] = responseData[i]["pound"] + " lbs";
           eventDetails["numPickups"] = responseData[i]["numPickups"];
-          eventDetails["dropoff_locations"] =
-            responseData[i]["dropoff_locations"];
+          eventDetails["dropoff_locations"] = responseData[i]["dropoff_locations"];
+          eventDetails["pickup_locations"] = responseData[i]["pickup_locations"];
           eventDetails["location"] = responseData[i]["location"];
           const startingTime = new Date(responseData[i]["starting_time"]);
           const endingTime = new Date(responseData[i]["ending_time"]);
@@ -135,6 +135,7 @@ export default class SuggestedEventsList extends Component {
           });
           eventDetails["recurring"] = responseData[i]["recurring"];
           eventDetails["id"] = responseData[i]["id"];
+          eventDetails["latlng"] = {"latitude":responseData[i]["latitude"], "longitude":responseData[i]["longitude"]};
           if (responseData[i]["location_id"] != null) {
             const locationIdString = responseData[i]["location_id"].toString();
             if (this.state.locations[locationIdString] != null) {
@@ -157,56 +158,6 @@ export default class SuggestedEventsList extends Component {
         console.log(error);
       },
       { date: chosenDate, location_ids: this.state.location_ids }
-    );
-  }
-
-  fetchNewEvents(chosenDate) {
-    getRequest(
-      `api/get_events/${chosenDate.toString()}`,
-      (responseData) => {
-        selectedEventsInDay = [];
-        for (i = 0; i < responseData.length; i++) {
-          currentEvent = {};
-          eventDetails = {};
-          currentEvent["shiftType"] = ShiftType.searched;
-          eventDetails["name"] = responseData[i]["title"];
-          eventDetails["spotsOpen"] = responseData[i]["slot"];
-          eventDetails["weight"] = responseData[i]["pound"] + " lbs";
-          eventDetails["numPickups"] = responseData[i]["numPickups"];
-          startingTime = new Date(responseData[i]["starting_time"]);
-          endingTime = new Date(responseData[i]["ending_time"]);
-          eventDetails["start_time"] =
-            startingTime.toLocaleTimeString("en-US", {
-              hour: "2-digit",
-              minute: "2-digit",
-            }) +
-            " to " +
-            endingTime.toLocaleTimeString("en-US", {
-              hour: "2-digit",
-              minute: "2-digit",
-            });
-          if (responseData[i]["location_id"] != null) {
-            locationIdString = responseData[i]["location_id"].toString();
-            if (this.state.locations[locationIdString] != null) {
-              currentEvent["address"] = this.state.locations[locationIdString];
-              currentEvent["details"] = eventDetails;
-              selectedEventsInDay.push(currentEvent);
-            }
-          }
-        }
-        this.setState(
-          {
-            selectedEventsInDay: selectedEventsInDay,
-            isFetching: false,
-          },
-          () => {
-            this.render();
-          }
-        );
-      },
-      (error) => {
-        console.log(error);
-      }
     );
   }
 
@@ -244,14 +195,14 @@ export default class SuggestedEventsList extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={Styles.title}> Suggested Events </Text>
-          <View
-            style={{
-              boderBottomColor: "black",
-              borderBottomWidth: StyleSheet.hairlineWidth,
-              width: "100%",
-            }}
-          ></View>
+          <Header
+            centerTitle="Suggested Events"
+            onPressBack={this.props.goBack}
+            rightSide={false}
+            actionTitle=""
+            onPressHandler={null}
+            style={{ paddingTop: "1%" }}
+          />
           <DatePicker
             style={{
               marginTop: "2%",
