@@ -72,8 +72,8 @@ export default class ProfileForm extends Component {
     let included_locations = await fetch_locations_by_region(
       preferred_region_id[0]
     );
-    console.log(preferred_region_id)
-    this.props.changeUserInfo("preferred_region_id", preferred_region_id)
+    console.log(preferred_region_id);
+    this.props.changeUserInfo("preferred_region_id", preferred_region_id);
     this.setState({
       preferred_region_id: preferred_region_id,
       preferred_location_id: [],
@@ -85,17 +85,20 @@ export default class ProfileForm extends Component {
   };
 
   onPreferredLocationChange = (preferred_location_id) => {
-    this.props.changeUserInfo("preferred_location_id", preferred_location_id)
+    this.props.changeUserInfo("preferred_location_id", preferred_location_id);
     this.setState({ preferred_location_id: preferred_location_id });
   };
 
   onAvailabilityChange = (slotIds) => {
     /**
-     * [ get new availability object for selected slots, update parent and self. ], 
+     * [ get new availability object for selected slots, update parent and self. ],
      */
     let new_availability = create_availability_static(slotIds);
     this.props.changeAvailability(new_availability);
-    this.setState({ selected_availabilities: slotIds, new_availability: new_availability });
+    this.setState({
+      selected_availabilities: slotIds,
+      new_availability: new_availability,
+    });
   };
 
   render() {
@@ -285,73 +288,76 @@ export default class ProfileForm extends Component {
         <Text style={styles.heading}>Event Preferences 🍎</Text>
 
         <Text style={styles.subHeading}>Preferred Region</Text>
-          <SectionedMultiSelect
-            single
-            colors={{ primary: Colors.mainBlue }}
-            selectedItems={this.state.preferred_region_id}
-            items={this.state.regions}
-            uniqueKey="id"
-            displayKey="name"
-            onSelectedItemsChange={(preferred_region_id) => {
-              this.onPreferredRegionChange(preferred_region_id);
-              this.props.changeUserInfo("preferred_region_id", preferred_region_id);
-              this.props.enableSaveButton();
-            }}
-            searchPlaceholderText="Search regions..."
-            searchInputStyle={styles.input}
-            modalWithSafeAreaView={true}
-            submitButtonText="Select"
-            confirmText="SAVE"
-            value={this.state.preferred_region_id}
-            styles={{
-              selectToggle: {
-                borderBottomWidth: 1,
-                marginBottom: 20,
-                height: 40,
-              },
-              selectToggleText: {
-                fontSize: normalize(14),
-                color: "#333333",
-                marginTop: 20,
-              },
-            }}
-          />
+        <SectionedMultiSelect
+          single
+          colors={{ primary: Colors.mainBlue }}
+          selectedItems={this.state.preferred_region_id}
+          items={this.state.regions}
+          uniqueKey="id"
+          displayKey="name"
+          onSelectedItemsChange={(preferred_region_id) => {
+            this.onPreferredRegionChange(preferred_region_id);
+            this.props.changeUserInfo(
+              "preferred_region_id",
+              preferred_region_id
+            );
+            this.props.enableSaveButton();
+          }}
+          searchPlaceholderText="Search regions..."
+          searchInputStyle={styles.input}
+          modalWithSafeAreaView={true}
+          submitButtonText="Select"
+          confirmText="SAVE"
+          value={this.state.preferred_region_id}
+          styles={{
+            selectToggle: {
+              borderBottomWidth: 1,
+              marginBottom: 20,
+              height: 40,
+            },
+            selectToggleText: {
+              fontSize: normalize(14),
+              color: "#333333",
+              marginTop: 20,
+            },
+          }}
+        />
 
-          <Text style={styles.subHeading}>Preferred Locations (Optional)</Text>
-          <SectionedMultiSelect
-            colors={{ primary: Colors.mainBlue }}
-            selectedItems={this.state.preferred_location_id}
-            items={this.state.locations}
-            uniqueKey="id"
-            displayKey="name"
-            onSelectedItemsChange={(preferred_location_id) => {
-              this.onPreferredLocationChange(preferred_location_id);
-              this.props.changeUserInfo(
-                "preferred_location_id",
-                preferred_location_id
-              );
-              this.props.enableSaveButton();
-            }}
-            showChips={false}
-            searchPlaceholderText="Search locations..."
-            searchInputStyle={styles.input}
-            modalWithSafeAreaView={true}
-            submitButtonText="Select"
-            confirmText="SAVE"
-            value={this.state.preferred_location_id}
-            styles={{
-              selectToggle: {
-                borderBottomWidth: 1,
-                marginBottom: 20,
-                height: 40,
-              },
-              selectToggleText: {
-                fontSize: normalize(14),
-                color: "#333333",
-                marginTop: 20,
-              },
-            }}
-          />
+        <Text style={styles.subHeading}>Preferred Locations (Optional)</Text>
+        <SectionedMultiSelect
+          colors={{ primary: Colors.mainBlue }}
+          selectedItems={this.state.preferred_location_id}
+          items={this.state.locations}
+          uniqueKey="id"
+          displayKey="name"
+          onSelectedItemsChange={(preferred_location_id) => {
+            this.onPreferredLocationChange(preferred_location_id);
+            this.props.changeUserInfo(
+              "preferred_location_id",
+              preferred_location_id
+            );
+            this.props.enableSaveButton();
+          }}
+          showChips={false}
+          searchPlaceholderText="Search locations..."
+          searchInputStyle={styles.input}
+          modalWithSafeAreaView={true}
+          submitButtonText="Select"
+          confirmText="SAVE"
+          value={this.state.preferred_location_id}
+          styles={{
+            selectToggle: {
+              borderBottomWidth: 1,
+              marginBottom: 20,
+              height: 40,
+            },
+            selectToggleText: {
+              fontSize: normalize(14),
+              color: "#333333",
+              marginTop: 20,
+            },
+          }}
+        />
 
         <Text style={styles.subHeading}>Preferred Times (Optional)</Text>
         <SectionedMultiSelect

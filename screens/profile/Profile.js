@@ -43,7 +43,6 @@ export default class Profile extends Component {
         availability: "",
       },
       password: "",
-      new_availability = {},
       isFetching: true,
       new_availability: {}
     };
