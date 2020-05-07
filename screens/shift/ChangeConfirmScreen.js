@@ -28,13 +28,14 @@ export default class ChangeConfirmScreen extends React.Component {
 
   async componentDidMount() {
     let user = await LocalStorage.getItem("user");
-    this.setState({ user_id: user.id });
+    this.setState({ user_id: user.userId });
   }
 
   signupForEventHandler = () => {
     this.reloadSearch();
-    this.reloadEvents();
-    this.navigateToMain();
+    this.navigateToMain(() => {
+      this.reloadEvents();
+    });
   };
 
   reloadSearch = () => {
@@ -45,20 +46,17 @@ export default class ChangeConfirmScreen extends React.Component {
     EventRegister.emit("reloadEvents");
   };
 
-  navigateToMain = () => {
-    console.log("sup");
+  navigateToMain = (callback) => {
     const { navigate } = this.props.navigation;
-    console.log("break");
-    const { navigation } = this.props;
     const event_id = this.props.route.params.event_id ?? "";
     const change_type = this.props.route.params.change_type ?? "";
     if (change_type == "signup") {
       getRequest(
         `events/attend/${event_id}/attend`,
         (responseData) => {
-          console.log("successful");
           console.log(responseData);
-          navigate("Main");
+          navigate("Dashboard");
+          callback();
         },
         (error) => {
           console.log(error);
@@ -70,9 +68,9 @@ export default class ChangeConfirmScreen extends React.Component {
       postRequest(
         `events/cancel/${event_id}/attend`,
         (responseData) => {
-          console.log("successful");
           console.log(responseData);
-          navigate("Main");
+          navigate("Dashboard");
+          callback();
         },
         (error) => {
           console.log(error);
@@ -84,6 +82,7 @@ export default class ChangeConfirmScreen extends React.Component {
         }
       );
     }
+    navigate("Dashboard");
   };
 
   navigateToShift = () => {
@@ -100,7 +99,7 @@ export default class ChangeConfirmScreen extends React.Component {
         <View style={{ flex: 1 }}>
           <Header
             centerTitle={route.params.title ?? "No Title"}
-            onPressBack={this.navigateToShift}
+            onPressBack={this.signupForEventHandler}
             rightSide={false}
             actionTitle="Withdraw"
             onPressHandler={this.navigateToMain}
@@ -108,29 +107,28 @@ export default class ChangeConfirmScreen extends React.Component {
         </View>
 
         <View style={styles.container}>
-          <Text style={styles.overview}>
-            {route.params.description ?? ""}
-            {"\n"}
-            {(route.params.hasQ ?? false) && (
-              <Text style={{ ...styles.overview, fontWeight: "400" }}>
-                {route.params.question ?? ""}
-              </Text>
-            )}
-          </Text>
+          <Text style={styles.overview}>{route.params.description ?? ""}</Text>
+          {(route.params.hasQ ?? false) && (
+            <Text style={{ ...styles.overview, fontWeight: "400" }}>
+              {route.params.question ?? ""}
+            </Text>
+          )}
           <View style={{ flex: 1 }}>
-            {(route.params.options ?? "").map((item) => (
-              <View key={item.key} style={styles.radioButtonContainer}>
-                <TouchableOpacity
-                  style={styles.circle}
-                  onPress={() => this.setState({ value: item.key })} // we set our value state to key
-                >
-                  {this.state.value === item.key && (
-                    <View style={styles.checkedCircle} />
-                  )}
-                </TouchableOpacity>
-                <Text style={styles.radioText}>{item.text}</Text>
-              </View>
-            ))}
+            <View style={{ flex: 1 }}>
+              {(route.params.options ?? "").map((item) => (
+                <View key={item.key} style={styles.radioButtonContainer}>
+                  <TouchableOpacity
+                    style={styles.circle}
+                    onPress={() => this.setState({ value: item.key })} // we set our value state to key
+                  >
+                    {this.state.value === item.key && (
+                      <View style={styles.checkedCircle} />
+                    )}
+                  </TouchableOpacity>
+                  <Text style={styles.radioText}>{item.text}</Text>
+                </View>
+              ))}
+            </View>
           </View>
           <View style={{ flex: 5 }}></View>
           <View style={styles.buttonContainer}>

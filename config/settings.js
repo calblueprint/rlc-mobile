@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === "production") {
   console.log("staging");
   URL = Platform.select({
     ios: "http://johnathan.dev.calblueprint.org:3000/",
-    android: "http://jelhance.dev.calblueprint.org:3000/",
+    android: "http://johnathan.dev.calblueprint.org:3000/",
   });
 }
 export const settings = {

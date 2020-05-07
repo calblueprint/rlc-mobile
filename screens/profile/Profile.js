@@ -19,7 +19,7 @@ import { APIRoutes } from "../../config/routes";
 import Styles from "../../constants/Styles.js";
 import Sizes from "../../constants/Sizes.js";
 
-import { create_availability_formData } from "../../helpers/AvailabilityHelpers.js";
+import { create_availability_static } from "../../helpers/AvailabilityHelpers.js";
 import { postRequest } from "../../lib/requests";
 
 export default class Profile extends Component {
@@ -28,22 +28,24 @@ export default class Profile extends Component {
     this.state = {
       disabled: true,
       user: {
-        'id': "",
-        'firstname': "",
-        'lastname': "",
-        'occupation': "",
-        'telephone': "",
-        'address': "",
-        'city': null,
-        'state': null,
-        'zip_code': "",
-        'email': "",
-        'preferred_region_id': [],
-        'preferred_location_id': [],
-        'availability': "",
+        id: "",
+        firstname: "",
+        lastname: "",
+        occupation: "",
+        telephone: "",
+        address: "",
+        city: null,
+        state: null,
+        zip_code: "",
+        email: "",
+        preferred_region_id: [],
+        preferred_location_id: [],
+        availability: "",
       },
       password: "",
+      new_availability: {},
       isFetching: true,
+      new_availability: {},
     };
   }
 
@@ -81,10 +83,6 @@ export default class Profile extends Component {
     return this.state.user[attribute];
   };
 
-  changeUserInfo = (attribute, text) => {
-    this.setState({ [attribute]: text });
-  };
-
   getUserAttribute = (attribute) => {
     return this.state.user[attribute];
   };
@@ -96,39 +94,51 @@ export default class Profile extends Component {
   };
 
   saveUserInfo = async () => {
-      if (this.state.password.length > 0 && this.state.password.length <= 8) {
-          frontendError("Passwords must be more than 8 characters long.")
-      } else {
-          // Create / Update Availability if needed.
-          if (Object.keys(this.state.new_availability).length != 0) {
-            let availability = { availability: this.state.new_availability };
-            postRequest(
-              APIRoutes.updateAvailabilityPath(), //We don't need to pass in user.id, uses current user session.
-              (availability) => {
-                this.changeUserInfo("availability", availability.id);
-                LocalStorage.storeItem("availability", this.state.new_availability);
-
-              },
-              (error) => console.error(error),
-              availability
-            );
-          }
-
-          const { id, city, state, zip_code, availability, ...params } = this.state.user
-          await LocalStorage.storeItem('user', this.state.user);
-          putRequest(APIRoutes.updateUserPath(this.state.user.id), (user => {
-              Alert.alert("Successfully updated!")
-          }),
+    /**
+     * Two updates, one for availability, then for user from Profile Form values.
+     */
+    if (this.state.password.length > 0 && this.state.password.length <= 8) {
+      frontendError("Passwords must be more than 8 characters long.");
+    } else {
+      // Create / Update Availability if needed.
+      if (Object.keys(this.state.new_availability).length != 0) {
+        let availability = { availability: this.state.new_availability };
+        postRequest(
+          APIRoutes.updateAvailabilityPath(), //We don't need to pass in user.id, uses current user session.
+          (availability) => {
+            this.changeUserInfo("availability", availability.id);
+            LocalStorage.storeItem("availability", this.state.new_availability);
+          },
           (error) => console.error(error),
-          params
-          )
+          availability
+        );
       }
+
+      const {
+        id,
+        city,
+        state,
+        zip_code,
+        availability,
+        ...params
+      } = this.state.user;
+      await LocalStorage.storeItem("user", this.state.user);
+      putRequest(
+        APIRoutes.updateUserPath(this.state.user.id),
+        (user) => {
+          Alert.alert("Successfully updated!");
+        },
+        (error) => console.error(error),
+        params
+      );
     }
+  };
 
   logoutUser = () => {
     const { navigate } = this.props.navigation;
     AsyncStorage.removeItem("user");
     AsyncStorage.removeItem("cookie");
+    AsyncStorage.removeItem("availability");
     navigate("Login");
   };
 
@@ -188,6 +198,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: Sizes.width,
     backgroundColor: "white",
+    height: "100%",
   },
   header: {
     marginHorizontal: "10%",

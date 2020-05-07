@@ -1,4 +1,4 @@
-// Place Holder for Search Feature
+
 import React, { Component } from "../../node_modules/react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
@@ -7,6 +7,16 @@ import Sizes from "../../constants/Sizes.js";
 import Styles from "../../constants/Styles";
 import Colors from "../../constants/Colors";
 import { getRequest } from "../../lib/requests";
+
+//curr location
+import * as Location from "expo-location";
+import {
+  fetch_regions,
+  fetch_locations,
+  fetch_locations_by_ids,
+  fetch_locations_by_region,
+  parseCurrentLocation,
+} from "../../helpers/LocationHelpers.js";
 
 import TimeOrLoc from "../../components/search/timeOrLoc.js";
 import SuggestedEventsList from "../../components/search/SuggestedEventsList.js";
@@ -64,6 +74,7 @@ export default class Search extends Component {
     //const properLocations = this.props.location.map(loc => ({ ...loc, selected: false }));
 
     this.state = {
+      user: null,
       hasCompletedPreferences: false,
       selectedDay: "monday",
       selectedAll: false,
@@ -71,63 +82,8 @@ export default class Search extends Component {
 
       numLocs: 0,
       search: "",
-      locations: [
-        {
-          id: 27,
-          name: "Bowery",
-          selected: false,
-        },
-        {
-          id: 2,
-          name: "SoHo",
-          selected: false,
-        },
-        {
-          id: 29,
-          name: "Downtown",
-          selected: false,
-        },
-        {
-          id: 30,
-          name: "Chelsea",
-          selected: false,
-        },
-        {
-          id: 31,
-          name: "Downtown",
-          selected: false,
-        },
-        {
-          id: 32,
-          name: "Chelsea",
-          selected: false,
-        },
-        {
-          id: 33,
-          name: "Downtown",
-          selected: false,
-        },
-        {
-          id: 34,
-          name: "Chelsea",
-          selected: false,
-        },
-        {
-          id: 35,
-          name: "Downtown",
-          selected: false,
-        },
-        {
-          id: 36,
-          name: "Chelsea",
-          selected: false,
-        },
-        {
-          id: 37,
-          name: "Downtown",
-          selected: false,
-        },
-      ],
+      fetchingLoc: false,
+      locations: [],
 
       monday: {
         all: {
@@ -330,13 +286,20 @@ export default class Search extends Component {
         hasCompletedPreferences: false,
       })
     })
+    let user = await LocalStorage.getNonNullItem("user");
+    this.setState({ user: user });
+
+    let preferred_locations = await fetch_locations_by_ids(this.state.user.preferred_location_id);
+    this.setState({
+      locations: preferred_locations.map((item) => ({ ...item, selected: true })),
+    });
 
     let availability = await fetch_availability();
-
     this.setState({
-      user: await LocalStorage.getItem('user'),
-      availability: availability
-    })
+      availability: availability,
+      locations: preferred_locations.map((item) => ({ ...item, selected: true })),
+      fetchingLoc: false,
+    });
   }
 
   componentWillUnmount() {
@@ -344,6 +307,57 @@ export default class Search extends Component {
   }
 
   //LOCATION FUNCTIONS
+
+  getCurrLocation = () => {
+    this.setState({ fetchingLoc: true });
+    this.setCurrentRegion();
+    console.log("current location indeed");
+  }
+
+  //helpers for current location
+
+  setCurrentRegion = async () => {
+    let Locpermissions = await Location.requestPermissionsAsync();
+    if (Locpermissions.status != "granted") {
+      await Location.requestPermissionsAsync();
+    } else {
+      let user_coordinates = await Location.getCurrentPositionAsync({
+        accuracy: 4,
+      });
+
+      let preferred_region = await parseCurrentLocation(
+        user_coordinates.coords
+      );
+
+      await this.onPreferredRegionChange([preferred_region.id]);
+    }
+  };
+
+  onPreferredRegionChange = async (preferred_region_id) => {
+    let included_locations = await fetch_locations_by_region(
+      preferred_region_id[0]
+    );
+    included_locations = included_locations.filter(
+      (val) => {
+        for (var objkey of this.state.locations) {
+          if (val.id === objkey.id) {
+            return false
+          }
+        }
+        return true
+      })
+    this.setState((prevState) => ({
+      preferred_region_id: preferred_region_id,
+      preferred_location_id: [],
+      locations:
+        included_locations === undefined || included_locations.length == 0
+          ? prevState.locations
+          : [...prevState.locations, ...included_locations.map((item) => ({ ...item, selected: false })),],
+
+      fetchingLoc: false,
+    }));
+  };
+
 
   updateSearch = (val) = () => {
     this.setState({ search: val });
@@ -501,9 +515,9 @@ export default class Search extends Component {
         <View style={styles.container}>
           <SuggestedEventsList navigation={this.props.navigation}
             preferredLocations={this.state.locations}
-            preferredTimes={this.format_api_times()} 
+            preferredTimes={this.format_api_times()}
             goBack={this.goBackToSearch}
-            />
+          />
         </View>
       );
     } else {
@@ -527,6 +541,8 @@ export default class Search extends Component {
               searchVal={this.state.search}
               updateSearch={this.updateSearch}
               numLocs={this.state.numLocs}
+              getCurrLoc={this.getCurrLocation}
+              fetchingLoc={this.state.fetchingLoc}
             />
           </View>
           <View
