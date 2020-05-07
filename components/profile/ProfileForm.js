@@ -73,6 +73,7 @@ export default class ProfileForm extends Component {
       preferred_region_id[0]
     );
     console.log(preferred_region_id)
+    this.props.changeUserInfo("preferred_region_id", preferred_region_id)
     this.setState({
       preferred_region_id: preferred_region_id,
       preferred_location_id: [],
@@ -84,10 +85,14 @@ export default class ProfileForm extends Component {
   };
 
   onPreferredLocationChange = (preferred_location_id) => {
+    this.props.changeUserInfo("preferred_location_id", preferred_location_id)
     this.setState({ preferred_location_id: preferred_location_id });
   };
 
   onAvailabilityChange = (slotIds) => {
+    /**
+     * [ get new availability object for selected slots, update parent and self. ], 
+     */
     let new_availability = create_availability_static(slotIds);
     this.props.changeAvailability(new_availability);
     this.setState({ selected_availabilities: slotIds, new_availability: new_availability });
