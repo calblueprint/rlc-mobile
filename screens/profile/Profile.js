@@ -129,7 +129,7 @@ export default class Profile extends Component {
           Alert.alert("Successfully updated!");
         },
         (error) => console.error(error),
-        availability
+        params
       );
     }
   };
