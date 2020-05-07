@@ -114,6 +114,8 @@ export default class TimeOrLoc extends Component {
               searchVal={this.props.searchVal}
               updateSearch={this.props.updateSearch}
               numLocs={this.state.numLocs}
+              getCurrLoc={this.props.getCurrLoc}
+              fetchingLoc={this.props.fetchingLoc}
             />
           </View>
         );

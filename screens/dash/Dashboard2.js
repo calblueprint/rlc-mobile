@@ -9,6 +9,7 @@ import ActivityCard from "../../components/dashboard/ActivityCard";
 import { normalize } from "../../utils/Normalize.js";
 import LocalStorage from "../../helpers/LocalStorage";
 
+import Styles from "../../constants/Styles";
 import Sizes from "../../constants/Sizes.js";
 
 export default class Dashboard extends Component {
@@ -22,10 +23,8 @@ export default class Dashboard extends Component {
   }
 
   async componentDidMount() {
-    let user = await LocalStorage.getItem("user");
+    let user = await LocalStorage.getNonNullItem("user");
   }
-
-  // _fetchCurrentEvent () {}
 
   navigateToShift = (eventData) => {
     const { navigate } = this.props.navigation;
@@ -37,19 +36,40 @@ export default class Dashboard extends Component {
     navigate("Profile");
   };
 
+  navigateToSearch = () => {
+    this.props.navigation.jumpTo("Search");
+  };
+
+  setCurrentEvent = (event) => {
+    this.setState({ currentEvent: event });
+  };
+
   render() {
+    console.log(this.props.route);
     return (
       <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={Styles.title}> Home </Text>
+        </View>
         <View style={styles.currentEvent}>
           <View style={styles.slideStructure}>
             <Text style={styles.inProgress}>• In Progress</Text>
-            {/* <ActivityCard 
-              event = {this.state.currentEvent}
-              onPressHandler={this.navigateToShift}
-            /> */}
+            {Object.keys(this.state.currentEvent).length === 0 ? (
+              <Text style={styles.subText}>No events in progress 🐥</Text>
+            ) : (
+              <ActivityCard
+                key={this.state.currentEvent.id}
+                event={this.state.currentEvent}
+                navigation={this.props.navigation}
+              />
+            )}
           </View>
         </View>
-        <EventsList navigation={this.props.navigation} />
+        <EventsList
+          navigation={this.props.navigation}
+          toSearch={this.navigateToSearch}
+          setCurrentEvent={this.setCurrentEvent}
+        />
       </View>
     );
   }
@@ -62,19 +82,24 @@ Dashboard.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#FFF",
     width: Sizes.width,
+    paddingTop: "10%",
+  },
+  header: {
+    marginHorizontal: "10%",
   },
   currentEvent: {
     backgroundColor: "#EEEEEE",
-    height: "30%",
+    height: "35%",
   },
   subText: {
-    color: "#000000",
+    color: "#757575",
     fontStyle: "italic",
-    justifyContent: "center",
     textAlign: "center",
+    justifyContent: "center",
     fontWeight: "normal",
-    marginTop: "27.5%",
+    marginTop: "17%",
     opacity: 0.85,
     fontSize: normalize(16),
   },
@@ -91,7 +116,7 @@ const styles = StyleSheet.create({
   },
   slideStructure: {
     height: "100%",
-    marginTop: "13%",
+    marginTop: "5%",
     width: "100%",
   },
   inProgress: {

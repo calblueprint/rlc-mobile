@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   StyleSheet,
   View,
@@ -7,9 +7,8 @@ import {
   Text,
 } from "react-native";
 import { frontendError } from "../lib/alerts";
-import { postRequest } from "../lib/requests";
-import { APIRoutes } from "../config/routes";
-import LocalStorage from "../helpers/LocalStorage";
+
+import {fetchUser} from "../helpers/UserHelpers.js";
 
 export default class LoginForm extends React.Component {
   constructor(props) {
@@ -55,14 +54,19 @@ export default class LoginForm extends React.Component {
   };
 
   // Login Handler
-  _onPressLogin = () => {
+  _onPressLogin = async () => {
     const params = {
       user: {
         email: this.state.email,
         password: this.state.password
       }
     };
-    this.fetchUser(params);
+    try {
+      await fetchUser(params, (error) => {throw error});
+      this.props.navigateHandler();
+    } catch(error) {
+      frontendError("Unable to login")
+    }
   };
 
   // Handler to Navigate to Signup

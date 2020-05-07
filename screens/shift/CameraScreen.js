@@ -36,7 +36,7 @@ export default function CameraScreen({ navigation }) {
                 })
                 .catch((error) => {
                     console.error('Error:', error);
-                });
+            });
             })
             .catch((error) => {
                 console.error("Error: ", error)

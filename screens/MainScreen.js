@@ -1,6 +1,8 @@
 import React from "react";
 import { StyleSheet, ScrollView, View } from "react-native";
 import Sizes from "../constants/Sizes.js";
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import DashboardScreen from "../screens/dash/Dashboard2.js";
 import ProfileScreen from "../screens/profile/Profile.js";
@@ -24,6 +26,7 @@ export default class MainScreen extends React.Component {
   //async logoutHandler() To be implemented.
 
   render() {
+    console.log(this.props.navigation)
     return (
       <View>
         <View style={{ height: Sizes.height * 0.9, marginTop: Sizes.height * 0.02 }}>

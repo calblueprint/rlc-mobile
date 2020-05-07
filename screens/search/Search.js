@@ -1,48 +1,70 @@
-// Place Holder for Search Feature
+
 import React, { Component } from "../../node_modules/react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { EventRegister } from "react-native-event-listeners";
 
 import Sizes from "../../constants/Sizes.js";
 import Styles from "../../constants/Styles";
 import Colors from "../../constants/Colors";
 import { getRequest } from "../../lib/requests";
 
+//curr location
+import * as Location from "expo-location";
+import {
+  fetch_regions,
+  fetch_locations,
+  fetch_locations_by_ids,
+  fetch_locations_by_region,
+  parseCurrentLocation,
+} from "../../helpers/LocationHelpers.js";
+
 import TimeOrLoc from "../../components/search/timeOrLoc.js";
 import SuggestedEventsList from "../../components/search/SuggestedEventsList.js";
+import LocalStorage from "../../helpers/LocalStorage";
+import { fetch_availability } from "../../helpers/AvailabilityHelpers.js";
 
 const dayOptions = [
   {
     key: "monday",
     text: "Monday",
+    offset: 1,
   },
   {
     key: "tuesday",
     text: "Tuesday",
+    offset: 2,
   },
   {
     key: "wednesday",
     text: "Wednesday",
+    offset: 3,
   },
   {
     key: "thursday",
     text: "Thursday",
+    offset: 4,
   },
   {
     key: "friday",
     text: "Friday",
+    offset: 5,
   },
   {
     key: "saturday",
     text: "Saturday",
+    offset: 6,
   },
   {
     key: "sunday",
     text: "Sunday",
+    offset: 0,
   },
 ];
 
 const numOfTimes = 4;
 const totalTimes = 28;
+const hour_ms = 60 * 60 * 1000;
+
 export default class Search extends Component {
   constructor(props) {
     super(props);
@@ -52,6 +74,7 @@ export default class Search extends Component {
     //const properLocations = this.props.location.map(loc => ({ ...loc, selected: false }));
 
     this.state = {
+      user: null,
       hasCompletedPreferences: false,
       selectedDay: "monday",
       selectedAll: false,
@@ -59,63 +82,8 @@ export default class Search extends Component {
 
       numLocs: 0,
       search: "",
-      locations: [
-        {
-          id: 27,
-          name: "Bowery",
-          selected: false,
-        },
-        {
-          id: 2,
-          name: "SoHo",
-          selected: false,
-        },
-        {
-          id: 29,
-          name: "Downtown",
-          selected: false,
-        },
-        {
-          id: 30,
-          name: "Chelsea",
-          selected: false,
-        },
-        {
-          id: 31,
-          name: "Downtown",
-          selected: false,
-        },
-        {
-          id: 32,
-          name: "Chelsea",
-          selected: false,
-        },
-        {
-          id: 33,
-          name: "Downtown",
-          selected: false,
-        },
-        {
-          id: 34,
-          name: "Chelsea",
-          selected: false,
-        },
-        {
-          id: 35,
-          name: "Downtown",
-          selected: false,
-        },
-        {
-          id: 36,
-          name: "Chelsea",
-          selected: false,
-        },
-        {
-          id: 37,
-          name: "Downtown",
-          selected: false,
-        },
-      ],
+      fetchingLoc: false,
+      locations: [],
 
       monday: {
         all: {
@@ -306,14 +274,94 @@ export default class Search extends Component {
           value: false,
         },
       },
+
+      availability: {},
+      user: {}
     };
+  }
+
+  async componentDidMount() {
+    this.listener = EventRegister.addEventListener('reloadSearch', () => {
+      this.setState({
+        hasCompletedPreferences: false,
+      })
+    })
+    let user = await LocalStorage.getNonNullItem("user");
+    this.setState({ user: user });
+
+    let preferred_locations = await fetch_locations_by_ids(this.state.user.preferred_location_id);
+    this.setState({
+      locations: preferred_locations.map((item) => ({ ...item, selected: true })),
+    });
+
+    let availability = await fetch_availability();
+    this.setState({
+      availability: availability,
+      locations: preferred_locations.map((item) => ({ ...item, selected: true })),
+      fetchingLoc: false,
+    });
+  }
+
+  componentWillUnmount() {
+    EventRegister.removeEventListener(this.listener);
   }
 
   //LOCATION FUNCTIONS
 
-  updateSearch = (val = () => {
+  getCurrLocation = () => {
+    this.setState({ fetchingLoc: true });
+    this.setCurrentRegion();
+    console.log("current location indeed");
+  }
+
+  //helpers for current location
+
+  setCurrentRegion = async () => {
+    let Locpermissions = await Location.requestPermissionsAsync();
+    if (Locpermissions.status != "granted") {
+      await Location.requestPermissionsAsync();
+    } else {
+      let user_coordinates = await Location.getCurrentPositionAsync({
+        accuracy: 4,
+      });
+
+      let preferred_region = await parseCurrentLocation(
+        user_coordinates.coords
+      );
+
+      await this.onPreferredRegionChange([preferred_region.id]);
+    }
+  };
+
+  onPreferredRegionChange = async (preferred_region_id) => {
+    let included_locations = await fetch_locations_by_region(
+      preferred_region_id[0]
+    );
+    included_locations = included_locations.filter(
+      (val) => {
+        for (var objkey of this.state.locations) {
+          if (val.id === objkey.id) {
+            return false
+          }
+        }
+        return true
+      })
+    this.setState((prevState) => ({
+      preferred_region_id: preferred_region_id,
+      preferred_location_id: [],
+      locations:
+        included_locations === undefined || included_locations.length == 0
+          ? prevState.locations
+          : [...prevState.locations, ...included_locations.map((item) => ({ ...item, selected: false })),],
+
+      fetchingLoc: false,
+    }));
+  };
+
+
+  updateSearch = (val) = () => {
     this.setState({ search: val });
-  });
+  };
 
   handleSelect = (val, id) => () => {
     val === true ? this.addLoc(-1) : this.addLoc(1);
@@ -337,7 +385,43 @@ export default class Search extends Component {
     return loc_preferences;
   };
 
-  //TIME FUNCTIONS
+  //TIME FUNCTIONS 
+  format_api_times = () => {
+    const curr_date = new Date();
+    curr_date.setHours(0, 0, 0, 0);
+    const curr_date_ms = curr_date.getTime();
+    const day_of_week = curr_date.getDay();
+    const intervals = []
+    dayOptions.map((day) => {
+      const curr_day_periods = this.state[day.key];
+      // Calculate the number of days from now that this day of the week will occur
+      const adjusted_offset = (day.offset - day_of_week + 7) % 7
+      // Get beginning of current day 
+      adjusted_date_ms = curr_date_ms + 24 * hour_ms * adjusted_offset;
+      // Get time interval to search for on each day
+      if (curr_day_periods["all"]["value"] === true) {
+        const start_time = new Date(adjusted_date_ms + 9 * hour_ms);
+        const end_time = new Date(adjusted_date_ms + 21 * hour_ms);
+        intervals.push({ 'start': start_time, 'end': end_time })
+      }
+      else {
+        Object.keys(curr_day_periods).map((period) => {
+          if (period !== "all") {
+            // Get ending time from current period
+            let curr_end_hours = curr_day_periods[period].text.split("-")[1].slice(0, -2);
+            // Parse number of hours
+            curr_end_hours = parseInt(curr_end_hours) % 12 + 12;
+            curr_start_hours = curr_end_hours - 3;
+            const start_time = new Date(adjusted_date_ms + curr_start_hours * hour_ms);
+            const end_time = new Date(adjusted_date_ms + curr_end_hours * hour_ms);
+            intervals.push({ 'start': start_time, 'end': end_time })
+          }
+        })
+      }
+    })
+    return intervals;
+  }
+
   compile_times = () => {
     const time_preferences = [
       this.state.monday,
@@ -353,7 +437,7 @@ export default class Search extends Component {
 
   selectAll = () => {
     const checked = !this.state.selectedAll; // get the value
-    checked ? this.countTime(totalTimes, true) : this.countTime(0, true);
+    checked ? this.setState({ numTimes: totalTimes }) : this.setState({ numTimes: 0 });
 
     this.setState((prevState) => ({ selectedAll: !prevState.selectedAll })); // set value
 
@@ -372,11 +456,13 @@ export default class Search extends Component {
   };
 
   flipState = (day, time) => () => {
+    var numToAdd = 0; //number to change the number of selected times
+
     this.setState((prevState) => {
       let selDay = { ...prevState[day] };
 
+      //if selecting all times in a day
       if (time == "all") {
-        //if selecting all
         const checked = !selDay[time].value;
         var alreadySame = 0;
         for (const timeObj of Object.keys(selDay)) {
@@ -384,61 +470,53 @@ export default class Search extends Component {
             alreadySame++;
           }
         }
+
         //safety check
         if (alreadySame > numOfTimes) {
           alreadySame = numOfTimes;
         }
-
+        //add on or subtract the remaining times
         if (checked) {
-          this.countTime(numOfTimes - alreadySame, false);
+          numToAdd = numOfTimes - alreadySame;
         } else {
-          this.countTime(alreadySame - numOfTimes, false);
+          numToAdd = alreadySame - numOfTimes;
         }
+        //update all times in that day
         Object.keys(selDay).map((timeObj) => (selDay[timeObj].value = checked));
+
+        //else only selecting one time 
       } else {
         selDay[time].value
-          ? this.countTime(-1, false)
-          : this.countTime(1, false);
+          ? numToAdd = -1
+          : numToAdd = 1;
         selDay[time].value = !selDay[time].value;
       }
       return selDay;
     });
+
+    this.setState((prevState) => ({
+      numTimes: prevState.numTimes + numToAdd,
+    }))
+
   };
 
-  countTime = (val, selAll) => {
-    if (selAll) {
-      this.setState({ numTimes: val });
-    } else {
-      this.setState((prevState) => ({
-        numTimes: prevState.numTimes + val,
-      }));
-    }
+  search = () => {
+    //props are the selected locations and selected times
+    this.setState({ hasCompletedPreferences: true }, () => { this.render() });
   };
 
-  // search = () => {
-  //   //props are the selected locations and selected times
-  //   return getRequest(
-  //     "/get_events",
-  //     responseData => {
-  //       console.log("Got search events");
-  //       console.log(responseData);
-  //     },
-  //     error => {
-  //       console.log("error");
-  //       console.log(error);
-  //     },
-  //     {'date': this.state., 'location': this.state.}
-  //   )
-  //   this.setState({ hasCompletedPreferences: true }, () => { this.render() });
-  // };
+  goBackToSearch = () => {
+    this.setState({ hasCompletedPreferences: false }, () => { this.render() });
+  }
 
   render() {
     if (this.state.hasCompletedPreferences) {
       return (
         <View style={styles.container}>
-          <SuggestedEventsList
-            navigation={this.props.navigation}
+          <SuggestedEventsList navigation={this.props.navigation}
             preferredLocations={this.state.locations}
+            preferredTimes={this.format_api_times()}
+            goBack={this.goBackToSearch}
           />
         </View>
       );
@@ -463,6 +541,8 @@ export default class Search extends Component {
               searchVal={this.state.search}
               updateSearch={this.updateSearch}
               numLocs={this.state.numLocs}
+              getCurrLoc={this.getCurrLocation}
+              fetchingLoc={this.state.fetchingLoc}
             />
           </View>
           <View
@@ -483,7 +563,8 @@ export default class Search extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: "5%",
+    paddingTop: "10%",
+    backgroundColor: "white",
     flex: 1,
     flexDirection: "column",
     alignContent: "space-around",
@@ -496,10 +577,9 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#38A5DB",
     padding: 15,
-    marginBottom: 10,
     borderRadius: 5,
     position: "absolute",
-    bottom: 10,
+    bottom: 0,
     width: "100%",
   },
   buttonContainer: {
