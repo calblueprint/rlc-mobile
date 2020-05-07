@@ -67,7 +67,7 @@ export default class ShiftScreen extends React.Component {
     const pEvent = this.props.route.params.event;
     // console.log("pevent in constructor");
     // console.log(pEvent);
-    let verifiedCheckboxes = {}
+    let verifiedCheckboxes = {};
     for (let i = 0; i < pEvent.details.attendees.length; i++) {
       let currAttendee = pEvent.details.attendees[i]["id"];
       verifiedCheckboxes[currAttendee] = false;
@@ -88,8 +88,8 @@ export default class ShiftScreen extends React.Component {
         description: dropoff.address,
       });
     });
-    // console.log("here are the markers", markers);
-    // console.log("and dropoffs", pEvent.details.dropoff_locations);
+
+    // Setting up checkbox variables
 
     this.state = {
       participantData: [
@@ -104,16 +104,15 @@ export default class ShiftScreen extends React.Component {
           role: "Volunteer",
           profilePic: "../../assets/images/rlcprofilepic.png",
           verified: true,
-        }
+        },
       ],
       shiftInstructions: shiftInstructions,
       markers: markers,
       poundsOfFood: 0,
       listOfAttendedUsers: [],
-      verifiedCheckboxes: verifiedCheckboxes
-    }
+      verifiedCheckboxes: verifiedCheckboxes,
+    };
   }
-
 
   createShiftInstructions = (pickUp, dropOff) => {
     //add meetup locations
@@ -185,6 +184,7 @@ export default class ShiftScreen extends React.Component {
       <View style={styles.participant_badge}>
         {participant.role == "normal" && (
           <CheckBox
+            // this.state.verifiedCheckboxes[participant.id]
             checked={this.state.verifiedCheckboxes[participant.id]}
             onPress={() => this.modifyAttendedParticipants(participant)}
           />
@@ -214,42 +214,55 @@ export default class ShiftScreen extends React.Component {
       return true;
     }
     return this.state.verifiedCheckboxes[participant.id];
-  }
+  };
 
   modifyAttendedParticipants = (participant) => {
-    console.log("modify participants");
     if (participant == undefined || participant == null) {
       return;
     }
     if (this.isChecked(participant)) {
       console.log("was checked");
-      console.log(this.state.verifiedCheckboxes);
-      this.setState({ listOfAttendedUsers: this.state.listOfAttendedUsers.filter(attendedUser => attendedUser.id == participant.id) }, () => { console.log(this.state.listOfAttendedUsers) });
-      this.setState(prevState => ({
-        verifiedCheckboxes: {
-          ...prevState.verifiedCheckboxes,
-          [participant.id]: !prevState.verifiedCheckboxes[participant.id]
-        }
-      }), () => { this.render() });
+      this.setState({
+        listOfAttendedUsers: this.state.listOfAttendedUsers.filter(
+          (attendedUser) => attendedUser.id == participant.id
+        ),
+      });
     } else {
       console.log("wasn't checked at first");
-      console.log(this.state.listOfAttendedUsers);
-      this.setState({ listOfAttendedUsers: this.state.listOfAttendedUsers.concat(participant.id) }, () => { console.log(this.state.listOfAttendedUsers) });
-      this.setState(prevState => ({
-        verifiedCheckboxes: {
-          ...prevState.verifiedCheckboxes,
-          [participant.id]: !prevState.verifiedCheckboxes[participant.id]
-        }
-      }), () => { this.render() });
+      this.setState({
+        listOfAttendedUsers: this.state.listOfAttendedUsers.concat(
+          participant.id
+        ),
+      });
     }
-  }
+    // For checkbox
+    this.setState({
+      verifiedCheckboxes: {
+        ...this.state.verifiedCheckboxes,
+        [participant.id]: !this.state.verifiedCheckboxes[participant.id],
+      },
+    });
+    // this.setState(
+    //   (prevState) => ({
+    //     verifiedCheckboxes: {
+    //       ...prevState.verifiedCheckboxes,
+    //       [participant.id]: !prevState.verifiedCheckboxes[participant.id],
+    //     },
+    //   }),
+    //   () => {
+    //     this.render();
+    //   }
+    // );
+    console.log(this.state.verifiedCheckboxes);
+    console.log(this.state.listOfAttendedUsers);
+  };
 
   completeTask = (poundsOfFood, listOfParticipants) => {
     // Function to call once Complete is pressed
     console.log("completing task");
     // console.log(poundsOfFood);
     // console.log(listOfParticipants);
-  }
+  };
 
   navigateToMain = () => {
     const { navigate } = this.props.navigation;
@@ -337,7 +350,7 @@ export default class ShiftScreen extends React.Component {
             onPressBack={this.navigateToMain}
             rightSide={
               pEvent.details.shiftType === ShiftType.upcoming ||
-                pEvent.details.shiftType === ShiftType.current
+              pEvent.details.shiftType === ShiftType.current
                 ? true
                 : false
             }
@@ -431,7 +444,9 @@ export default class ShiftScreen extends React.Component {
                 <View style={styles.input_box}>
                   <TextInput
                     style={styles.weight_input}
-                    onChangeText={(pounds) => this.setState({ poundsOfFood: parseFloat(pounds) })}
+                    onChangeText={(pounds) =>
+                      this.setState({ poundsOfFood: parseFloat(pounds) })
+                    }
                     returnKeyType="next"
                     onSubmitEditing={() => this.submit.focus()}
                     keyboardType="number-pad"
@@ -441,34 +456,37 @@ export default class ShiftScreen extends React.Component {
 
                 {(pEvent.details.shiftType === ShiftType.upcoming ||
                   pEvent.details.shiftType === ShiftType.current) && (
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        marginTop: 10,
-                        marginBottom: 10,
-                      }}
-                    >
-                      <Text style={{ fontSize: 17 }}>
-                        {this.state.shiftInstructions.length}
-                      </Text>
-                      <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>
-                        Tap "Complete" to confirm the completion of the event. The
-                        last three steps must be completed.
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      marginTop: 10,
+                      marginBottom: 10,
+                    }}
+                  >
+                    <Text style={{ fontSize: 17 }}>
+                      {this.state.shiftInstructions.length}
                     </Text>
-                    </View>
-                  )}
+                    <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>
+                      Tap "Complete" to confirm the completion of the event. The
+                      last three steps must be completed.
+                    </Text>
+                  </View>
+                )}
 
                 {(pEvent.details.shiftType === ShiftType.upcoming ||
                   pEvent.details.shiftType === ShiftType.current) && (
-                    <View style={styles.buttonContainer}>
-                      <TouchableOpacity
-                        style={styles.button}
-                        onPress={this.completeTask(this.state.poundsOfFood, this.state.listOfAttendedUsers)}
-                      >
-                        <Text style={styles.buttonText}>Complete</Text>
-                      </TouchableOpacity>
-                    </View>
-                  )}
+                  <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={this.completeTask(
+                        this.state.poundsOfFood,
+                        this.state.listOfAttendedUsers
+                      )}
+                    >
+                      <Text style={styles.buttonText}>Complete</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
               </View>
             </ScrollView>
             {pEvent.details.shiftType == ShiftType.searched && (
