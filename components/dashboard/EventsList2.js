@@ -149,7 +149,7 @@ export default class EventsList2 extends Component {
     })
     try {
       let user = await LocalStorage.getNonNullItem("user");
-      this.setState({ user_id: user.userId }, () => {
+      this.setState({ user_id: user.id }, () => {
         this._fetchEvents()
       });
     } catch (err) {

@@ -44,6 +44,7 @@ export default class Profile extends Component {
       },
       password: "",
       isFetching: true,
+      new_availability: {}
     };
   }
 

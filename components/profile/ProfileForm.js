@@ -30,6 +30,7 @@ export default class ProfileForm extends Component {
       preferred_region_id: [],
       preferred_location_id: [],
       selected_availabilities: [],
+      new_availability: {},
       regions: [],
       locations: [],
       isFetching: true,
