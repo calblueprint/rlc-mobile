@@ -6,7 +6,8 @@ import {
     ScrollView,
     Text,
     FlatList,
-    TouchableOpacity
+    TouchableOpacity,
+    ActivityIndicator
 } from "react-native";
 import { Icon, SearchBar } from "react-native-elements";
 import Styles from "../../constants/Styles";
@@ -76,27 +77,31 @@ export default class locTab extends React.Component {
                     <TouchableOpacity style={{
                         width: "80%", margin: "10%", flex: 1, flexDirection: "row", alignItems: "center",
                     }}
-                        onPress={this.props.getLocation} >
+                        onPress={this.props.getCurrLoc} >
                         <Icon
                             name='location-searching'
                             color='#517fa4'
                             style={styles.selObj} />
                         <Text style={{ ...styles.selObj, fontSize: normalize(15) }}> Current Location</Text>
                     </TouchableOpacity>
-
                 </View>
 
                 <View style={{ flex: 6 }}>
                     <View style={styles.locResultsContainer}>
-                        <FlatList
-                            data={this.props.locOptions}
-                            renderItem={({ item }) =>
-                                <View style={styles.secSelContainer}>
-                                    <Text style={{ ...styles.selObj, fontSize: normalize(14) }}>{item.name}</Text>
-                                    <CheckBox checked={item.selected} onPress={this.props.updateLoc(item.selected, item.id)} style={{ ...styles.selObj, paddingHorizontal: "0%" }} />
-                                </View>
-                            }
-                        />
+                        {this.props.fetchingLoc ?
+                            <View style={{ paddingVertical: "10%" }}>
+                                <ActivityIndicator size="large" color={Colors.mainBlue} />
+                            </View>
+                            :
+                            <FlatList
+                                data={this.props.locOptions}
+                                renderItem={({ item }) =>
+                                    <View style={styles.secSelContainer}>
+                                        <Text style={{ ...styles.selObj, fontSize: normalize(14) }}>{item.name}</Text>
+                                        <CheckBox checked={item.selected} onPress={this.props.updateLoc(item.selected, item.id)} style={{ ...styles.selObj, paddingHorizontal: "0%" }} />
+                                    </View>
+                                }
+                            />}
                     </View>
                 </View>
             </KeyboardAvoidingView >
