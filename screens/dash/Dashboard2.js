@@ -23,7 +23,7 @@ export default class Dashboard extends Component {
   }
 
   async componentDidMount() {
-    let user = await LocalStorage.getNonNullItem("user");    
+    let user = await LocalStorage.getNonNullItem("user");
   }
 
   navigateToShift = (eventData) => {
@@ -41,8 +41,8 @@ export default class Dashboard extends Component {
   };
 
   setCurrentEvent = (event) => {
-    this.setState({currentEvent: event})
-  }
+    this.setState({ currentEvent: event });
+  };
 
   render() {
     console.log(this.props.route);
@@ -54,14 +54,15 @@ export default class Dashboard extends Component {
         <View style={styles.currentEvent}>
           <View style={styles.slideStructure}>
             <Text style={styles.inProgress}>• In Progress</Text>
-            {Object.keys(this.state.currentEvent).length === 0
-            ?<Text></Text>
-            :<ActivityCard 
-              key = {this.state.currentEvent.id}
-              event = {this.state.currentEvent}
-              navigation={this.props.navigation}
-            />
-            }
+            {Object.keys(this.state.currentEvent).length === 0 ? (
+              <Text style={styles.subText}>No events in progress 🐥</Text>
+            ) : (
+              <ActivityCard
+                key={this.state.currentEvent.id}
+                event={this.state.currentEvent}
+                navigation={this.props.navigation}
+              />
+            )}
           </View>
         </View>
         <EventsList
@@ -93,12 +94,12 @@ const styles = StyleSheet.create({
     height: "35%",
   },
   subText: {
-    color: "#000000",
+    color: "#757575",
     fontStyle: "italic",
-    justifyContent: "center",
     textAlign: "center",
+    justifyContent: "center",
     fontWeight: "normal",
-    marginTop: "27.5%",
+    marginTop: "17%",
     opacity: 0.85,
     fontSize: normalize(16),
   },
