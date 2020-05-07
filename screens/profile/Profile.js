@@ -198,6 +198,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: Sizes.width,
     backgroundColor: "white",
+    height: "100%",
   },
   header: {
     marginHorizontal: "10%",

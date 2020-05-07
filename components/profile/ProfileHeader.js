@@ -61,7 +61,9 @@ export default class ProfileHeader extends Component {
             <Text style={styles.badgeText}>Shifts Completed</Text>
           </View>
           <View style={styles.badge}>
-            <Text style={styles.badgeHeading}>16</Text>
+            <Text style={styles.badgeHeading}>
+              {this.state.numOfAttendedEvents}
+            </Text>
             <Text style={styles.badgeText}>Missions Completed</Text>
           </View>
           <View style={styles.badge}>
