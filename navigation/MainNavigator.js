@@ -36,6 +36,7 @@ export default function App() {
         <Stack.Screen name="ChangeConfirm" component={ChangeConfirmScreen} />
         <Stack.Screen name="Main" component={MainScreen2} />
         <Stack.Screen name="Confirmation" component={ConfirmationScreen} />
+        <Stack.Screen name="Camera" component={CameraScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

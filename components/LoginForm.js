@@ -19,6 +19,7 @@ export default class LoginForm extends React.Component {
     };
   }
 
+<<<<<<< HEAD
   // User Login
   fetchUser = params => {
     return postRequest(
@@ -53,6 +54,8 @@ export default class LoginForm extends React.Component {
     );
   };
 
+=======
+>>>>>>> c1d8522f8d6dec8d1a2650d21cae7e94641001a5
   // Login Handler
   _onPressLogin = async () => {
     const params = {

@@ -24,7 +24,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "infoPlist": {
         "NSCameraUsageDescription": "RLC would like to access your camera",
         "NSPhotoLibraryAddUsageDescription": "Your message to user when the photo library is accessed for the first time",
