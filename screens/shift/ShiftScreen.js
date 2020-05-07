@@ -65,9 +65,15 @@ export default class ShiftScreen extends React.Component {
   constructor(props) {
     super(props);
     const pEvent = this.props.route.params.event;
-    console.log("pevent in constructor");
-    console.log(pEvent);
-
+    // console.log("pevent in constructor");
+    // console.log(pEvent);
+    console.log(pEvent.details.attendees);
+    let areVerifiedAttendees = {};
+    for (let i = 0; i < pEvent.details.attendees.length; i++) {
+      console.log("in loop");
+      let currAttendee = pEvent.details.attendees[i];
+      areVerifiedAttendees[currAttendee.id] = false
+    }
     const shiftInstructions = this.createShiftInstructions(
       pEvent.details.pickup_locations,
       pEvent.details.dropoff_locations
@@ -84,8 +90,8 @@ export default class ShiftScreen extends React.Component {
         description: dropoff.address,
       });
     });
-    console.log("here are the markers", markers);
-    console.log("and dropoffs", pEvent.details.dropoff_locations);
+    // console.log("here are the markers", markers);
+    // console.log("and dropoffs", pEvent.details.dropoff_locations);
 
     this.state = {
       participantData: [
@@ -105,7 +111,8 @@ export default class ShiftScreen extends React.Component {
       shiftInstructions: shiftInstructions,
       markers: markers,
       poundsOfFood: 0,
-      listOfAttendedUsers: []
+      listOfAttendedUsers: [],
+      areVerifiedAttendees: areVerifiedAttendees,
     }
   }
 
@@ -174,12 +181,14 @@ export default class ShiftScreen extends React.Component {
 
   participantCard = (data) => {
     const participant = data.item;
+    console.log("in participant card");
+    console.log(participant);
     return (
       <View style={styles.participant_badge}>
         {participant.role == "normal" && (
           <CheckBox
-            checked={this.isChecked(participant)}
-            onPress={this.modifyAttendedParticipants(participant)}
+            checked={this.state.areVerifiedAttendees[participant.id]}
+            onPress={() => this.modifyAttendedParticipants(participant)}
           />
         )}
         <Avatar
@@ -201,34 +210,36 @@ export default class ShiftScreen extends React.Component {
     );
   };
 
-  isChecked = (participant) => {
-    console.log("this is the participant");
-    console.log(participant);
-    if (participant == undefined || participant == null) {
-      return false;
-    }
-    let locationOfParticipant = this.state.listOfAttendedUsers.indexOf(participant.id);
-    console.log(this.state.listOfAttendedUsers);
-    return locationOfParticipant != -1
-  }
-
   modifyAttendedParticipants = (participant) => {
-    console.log(this.state.listOfAttendedUsers);
     if (participant == undefined || participant == null) {
       return;
     }
-    if (this.isChecked()) {
-      this.setState({ listOfAttendedUsers: this.state.listOfAttendedUsers.filter(attendedUser => attendedUser.id != participant.id) });
+    console.log(this.state.areVerifiedAttendees);
+    let participantId = participant.id;
+    if (this.state.areVerifiedAttendees[participant.id]) {
+      this.setState({ listOfAttendedUsers: this.state.listOfAttendedUsers.filter(attendedUser => attendedUser.id == participant.id) }, () => console.log(this.state.listOfAttendedUsers));
+      this.setState(prevState => ({
+        areVerifiedAttendees: {
+          ...prevState.areVerifiedAttendees,
+          [participantId]: !areVerifiedAttendees[participant.id]
+        }
+      }));
     } else {
-      this.setState({ listOfAttendedUsers: this.state.listOfAttendedUsers.concat(participant.id) });
+      this.setState({ listOfAttendedUsers: this.state.listOfAttendedUsers.concat(participant.id) }, () => { console.log(this.state.listOfAttendedUsers); this.render() });
+      this.setState(prevState => ({
+        areVerifiedAttendees: {
+          ...prevState.areVerifiedAttendees,
+          [participantId]: !areVerifiedAttendees[participant.id]
+        }
+      }));
     }
   }
 
   completeTask = (poundsOfFood, listOfParticipants) => {
     // Function to call once Complete is pressed
     console.log("completing task");
-    console.log(poundsOfFood);
-    console.log(listOfParticipants);
+    // console.log(poundsOfFood);
+    // console.log(listOfParticipants);
   }
 
   navigateToMain = () => {
@@ -302,9 +313,9 @@ export default class ShiftScreen extends React.Component {
   };
   render() {
     const pEvent = this.props.route.params.event;
-    console.log("here's pevent");
-    console.log(pEvent);
-
+    // console.log("here's pevent");
+    // console.log(pEvent);
+    console.log("render again");
     //set latitude and longitude
     let lat = pEvent.details.pickup_locations[0].latlng.latitude;
     let lon = pEvent.details.pickup_locations[0].latlng.longitude;
@@ -411,7 +422,7 @@ export default class ShiftScreen extends React.Component {
                 <View style={styles.input_box}>
                   <TextInput
                     style={styles.weight_input}
-                    onChangeText={(pounds) => { this.setState({ poundsOfFood: parseFloat(pounds) }, console.log(this.state.poundsOfFood)) }}
+                    onChangeText={(pounds) => this.setState({ poundsOfFood: parseFloat(pounds) })}
                     returnKeyType="next"
                     onSubmitEditing={() => this.submit.focus()}
                     keyboardType="number-pad"
