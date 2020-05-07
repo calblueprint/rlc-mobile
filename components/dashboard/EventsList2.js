@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   ActivityIndicator,
+  AsyncStorage,
 } from "react-native";
 
 // Animation Libraries
@@ -23,6 +24,7 @@ import { normalize } from "../../utils/Normalize.js";
 // Utils
 import LocalStorage from "../../helpers/LocalStorage.js";
 import { get_dashboard_events_lists } from "../../helpers/EventsHelper.js";
+import { EventRegister } from "react-native-event-listeners";
 
 class UpcomingEventsList extends React.Component {
   constructor(props) {
@@ -46,7 +48,7 @@ class UpcomingEventsList extends React.Component {
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => this.props.navigation.navigate("Search")}
+                onPress={this.props.toSearch}
               >
                 <Text style={styles.buttonText}>Sign Up for Shift</Text>
               </TouchableOpacity>
@@ -59,6 +61,7 @@ class UpcomingEventsList extends React.Component {
         <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
           <ScrollView style={{ height: "100%" }}>
             {this.state.upcomingEvents.map((event) => {
+              console.log("upcoming", event);
               return (
                 <ActivityCard
                   key={event.id}
@@ -100,7 +103,7 @@ class AttendedEventsList extends React.Component {
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => this.props.navigation.navigate("Search")}
+                onPress={this.props.toSearch}
               >
                 <Text style={styles.buttonText}>Sign Up for Shift</Text>
               </TouchableOpacity>
@@ -145,13 +148,20 @@ export default class EventsList2 extends Component {
   }
 
   async componentDidMount() {
+    this.listener = EventRegister.addEventListener('reloadEvents', () => {
+      this._fetchEvents()
+    });
     try {
-      let user = await LocalStorage.getItem("user");
-      this.setState({ user_id: user.userId }, this._fetchEvents);
+      let user = await LocalStorage.getNonNullItem("user");
+      this.setState({ user_id: user.id }, this._fetchEvents);
     } catch (err) {
       console.error(err);
       this.props.navigation.navigate("Login");
     }
+  }
+
+  componentWillUnmount() {
+    EventRegister.removeEventListener(this.listener);
   }
 
   // Fetch function
@@ -240,6 +250,7 @@ export default class EventsList2 extends Component {
             <UpcomingEventsList
               upcomingEvents={this.state.upcomingEvents}
               navigation={this.props.navigation}
+              toSearch={this.props.toSearch}
             />
           );
         case "second":
@@ -247,6 +258,7 @@ export default class EventsList2 extends Component {
             <AttendedEventsList
               attendedEvents={this.state.attendedEvents}
               navigation={this.props.navigation}
+              toSearch={this.props.toSearch}
             />
           );
         default:

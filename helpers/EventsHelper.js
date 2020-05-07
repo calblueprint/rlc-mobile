@@ -4,13 +4,14 @@ import LocalStorage from "../helpers/LocalStorage";
 
 import ShiftTypes from "../constants/ShiftType.js";
 
-async function get_event_details(event_id) {
+async function get_event_details(event_id, shift_type) {
   let event_details = {};
 
   await getRequest(
     APIRoutes.getEventDetailsPath(event_id),
     (fetchedDetails) => {
       event_details = fetchedDetails;
+      event_details['shiftType'] = shift_type;
     },
     (error) => {
       console.log(error);
@@ -43,23 +44,23 @@ export async function get_dashboard_events_lists(user_id) {
     }
   );
   let attended_details = await Promise.all(
-    attended_events.map((item) => get_event_details(item.id))
+    attended_events.map((item) => get_event_details(item.id, ShiftTypes.attended))
   );
   attended_events = attended_events.map((item, index) => ({
     ...item,
     details: attended_details[index],
-    shiftType: ShiftTypes.attended,
+    //shiftType: ShiftTypes.attended,
     tempIndex: index,
   }));
   LocalStorage.storeItem("attended_events", attended_events); // Put attended events in Local Storage
 
   let upcoming_details = await Promise.all(
-    upcoming_events.map((item) => get_event_details(item.id))
+    upcoming_events.map((item) => get_event_details(item.id, ShiftTypes.upcoming))
   );
   upcoming_events = upcoming_events.map((item, index) => ({
     ...item,
     details: upcoming_details[index],
-    shiftType: ShiftTypes.upcoming,
+    //shiftType: ShiftTypes.upcoming,
     tempIndex: index,
   }));
   LocalStorage.storeItem("upcoming_events", upcoming_events); // Put upcoming events in Local Storage

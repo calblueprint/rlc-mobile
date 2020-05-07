@@ -4,6 +4,7 @@ import { normalize } from "../../utils/Normalize";
 
 export default class ActivityCard extends React.Component {
   navigateToShift = (event) => {
+    console.log(this.props.navigation)
     const { navigate } = this.props.navigation;
     navigate("Shift", { event: event })
   };

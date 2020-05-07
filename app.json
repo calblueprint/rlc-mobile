@@ -3,10 +3,16 @@
     "name": "Rescuing Leftover Cuisine",
     "slug": "rlc-mobile",
     "privacy": "public",
-    "platforms": ["ios", "android", "web"],
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "primaryColor": "#38A5DB",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/newrlclogo.png",
+    "sdkVersion": "37.0.0",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -15,14 +21,23 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "RLC would like to access your camera",
         "NSPhotoLibraryAddUsageDescription": "Your message to user when the photo library is accessed for the first time",
         "NSPhotoLibraryUsageDescription": "Your message to user when the photo library is accessed for the first time"
-      }
+      },
+      "supportsTablet": false,
+      "bundleIdentifier": "org.calblueprint.RescuingLeftoverCuisine",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "org.calblueprint.RescuingLeftoverCuisine",
+      "versionCode": 1,
+      "permissions": []
     },
     "hooks": {
       "postPublish": [
