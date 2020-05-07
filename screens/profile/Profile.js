@@ -28,23 +28,24 @@ export default class Profile extends Component {
     this.state = {
       disabled: true,
       user: {
-        'id': "",
-        'firstname': "",
-        'lastname': "",
-        'occupation': "",
-        'telephone': "",
-        'address': "",
-        'city': null,
-        'state': null,
-        'zip_code': "",
-        'email': "",
-        'preferred_region_id': [],
-        'preferred_location_id': [],
-        'availability': "",
+        id: "",
+        firstname: "",
+        lastname: "",
+        occupation: "",
+        telephone: "",
+        address: "",
+        city: null,
+        state: null,
+        zip_code: "",
+        email: "",
+        preferred_region_id: [],
+        preferred_location_id: [],
+        availability: "",
       },
       password: "",
       new_availability = {},
       isFetching: true,
+      new_availability: {}
     };
   }
 
@@ -119,8 +120,8 @@ export default class Profile extends Component {
               Alert.alert("Successfully updated!")
           }),
           (error) => console.error(error),
-          params
-          )
+          availability
+        );
       }
     }
 
