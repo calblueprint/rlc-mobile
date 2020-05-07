@@ -67,12 +67,10 @@ export default class ShiftScreen extends React.Component {
     const pEvent = this.props.route.params.event;
     // console.log("pevent in constructor");
     // console.log(pEvent);
-    console.log(pEvent.details.attendees);
-    let areVerifiedAttendees = {};
+    let verifiedCheckboxes = {}
     for (let i = 0; i < pEvent.details.attendees.length; i++) {
-      console.log("in loop");
-      let currAttendee = pEvent.details.attendees[i];
-      areVerifiedAttendees[currAttendee.id] = false
+      let currAttendee = pEvent.details.attendees[i]["id"];
+      verifiedCheckboxes[currAttendee] = false;
     }
     const shiftInstructions = this.createShiftInstructions(
       pEvent.details.pickup_locations,
@@ -112,7 +110,7 @@ export default class ShiftScreen extends React.Component {
       markers: markers,
       poundsOfFood: 0,
       listOfAttendedUsers: [],
-      areVerifiedAttendees: areVerifiedAttendees,
+      verifiedCheckboxes: verifiedCheckboxes
     }
   }
 
@@ -187,7 +185,7 @@ export default class ShiftScreen extends React.Component {
       <View style={styles.participant_badge}>
         {participant.role == "normal" && (
           <CheckBox
-            checked={this.state.areVerifiedAttendees[participant.id]}
+            checked={this.state.verifiedCheckboxes[participant.id]}
             onPress={() => this.modifyAttendedParticipants(participant)}
           />
         )}
@@ -210,28 +208,39 @@ export default class ShiftScreen extends React.Component {
     );
   };
 
+  isChecked = (participant) => {
+    console.log("in isChecked");
+    if (participant == undefined || participant == null) {
+      return true;
+    }
+    return this.state.verifiedCheckboxes[participant.id];
+  }
+
   modifyAttendedParticipants = (participant) => {
+    console.log("modify participants");
     if (participant == undefined || participant == null) {
       return;
     }
-    console.log(this.state.areVerifiedAttendees);
-    let participantId = participant.id;
-    if (this.state.areVerifiedAttendees[participant.id]) {
-      this.setState({ listOfAttendedUsers: this.state.listOfAttendedUsers.filter(attendedUser => attendedUser.id == participant.id) }, () => console.log(this.state.listOfAttendedUsers));
+    if (this.isChecked(participant)) {
+      console.log("was checked");
+      console.log(this.state.verifiedCheckboxes);
+      this.setState({ listOfAttendedUsers: this.state.listOfAttendedUsers.filter(attendedUser => attendedUser.id == participant.id) }, () => { console.log(this.state.listOfAttendedUsers) });
       this.setState(prevState => ({
-        areVerifiedAttendees: {
-          ...prevState.areVerifiedAttendees,
-          [participantId]: !areVerifiedAttendees[participant.id]
+        verifiedCheckboxes: {
+          ...prevState.verifiedCheckboxes,
+          [participant.id]: !prevState.verifiedCheckboxes[participant.id]
         }
-      }));
+      }), () => { this.render() });
     } else {
-      this.setState({ listOfAttendedUsers: this.state.listOfAttendedUsers.concat(participant.id) }, () => { console.log(this.state.listOfAttendedUsers); this.render() });
+      console.log("wasn't checked at first");
+      console.log(this.state.listOfAttendedUsers);
+      this.setState({ listOfAttendedUsers: this.state.listOfAttendedUsers.concat(participant.id) }, () => { console.log(this.state.listOfAttendedUsers) });
       this.setState(prevState => ({
-        areVerifiedAttendees: {
-          ...prevState.areVerifiedAttendees,
-          [participantId]: !areVerifiedAttendees[participant.id]
+        verifiedCheckboxes: {
+          ...prevState.verifiedCheckboxes,
+          [participant.id]: !prevState.verifiedCheckboxes[participant.id]
         }
-      }));
+      }), () => { this.render() });
     }
   }
 
