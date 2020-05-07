@@ -82,7 +82,7 @@ export default class Search extends Component {
 
       numLocs: 0,
       search: "",
-      fetchingLoc: true,
+      fetchingLoc: false,
       locations: [],
 
       monday: {
@@ -289,12 +289,12 @@ export default class Search extends Component {
     let user = await LocalStorage.getNonNullItem("user");
     this.setState({ user: user });
 
-    console.log("got user");
-    console.log(this.state.user);
-
     let preferred_locations = await fetch_locations_by_ids(this.state.user.preferred_location_id);
-    let availability = await fetch_availability();
+    this.setState({
+      locations: preferred_locations.map((item) => ({ ...item, selected: true })),
+    });
 
+    let availability = await fetch_availability();
     this.setState({
       availability: availability,
       locations: preferred_locations.map((item) => ({ ...item, selected: true })),
@@ -337,14 +337,22 @@ export default class Search extends Component {
     let included_locations = await fetch_locations_by_region(
       preferred_region_id[0]
     );
-    console.log(included_locations);
+    included_locations = included_locations.filter(
+      (val) => {
+        for (var objkey of this.state.locations) {
+          if (val.id === objkey.id) {
+            return false
+          }
+        }
+        return true
+      })
     this.setState((prevState) => ({
       preferred_region_id: preferred_region_id,
       preferred_location_id: [],
       locations:
         included_locations === undefined || included_locations.length == 0
-          ? []
-          : [...prevState.locations, ...included_locations.map((item) => ({ ...item, selected: false }))],
+          ? prevState.locations
+          : [...prevState.locations, ...included_locations.map((item) => ({ ...item, selected: false })),],
 
       fetchingLoc: false,
     }));
