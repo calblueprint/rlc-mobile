@@ -19,7 +19,7 @@ import { APIRoutes } from "../../config/routes";
 import Styles from "../../constants/Styles.js";
 import Sizes from "../../constants/Sizes.js";
 
-import { create_availability_formData } from "../../helpers/AvailabilityHelpers.js";
+import { create_availability_static } from "../../helpers/AvailabilityHelpers.js";
 import { postRequest } from "../../lib/requests";
 
 export default class Profile extends Component {
@@ -43,6 +43,7 @@ export default class Profile extends Component {
         'availability': "",
       },
       password: "",
+      new_availability = {},
       isFetching: true,
     };
   }
@@ -81,10 +82,6 @@ export default class Profile extends Component {
     return this.state.user[attribute];
   };
 
-  changeUserInfo = (attribute, text) => {
-    this.setState({ [attribute]: text });
-  };
-
   getUserAttribute = (attribute) => {
     return this.state.user[attribute];
   };
@@ -96,6 +93,9 @@ export default class Profile extends Component {
   };
 
   saveUserInfo = async () => {
+    /**
+     * Two updates, one for availability, then for user from Profile Form values.
+     */
       if (this.state.password.length > 0 && this.state.password.length <= 8) {
           frontendError("Passwords must be more than 8 characters long.")
       } else {
@@ -107,7 +107,6 @@ export default class Profile extends Component {
               (availability) => {
                 this.changeUserInfo("availability", availability.id);
                 LocalStorage.storeItem("availability", this.state.new_availability);
-
               },
               (error) => console.error(error),
               availability
@@ -129,6 +128,7 @@ export default class Profile extends Component {
     const { navigate } = this.props.navigation;
     AsyncStorage.removeItem("user");
     AsyncStorage.removeItem("cookie");
+    AsyncStorage.removeItem("availability");
     navigate("Login");
   };
 
