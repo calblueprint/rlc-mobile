@@ -42,35 +42,40 @@ function instructionDetail(data) {
 const withdrawOptions = [
   {
     key: "one",
-    text: "Withdraw from this event only",
+    text: "Withdraw from this event only"
   },
   {
     key: "all",
-    text: "Withdraw from this and all future events",
-  },
+    text: "Withdraw from this and all future events"
+  }
 ];
 
 const recurOptions = [
   {
     key: "only",
-    text: "This week only",
+    text: "This week only"
   },
   {
     key: "every",
-    text: "Every week",
-  },
+    text: "Every week"
+  }
 ];
 
 export default class ShiftScreen extends React.Component {
   constructor(props) {
     super(props);
     const pEvent = this.props.route.params.event;
-    // console.log("pevent in constructor");
-    // console.log(pEvent);
-    let verifiedCheckboxes = {}
+
+    let verifiedCheckboxes = {};
+    let listOfAttendedUsers = [];
     for (let i = 0; i < pEvent.details.attendees.length; i++) {
-      let currAttendee = pEvent.details.attendees[i]["id"];
-      verifiedCheckboxes[currAttendee] = false;
+      let currAttendee = pEvent.details.attendees[i];
+      if (currAttendee.role != "normal") {
+        verifiedCheckboxes[currAttendee["id"]] = true;
+        listOfAttendedUsers.push(currAttendee["id"]);
+      } else {
+        verifiedCheckboxes[currAttendee["id"]] = false;
+      }
     }
     const shiftInstructions = this.createShiftInstructions(
       pEvent.details.pickup_locations,
@@ -82,14 +87,12 @@ export default class ShiftScreen extends React.Component {
       markers.push({
         latlng: {
           latitude: dropoff.latitude,
-          longitude: dropoff.longitude,
+          longitude: dropoff.longitude
         },
         title: dropoff.name,
-        description: dropoff.address,
+        description: dropoff.address
       });
     });
-    // console.log("here are the markers", markers);
-    // console.log("and dropoffs", pEvent.details.dropoff_locations);
 
     this.state = {
       participantData: [
@@ -97,23 +100,22 @@ export default class ShiftScreen extends React.Component {
           name: "Alice Russel (You)",
           role: "Lead Rescuer",
           profilePic: "../../assets/images/rlcprofilepic.png",
-          verified: false,
+          verified: false
         },
         {
           name: "Dan Schneider",
           role: "Volunteer",
           profilePic: "../../assets/images/rlcprofilepic.png",
-          verified: true,
+          verified: true
         }
       ],
       shiftInstructions: shiftInstructions,
       markers: markers,
       poundsOfFood: 0,
-      listOfAttendedUsers: [],
+      listOfAttendedUsers: listOfAttendedUsers,
       verifiedCheckboxes: verifiedCheckboxes
     }
   }
-
 
   createShiftInstructions = (pickUp, dropOff) => {
     //add meetup locations
@@ -121,17 +123,17 @@ export default class ShiftScreen extends React.Component {
       {
         step: 1,
         description: "Meet your group at " + pickUp[0].title,
-        photo_needed: false,
+        photo_needed: false
       },
       {
         step: 2,
         description: "Check in all volunteers.",
-        photo_needed: false,
+        photo_needed: false
       },
       {
         step: 3,
         description: "Collect food from vendor.",
-        photo_needed: false,
+        photo_needed: false
       },
     ];
 
@@ -142,12 +144,12 @@ export default class ShiftScreen extends React.Component {
         shiftInstructions.push({
           step: nextStep,
           description: "Walk to " + pickUp[1].title,
-          photo_needed: false,
+          photo_needed: false
         });
         shiftInstructions.push({
           step: nextStep + 1,
           description: "Collect food from vendor.",
-          photo_needed: false,
+          photo_needed: false
         });
         nextStep += 2;
         break;
@@ -161,7 +163,7 @@ export default class ShiftScreen extends React.Component {
         description:
           "Take a photo of the food once it is delivered to " +
           dropOff[0].title,
-        photo_needed: true,
+        photo_needed: true
       });
       shiftInstructions.push({
         step: nextStep + 1,
@@ -169,7 +171,7 @@ export default class ShiftScreen extends React.Component {
           "Request a receipt from " +
           dropOff[0].title +
           " and take a photo of the receipt*",
-        photo_needed: true,
+        photo_needed: true
       });
       nextStep += 2;
     }
@@ -179,8 +181,6 @@ export default class ShiftScreen extends React.Component {
 
   participantCard = (data) => {
     const participant = data.item;
-    console.log("in participant card");
-    console.log(participant);
     return (
       <View style={styles.participant_badge}>
         {participant.role == "normal" && (
@@ -208,47 +208,25 @@ export default class ShiftScreen extends React.Component {
     );
   };
 
-  isChecked = (participant) => {
-    console.log("in isChecked");
-    if (participant == undefined || participant == null) {
-      return true;
-    }
-    return this.state.verifiedCheckboxes[participant.id];
-  }
-
   modifyAttendedParticipants = (participant) => {
-    console.log("modify participants");
     if (participant == undefined || participant == null) {
       return;
     }
-    if (this.isChecked(participant)) {
-      console.log("was checked");
-      console.log(this.state.verifiedCheckboxes);
-      this.setState({ listOfAttendedUsers: this.state.listOfAttendedUsers.filter(attendedUser => attendedUser.id == participant.id) }, () => { console.log(this.state.listOfAttendedUsers) });
-      this.setState(prevState => ({
-        verifiedCheckboxes: {
-          ...prevState.verifiedCheckboxes,
-          [participant.id]: !prevState.verifiedCheckboxes[participant.id]
-        }
-      }), () => { this.render() });
+    if (this.state.verifiedCheckboxes[participant.id]) {
+      this.setState({ listOfAttendedUsers: this.state.listOfAttendedUsers.filter(attendedUser => attendedUser != participant.id) });
     } else {
-      console.log("wasn't checked at first");
-      console.log(this.state.listOfAttendedUsers);
-      this.setState({ listOfAttendedUsers: this.state.listOfAttendedUsers.concat(participant.id) }, () => { console.log(this.state.listOfAttendedUsers) });
-      this.setState(prevState => ({
-        verifiedCheckboxes: {
-          ...prevState.verifiedCheckboxes,
-          [participant.id]: !prevState.verifiedCheckboxes[participant.id]
-        }
-      }), () => { this.render() });
+      this.setState({ listOfAttendedUsers: this.state.listOfAttendedUsers.concat(participant.id) });
     }
+    this.setState(prevState => ({
+      verifiedCheckboxes: {
+        ...prevState.verifiedCheckboxes,
+        [participant.id]: !prevState.verifiedCheckboxes[participant.id]
+      }
+    }));
   }
 
   completeTask = (poundsOfFood, listOfParticipants) => {
     // Function to call once Complete is pressed
-    console.log("completing task");
-    // console.log(poundsOfFood);
-    // console.log(listOfParticipants);
   }
 
   navigateToMain = () => {
@@ -259,7 +237,7 @@ export default class ShiftScreen extends React.Component {
   navigateToWithdraw = () => {
     const { navigate } = this.props.navigation;
     const pEvent = this.props.route.params.event;
-    console.log(pEvent);
+
     if (pEvent.details.recurring) {
       navigate("ChangeConfirm", {
         title: "Withdraw Your Spot",
@@ -269,7 +247,7 @@ export default class ShiftScreen extends React.Component {
         question: "",
         options: withdrawOptions,
         event_id: pEvent.id,
-        change_type: "withdraw",
+        change_type: "withdraw"
       });
     } else {
       navigate("ChangeConfirm", {
@@ -278,7 +256,7 @@ export default class ShiftScreen extends React.Component {
         hasQ: false,
         options: [],
         event_id: pEvent.id,
-        change_type: "withdraw",
+        change_type: "withdraw"
       });
     }
   };
@@ -294,7 +272,7 @@ export default class ShiftScreen extends React.Component {
         question: "How often do you want to attend?",
         options: recurOptions,
         event_id: pEvent.details.id,
-        change_type: "signup",
+        change_type: "signup"
       });
     } else {
       navigate("ChangeConfirm", {
@@ -303,7 +281,7 @@ export default class ShiftScreen extends React.Component {
         hasQ: false,
         options: [],
         event_id: pEvent.details.id,
-        change_type: "signup",
+        change_type: "signup"
       });
     }
   };
@@ -322,9 +300,7 @@ export default class ShiftScreen extends React.Component {
   };
   render() {
     const pEvent = this.props.route.params.event;
-    // console.log("here's pevent");
-    // console.log(pEvent);
-    console.log("render again");
+
     //set latitude and longitude
     let lat = pEvent.details.pickup_locations[0].latlng.latitude;
     let lon = pEvent.details.pickup_locations[0].latlng.longitude;
@@ -378,7 +354,7 @@ export default class ShiftScreen extends React.Component {
                       latitude: lat,
                       longitude: lon,
                       latitudeDelta: 0.0922,
-                      longitudeDelta: 0.0421,
+                      longitudeDelta: 0.0421
                     }}
                   >
                     {this.state.markers &&
@@ -419,7 +395,7 @@ export default class ShiftScreen extends React.Component {
                   style={{
                     flexDirection: "row",
                     marginTop: 10,
-                    marginBottom: 10,
+                    marginBottom: 10
                   }}
                 >
                   <Text style={{ fontSize: 16 }}>9.</Text>
@@ -445,7 +421,7 @@ export default class ShiftScreen extends React.Component {
                       style={{
                         flexDirection: "row",
                         marginTop: 10,
-                        marginBottom: 10,
+                        marginBottom: 10
                       }}
                     >
                       <Text style={{ fontSize: 17 }}>
@@ -463,7 +439,7 @@ export default class ShiftScreen extends React.Component {
                     <View style={styles.buttonContainer}>
                       <TouchableOpacity
                         style={styles.button}
-                        onPress={this.completeTask(this.state.poundsOfFood, this.state.listOfAttendedUsers)}
+                        onPress={() => this.completeTask(this.state.poundsOfFood, this.state.listOfAttendedUsers)}
                       >
                         <Text style={styles.buttonText}>Complete</Text>
                       </TouchableOpacity>
@@ -489,43 +465,43 @@ export default class ShiftScreen extends React.Component {
 }
 
 ShiftScreen.navigationOptions = {
-  title: "In Progress",
+  title: "In Progress"
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 40,
-    paddingTop: 20,
+    paddingTop: 20
   },
   guide_box: {
     height: 200,
     marginVertical: 25,
-    borderWidth: 2,
+    borderWidth: 2
   },
   upload_box: {
     height: 200,
     marginVertical: 25,
-    borderWidth: 2,
+    borderWidth: 2
   },
   status: {
     textTransform: "uppercase",
     color: Colors.green,
     fontWeight: "500",
     fontSize: 15,
-    paddingVertical: 5,
+    paddingVertical: 5
   },
   title: {
     color: Colors.regularText,
     fontWeight: "600",
     fontSize: 20,
-    paddingVertical: 5,
+    paddingVertical: 5
   },
   overview: {
     fontSize: 16,
     lineHeight: 25,
     letterSpacing: 0.5,
-    paddingTop: 5,
+    paddingTop: 5
   },
   list: {
     flex: 1,
@@ -533,34 +509,34 @@ const styles = StyleSheet.create({
     borderColor: "#CCCCCC",
     borderBottomWidth: 1,
     borderTopWidth: 1,
-    marginBottom: 10,
+    marginBottom: 10
   },
   instructions: {
-    padding: 10,
+    padding: 10
   },
   participant_badge: {
     flex: 1,
     flexDirection: "row",
     flexWrap: "wrap",
     alignItems: "flex-start",
-    marginVertical: 5,
+    marginVertical: 5
   },
   participant_detail: {
     flexDirection: "column",
-    marginHorizontal: 20,
+    marginHorizontal: 20
   },
   participant_name: {
     fontSize: 17,
-    fontWeight: "700",
+    fontWeight: "700"
   },
   particpant_role: {
     fontSize: 15,
-    fontWeight: "400",
+    fontWeight: "400"
   },
   profilePic: {
     width: 50,
     height: 50,
-    borderRadius: 50 / 2,
+    borderRadius: 50 / 2
   },
   input_box: {
     height: 50,
@@ -568,23 +544,23 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     borderRadius: 5,
     borderColor: "#ccc",
-    marginBottom: 10,
+    marginBottom: 10
   },
   weight_input: {
-    fontSize: 17,
+    fontSize: 17
   },
 
   buttonContainer: {
     alignItems: "center",
     marginTop: 20,
     justifyContent: "center",
-    flex: 1,
+    flex: 1
   },
   signUpButtonContainer: {
     alignItems: "center",
     flex: 1,
     justifyContent: "flex-end",
-    height: 50,
+    height: 50
   },
   button: {
     backgroundColor: "#38A5DB",
@@ -593,7 +569,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 5,
     width: "100%",
-    height: 50,
+    height: 50
   },
   signUpButton: {
     backgroundColor: Colors.mainBlue,
@@ -602,14 +578,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     position: "absolute",
     bottom: 0,
-    width: "80%",
+    width: "80%"
   },
   buttonText: {
     textAlign: "center",
     color: "#FFFFFF",
     fontWeight: "600",
     fontSize: 16,
-    textTransform: "uppercase",
+    textTransform: "uppercase"
   },
 
   mapcontainer: {
@@ -618,9 +594,12 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "flex-end",
     alignItems: "center",
-    marginVertical: 30,
+    marginVertical: 30
   },
   map: {
-    ...StyleSheet.absoluteFillObject,
-  },
+    ...StyleSheet.absoluteFillObject
+  }
+
 });
+
+
