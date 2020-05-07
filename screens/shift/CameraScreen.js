@@ -3,6 +3,8 @@ import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
 import settings from '../../config/settings'
+import Constants from 'expo-constants';
+
 
 
 import { normalize } from "../../utils/Normalize";
@@ -19,9 +21,9 @@ export default function CameraScreen({ navigation }) {
                 const formData = new FormData();
                 // TODO: @Johnathan. Once shift details screen is loading information properly,
                 // I'll grab the event ID and pass it into camera this.navigation.navigate(camera, this.state.id)
-                formData.append('image[event_id]', '58288');
+                formData.append('image[event_id]', '59578');
                 formData.append('image[file]', base64);
-                const postURL = settings.URL + '/images'
+                const postURL = settings.URL + 'images'
                 fetch(postURL, {
                     method: 'POST',
                     headers: {
@@ -29,9 +31,8 @@ export default function CameraScreen({ navigation }) {
                       },
                     body: formData
                 })
-                .then((response) => response.json())
                 .then((result) => {
-                    console.log('Success uploading!', result);
+                    console.log('Success uploading!', JSON.stringify(result));
                     alert("Image upload success! Please go back")
                 })
                 .catch((error) => {
