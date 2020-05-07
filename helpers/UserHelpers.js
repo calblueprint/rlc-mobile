@@ -13,8 +13,8 @@ const fetchUser = (params, errorFunc) => {
     (user) => {
       const userJSON = {
         id: user.id,
-        firstName: user.firstname,
-        lastName: user.lastname,
+        firstname: user.firstname,
+        lastname: user.lastname,
         occupation: user.occupation,
         telephone: user.telephone,
         address: user.address,
@@ -24,7 +24,7 @@ const fetchUser = (params, errorFunc) => {
         email: user.email,
         preferred_region_id: user.preferred_region_id,
         preferred_location_id: user.preferred_location_id,
-        availability: "",
+        availability: user.availability,
       };
       LocalStorage.storeItem("user", userJSON);
     },

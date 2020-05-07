@@ -7,10 +7,30 @@ import Sizes from "../../constants/Sizes.js";
 
 // Utils
 import { getInitials } from "../../utils/Initials.js";
+import LocalStorage from "../../helpers/LocalStorage.js";
 
 export default class ProfileHeader extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      numOfAttendedEvents: "-",
+    };
+  }
+
+  componentDidMount() {
+    this.retrieveAttendedEvents();
+  }
+
+  async retrieveAttendedEvents() {
+    try {
+      let attendedEvents = await LocalStorage.getItem("attended_events");
+      this.setState(
+        { numOfAttendedEvents: attendedEvents.length },
+        this.render
+      );
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   render() {
@@ -24,9 +44,6 @@ export default class ProfileHeader extends Component {
         <View style={styles.profileContainer}>
           <Avatar rounded title={getInitials(fullName)} size="large" />
 
-          {/* <Image
-                        style={styles.profilePic}
-                        source={require('../../assets/images/rlclogo.png')} /> */}
           {this.props.isFetching ? (
             <Text></Text>
           ) : (
@@ -38,7 +55,9 @@ export default class ProfileHeader extends Component {
 
         <View style={styles.badgeContainer}>
           <View style={styles.badge}>
-            <Text style={styles.badgeHeading}>8</Text>
+            <Text style={styles.badgeHeading}>
+              {this.state.numOfAttendedEvents}
+            </Text>
             <Text style={styles.badgeText}>Shifts Completed</Text>
           </View>
           <View style={styles.badge}>
@@ -46,7 +65,11 @@ export default class ProfileHeader extends Component {
             <Text style={styles.badgeText}>Missions Completed</Text>
           </View>
           <View style={styles.badge}>
-            <Text style={styles.badgeHeading}>34</Text>
+            <Text style={styles.badgeHeading}>
+              {this.state.numOfAttendedEvents == "-"
+                ? "-"
+                : this.state.numOfAttendedEvents * 17}
+            </Text>
             <Text style={styles.badgeText}>Pounds Rescued</Text>
           </View>
         </View>

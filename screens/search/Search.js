@@ -21,6 +21,8 @@ import {
 
 import TimeOrLoc from "../../components/search/timeOrLoc.js";
 import SuggestedEventsList from "../../components/search/SuggestedEventsList.js";
+import LocalStorage from "../../helpers/LocalStorage";
+import { fetch_availability } from "../../helpers/AvailabilityHelpers.js";
 
 const dayOptions = [
   {
@@ -273,6 +275,9 @@ export default class Search extends Component {
           value: false,
         },
       },
+
+      availability: {},
+      user: {}
     };
   }
 
@@ -289,7 +294,10 @@ export default class Search extends Component {
     console.log(this.state.user);
 
     let preferred_locations = await fetch_locations_by_ids(this.state.user.preferred_location_id);
+    let availability = await fetch_availability();
+
     this.setState({
+      availability: availability,
       locations: preferred_locations.map((item) => ({ ...item, selected: true })),
       fetchingLoc: false,
     });

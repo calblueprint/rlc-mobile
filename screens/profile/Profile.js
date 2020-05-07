@@ -7,17 +7,20 @@ import {
   ScrollView,
   TouchableOpacity,
   KeyboardAvoidingView,
-  Alert
+  Alert,
 } from "react-native";
 import ProfileHeader from "../../components/profile/ProfileHeader.js";
 import ProfileForm from "../../components/profile/ProfileForm.js";
 import LocalStorage from "../../helpers/LocalStorage.js";
 import { frontendError } from "../../lib/alerts";
 import { NavigationActions } from "react-navigation";
-import { putRequest } from '../../lib/requests'
-import { APIRoutes } from '../../config/routes'
+import { putRequest } from "../../lib/requests";
+import { APIRoutes } from "../../config/routes";
 import Styles from "../../constants/Styles.js";
 import Sizes from "../../constants/Sizes.js";
+
+import { create_availability_formData } from "../../helpers/AvailabilityHelpers.js";
+import { postRequest } from "../../lib/requests";
 
 export default class Profile extends Component {
   constructor(props) {
@@ -37,22 +40,25 @@ export default class Profile extends Component {
         'email': "",
         'preferred_region_id': [],
         'preferred_location_id': [],
-        'availability': {},
+        'availability': "",
       },
       password: "",
-      isFetching: true
+      isFetching: true,
     };
   }
 
   async componentDidMount() {
     try {
       let user = await LocalStorage.getNonNullItem("user");
-      await this.setState({ 
-        user: user,
-      }, () => {
-        this.render(); 
-        this.setState({ isFetching: false})
-      });
+      await this.setState(
+        {
+          user: user,
+        },
+        () => {
+          this.render();
+          this.setState({ isFetching: false });
+        }
+      );
     } catch (err) {
       console.error(err);
       this.props.navigation.navigate("Login");
@@ -66,39 +72,65 @@ export default class Profile extends Component {
   };
 
   changeUserInfo = (attribute, text) => {
-    const user = this.state.user
-    user[attribute] = text
+    const user = this.state.user;
+    user[attribute] = text;
     this.setState({ user });
-  }
+  };
 
   getUserAttribute = (attribute) => {
     return this.state.user[attribute];
-  }
+  };
+
+  changeUserInfo = (attribute, text) => {
+    this.setState({ [attribute]: text });
+  };
+
+  getUserAttribute = (attribute) => {
+    return this.state.user[attribute];
+  };
+
+  changeAvailability = (new_availability) => {
+    this.setState({
+      new_availability: new_availability,
+    });
+  };
 
   saveUserInfo = async () => {
-    if (this.state.password.length > 0 && this.state.password.length <= 8) {
-        frontendError("Passwords must be more than 8 characters long.")
-    } else {
-        // TODO @Johnathan, gracefully handle more complex updates and also 
-        // just change the state naming to not have to rename params.
-        const { id, city, state, zip_code, preferred_region_id, preferred_location_id, 
-          availability, ...params } = this.state.user
-        await LocalStorage.storeItem('user', JSON.stringify(this.state.user));
-        putRequest(APIRoutes.updateUserPath(this.state.user.id), (user => {
-            Alert.alert("Successfully updated!")
-        }),
-        (error) => console.error(error),
-        params
-        )
+      if (this.state.password.length > 0 && this.state.password.length <= 8) {
+          frontendError("Passwords must be more than 8 characters long.")
+      } else {
+          // Create / Update Availability if needed.
+          if (Object.keys(this.state.new_availability).length != 0) {
+            let availability = { availability: this.state.new_availability };
+            postRequest(
+              APIRoutes.updateAvailabilityPath(), //We don't need to pass in user.id, uses current user session.
+              (availability) => {
+                this.changeUserInfo("availability", availability.id);
+                LocalStorage.storeItem("availability", this.state.new_availability);
+
+              },
+              (error) => console.error(error),
+              availability
+            );
+          }
+
+          const { id, city, state, zip_code, availability, ...params } = this.state.user
+          await LocalStorage.storeItem('user', this.state.user);
+          putRequest(APIRoutes.updateUserPath(this.state.user.id), (user => {
+              Alert.alert("Successfully updated!")
+          }),
+          (error) => console.error(error),
+          params
+          )
+      }
     }
-  }
 
   logoutUser = () => {
     const { navigate } = this.props.navigation;
-    AsyncStorage.removeItem('user');
-    AsyncStorage.removeItem('cookie')
+    AsyncStorage.removeItem("user");
+    AsyncStorage.removeItem("cookie");
     navigate("Login");
-  }
+  };
 
   render() {
     if (!this.props.user) {
@@ -108,8 +140,8 @@ export default class Profile extends Component {
             <Text style={Styles.title}> My Profile </Text>
           </View>
           <ScrollView>
-            <ProfileHeader 
-              getUserAttribute={this.getUserAttribute} 
+            <ProfileHeader
+              getUserAttribute={this.getUserAttribute}
               isFetching={this.state.isFetching}
             />
             <ProfileForm
@@ -117,6 +149,7 @@ export default class Profile extends Component {
               getUserAttribute={this.getUserAttribute}
               enableSaveButton={this.enableSaveButton}
               changeUserInfo={this.changeUserInfo}
+              changeAvailability={this.changeAvailability}
             />
           </ScrollView>
 
