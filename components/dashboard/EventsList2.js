@@ -29,15 +29,13 @@ import { EventRegister } from "react-native-event-listeners";
 class UpcomingEventsList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      upcomingEvents: props.upcomingEvents,
-    };
   }
+
 
   render() {
     if (
-      this.state.upcomingEvents === undefined ||
-      this.state.upcomingEvents.length == 0
+      this.props.upcomingEvents === undefined ||
+      this.props.upcomingEvents.length == 0
     ) {
       return (
         <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
@@ -60,8 +58,7 @@ class UpcomingEventsList extends React.Component {
       return (
         <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
           <ScrollView style={{ height: "100%" }}>
-            {this.state.upcomingEvents.map((event) => {
-              console.log("upcoming", event);
+            {this.props.upcomingEvents.map((event) => {
               return (
                 <ActivityCard
                   key={event.id}
@@ -80,15 +77,12 @@ class UpcomingEventsList extends React.Component {
 class AttendedEventsList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      attendedEvents: props.attendedEvents,
-    };
   }
 
   render() {
     if (
-      this.state.attendedEvents === undefined ||
-      this.state.attendedEvents.length == 0
+      this.props.attendedEvents === undefined ||
+      this.props.attendedEvents.length == 0
     ) {
       return (
         <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
@@ -115,7 +109,7 @@ class AttendedEventsList extends React.Component {
       return (
         <View style={[styles.scene, { backgroundColor: "#FFFFFF" }]}>
           <ScrollView style={{ height: "100%" }}>
-            {this.state.attendedEvents.map((event) => {
+            {this.props.attendedEvents.map((event) => {
               return (
                 <ActivityCard
                   key={event.id}
@@ -148,12 +142,16 @@ export default class EventsList2 extends Component {
   }
 
   async componentDidMount() {
+    // This refetches the events once an the reloadEvents
+    // signal is broadcasted.
     this.listener = EventRegister.addEventListener('reloadEvents', () => {
       this._fetchEvents()
-    });
+    })
     try {
       let user = await LocalStorage.getNonNullItem("user");
-      this.setState({ user_id: user.id }, this._fetchEvents);
+      this.setState({ user_id: user.userId }, () => {
+        this._fetchEvents()
+      });
     } catch (err) {
       console.error(err);
       this.props.navigation.navigate("Login");
@@ -167,6 +165,16 @@ export default class EventsList2 extends Component {
   // Fetch function
   _fetchEvents = async () => {
     let event_lists = await get_dashboard_events_lists(this.state.user_id);
+    let currentEvent = this.checkNextHour(event_lists.upcoming)
+
+    if (Object.keys(currentEvent).length > 0) {
+       this.props.setCurrentEvent(currentEvent)
+       let index = event_lists.upcoming.indexOf(currentEvent);
+       if (index !== -1) {
+        event_lists.upcoming.splice(index, 1);
+       }
+    }
+
     this.setState({
       //Finished fetching events, populate state.
       upcomingEvents: event_lists.upcoming,
@@ -174,6 +182,24 @@ export default class EventsList2 extends Component {
       isFetching: false,
     });
   };
+
+  checkNextHour(upcomingEvents) {
+    let currentTime = Date.now()
+    let currentEvent = {}
+    let ONE_HOUR = 60 * 60 * 1000; /* ms */
+    for (var i = 0; i < upcomingEvents.length; i++) {
+      let event = upcomingEvents[i]
+      let eventTime = new Date(event.starting_time)
+      let endTime = new Date(event.ending_time)
+      let timeDifference = eventTime - currentTime
+      let timeDifference2 = endTime - currentTime
+      if (timeDifference < ONE_HOUR || timeDifference2 < ONE_HOUR) {
+        currentEvent = event
+        break
+      }
+    }
+    return currentEvent
+  }
 
   _handleIndexChange = (index) => this.setState({ index });
 
