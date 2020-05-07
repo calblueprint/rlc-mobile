@@ -65,15 +65,10 @@ export default class ShiftScreen extends React.Component {
   constructor(props) {
     super(props);
     const pEvent = this.props.route.params.event;
-<<<<<<< HEAD
 
+    // setting checkbox variables
     let verifiedCheckboxes = {};
     let listOfAttendedUsers = [];
-=======
-    // console.log("pevent in constructor");
-    // console.log(pEvent);
-    let verifiedCheckboxes = {};
->>>>>>> ed4e859d0d0928fbdca643d15e93d85789f92aa5
     for (let i = 0; i < pEvent.details.attendees.length; i++) {
       let currAttendee = pEvent.details.attendees[i];
       if (currAttendee.role != "normal") {
@@ -99,11 +94,6 @@ export default class ShiftScreen extends React.Component {
         description: dropoff.address
       });
     });
-<<<<<<< HEAD
-=======
-
-    // Setting up checkbox variables
->>>>>>> ed4e859d0d0928fbdca643d15e93d85789f92aa5
 
     this.state = {
       participantData: [
@@ -117,26 +107,15 @@ export default class ShiftScreen extends React.Component {
           name: "Dan Schneider",
           role: "Volunteer",
           profilePic: "../../assets/images/rlcprofilepic.png",
-<<<<<<< HEAD
           verified: true
         }
-=======
-          verified: true,
-        },
->>>>>>> ed4e859d0d0928fbdca643d15e93d85789f92aa5
       ],
       shiftInstructions: shiftInstructions,
       markers: markers,
       poundsOfFood: 0,
-<<<<<<< HEAD
       listOfAttendedUsers: listOfAttendedUsers,
       verifiedCheckboxes: verifiedCheckboxes
     }
-=======
-      listOfAttendedUsers: [],
-      verifiedCheckboxes: verifiedCheckboxes,
-    };
->>>>>>> ed4e859d0d0928fbdca643d15e93d85789f92aa5
   }
 
   createShiftInstructions = (pickUp, dropOff) => {
@@ -231,22 +210,19 @@ export default class ShiftScreen extends React.Component {
     );
   };
 
-<<<<<<< HEAD
-=======
   isChecked = (participant) => {
-    console.log("in isChecked");
+    // originally used to set checked prop of checkbox; probably won't be used?
     if (participant == undefined || participant == null) {
       return true;
     }
     return this.state.verifiedCheckboxes[participant.id];
   };
 
->>>>>>> ed4e859d0d0928fbdca643d15e93d85789f92aa5
   modifyAttendedParticipants = (participant) => {
+    // toggle checkbox depending on what it was previously
     if (participant == undefined || participant == null) {
       return;
     }
-<<<<<<< HEAD
     if (this.state.verifiedCheckboxes[participant.id]) {
       this.setState({ listOfAttendedUsers: this.state.listOfAttendedUsers.filter(attendedUser => attendedUser != participant.id) });
     } else {
@@ -263,51 +239,6 @@ export default class ShiftScreen extends React.Component {
   completeTask = (poundsOfFood, listOfParticipants) => {
     // Function to call once Complete is pressed
   }
-=======
-    if (this.isChecked(participant)) {
-      console.log("was checked");
-      this.setState({
-        listOfAttendedUsers: this.state.listOfAttendedUsers.filter(
-          (attendedUser) => attendedUser.id == participant.id
-        ),
-      });
-    } else {
-      console.log("wasn't checked at first");
-      this.setState({
-        listOfAttendedUsers: this.state.listOfAttendedUsers.concat(
-          participant.id
-        ),
-      });
-    }
-    // For checkbox
-    this.setState({
-      verifiedCheckboxes: {
-        ...this.state.verifiedCheckboxes,
-        [participant.id]: !this.state.verifiedCheckboxes[participant.id],
-      },
-    });
-    // this.setState(
-    //   (prevState) => ({
-    //     verifiedCheckboxes: {
-    //       ...prevState.verifiedCheckboxes,
-    //       [participant.id]: !prevState.verifiedCheckboxes[participant.id],
-    //     },
-    //   }),
-    //   () => {
-    //     this.render();
-    //   }
-    // );
-    console.log(this.state.verifiedCheckboxes);
-    console.log(this.state.listOfAttendedUsers);
-  };
-
-  completeTask = (poundsOfFood, listOfParticipants) => {
-    // Function to call once Complete is pressed
-    console.log("completing task");
-    // console.log(poundsOfFood);
-    // console.log(listOfParticipants);
-  };
->>>>>>> ed4e859d0d0928fbdca643d15e93d85789f92aa5
 
   navigateToMain = () => {
     const { navigate } = this.props.navigation;
@@ -393,7 +324,7 @@ export default class ShiftScreen extends React.Component {
             onPressBack={this.navigateToMain}
             rightSide={
               pEvent.details.shiftType === ShiftType.upcoming ||
-              pEvent.details.shiftType === ShiftType.current
+                pEvent.details.shiftType === ShiftType.current
                 ? true
                 : false
             }
@@ -499,12 +430,11 @@ export default class ShiftScreen extends React.Component {
 
                 {(pEvent.details.shiftType === ShiftType.upcoming ||
                   pEvent.details.shiftType === ShiftType.current) && (
-<<<<<<< HEAD
                     <View
                       style={{
                         flexDirection: "row",
                         marginTop: 10,
-                        marginBottom: 10
+                        marginBottom: 10,
                       }}
                     >
                       <Text style={{ fontSize: 17 }}>
@@ -513,28 +443,12 @@ export default class ShiftScreen extends React.Component {
                       <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>
                         Tap "Complete" to confirm the completion of the event. The
                         last three steps must be completed.
-=======
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      marginTop: 10,
-                      marginBottom: 10,
-                    }}
-                  >
-                    <Text style={{ fontSize: 17 }}>
-                      {this.state.shiftInstructions.length}
                     </Text>
-                    <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>
-                      Tap "Complete" to confirm the completion of the event. The
-                      last three steps must be completed.
->>>>>>> ed4e859d0d0928fbdca643d15e93d85789f92aa5
-                    </Text>
-                  </View>
-                )}
+                    </View>
+                  )}
 
                 {(pEvent.details.shiftType === ShiftType.upcoming ||
                   pEvent.details.shiftType === ShiftType.current) && (
-<<<<<<< HEAD
                     <View style={styles.buttonContainer}>
                       <TouchableOpacity
                         style={styles.button}
@@ -544,20 +458,6 @@ export default class ShiftScreen extends React.Component {
                       </TouchableOpacity>
                     </View>
                   )}
-=======
-                  <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={this.completeTask(
-                        this.state.poundsOfFood,
-                        this.state.listOfAttendedUsers
-                      )}
-                    >
-                      <Text style={styles.buttonText}>Complete</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
->>>>>>> ed4e859d0d0928fbdca643d15e93d85789f92aa5
               </View>
             </ScrollView>
             {pEvent.details.shiftType == ShiftType.searched && (
