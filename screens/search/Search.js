@@ -7,7 +7,6 @@ import Sizes from "../../constants/Sizes.js";
 import Styles from "../../constants/Styles";
 import Colors from "../../constants/Colors";
 import { getRequest } from "../../lib/requests";
-import LocalStorage from "../../helpers/LocalStorage.js";
 
 //curr location
 import * as Location from "expo-location";
