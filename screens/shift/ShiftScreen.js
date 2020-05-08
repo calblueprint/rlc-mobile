@@ -88,16 +88,18 @@ export default class ShiftScreen extends React.Component {
     );
     const markers = [];
     markers.push(...pEvent.details.pickup_locations);
-    pEvent.details.dropoff_locations.map((dropoff) => {
-      markers.push({
-        latlng: {
-          latitude: dropoff.latitude,
-          longitude: dropoff.longitude,
-        },
-        title: dropoff.name,
-        description: dropoff.address,
+    if (Array.isArray(pEvent.details.dropoff_locations)) {
+      pEvent.details.dropoff_locations.map((dropoff) => {
+        markers.push({
+          latlng: {
+            latitude: dropoff.latitude,
+            longitude: dropoff.longitude,
+          },
+          title: dropoff.name,
+          description: dropoff.address,
+        });
       });
-    });
+    }
 
     this.state = {
       participantData: [
