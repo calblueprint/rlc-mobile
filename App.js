@@ -10,6 +10,11 @@ import AppNavigator from "./navigation/AppNavigator";
 import * as Sentry from "sentry-expo";
 import Constants from "expo-constants";
 
+// Demo Purposes
+import { YellowBox } from "react-native";
+YellowBox.ignoreWarnings(["Warning: ReactNative.createElement"]);
+console.disableYellowBox = true;
+
 Sentry.init({
   dsn:
     "https://9f8eb25711f0439ca61120e47914d75a@o306199.ingest.sentry.io/5204759",

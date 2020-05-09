@@ -65,27 +65,37 @@ export default class ShiftScreen extends React.Component {
   constructor(props) {
     super(props);
     const pEvent = this.props.route.params.event;
-    console.log("pevent in constructor");
     console.log(pEvent);
 
+    // Track Attendance
+    let verifiedCheckboxes = {};
+    let listOfAttendedUsers = [];
+    if (pEvent.details.shiftType == ShiftType.upcoming) {
+      for (let i = 0; i < pEvent.details.attendees.length; i++) {
+        let currAttendee = pEvent.details.attendees[i];
+        listOfAttendedUsers.push(currAttendee["id"]);
+      }
+    }
+
+    // Setup Instructions
     const shiftInstructions = this.createShiftInstructions(
       pEvent.details.pickup_locations,
       pEvent.details.dropoff_locations
     );
     const markers = [];
     markers.push(...pEvent.details.pickup_locations);
-    pEvent.details.dropoff_locations.map((dropoff) => {
-      markers.push({
-        latlng: {
-          latitude: dropoff.latitude,
-          longitude: dropoff.longitude,
-        },
-        title: dropoff.name,
-        description: dropoff.address,
+    if (Array.isArray(pEvent.details.dropoff_locations)) {
+      pEvent.details.dropoff_locations.map((dropoff) => {
+        markers.push({
+          latlng: {
+            latitude: dropoff.latitude,
+            longitude: dropoff.longitude,
+          },
+          title: dropoff.name,
+          description: dropoff.address,
+        });
       });
-    });
-    console.log("here are the markers", markers);
-    console.log("and dropoffs", pEvent.details.dropoff_locations);
+    }
 
     this.state = {
       participantData: [
@@ -104,6 +114,9 @@ export default class ShiftScreen extends React.Component {
       ],
       shiftInstructions: shiftInstructions,
       markers: markers,
+      poundsOfFood: 0,
+      listOfAttendedUsers: listOfAttendedUsers,
+      verifiedCheckboxes: verifiedCheckboxes,
     };
   }
 
@@ -144,10 +157,12 @@ export default class ShiftScreen extends React.Component {
         nextStep += 2;
         break;
       default:
+        break;
     }
 
     //add dropoff locations
-    if (dropOff.length == 1) {
+    console.log(dropOff);
+    if (Array.isArray(dropOff) && dropOff.length == 1) {
       shiftInstructions.push({
         step: nextStep,
         description:
@@ -173,16 +188,12 @@ export default class ShiftScreen extends React.Component {
     const participant = data.item;
     return (
       <View style={styles.participant_badge}>
-        {participant.role == "Volunteer" && (
+        {/* {participant.role == "normal" && (
           <CheckBox
-            checked={participant.verified}
-            onPress={() =>
-              this.setState((prevState) => {
-                participant.verified != prevState.participant.verified;
-              })
-            }
+            checked={this.state.verifiedCheckboxes[participant.id]}
+            onPress={() => this.modifyAttendedParticipants(participant)}
           />
-        )}
+        )} */}
         <Avatar
           rounded
           title={getInitials(
@@ -191,15 +202,43 @@ export default class ShiftScreen extends React.Component {
           size="medium"
         />
         <View style={styles.participant_detail}>
-          <Text styles={styles.participant_name}>
+          <Text style={styles.participant_name}>
             {participant.firstname} {participant.lastname}
           </Text>
-          <Text styles={styles.particpant_role}>
-            {participant.role === "normal" ? "Rescuer" : null}
+          <Text style={styles.particpant_role}>
+            {participant.role === "normal" ? "Rescuer" : "Lead Rescuer"}
           </Text>
         </View>
       </View>
     );
+  };
+
+  /**
+   * Switch checkbox and update attendees. In place for when Lead Rescuers are supported.
+   * @param {Object} a: user object for event attendee
+   */
+  modifyAttendedParticipants = (participant) => {
+    // STEP 1: Modify this.state.verifiedCheckboxes
+    var verifiedCheckboxes = { ...this.state.verifiedCheckboxes };
+    verifiedCheckboxes[participant.id] = !verifiedCheckboxes[participant.id];
+    this.setState({ verifiedCheckboxes: verifiedCheckboxes }, () => {
+      console.log(this.state.verifiedCheckboxes);
+    });
+
+    // STEP 2: Update this.state.attendees
+  };
+
+  isChecked = (participant) => {
+    // originally used to set checked prop of checkbox; probably won't be used?
+    if (participant == undefined || participant == null) {
+      return true;
+    }
+    return this.state.verifiedCheckboxes[participant.id];
+  };
+
+  completeTask = (poundsOfFood, listOfParticipants) => {
+    // Function to call once Complete is pressed
+    this.navigateToMain();
   };
 
   navigateToMain = () => {
@@ -215,7 +254,7 @@ export default class ShiftScreen extends React.Component {
   navigateToWithdraw = () => {
     const { navigate } = this.props.navigation;
     const pEvent = this.props.route.params.event;
-    console.log(pEvent);
+
     if (pEvent.details.recurring) {
       navigate("ChangeConfirm", {
         title: "Withdraw Your Spot",
@@ -278,8 +317,6 @@ export default class ShiftScreen extends React.Component {
   };
   render() {
     const pEvent = this.props.route.params.event;
-    console.log("here's pevent");
-    console.log(pEvent);
 
     //set latitude and longitude
     let lat = pEvent.details.pickup_locations[0].latlng.latitude;
@@ -387,6 +424,9 @@ export default class ShiftScreen extends React.Component {
                 <View style={styles.input_box}>
                   <TextInput
                     style={styles.weight_input}
+                    onChangeText={(pounds) =>
+                      this.setState({ poundsOfFood: parseFloat(pounds) })
+                    }
                     returnKeyType="next"
                     onSubmitEditing={() => this.submit.focus()}
                     keyboardType="number-pad"
@@ -404,7 +444,7 @@ export default class ShiftScreen extends React.Component {
                     }}
                   >
                     <Text style={{ fontSize: 17 }}>
-                      {this.state.shiftInstructions.length}
+                      {/* {this.state.shiftInstructions.length} */}
                     </Text>
                     <Text style={{ fontSize: 17, flex: 1, paddingLeft: 5 }}>
                       Tap "Complete" to confirm the completion of the event. The
@@ -418,13 +458,12 @@ export default class ShiftScreen extends React.Component {
                   <View style={styles.buttonContainer}>
                     <TouchableOpacity
                       style={styles.button}
-                      onPress={this.navigateToCamera}
-                    >
-                      <Text style={styles.buttonText}>Take picture</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={this.navigateToMain}
+                      onPress={() =>
+                        this.completeTask(
+                          this.state.poundsOfFood,
+                          this.state.listOfAttendedUsers
+                        )
+                      }
                     >
                       <Text style={styles.buttonText}>Complete</Text>
                     </TouchableOpacity>
@@ -512,7 +551,7 @@ const styles = StyleSheet.create({
   },
   participant_name: {
     fontSize: 17,
-    fontWeight: "700",
+    fontWeight: "600",
   },
   particpant_role: {
     fontSize: 15,
