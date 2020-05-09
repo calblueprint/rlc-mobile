@@ -23,6 +23,7 @@ import LocTimeline from "../../components/shift/LocTimeline";
 import Colors from "../../constants/Colors";
 import { getInitials } from "../../utils/Initials.js";
 import ShiftType from "../../constants/ShiftType.js";
+import { takePicture } from '../../helpers/ImageHelper'
 
 function instructionDetail(data) {
   const step = data.item;
@@ -117,7 +118,8 @@ export default class ShiftScreen extends React.Component {
       poundsOfFood: 0,
       listOfAttendedUsers: listOfAttendedUsers,
       verifiedCheckboxes: verifiedCheckboxes,
-    };
+      uri: ''
+    }
   }
 
   createShiftInstructions = (pickUp, dropOff) => {
@@ -452,7 +454,24 @@ export default class ShiftScreen extends React.Component {
                     </Text>
                   </View>
                 )}
-
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => {
+                        takePicture(pEvent.id)
+                        .then((uri) => {
+                          this.setState({uri})
+                        })
+                      }}
+                    >
+                    <Text style={styles.buttonText}>Take Picture</Text>
+                    </TouchableOpacity>
+                </View>
+                {this.state.uri ?
+                  <Image source={{ uri: this.state.uri }}></Image>
+                :
+                  <Text></Text>
+                }
                 {(pEvent.details.shiftType === ShiftType.upcoming ||
                   pEvent.details.shiftType === ShiftType.current) && (
                   <View style={styles.buttonContainer}>

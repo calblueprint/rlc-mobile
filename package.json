@@ -27,7 +27,9 @@
     "expo-camera": "~8.2.0",
     "expo-constants": "~9.0.0",
     "expo-font": "~8.1.0",
+    "expo-image-picker": "~8.1.0",
     "expo-permissions": "~8.1.0",
+    "expo-updates": "~0.1.2",
     "expo-web-browser": "~8.2.0",
     "path": "^0.12.7",
     "react": "16.9.0",
@@ -53,8 +55,7 @@
     "rn-nodeify": "^10.2.0",
     "sentry-expo": "^2.0.3",
     "tough-cookie": "^4.0.0",
-    "url": "^0.11.0",
-    "expo-updates": "~0.1.2"
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^8.1.0",
