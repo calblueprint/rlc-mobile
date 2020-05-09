@@ -54,9 +54,10 @@ export default class SuggestedEventsList extends Component {
     postRequest(
       `api/search_events`, //${this.state.date.toISOString()}`,
       (responseData) => {
-        console.log(responseData);
+        console.log("this is response", responseData);
         const selectedEventsInDay = [];
         for (let i = 0; i < responseData.length; i++) {
+          console.log("curr i" ,i);
           const currentEvent = {};
           const eventDetails = {};
           eventDetails["name"] = responseData[i]["title"];
@@ -102,7 +103,14 @@ export default class SuggestedEventsList extends Component {
         );
       },
       (error) => {
-        console.log(error);
+        this.setState(
+          { isFetching: false },
+          () => {
+            this.render();
+          }
+        );
+        console.log("erroring");
+        console.log(JSON.stringify(error));
       },
       { times: this.state.times, location_ids: this.state.location_ids }
     );
