@@ -35,7 +35,7 @@ function instructionDetail(data) {
           {step.description}
         </Text>
       </View>
-      {step.photo_needed && <View style={styles.upload_box}></View>}
+      {step.photo_needed && <Image style={styles.upload_box}></Image>}
     </View>
   );
 }
@@ -460,6 +460,7 @@ export default class ShiftScreen extends React.Component {
                       onPress={() => {
                         takePicture(pEvent.id)
                         .then((uri) => {
+                          console.log(uri)
                           this.setState({uri})
                         })
                       }}
@@ -467,11 +468,13 @@ export default class ShiftScreen extends React.Component {
                     <Text style={styles.buttonText}>Take Picture</Text>
                     </TouchableOpacity>
                 </View>
-                {this.state.uri ?
-                  <Image source={{ uri: this.state.uri }}></Image>
-                :
-                  <Text></Text>
-                }
+                <Image 
+                  style={{width:300,height:300}} 
+                  source={
+                    this.state.uri == null ? 
+                    '':
+                    {uri: this.state.uri}
+                  }/>
                 {(pEvent.details.shiftType === ShiftType.upcoming ||
                   pEvent.details.shiftType === ShiftType.current) && (
                   <View style={styles.buttonContainer}>

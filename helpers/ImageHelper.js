@@ -27,18 +27,19 @@ async function takePicture(event_id) {
     const postURL = settings.URL + 'images'
     // Assume "photo" is the name of the form field the server expects
     formData.append('photo', { uri: localUri, name: filename, type });
+    return localUri
 
-    fetch(postURL, {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'content-type': 'multipart/form-data',
-        },
-    }).then((result) => {
-        console.log('Success uploading!', JSON.stringify(result));
-        alert("Image upload success! Please go back")
-        return localUri
-    })        
+    // fetch(postURL, {
+    //     method: 'POST',
+    //     body: formData,
+    //     headers: {
+    //         'content-type': 'multipart/form-data',
+    //     },
+    // }).then((result) => {
+    //     console.log('Success uploading!', JSON.stringify(result));
+    //     alert("Image upload success! Please go back")
+    //     return localUri
+    // })        
 };
 
 export {
