@@ -118,7 +118,8 @@ export default class ShiftScreen extends React.Component {
       poundsOfFood: 0,
       listOfAttendedUsers: listOfAttendedUsers,
       verifiedCheckboxes: verifiedCheckboxes,
-      uri: ''
+      food_uri: '',
+      receipt_uri: ''
     }
   }
 
@@ -458,23 +459,53 @@ export default class ShiftScreen extends React.Component {
                     <TouchableOpacity
                       style={styles.button}
                       onPress={() => {
-                        takePicture(pEvent.id)
+                        takePicture(pEvent.id, false)
                         .then((uri) => {
                           console.log(uri)
-                          this.setState({uri})
+                          this.setState({food_uri: uri})
                         })
                       }}
                     >
-                    <Text style={styles.buttonText}>Take Picture</Text>
+                    <Text style={styles.buttonText}>Take Picture of Food</Text>
                     </TouchableOpacity>
                 </View>
                 <Image 
-                  style={{width:300,height:300}} 
-                  source={
-                    this.state.uri == null ? 
+                  style={
+                    this.state.food_uri == '' ? 
                     '':
-                    {uri: this.state.uri}
-                  }/>
+                    {width:300,height:300}
+                  } 
+                  source={
+                    this.state.uri == '' ? 
+                    '':
+                    {uri: this.state.food_uri}
+                }/>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => {
+                        takePicture(pEvent.id, true)
+                        .then((uri) => {
+                          console.log(uri)
+                          this.setState({receipt_uri: uri})
+                        })
+                      }}
+                    >
+                    <Text style={styles.buttonText}>Take Picture of Receipt</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <Image 
+                  style={
+                    this.state.receipt_uri == ''? 
+                    '':
+                    {width:300,height:300} 
+                  } 
+                  source={
+                    this.state.uri == '' ? 
+                    '':
+                    {uri: this.state.receipt_uri}
+                }/>
                 {(pEvent.details.shiftType === ShiftType.upcoming ||
                   pEvent.details.shiftType === ShiftType.current) && (
                   <View style={styles.buttonContainer}>
