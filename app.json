@@ -8,7 +8,6 @@
     "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/newrlclogo.png",
-    "sdkVersion": "37.0.0",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
@@ -20,6 +19,11 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": false,
+      "infoPlist": {
+        "NSCameraUsageDescription": "RLC would like to access your camera",
+        "NSPhotoLibraryAddUsageDescription": "Your message to user when the photo library is accessed for the first time",
+        "NSPhotoLibraryUsageDescription": "Your message to user when the photo library is accessed for the first time"
+      },
       "bundleIdentifier": "org.calblueprint.RescuingLeftoverCuisine",
       "buildNumber": "1.0.1"
     },
