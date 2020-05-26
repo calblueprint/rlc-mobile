@@ -292,12 +292,12 @@ export default class Search extends Component {
     let preferred_locations = await fetch_locations_by_ids(this.state.user.preferred_location_id);
     this.setState({
       locations: preferred_locations.map((item) => ({ ...item, selected: true })),
+      numLocs: preferred_locations.length,
     });
 
     let availability = await fetch_availability();
     this.setState({
       availability: availability,
-      locations: preferred_locations.map((item) => ({ ...item, selected: true })),
       fetchingLoc: false,
     });
   }
