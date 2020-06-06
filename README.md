@@ -2,6 +2,8 @@
 
 _Last Updated 5/05/2020_
 
+[Documentation](https://www.notion.so/Rescuing-Leftover-Cuisine-bcf225f933404ec6b06eb7ea8719fb5d)
+
 ## Setup
 
 ### Expo Quickstart
