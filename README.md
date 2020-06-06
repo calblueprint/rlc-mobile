@@ -1,6 +1,6 @@
 # Rescuing Leftover Cuisine Mobile App
 
-_Last Updated 5/05/2020_
+_Last Updated 06/05/2020_
 
 ## Guide
 
