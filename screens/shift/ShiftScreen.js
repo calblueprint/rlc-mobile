@@ -23,6 +23,7 @@ import LocTimeline from "../../components/shift/LocTimeline";
 import Colors from "../../constants/Colors";
 import { getInitials } from "../../utils/Initials.js";
 import ShiftType from "../../constants/ShiftType.js";
+import { takePicture } from '../../helpers/ImageHelper'
 
 function instructionDetail(data) {
   const step = data.item;
@@ -34,7 +35,7 @@ function instructionDetail(data) {
           {step.description}
         </Text>
       </View>
-      {step.photo_needed && <View style={styles.upload_box}></View>}
+      {step.photo_needed && <Image style={styles.upload_box}></Image>}
     </View>
   );
 }
@@ -117,7 +118,9 @@ export default class ShiftScreen extends React.Component {
       poundsOfFood: 0,
       listOfAttendedUsers: listOfAttendedUsers,
       verifiedCheckboxes: verifiedCheckboxes,
-    };
+      food_uri: '',
+      receipt_uri: ''
+    }
   }
 
   createShiftInstructions = (pickUp, dropOff) => {
@@ -244,6 +247,11 @@ export default class ShiftScreen extends React.Component {
   navigateToMain = () => {
     const { navigate } = this.props.navigation;
     navigate("Main");
+  };
+
+  navigateToCamera = () => {
+    const { navigate } = this.props.navigation;
+    navigate("Camera");
   };
 
   navigateToWithdraw = () => {
@@ -447,7 +455,57 @@ export default class ShiftScreen extends React.Component {
                     </Text>
                   </View>
                 )}
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => {
+                        takePicture(pEvent.id, false)
+                        .then((uri) => {
+                          console.log(uri)
+                          this.setState({food_uri: uri})
+                        })
+                      }}
+                    >
+                    <Text style={styles.buttonText}>Take Picture of Food</Text>
+                    </TouchableOpacity>
+                </View>
+                <Image 
+                  style={
+                    this.state.food_uri == '' ? 
+                    '':
+                    {width:300,height:300}
+                  } 
+                  source={
+                    this.state.uri == '' ? 
+                    '':
+                    {uri: this.state.food_uri}
+                }/>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => {
+                        takePicture(pEvent.id, true)
+                        .then((uri) => {
+                          console.log(uri)
+                          this.setState({receipt_uri: uri})
+                        })
+                      }}
+                    >
+                    <Text style={styles.buttonText}>Take Picture of Receipt</Text>
+                    </TouchableOpacity>
+                </View>
 
+                <Image 
+                  style={
+                    this.state.receipt_uri == ''? 
+                    '':
+                    {width:300,height:300} 
+                  } 
+                  source={
+                    this.state.uri == '' ? 
+                    '':
+                    {uri: this.state.receipt_uri}
+                }/>
                 {(pEvent.details.shiftType === ShiftType.upcoming ||
                   pEvent.details.shiftType === ShiftType.current) && (
                   <View style={styles.buttonContainer}>
